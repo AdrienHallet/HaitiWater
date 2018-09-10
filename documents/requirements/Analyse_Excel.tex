@@ -1,0 +1,153 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{datetime}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+ 
+\usepackage{fullpage} % changes the margin
+
+\begin{document}
+%Header-Make sure you update this information!!!!
+\noindent
+\large\textbf{Analyse des documents Excel utilisés à Haïti} \\
+\normalsize Deknop Céline \hfill Université Catholique de Louvain \\
+Hallet Adrien \hfill \today \\
+Strebelle Sébastien
+
+\section*{Abstract}
+
+
+\section{Premier document : cas pratique utilisé à Poste Métier}
+%TODO : better wording and acronyms
+Le document Excel est composé de plusieurs pages, chacune traitant d'un aspect de la gestion du système de distribution en question. Il imite assez bien ce qu'on pourrait trouver dans un site Internet permettant la gestion d'une telle infrastructure et nous donne une idée concrète des besoins utilisateur.
+
+\subsection{Accueil}
+Ici, nous trouvons un menu permettant de naviguer vers les autres pages, ainsi que quelques informations générales sur l'infrastructure :
+
+\begin{itemize}
+    \item Le nombre total de fontaines
+    \item Le nombre de consommateurs
+    \item Le nombre d'abonnés des fontaines publiques
+    \item Le nombre d'abonnés privés
+    \item[Remarque] : \emph{Pour les 3 dernières données, on a 9410/1639/58, ce sont donc trois "régimes" différents sur lesquels il faudrait demander des précisions}
+\end{itemize}
+
+Ensuite, on trouve trois encarts donnant des informations précises sur un élément en particulier (une fontaine, un abonné ou l'état financier d'une année), où l'utilisateur peut sélectionner l'élément qu'il souhaite. On a donc :
+
+\begin{itemize}
+    \item Les fontaines
+    \begin{itemize}
+        \item Le nom de la fontaine (élément à sélectionner)
+        \item Le nom de son président (peu ou pas de données pour ça)
+        \item La localité où elle se trouve
+        \item Le nombre d'abonnés désservis
+        \item Le montant collecté lors de l'année X (à sélectionner)
+    \end{itemize}
+    \item L'état financier
+    \begin{itemize}
+        \item L'année (élément à sélectionner)
+        \item Le solde d'ouverture
+        \item Le montant total collecté
+        \item Le montant prévu/budget
+        \item Les fonds externes
+        \item Les dépenses
+        \item Le solde de fermeture
+        \item Le taux de recouvrement (budget)
+        \item Le taux de recouvrement (redevance)
+    \end{itemize}
+    \item Les abonnés
+    \begin{itemize}
+        \item Le nom et prénom du chef de ménage (élément à sélectionner)
+        \item Le sexe
+        \item L'adresse
+        \item Le nombre de consommateurs du ménage
+        \item Le type de point d'alimentation utilisé
+        \item Si le type d'alimentation est une fontaine, son nom
+        \item Le téléphone
+        \item Le montant payé lors de l'année X (à sélectionner)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Budget}
+
+La page suivante contient un layout pour les budgets des années à venir, ainsi qu'un petit résumé du budget en cours (entrées/sorties/soldes). Chaque entrée du budget suit le format suivant :
+
+\begin{itemize}
+    \item Rubrique (détaillées dans la page X, elle définissent si la ligne est une entrée ou une sortie)
+    \item Description
+    \item Source \emph{?}
+    \item Unité\emph{?}
+    \item Quantité \emph{?}
+    \item Prix unitaire
+    \item Prix total
+\end{itemize}
+
+\subsection{Comptabilité}
+Cette page est liée à la suivante, dans le sens où elle apporte un détail plus important sur les dépenses. Ici encore, on a un layout sur plusieurs années, un résumé et des entrées, de la forme suivante :
+
+\begin{itemize}
+    \item Rubrique
+    \item Projet
+    \item Date
+    \item Description
+    \item Origine du fond
+    \item Entrée/sortie (sur deux colonnes)
+\end{itemize}
+
+\subsection{Liste des abonnés}
+Cette page est une simple liste de tous les utilisateurs du réseau, détaillant les informations suivantes (cf page d'accueil) :
+\begin{itemize}
+        \item Un numéro d'identification
+        \item Le nom et prénom du chef de ménage
+        \item Le sexe
+        \item L'adresse
+        \item Le nombre de consommateurs du ménage
+        \item Le type de point d'alimentation utilisé
+        \item Si le type d'alimentation est une fontaine, son nom
+        \item Le téléphone
+    \end{itemize}
+
+\subsection{Redevance}
+Cette page ne contient aucune données pour le moment, mais est sans doute destinée à aider les gestionnaires à récupérer les redevances, ce qui est peu le cas à présent. On y trouve :
+
+\begin{itemize}
+        \item Un numéro d'identification du client
+        \item Son nom et prénom
+        \item Son sexe
+        \item Son adresse
+        \item Son téléphone
+        \item Le type de point d'alimentation utilisé
+        \item Si le type d'alimentation est une fontaine, son nom
+        \item L'année de la redevance
+        \item Le montant payé
+    \end{itemize}
+    
+\subsection{Listes}
+Cette page contient les différentes rubriques et projets utilisés dans les pages budget et comptabilité
+
+\subsection{CE et liste fontaines}
+Comme son nom l'indique, cette page contient les informations des gestionnaires \emph{? je ne sais pas si on les appelle comme ça} du réseau :
+
+\begin{itemize}
+    \item CIN/NIF \emph{Numéro national ou qqch du genre}
+    \item Nom et prénom
+    \item Sexe
+    \item Fonction
+    \item Téléphone
+    \item E-mail
+\end{itemize}
+
+On y trouve également une liste des fontaines et leurs localités.
+
+\subsection{COF}
+Cette page est vide.
+
+\subsection{Cartes}
+Cette page contient la mention "carte du réseau" (sans la carte), ainsi que deux graphes représentant l'évolution du taux de recouvrement et le rapport entrées/sorties par années, et est donc destinée au monitoring.
+
+
+
+\end{document}
