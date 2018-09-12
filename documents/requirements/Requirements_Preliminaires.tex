@@ -1,0 +1,58 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{datetime}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+ 
+\usepackage{fullpage} % changes the margin
+
+\begin{document}
+%Header-Make sure you update this information!!!!
+\noindent
+\large\textbf{Analyse Préliminaire} \hfill \textbf{Distribution de l'eau en Haïti} \\
+\normalsize Deknop Céline \hfill Université Catholique de Louvain \\
+Hallet Adrien \hfill \today \\
+Strebelle Sébastien
+
+\section*{Abstract}
+Ce document vise à exprimer les besoins et objectifs du client de manière concise et précise en vue de l'analyse des requirements
+
+\hrule
+
+\section*{Client - Protos}
+ONG Belge Flamande\footnote{www.protos.ngo} basée à Gand, active dans plusieurs pays elle vise principalement à aider les populations à atteindre une responsabilité et indépendance en eau potable en partenariat avec les autorités locales. Ses activités sont multiples, de la transmission d'expérience à la réalisation de projets d'ingenierie en passant par l'éducation des populations.
+
+\section*{Problématique}
+En Haïti, la disponibilité en eau potable reste plutôt faible, principalement dans les zones rurales (50 \% de disponibilité). Le plus gros problème est le manque d'efficacité et de gestion des réseaux de distribution.
+
+Protos aide actuellement la population dans le nord du pays (trois départements sont cités) en partenariat avec des organismes locaux (de développement, de technologie, d'exploitants). La gestion actuelle du réseau se fait avec le tableur de la suite logicielle Office, Excel.
+
+Ce système présente déjà des problèmes en termes de capacité de stockage, mise à l'échelle et disponibilité des données. Protos et les organismes locaux souhaitent professionaliser ce service par le biais de technologies adaptées (mise en ligne des données, utilisation de bases de données pour garantir l'intégrité et la continuité des données) et profiter de ce passage à un service plus adapté pour y greffer de nouveaux modules permettant de faciliter la gestion du réseau (facturation, détection de problèmes, ...). Cet outil pourrait également être la base d'un déploiement du système à plus grande échelle.
+
+\section*{Objectifs du client}
+    \subsection*{Technologie}
+    \begin{itemize}
+        \item Outil \textbf{en ligne}
+        \item Application responsive, des fonctionnalités smartphones sont bienvenues 
+        \item Technologies (matérielles et logicielles) répandues et non-expérimentales permettant la remise du projet aux entités compétentes locales (probablement l'UEH, Université d'État d'Haïti)
+        \item Dans la mesure du possible, utilisation de licences logicielles \textbf{libres}
+        \item Tester et éprouver le système
+    \end{itemize}
+    
+    \subsection*{Utilisation}
+    \begin{itemize}
+       \item Simple et adaptée à tout type d'utilisateur après une petite introduction
+    \end{itemize}
+    
+    \subsection*{Application}
+    \begin{itemize}
+        \item Stocker les données recueillies
+        \item Permettre aux \textbf{exploitants} de consulter les données et de les exploiter (visuels, statistiques, ...)
+        \item Permettre aux \textbf{utilisateurs}\footnote{Ne fait pas partie du mémoire 2018-2019} de faire remonter des informations (e.g.: problèmes)
+    \end{itemize}
+    
+\section*{Données à éclaircir}
+    \subsection*{Droits d'accès des différentes organisations}
+    Le document parle de plusieurs organisations gérant plusieurs réseaux. L'application aura sans doute une partie nécessitant une authentification pour la prise de décision et modification des données. La question est la suivante ; est-ce que toutes les parties impliquées ont accès au même système ou doit-on conserver des données scindées, mais non partagées, entre plusieurs exploitants ? On ne parle pas ici de droits d'accès à plusieurs niveaux mais bien de la capacité d'un groupe à exploiter (si oui, en utilisation, modification ou les deux) les données d'un autre.
+\end{document}
