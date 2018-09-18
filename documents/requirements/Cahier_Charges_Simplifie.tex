@@ -22,14 +22,79 @@ Cahier des charges simplifié à destination des intervenants extérieurs à l'�
 \hrule
 
 \section{Synthèse}
+  L'application se dessine comme une version améliorée des documents Excel fournis. Les améliorations sont :
+  \begin{description}
+    \item[Performances] - Permettre l'utilisation concurrente de plusieurs utilisateurs sur de plus grandes données (ayant pour but final une utilisation nationale si l'application satisfait les besoins).
+    \item[Intuitivité] - Permettre une utilisation plus facile du système grâce à une interface plus simple que le tableur, des formulaires, une validation des données pour empêcher les erreurs communes.
+    \item[Graphiques] - Grâce à des informations graphiques automatiques, encourager l'utilisation de l'application. Les informations graphiques permettront une compréhension plus rapide des données.
+    \item[Regroupement] - Regrouper les données similaires sur les mêmes pages et ainsi diminuer le nombre d'onglets de l'application par rapport au fichier Excel. Cela permet une utilisation facilitée de l'application et de trouver une donnée plus rapidement.
+  \end{description}
 
 \section{Utilisateurs}
+\begin{description}
+  \item[Administrateur] ~ \\
+  Initialement Protos, l'administrateur sera le gestionnaire de la totalité du réseau. Il peut consulter et modifier tous les utilisateurs et le réseau de distribution de la totalité du pays.
+
+  \item[Gestion de Zone] ~ \\
+  Le gestionnaire de Zone possède les droits d'administration sur une zone géographique déterminée. Typiquement les CAEPA. Le gestionnaire de zone peut consulter tous les utilisateurs et le réseau de distribution dans sa zone.
+
+  \item[Gestion de Point d'eau] ~ \\
+  Le gestionnaire du point d'eau possède les droits d'administration sur son point d'eau. Il peut utiliser le système pour envoyer les informations relatives à son point d'eau uniquement.
+
+  \item[Consommateur](\emph{Type d'utilisateur futur pour le volet "CitizenScience"}) \\
+  Le consommateur est un utilisateur du réseau de distribution. Le consommateur peut utiliser le système pour rapporter des problèmes, informer le réseau et ses gestionnaires.
+\end{description}
 
 \section{Données}
+Les données sont réparties en catégories. Nous listons ci-dessous les données générales qui seront enregistrées dans le système. La totalité des champs est disponible dans les fichiers Excel actuellement utilisés.
+\begin{description}
+  \item[Gestionnaires]
+    Enregistre les données des gestionnaires du réseau (TEPAC - Technicien en Eau potable et Assainissement au niveau des Communes).
+
+  \item[Utilisateurs] ~ \\
+    Enregistre les informations légales d'un utilisateur pour l'identifier dans le réseau. On enregistre également son point d'alimentation dans le réseau.
+
+  \item[Réseau] ~ \\
+    Le réseau sera enregistré dans le système. On considère toutes les informations disponibles sur le réseau (fontaines, kiosques, ...) et des extensions pour pouvoir créer des analyses (débits, qualité, ...) si ces données deviennent disponibles.
+
+    A terme, ces données seront utilisées en parallèle avec des données géographiques pour une représentation visuelle (dynamique) du réseau.
+
+  \item[Budgets] ~ \\
+    Les informations comptables (budgets, investissements) sur les différents projets et périodes comptables.
+
+  \item[Facturation] ~ \\
+    Les informations de redevance pour le réseau. Ces informations permettront de créer les factures et leur suivi.
+
+
+\end{description}
 
 \section{Fonctionnalités}
   \subsection{Base}
+  \begin{enumerate}
+    \item Faciliter l'enregistrement (via formulaire) des données nécessaires à la gestion du réseau voir section ci-dessus.
+    \item Permettre la visualisation (graphique et numérique) des données.
+    \item Permettre la visualisation (graphique et numérique) des aggrégations de données (e.g.: performances, recourvement, ...). Destiné aux gestionnaires de réseau (zone et général).
+    \item Faciliter le recouvrement des factures en automatisant leur génération et facilitant leur consultation.
+    \item Permettre la visualisation graphique (Système d'Information Géographique) du réseau avec interactions dynamiques (e.g.: cliquer sur les fontaines pour en voir les informations)
+    \item Faciliter la gestion des budgets par une interface moins numérique et plus visuelle. A définir selon les besoins réels.
+    \item Système de "tickets" (messagerie interne) permettant de rapporter des informations entre les différents niveaux hiérarchiques du système (DINEPA, CAPEA, TEPAC).
+  \end{enumerate}
   \subsection{Extensions}
+  \begin{enumerate}
+    \item CitizenScience ; permettre aux usagers d'envoyer des informations aux gestionnaires (e.g.: problèmes)
+    \item Permettre aux utilisateurs de consulter l'état de leur consommation et du réseau (proposition)
+    \item Analyse des données en vue d'optimiser le réseau
+    \item Utilisation sans connexion Internet
+  \end{enumerate}
 
 \section{Caractéristiques}
+\begin{enumerate}
+  \item Système performant pour permettre une utilisation dans les conditions haïtiennes.
+  \item Sécurité des données.
+  \item Fonctionnement sur périphérique mobile (tablettes et smartphones).
+  \item Licenses libres pour les composantes technologiques du système.
+  \item Utilisation de technologies courantes/répandues dans le système afin de permettre une meilleure intégration des futurs développeurs dans le système.
+  \item Présence d'une documentation qualitative pour les développeurs et les utilisateurs du système.
+  \item Permettre une mise à l'échelle de l'application au niveau national
+\end{enumerate}
 \end{document}
