@@ -5,8 +5,8 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{datetime}
-\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
- 
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi)
+
 \usepackage{fullpage} % changes the margin
 
 \begin{document}
@@ -20,7 +20,7 @@ Strebelle Sébastien
 \section*{Abstract}
 
 
-\section{Premier document : cas pratique utilisé à Poste Métier}
+\section{Premier et second documents : cas pratique utilisé à Poste Métier et Passe Catabois}
 %TODO : better wording and acronyms
 Le document Excel est composé de plusieurs pages, chacune traitant d'un aspect de la gestion du système de distribution en question. Il imite assez bien ce qu'on pourrait trouver dans un site Internet permettant la gestion d'une telle infrastructure et nous donne une idée concrète des besoins utilisateur.
 
@@ -124,7 +124,7 @@ Cette page ne contient aucune données pour le moment, mais est sans doute desti
         \item L'année de la redevance
         \item Le montant payé
     \end{itemize}
-    
+
 \subsection{Listes}
 Cette page contient les différentes rubriques et projets utilisés dans les pages budget et comptabilité
 
@@ -143,10 +143,62 @@ Comme son nom l'indique, cette page contient les informations des gestionnaires 
 On y trouve également une liste des fontaines et leurs localités.
 
 \subsection{COF}
-Cette page est vide.
+Cette page est contient les noms, sexe, coordonnées et fonctions des gestionnaires des différentes personne responsables des fontaines de la localité.
 
 \subsection{Cartes}
-Cette page contient la mention "carte du réseau" (sans la carte), ainsi que deux graphes représentant l'évolution du taux de recouvrement et le rapport entrées/sorties par années, et est donc destinée au monitoring.
+Cette page contient la mention "carte du réseau" (sans la carte pour un document, avec pour l'autre), ainsi que deux graphes représentant l'évolution du taux de recouvrement et le rapport entrées/sorties par années, et est donc destinée au monitoring.
+
+\section{Second document : outil de la DINEPA}
+
+Ce fichier est utilisé à un niveau plus élevé que celui que nous visons dans le cadre de ce mémoire, mais contient toute sorte d'informations conernant l'entièreté du territoire d'Haïti.
+
+Ci-dessous, un résumé du genre d'informations qu'on y trouve, avec entre parenthèse le nom de la feuille correspondante :
+
+\subsection{Economique}
+\begin{itemize}
+    \item Un résumé des recettes du service d'accès à l'eau, par départements, avec la somme totale (Sheet5)
+    \item Tableau de comparaison mensuelle par departement geographique (Sheet1) \emph{?}
+    \item Coût forfaitaire du service par point d'approvisionnement (coût forfaitaire)
+    \item Coût au volume du service au niveau des kiosques + Coût au volume du service au niveau  des branchements individuels (Cout au volume)
+    \item Repartition des SAEP par point d'approvisionnement en eau et selon la disponibilite des donnees sur les recettes + Répartition de la recette des SAEP par point d'approvisionnement (Recette)
+    \item Montant total de la recette totale des SAEP par point d'approvisionnement + chart (Part des pts d'approv)
+    \item
+\end{itemize}
+
+
+\subsection{Remarques}
+
+\begin{itemize}
+    \item Feuille "Form Response" : commentaires sur l'état des réseaux ?
+
+\end{itemize}
+
+\subsection{Monitoring}
+
+\begin{itemize}
+    \item Monitoring du temps où le réseau a été hors service, par département + pie chart (Fonct. des SAEP)
+    \item Repartition des SAEP selon le nombre d'heures de distribution d'eau par jour, sans les noms, juste une idée générale (Heure de service par jour)
+    \item  Repartition des SAEP selon le nombre de jours de distribution d'eau par mois, de la même manière, sans les noms (Nbre jours service\_mois)
+    \item Répartition des SAEP suivant la déclaration d'une panne depuis le début du mois, toujours général (Panne des SAEP)
+    \item Vue sur les réparations nécéssaires et si elles ont été faites (Réparations)
+    \item Entreprise qui s'est occupée des réparations (Entr. réparatrice)
+    \item Nombre d'usagers  des SAEP ayant accès au service en pourcentages + chart (Usagers)
+    \item Réparatition des systèmes par pompage selon  la disponibilité de données sur le volume d'eau pompée + chart (Systeme par pompage)
+    \item Répartition  des systèmes par pompage selon le volume d'eau pompée en mêtre cube (Eau pompée en metre cube)
+    \item Réparatition des SAEP selon la disponibilité  des données sur le volume d'eau distribuée au niveau  des reservoirs (Reservoir)
+    \item Répartition  des réservoirs avec compteurs selon le  volume  d'eau distribuée en mêtre cube (Quantité eau réservoir)
+    \item Répartition des SAEP selon la disponibilité de données sur le volume d'eau distribuée au niveau des kiosques (Kiosques)
+    \item Répartition des kiosques avec compteurs Quantité d'eau distrib. kiosques)
+    \item Répartition en pourcentage des SAEP selon la disponibilité des données sur le volume d'eau distribuée au niveau des branchements individuels (branchement individuels)
+    \item Répartition des branchements individuels munis de compteur selon le volume  d'eau distribuée (Quantité d'eau distrib. bra. idiv.)
+    \item Répartition des SAEP par point d'approvisionnement en eau et mode de facturation du service (Facturation)
+    \item Liste des SAEP par commune/département, s'ils sont en service et le nombre d'usagers (Sheet2)
+    \item Poids des recettes totales par Departement + chart (Sheet 4)
+\end{itemize}
+
+\section{Conclusion}
+
+Ces documents nous auront permis de comprendre plus avant le fonctionnement réel de la distribution d'eau à Haïti. La première constatation est qu'il existe plusieurs "régimes" de distribution. Ensuite, dans beaucoup de cas, il n'y a pas de compteur (ou les données de celui-ci ne sont pas disponibles). Ces deux points rendent le recouvrement particulièrement difficile.
 
 
 

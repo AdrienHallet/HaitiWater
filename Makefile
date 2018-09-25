@@ -10,3 +10,4 @@ app:
 
 clean:
 	cd documents/requirements && make clean
+	cd thesis && make clean
