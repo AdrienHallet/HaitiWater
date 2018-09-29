@@ -102,3 +102,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+#Result of LaTeX compilation
+*.aux
+*.bbl
+*.blg
+*.log
+*.synctex.gz
