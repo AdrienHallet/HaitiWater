@@ -99,44 +99,55 @@ Les données sont réparties en catégories. Nous listons ci-dessous les donnée
 \end{enumerate}
 
 \section{User stories}
-Les user stories suivantes sont hiérarchiques, c'est-à-dire que les droits des supérieurs hiérarchiques englobent ceux de leur subordonnés
-\subsection{Général}
+Les user stories suivantes sont hiérarchiques, c'est-à-dire que les droits des supérieurs hiérarchiques englobent ceux de leur subordonnés.
+\subsection{En tant qu'utilisateur,}
 \begin{itemize}
-  \item En tant qu'utilisateur (Administrateur, gestionnaire de zone ou de point d'eau), je souhaite pouvoir me connecter à la part du site me concernant
-  \item En tant qu'utilisateur, je souhaite pouvoir effectuer mon travail hors ligne, pour l'envoyer plus tard quand j'aurai du réseau
+  \item Je dois me connecter sur l'application pour voir les outils qui me sont accessibles.
+  \item Je peux accéder à mes permissions pour consulter les points d'eau qui me sont assignés.
+  \item Je peux effectuer mon travail hors ligne, pour l'envoyer plus tard quand j'aurai du réseau % <- Impossible avec Django, on laisserait pas ça de côté pour le moment ? ça fait déjà beaucoup de travail et ils peuvent toujours noter sur leur pc et uploader quand ils ont une connexion
 \end{itemize}
 
-\subsection{Gestion de Point d'eau (Comité fontaine)}
+\subsection{En tant que gestionnaire de fontaine (Comité de Fontaine),}
 \begin{itemize}
-  \item En tant que gestionnaire de fontaine, je veux pouvoir signaler un problème à mon point d'eau à mes supérieurs (casse, eau impropre)
-  \item En tant que gestionnaire de fontaine, je souhaite pouvoir indiquer que le problème de ma fontaine est réglé.
-  \item En tant que gestionnaire de fontaine, je veux pouvoir rentrer les données d'utilisation (mensuelles) correspondant à mon point d'eau anfin qu'ils puissent être utilisés dans la gestion du réseau.
+  \item Je peux signaler un problème (matériel, qualité de l'eau, ...) à mon point d'eau pour que le technicien et mes supérieurs en soient informés.
+  \item Je peux modifier un problème pour donner de nouvelles informations ou en modifier l'urgence.
+  \item Je peux clôturer un problème pour indiquer qu'il est résolu.
+  \item Je dois rentrer les données d'utilisation mensuelles correspondant à mon point d'eau anfin de les utiliser dans la gestion du réseau.
 \end{itemize}
 
-Ils doivent également gérer les conflits, est-ce qu'on veut faire un pannel pour ça ou de la doc ou whatever ?
+% Ils doivent également gérer les conflits, est-ce qu'on veut faire un pannel pour ça ou de la doc ou whatever ?
 
-\subsection{Comité de gestion de l'eau et Gestion de zone}
+\subsection{En tant que gestionnaire de groupe de points d'eau,}
 \begin{itemize}
-  \item En tant que gestionnaire de zone, je souhaite pouvoir monitorer les fontaines dont je suis responsables
-  \item En tant que gestionnaire, je souhaite avoir accès à touts les problèmes concernant mes fontaines afin de pouvoir gérer ceux-ci
-  \item En tant que gestionnaire, je souhaite pouvoir prendre contact avec le technicien afin qu'il règle les problèmes
-  \item En tant que gestionnaire, je souhaite pouvoir indiquer qu'un technicien/plombier est sur site pour régler un problème
-  \item En tant que gestionnaire, je souhaite gérer les fonds apportés par les utilisateurs (budget)
-  \item En tant que gestionnaire, je souhaite pouvoir aggréger les rapports mensuels pour préparer la réunion annuelle
+  \item Je peux voir toutes les fontaines dans mon groupe pour pouvoir les sélectionner.
+  \item Je dois sélectionner un point d'eau pour accéder à ses données.
+  \item Je peux consulter toutes les données entrées par un gestionnaire de point d'eau dans ma zone afin de m'en informer.
+  \item Je peux consulter des graphiques générés automatiquement pour évaluer l'état du réseau, des utilisateurs et factures dans ma zone.
+  \item Je peux consulter les problèmes déclarés pour voir quels points d'eau sont en difficulté.
+  \item Je peux assigner un technicien à un problème particulier pour le prioriser.
+  \item Je peux modifier l'état d'un problème pour en marquer la résolution ou la prise en charge.
+  \item Je peux aggréger les rapports mensuels pour préparer la réunion annuelle.
 \end{itemize}
 
-\subsection{Administration}
+\subsection{En tant qu'administrateur (gestionnaire général),}
 \begin{itemize}
-  \item En tant qu'administrateur, je souhaite pouvoir avoir une vue d'ensemble relative aux informations de recouvrement
-  \item En tant qu'administrateur, je souhaite avoir une vue sur l'état général de mon réseau identier
-  \item En tant qu'administrateur, je souhaite avoir accès à tous les rapports mensuels
-  \item En tant qu'administrateur, je souhaite avoir accès à tous les problèmes en cours sur mon réseau
+  \item Je suis un gestionnaire de groupe qui a accès à la totalité des données pour consulter toutes les données.
+  \item Je peux ajouter un utilisateur afin d'autoriser plus de personnes à travailler avec l'application.
+  \item Je peux supprimer un utilisateur lorsque celui-ci n'est plus nécessaire.
+  \item Je peux créer un groupe d'utilisateur avec des permissions spécifiques sur les points d'eau afin de ne pas devoir les assigner à chaque utilisateur individuellement.
+  \item Je peux assigner un point d'eau à un groupe pour que ce groupe gère le point d'eau.
+  \item Je peux retirer un point d'eau à un groupe pour que ce groupe ne gère plus le point d'eau.
+  \item Je peux assigner un utilisateur à un groupe pour que cet utilisateur dispose des permissions héritées du groupe.
+  \item Je peux retirer un utilisateur d'un groupe pour que cet utilisateur n'ait plus les permissions héritées du groupe.
+
 \end{itemize}
 
-\subsection{Technicien/plombier}
-
+\subsection{En tant que technicien/plombier,}
 \begin{itemize}
-  \item En tant que technicien, je souhaite avoir une page résumant les réparations qui me sont demandées
+  \item Je peux consulter les problèmes du réseau pour déterminer la nécessité d'intervenir ou non.
+  \item Je peux consulter les problèmes priorisés par le gestionnaire de zone pour voir où une intervention est requise.
+  \item Je peux répondre aux problèmes afin de demander des précisions ou donner des solutions.
+  \item Je peux modifier l'état d'un problème afin d'en indiquer la prise en charge ou résolution.
 \end{itemize}
 
 \subsection{À préciser}
