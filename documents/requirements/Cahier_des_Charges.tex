@@ -8,6 +8,9 @@
 \usepackage{comment} % enables the use of multi-line comments (\ifx \fi)
 \usepackage{graphicx}
 
+\usepackage{framed, color} % shade-box around the text to highlight
+\definecolor{shadecolor}{RGB}{211,211,211}
+
 \usepackage{fullpage} % changes the margin
 \begin{document}
 %Header-Make sure you update this information!!!!
@@ -44,6 +47,8 @@ Cahier des charges du projet de gestion de distribution d'eau en Haïti, mémoir
     \item[Accès en lecture]
     \item[Accès en écriture]
     \item[Zone (du réseau)]
+    \item[Rapport mensuel]
+    \item[Ticket]
   \end{description}
 \section{Introduction}
 % Contexte de l'application
@@ -83,47 +88,95 @@ Cette section du document contient une description détaillée de tous les types
 % Liste exhaustive des fonctionnalités de l'application
 % Séparer directement en fonction des différents utilisateurs de l'application
   \subsection{Questions et remarques}
-\section{Exemples principaux}
-  % écran d'accueil du gestionnaire de zone
-  % rapport gestionnaire de zone
-  % rapport mensuel gestionnaire de fontaine %toutes mes fontaines/une fontaine particulière
-  % ouverture d'un ticket
-  \subsection{Fonctionnement général}
+\section{Exemples}
+  \begin{shaded}
+    Les visuels d'écran présents dans cette section sont des schémas. Ils cherchent à donner une idée de ce à quoi ressemblera l'application en terme de contenu. Les couleurs, agencements et formes ne représentent en rien l'esthétique finale de l'application. Vos désirs esthétiques sont en revanche bienvenus si vous avez des idées ou souhaits.
+  \end{shaded}
+
+  \subsection{Accueil}
+
     \begin{figure}[H]
-        \includegraphics[width=\textwidth]{Cahier_des_Charges/login}
+        \includegraphics[width=\textwidth]{Cahier_des_Charges/accueil}
         \caption{\'Ecran d'identification}
-        \label{fig:login}
+        \label{fig:zone_dashboard}
     \end{figure}
 
-    L'application fonctionne sur base des permissions de chaque utilisateur. La figure~\ref{fig:login} montre l'écran sur lequel tout utilisateur de l'application commence afin de pouvoir se connecter. Chaque utilisateur dispose au préalable de ses identifiants de connexion qui lui ont été fournis par sa hiérarchie.
+    Une fois identifié par son nom d'utilisateur et mot de passe, l'utilisateur arrive sur son tableau de bord. Le tableau de bord est personnalisé pour chaque catégorie d'utilisateur (gestionnaire de zone, de fontaine, technicien/plombien).
+
+    La figure~\ref{fig:zone_dashboard} présente le tableau de bord du gestionnaire de zone. En en-tête, l'utilisateur peut cliquer sur le logo de l'application pour retourner à ce même tableau de bord à tout moment de sa navigation. Il peut aussi se déconnecter.
+
+    \'A gauche, le menu principal indique à l'utilisateur les pages auxquelles il peut accéder en cliquant sur les boutons. Le bouton étendu indique à l'utilisateur sur quelle page il se trouve (ici "Accueil").
+
+    Au centre, le contenu de la page propose tout d'abord trois zones informatives générales :
+    \begin{itemize}
+      \item Zone courante, son nom et le nombre de points d'eau (kiosques, fontaines, réservoirs, prises individuelles)
+      \item Consommateurs, total, nombre de foyers
+      \item Recettes, pourcentage de recouvrement des paiements, recettes totales
+    \end{itemize}
+    L'utilisateur peut cliquer sur chacune des zones pour aller sur la page comprenant le détail des informations (respectivement les pages \emph{Réseau, Consommateurs, Comptabilité})
+
+    Ensuite, des graphiques sont proposés à l'utilisateur (ici, la répartition des types de points d'eau et l'évolution du taux de recouvrement en fonction du temps). L'utilisateur peut uiliser la flèche à droite du titre du graphique pour en choisir un autre (quantité d'eau distribuée en fonction du mois, évolution du nombre de consommateurs, ...).
+
+    Enfin, une zone de notification alerte l'utilisateur des problèmes non-résolus sur le réseau de distribution d'eau. Il peut également cliquer dessus pour aller à la page des problèmes.
+
+  \subsection{Rapports et problèmes}
+    \begin{figure}[H]
+        \includegraphics[width=\textwidth]{Cahier_des_Charges/rapports}
+        \caption{\'Ecran des rapports}
+        \label{fig:report}
+    \end{figure}
+    La figure~\ref{fig:report} présente la vue de rapport d'un gestionnaire de zone et d'un gestionnaire de fontaines. Le gestionnaire peut signaler un problème ou déposer le rapport mensuel (voir figure~\ref{fig:monthly_report}).
+
+    En dessous, le gestionnaire voit la liste de ses tickets en cours de traitement et leur statut. En cliquant dessus, il peut répondre aux messages du technicien (qui peut lui demander des précisions, proposer une solution, ...). Des notifications alertent le gestionnaire lorsqu'il a reçu une réponse à son ticket.
 
     \begin{figure}[H]
-        \includegraphics[width=\textwidth]{Cahier_des_Charges/accueil} % ToDo : modifier l'écran pour montrer un exemple
-        \caption{\'Ecran d'accueil}
-        \label{fig:dashboard}
+        \includegraphics[width=\textwidth]{Cahier_des_Charges/rapports_mensuel}
+        \caption{Test}
+        \label{fig:monthly_report}
     \end{figure}
 
-    Une fois connecté, l'utilisateur dispose d'un écran d'accueil (figure~\ref{fig:dashboard}) personnalisé qui affiche des informations en fonction de son rôle. Un technicien voit la liste et le nombre des interventions en attente.
-    \begin{description}
-      \item[Un gestionnaire de zone et gestionnaire de fontaines] voient les sorties d'eau du réseau dont ils sont responsables (fontaines, réservoirs et prises individuelles) et leur état de fonctionnement (en service, hors service, en cours de réparation). Ils disposent également de statistiques mises en avant (quantité d'eau distribuée, somme des recettes, nombre d'utilisateurs) afin de proposer un accès rapide aux informations les plus importantes.\\
-      Le gestionnaire de zone dispose en plus de la liste des gestionnaires de fontaines sous sa responsabilité.
-      \item[Un technicien/plombier] voit le nombre et la liste des interventions en attente.
-    \end{description}
-    Sur la gauche, chaque utilisateur voit le menu comprenant les pages auxquelles il a accès. Tous les utilisateurs n'ont pas les mêmes permissions. Le gestionnaire de zone peut voir tous les menus permettant de gérer le réseau, les consommateurs, les techniciens, les gestionnaires de fontaine et problèmes qui sont sous sa responsabilité. Le gestionnaire de fontaine peut voir le réseau auquel il est assigné, les consommateurs et problèmes des points sous sa responsabilité.
+    En figure~\ref{fig:monthly_report}, le gestionnaire fait son rapport mensuel. Chaque mois, ce formulaire doit être rempli pour obtenir les données du réseau. Si un rapport a déjà été rempli (par exemple si le gestionnaire de zone accède au rapport mensuel et qu'une partie des données a déjà été remplie par un gestionnaire de fontaines), il peut être modifié par ce même moyen.
 
+    Ici, nous voyons le formulaire d'un gestionnaire de fontaines. Il se présente en cinq parties ;
+    \begin{itemize}
+      \item Le gestionnaire de fontaines sélectionne la ou les sorties d'eau (fontaine, prises individuelles, kiosques, réservoirs) qui lui sont attribuées et pour lesquelles il souhaite faire son rapport.
+      \item Le gestionnaire de fontaines indique s'il a pu être en service durant ce mois, si oui il indique le nombre de jours et d'heures durant lesquels le service était disponible.
+      \item Le gestionnaire de fontaines indique les recettes pour les fontaines, kiosques et branchements individuels, le total est affiché automatiquement.
+      \item Pour chaque sortie d'eau sélectionnée au début du rapport, le gestionnaire de fontaines indique la quantité d'eau distribuée ainsi que les prix de distribution.
+      \item Le gestionnaire de fontaines peut enfin ajouter un commentaire au rapport mensuel.
+    \end{itemize}
 
-  \subsection{Gestionnaire de fontaine}
-  \begin{figure}[H]
-      \includegraphics[width=\textwidth]{Cahier_des_Charges/rapports}
-      \caption{Test}
-      \label{fig:reports}
-  \end{figure}
+    Le gestionnaire peut soumettre le rapport quand il le souhaite, même partiellement complété. Il peut y revenir plus tard et modifier les informations.
+
+  \subsection{Vue du réseau}
+    \begin{figure}[H]
+        \includegraphics[width=\textwidth]{Cahier_des_Charges/reseau}
+        \caption{Test}
+        \label{fig:network}
+    \end{figure}
+    La figure~\ref{fig:network} présente la vue d'accueil du réseau de distribution. A partir de cette page, le gestionnaire de distribution ou de fontaines peut voir les installations du réseau qui lui sont attribuées. Il y a à nouveau un espace dédié aux graphiques qu'il peut choisir et visualiser via la flèche à droite du titre.
+
+    A droite, des informations générales sont disponibles ainsi que des statistiques (ici, le volume mensuel total distribué en exemple).
+    L'utilisateur voit à nouveau un écran de notifications indiquant les problèmes qu'il faut résoudre.
 
 \section{Besoins non-fonctionnels}
 % Définir ce que c'est
 % Explication des besoins non-fonctionnels
-\section{Approche utilisée dans la création de ce document}
-% D'où viennent les idées
+\section{Approche}
+  Pour créer ce cahier des charges qui établit les fonctionnalités et le fonctionnement général de l'application, nous avons utilisé les documents fournis par Protos et disponibles en ligne.
+  \begin{description}
+    \item[Les fichiers Excel], au nombre de trois ont été principalement utilisés pour le choix des données et fonctionnalités de l'application. Deux des fichiers concernent les CAEPA et recensent leurs fontaines, consommateurs et comptabilités à l'échelle annuelle. Un fichier expose au niveau national et mensuel l'état du réseau (fonctionnement, quantités d'eau distribuées) et les recettes envoyées via formulaire par des TEPAC qui gèrent le réseau à leur échelle sur le terrain.
+    \item[Les documents de contexte] envoyés par Protos faisant état de la situation en Haïti, le projet de Protos sur place et leur fonctionnement.
+    \item[Le document de rapport] fourni récemment et expliquant le processus, pour Poste Métier, de fonctionnement de la distribution de l'eau.
+  \end{description}
+  Les fichiers Excels ont été notre plus grande source d'information puisqu'ils nous permettent de connaître le système informatique actuel, quelles sont les données, comment sont-elles collectées et utilisées.
+  Les fichiers de contexte ont permis de comprendre la situation, d'identifier les intervenants et risques de l'application.
+  Le rapport de Poste Métier a été très intéressant pour comprendre le fonctionnement précis d'une zone du réseau de distribution.
+
+  Notre approche générale dans cette application est d'automatiser la collecte et faciliter la gestion de toutes les données présentes dans les documents actuellement utilisés en Haïti. Dans ce document, nous présentons une application hiérarchique où chaque utilisateur fait remonter l'information dont il dispose (exactement comme le fonctionnement actuel des données Excel qui sont extraites des formulaires).
+
+  % Faut-il expliquer plus ? Genre nos objectifs ?
+
 % PS au lecteur : si vous voyez une autre source d'idées envoyez là !
 \section{Choix technolgiques}
 % Point de vue purement "positif pour le projet" sans termes techniques
