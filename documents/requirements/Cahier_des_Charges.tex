@@ -31,33 +31,38 @@ Cahier des charges du projet de gestion de distribution d'eau en Haïti, mémoir
     %ToDo 2 : définir les termes
     %ToDo 3 : ordonner alphabétiquement le truc si on peut pas le faire automatiquement
     %ToDo 4 : check le document régulièrement et ajouter tous les termes qui peuvent prêter à confusion
-    \item[CAEPA] Comité d'Approvisionnement en Eau Potable et d'Assainissement. Entité haïtienne chargée de toute activité nécessaire aux systèmes d'eau potable.
-    \item[DINEPA] Direction Nationale de l'Eau Potable et de l'Assainissement. Entité haïtienne rattachée au gouvernement, chargée d'exécuter la politique étatique dans le secteur de l'eau et assainissement.
-    \item[HTG] Devise (monnaie) d'Haïti, la \emph{Gourde} ($\approx 0,012$ \euro \footnote{Cours consulté le 03 octobre 2018})
-    \item[Application ou système] Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti.
-    \item[Utilisateur] Un être humain interagissant avec l'application.
-    \item[Interface (graphique)] Dispositif visuel permettant à l'utilisateur d'interagir avec l'application (\emph{i.e. : ce qui s'affiche à l'écran}).
-    \item[Donnée] Information enregistrée dans l'application destinée à une ou plusieurs utilisations (\emph{e.g. : la quantité d'eau utilisée})
-    \item[Permission (accès)] Droit informatique permettant à l'utilisateur d'accéder à des fonctionnalités ou données de l'application.
     \item[Accès en lecture] Droit informatique autorisant la consultation d'une information.
     \item[Accès en écriture] Droit informatique autorisant la modification d'une information (implique l'accès en lecture).
-    \item[Éléments du réseau de distribution de type "sortie"] %TODO change in text
-    \item[Profil] Compte et informations d'un utilisateur de l'application.
+    \item[Application ou système] Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti.
+    \item[CAEPA] Comité d'Approvisionnement en Eau Potable et d'Assainissement. Entité haïtienne chargée de toute activité nécessaire aux systèmes d'eau potable.
     \item[Citizen science] Participation active des citoyens dans la récupération des informations pour l'application.
-    \item[Scalable] Capacité d'une application de gérer des quantités variables de données en gardant de bonnes performances.
-    \item[Modulaire] Capacité d'une application à être facilement modifiée pour correspondre aux besoins changeants des utilisateurs.
-    \item[Réseau] Ensemble des installations de distribution et d'assainissement d'eau.
-    \item[Zone (du réseau)] Sous-ensemble du réseau.
+    \item[Consommateur] Personne utilisant le réseau de distribution d'eau haïtien.
+    \item[DINEPA] Direction Nationale de l'Eau Potable et de l'Assainissement. Entité haïtienne rattachée au gouvernement, chargée d'exécuter la politique étatique dans le secteur de l'eau et assainissement.
+    \item[Donnée] Information enregistrée dans l'application destinée à une ou plusieurs utilisations (\emph{e.g. : la quantité d'eau utilisée})
     \item[Fontaine] Point de sortie d'eau public avec abonnement annuel.
+    \item[HTG] Devise (monnaie) d'Haïti, la \emph{Gourde} ($\approx 0,012$ \euro \footnote{Cours consulté le 03 octobre 2018})
+    \item[Interface (graphique)] Dispositif visuel permettant à l'utilisateur d'interagir avec l'application (\emph{i.e. : ce qui s'affiche à l'écran}).
     \item[Kiosque] Point de sortie d'eau. % Quelle est la différence ?
-    \item[Réservoir] Endroit de stockage de l'eau potable avant d'être disrubuée.
+    \item[Modulaire] Capacité d'une application à être facilement modifiée pour correspondre aux besoins changeants des utilisateurs.
+    \item[Permission (accès)] Droit informatique permettant à l'utilisateur d'accéder à des fonctionnalités ou données de l'application.
+    \item[Point d'eau] Terme générique utilisé pour désigner une sortie d'eau du réseau (fontaine, réservoir, kiosque, prise individuelle).
     \item[Prise individuelle] Sortie d'eau au sein du domicile d'un consommateur.
     \item[Rapport mensuel] Informations envoyées tous les mois à propos d'un point de sortie d'eau.
+    \item[Réseau] Ensemble des installations de distribution et d'assainissement d'eau.
+    \item[Réservoir] Endroit de stockage de l'eau potable avant d'être disrubuée.
+    \item[Scalable] Capacité d'une application de gérer des quantités variables de données en gardant de bonnes performances.
     \item[Ticket] Résumé d'un problème en cours dans un point d'eau.
+    \item[Utilisateur] Un être humain interagissant avec l'application.
+    \item[Zone (du réseau)] Sous-ensemble du réseau.
   \end{description}
 \section{Introduction}
-% Contexte de l'application
-Dans chaque section du document, nous avons ajouté une partie "Questions et remarques", où nous demandons à Protos ou aux intervenant Haïtiens de donner des précisions ou leur avis car nous estimons n'avoir pas assez d'informations ou de connaissances sur le sujet. Ce sont les points sur lesquels nous avons le plus besoin d'aide et dont il faut discuter en priorité, mais toute remarque sera prise en compte et appréciée.
+
+L'ONG Protos\footnote{https://www.protos.ngo} nous a contacté afin que nous produisions une application en ligne permettant de gérer le réseau de distribution d'eau haïtien. Ce document expose les propositions pour la gestion des installations, consommateurs et finances du réseau.
+
+Nous débutons par une exposition des propositions d'utilisateurs et fonctionnalités qui expliquent le principe de fonctionnement de l'application. Ensuite quelques ébauches (non-exhaustives) de l'interface graphique permettent de comprendre les propositions en pratique. Enfin quelques informations pratiques vous informent de notre démarche dans ce projet.
+
+Vous êtes invités à réagir à ce cahier des charges pour l'ajout et la modification de toute fonctionnalité qui vous semblerait manquante ou incohérente. Des sections \emph{Questions et Remarques} sont d'ailleurs présentes pour attirer votre attention sur certains points pour lesquels nous nécessitons des précisions. Ce sont des points importants mais la totalité du document est soumise à votre approbation.
+
 \section{Types d'utilisateurs}
 \label{users}
 Cette section du document contient une description détaillée de tous les types d'utilisateurs qui, à terme, interagiront avec l'application. Nous détaillons aussi ce que ceux-ci pourront faire avec l'application, pour vous donner un contexte familier.
@@ -85,7 +90,7 @@ Cette section du document contient une description détaillée de tous les types
   \subsection{Questions et remarques}
   % Questions
   \begin{itemize}
-    \item Le contenu du rapport mensuel d'un gestionaire de fontaine sera un élément essentiel de l'application. S'il manque quoique ce soit, précisez-le nous au plus vite.
+    \item Le contenu du rapport mensuel d'un gestionaire de fontaine est pour le moment basé sur le rapport mensuel existant (voir section~\ref{sec:approach}). Si vous souhaitez que l'application récolte plus d'information auprès des gestionnaires, veuillez nous indiquer lesquelles et sous quelle forme (cela peut être un texte libre, un choix dans une liste, ce que vous voulez).
     \item Un gestionnaire de zone dont la zone recouvre tous les systèmes peut être vu comme un administrateur et aurait dès lors accès en lecture et écriture à toutes les données de l'application. Par erreur ou malveillance, il pourrait en effacer ou modifier certaines, faussant l'ensemble. Une pratique courante en informatique pour gérer ce problème potentiel est d'archiver les données : elles ne sont ainsi jamais vraiment modifiées ou effacées et peuvent être restaurées à l'état précédent. Est-ce une fonctionnalité que vous souhaitez pour l'application, ou n'est-ce pas nécéssaire de s'en occuper ? Si ce modèle d'archivage ne vous convient pas, souhaitez-vous autre chose ?
     \item L'utilisateur "technicien/plombier" et les fonctionnalités qui lui seront associées sont une interprétation de notre part car il nous semblait pratique de pouvoir centraliser la gestion du réseau de distribution entièrement au sein de l'application. Cela vous semble-t-il utile d'avoir une interface destinée au technicien ?
   \end{itemize}
@@ -94,42 +99,46 @@ Cette section du document contient une description détaillée de tous les types
 % Liste exhaustive des fonctionnalités de l'application
 % Séparer directement en fonction des différents utilisateurs de l'application
 
-\subsection{Pour tout type d'utilisateur}
+\subsection{Tout utilisateur peut :}
 \begin{itemize}
-  \item Connexion à l'application via un identifiant et un mot de passe.
-  \item En fonction de cet identifiant, l'utilisateur à accès uniquement à ce qui le concerne.
+  \item Se connecter à l'application via un identifiant et un mot de passe.
+  \item Accéder aux pages de l'application auxquelles il a accès en fonction de ses permissions et de son groupe d'utilisateur (gestionnaire de zone, gestionnaire de fonaines, technicien/plombier).
   %\item Je peux effectuer mon travail hors ligne, pour l'envoyer plus tard quand j'aurai du réseau % <- Impossible avec Django, on laisserait pas ça de côté pour le moment ? ça fait déjà beaucoup de travail et ils peuvent toujours noter sur leur pc et uploader quand ils ont une connexion
 \end{itemize}
 
-\subsection{Pour les gestionnaires de fontaine(s)}
+\subsection{Le gestionnaire de fontaine(s) peut :}
 \begin{itemize}
-  \item Possibilité de signaler un problème (matériel, qualité de l'eau, ...) à l'un de ses points d'eau via ticket pour que le technicien et ses supérieurs en soient informés. Le problème est modifiable (pour ajouter des détails par exemple) tant qu'il n'est pas cloturé
-  \item Possibilité de clôturer un problème pour indiquer qu'il est résolu.
-  \item Possibilité de rentrer les données d'utilisation mensuelles correspondant à ses points d'eau (cf section \ref{users} pour les détails du rapport).
+  \item Signaler un problème (matériel, qualité de l'eau, ...) à l'un des points d'eau auquel il est assigné via ticket pour que le technicien et ses supérieurs en soient informés. Le problème est modifiable (pour ajouter des détails par exemple) tant qu'il n'est pas cloturé.
+  \item Clôturer un ticket pour indiquer que le problème est résolu.
+  \item Rentrer les données d'utilisation mensuelles correspondant aux points d'eau auxquels il est assigné (\emph{cf section \ref{users} pour les détails du rapport}).
+  \item Ajouter/supprimer/modifier un consommateur (ou groupe de consommateurs en indiquant le nombre de consommateurs dans le foyer du chef de famille).
+  \item Assigner un consommateur ou groupe de consommateurs à un point d'eau.
+  \item Indiquer le montant payé par un consommateur et pour quelle durée.
+  \item Consulter l'état de recouvrement de son ou ses point(s) d'eau, obtenir les statistiques de recouvrement, lister les consommateurs qui n'ont pas encore payé.
 \end{itemize}
 
 % Ils doivent également gérer les conflits, est-ce qu'on veut faire un pannel pour ça ou de la doc ou whatever ?
 
-\subsection{Pour les gestionnaires de zone(s)}
+\subsection{Le gestionnaire de zone peut}
 \begin{itemize}
-  \item Possibilité de visionner tous les points d'eau de la zone et leurs informations (statistiques : utilisateurs, revenus,... et tickets les concernant)
-  \item Possibilité de consulter toutes les données entrées par un gestionnaire de point d'eau (rapports mensuels) dans la zone.
-  \item Possibilité de consulter des graphiques générés automatiquement pour évaluer l'état du réseau, des utilisateurs et factures dans ma zone\footnote{Voir section questions et remarques}.
-  \item Possibilité de consulter les problèmes (tickets) déclarés pour voir uniquement quels points d'eau sont en difficulté.
-  \item Possibilité d'assigner un technicien à un problème particulier pour le prioriser.
-  \item Possibilité modifier l'état d'un ticket pour en marquer la résolution ou la prise en charge.
-  \item Possibilité d'aggréger les rapports mensuels pour préparer la réunion annuelle. %Pas trop spécifique à notre dernier document ?
-  \item Possibilité de créer ou supprimer des comptes utilisateur (gestionaire de fontaine, de zone ou technicien). %tricky les gestionnaires de zone qui créent des gestionnaires de zone
-  \item Possibilité d'attribuer ou de retirer une fontaine ou une zone à un gestionaire de fontaine ou de zone
-  \item Possibilité de créer des points d'eau (au sein d'une de ses zone)
-  \item Possibilité d'ajouter, modifier ou supprimer des dépenses et des revenus pour la/les zones
+  \item Visionner tous les points d'eau de la zone et leurs informations (statistiques : consommateurs, revenus, débits mensuels et tickets les concernant)
+  \item Consulter toutes les données entrées par un gestionnaire de point d'eau (rapports mensuels) dans la zone.
+  \item Consulter des graphiques générés automatiquement pour évaluer l'état du réseau, des utilisateurs et recouvrement dans la zone assignée\footnote{Voir section questions et remarques}.
+  \item Consulter les problèmes (tickets) déclarés dans la zone assignée pour voir uniquement quels points d'eau sont en difficulté.
+  \item Assigner un technicien à un problème particulier pour le prioriser.
+  \item Modifier l'état d'un ticket pour en marquer la résolution ou la prise en charge.
+  \item Aggréger les rapports mensuels pour obtenir des statistiques annuelles ou globales. %Pas trop spécifique à notre dernier document ? < hop, comme ça c'est réglé
+  \item Créer ou supprimer des utilisateurs (gestionaire de fontaine, gestionnaire de zone ou technicien). %tricky les gestionnaires de zone qui créent des gestionnaires de zone
+  \item Attribuer ou de retirer une fontaine/zone à un gestionaire de fontaine/zone.
+  \item Créer des points d'eau (au sein de sa zone).
+  \item Ajouter, modifier ou supprimer des dépenses et des revenus pour la zone.
 \end{itemize}
 
-\subsection{Pour les techniciens/plombiers}
+\subsection{Le technicien / plombier peut :}
 \begin{itemize}
-  \item Possibilité de consulter les tickets du réseau pour déterminer la nécessité d'intervenir ou non.
-  \item Possibilité de répondre ou ajouter un commentaire aux tickets afin de demander des précisions ou donner des solutions.
-  \item Possibilité de modifier l'état d'un problème afin d'en indiquer la prise en charge ou résolution.
+  \item Consulter les tickets du réseau pour déterminer la nécessité d'intervenir ou non.
+  \item Répondre aux tickets afin de demander des précisions ou donner des solutions (si le déplacement n'est pas nécessaire/possible).
+  \item Modifier l'état d'un problème afin d'en indiquer la prise en charge ou résolution.
 \end{itemize}
 
   \subsection{Questions et remarques}
@@ -142,8 +151,25 @@ Cette section du document contient une description détaillée de tous les types
       \item Répartition du type de points d'eau (kiosques, fontaines ou point personnel)
       \item Évolution du taux de recouvrement
     \end{itemize}
-    \item Pour la fonctionnalité de dépenses et revenus est volontairement très flexible et peu spécifique pour l'instant. Des précisions sur comment exactement sont tenus les comptes seraient bénéfiques.
+    \item La fonctionnalité des dépenses et revenus est pour le moment très flexible et permet d'ajouter des dépenses et entrées d'argent pour consulter le solde, l'évolution des dépenses au fil des mois/années. Nous avons peu d'informations sur le fonctionnement des budgets et les informations dont nous disposons actuellement ne nous permettent pas de créer un système plus évolué.
+    \item Lors du développement de l'application, la priorité sera de créer le coeur de l'application permettant de stocker et modifier les données. C'est sur cette base nécessaire que nous vous proposerons ensuite des outils plus avancés comme le système d'information géographique qui permet de visualiser le réseau sur une carte interactive (type Google Maps).
   \end{itemize}
+
+\section{Principe hiérarchique}
+  L'application fonctionne par la hiérarchie de ses utilisateurs. Cette hiérarchie se base sur la hiérarchie actuelle sur place tout en se voulant plus flexible pour accomoder d'éventuels cas particuliers et changements futurs.
+
+  \vspace*{10px} % otherwise the paragraph goes over the minipage :/
+  \begin{minipage}{0.45\textwidth}
+    Ce principe est simple. Un gestionnaire de fontaines gère une ou plusieurs installations. Un gestionnaire de zone gère un ou plusieurs gestionnaires de zone et/ou de fontaines. En tant que gestionnaire de zone, j'ai accès aux données des utilisateurs que je gère. Ce principe est illustré sur le graphe ci-contre.
+  \end{minipage}
+  \begin{minipage}{0.48\textwidth}
+    \includegraphics[width=\textwidth]{Cahier_des_Charges/principe_hierarchique}
+  \end{minipage}
+  \vspace*{10px} % otherwise the paragraph goes over the minipage :/
+
+  Les consommateurs étant reliés aux points d'eau, un utilisateur n'a accès qu'aux consommateurs et éléments du réseau qui lui sont dépendants. Pour reprendre cet exemple, Protos pourrait être un gestionnaire de zone en tête de liste et avoir accès à toutes les données collectées, tandis que le collectif gérant l'eau d'un village serait un gestionnaire de fontaines et ne pourrait consulter et modifier que les données dudit village. Ce système permet une grande flexibilité dans la répartition des responsabilités.
+
+
 \section{Exemples}
   \begin{shaded}
     Les visuels d'écran présents dans cette section sont des schémas. Ils cherchent à donner une idée de ce à quoi ressemblera l'application en terme de contenu. Les couleurs, agencements et formes ne représentent en rien l'esthétique finale de l'application. Vos désirs esthétiques sont en revanche bienvenus si vous avez des idées ou souhaits.
@@ -225,7 +251,7 @@ Dans cette section, nous allons détailler certaines caractéristiques souhaitab
   \item Application scalable et modulaire pour permettre une utilisation à différentes échelles.
 \end{enumerate}
 % Explication des besoins non-fonctionnels
-\section{Approche}
+\section{Approche \label{sec:approach}}
   Pour créer ce cahier des charges qui établit les fonctionnalités et le fonctionnement général de l'application, nous avons utilisé les documents fournis par Protos et disponibles en ligne
   \begin{description}
     \item[Les fichiers Excel], au nombre de trois ont été principalement utilisés pour le choix des données et fonctionnalités de l'application. Deux des fichiers concernent les CAEPA et recensent leurs fontaines, consommateurs et comptabilités à l'échelle annuelle. Un fichier expose au niveau national et mensuel l'état du réseau (fonctionnement, quantités d'eau distribuées) et les recettes envoyées via formulaire par des TEPAC qui gèrent le réseau à leur échelle sur le terrain.
