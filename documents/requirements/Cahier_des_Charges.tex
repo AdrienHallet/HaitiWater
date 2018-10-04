@@ -42,9 +42,8 @@ Cahier des charges du projet de gestion de distribution d'eau en Haïti, mémoir
     \item[Accès en lecture] Droit informatique autorisant la consultation d'une information.
     \item[Accès en écriture] Droit informatique autorisant la modification d'une information (implique l'accès en lecture).
     \item[Éléments du réseau de distribution de type "sortie"] %TODO change in text
-    \item[Profils]
-    \item[Citizen science]
-    \item[Scalable]
+    \item[Citizen science] Future amélioration de l'applicaiton permettant une participation active des citoyens à l'amélioration de la distribution d'eau potable en Haïti (\emph{e.g. : en rapportant des problèmes})
+    \item[Scalable] Désignant la capacité d'un logiciel à s'adapter aux changements d'ordre de grandeur
     \item[Réseau]
     \item[Fontaine]
     \item[Kiosque]
@@ -58,6 +57,7 @@ Cahier des charges du projet de gestion de distribution d'eau en Haïti, mémoir
 % Contexte de l'application
 Dans chaque section du document, nous avons ajouté une partie "Questions et remarques", où nous demandons à Protos ou aux intervenant Haïtiens de donner des précisions ou leur avis car nous estimons n'avoir pas assez d'informations ou de connaissances sur le sujet. Ce sont les points sur lesquels nous avons le plus besoin d'aide et dont il faut discuter en priorité, mais toute remarque sera prise en compte et appréciée.
 \section{Types d'utilisateurs}
+\label{users}
 Cette section du document contient une description détaillée de tous les types d'utilisateurs qui, à terme, interagiront avec l'application. Nous détaillons aussi ce que ceux-ci pourront faire avec l'application, pour vous donner un contexte familier.
 
   \begin{description}
@@ -67,7 +67,7 @@ Cette section du document contient une description détaillée de tous les types
 
     \emph{Exemple : une personne chargée de gérer un point d'eau pourrait être un gestionnaire de fontaine. Il peut ainsi utiliser l'application pour envoyer mensuellement les données, ajouter les utilisateurs lorsque nécessaire et déclarer les problèmes.}
 
-    \item[Gestionnaire de zone] est un utilisateur qui gère un groupe de gestionnaires de fontaines. Il dispose des mêmes permissions que les gestionnaires de fontaines dans sa zone et peut donc effectuer les mêmes actions avec l'application. En plus de ça, le gestionnaire de zone peut créer des profils de gestionnaires de fontaines et de techniciens/plombiers et leur assigner des permissions sur les éléments du réseau. %Meh
+    \item[Gestionnaire de zone] est un utilisateur qui gère un groupe de gestionnaires de fontaines. Il dispose des mêmes permissions que les gestionnaires de fontaines dans sa zone et peut donc effectuer les mêmes actions avec l'application. En plus de ça, le gestionnaire de zone peut créer des utilisateurs "gestionnaire de fontaines" et  "techniciens/plombiers" et leur assigner des permissions sur les éléments du réseau. %Meh
 
     \emph{Exemple 1 : Protos ou la DINEPA peuvent être assignés en tant que gestionnaires de zone ayant les accès sur tous les systèmes et agir en tant que gestionnaires généraux de tout le système. Ils peuvent donc consulter toutes les informations rapportées par les autres utilisateurs.}
 
@@ -92,7 +92,56 @@ Cette section du document contient une description détaillée de tous les types
 % Liste exhaustive des fonctionnalités de l'application
 % Séparer directement en fonction des différents utilisateurs de l'application
 
+\subsection{Pour tout type d'utilisateur}
+\begin{itemize}
+  \item Connexion à l'application via un identifiant et un mot de passe.
+  \item En fonction de cet identifiant, l'utilisateur à accès uniquement à ce qui le concerne.
+  %\item Je peux effectuer mon travail hors ligne, pour l'envoyer plus tard quand j'aurai du réseau % <- Impossible avec Django, on laisserait pas ça de côté pour le moment ? ça fait déjà beaucoup de travail et ils peuvent toujours noter sur leur pc et uploader quand ils ont une connexion
+\end{itemize}
+
+\subsection{Pour les gestionnaires de fontaine(s)}
+\begin{itemize}
+  \item Possibilité de signaler un problème (matériel, qualité de l'eau, ...) à l'un de ses points d'eau via ticket pour que le technicien et ses supérieurs en soient informés. Le problème est modifiable (pour ajouter des détails par exemple) tant qu'il n'est pas cloturé
+  \item Possibilité de clôturer un problème pour indiquer qu'il est résolu.
+  \item Possibilité de rentrer les données d'utilisation mensuelles correspondant à ses points d'eau (cf section \ref{users} pour les détails du rapport).
+\end{itemize}
+
+% Ils doivent également gérer les conflits, est-ce qu'on veut faire un pannel pour ça ou de la doc ou whatever ?
+
+\subsection{Pour les gestionnaires de zone(s)}
+\begin{itemize}
+  \item Possibilité de visionner tous les points d'eau de la zone et leurs informations (statistiques : utilisateurs, revenus,... et tickets le concernant)
+  \item Possibilité de consulter toutes les données entrées par un gestionnaire de point d'eau (rapports mensuels) dans la zone.
+  \item Possibilité de consulter des graphiques générés automatiquement pour évaluer l'état du réseau, des utilisateurs et factures dans ma zone\footnote{Voir section questions et remarques}.
+  \item Possibilité de consulter les problèmes (tickets) déclarés pour voir uniquement quels points d'eau sont en difficulté.
+  \item Possibilité d'assigner un technicien à un problème particulier pour le prioriser.
+  \item Possibilité modifier l'état d'un ticket pour en marquer la résolution ou la prise en charge.
+  \item Possibilité d'aggréger les rapports mensuels pour préparer la réunion annuelle. %Pas trop spécifique à notre dernier document ?
+  \item Possibilité de créer ou supprimer des compte utilisateur (gestionaire de fontaine, de zone ou technicien). %tricky les gestionnaires de zone qui créent des gestionnaires de zone
+  \item Possibilité d'attribuer ou de retirer une fontaine ou une zone à un gestionaire de fontaine ou de zone
+  \item Possibilité de créer des points d'eau (au sein d'une de ses zone)
+  \item Possibilité d'ajouter, modifier ou supprimer des dépenses et des revenus pour la/les zones
+\end{itemize}
+
+\subsection{Pour les techniciens/plombiers}
+\begin{itemize}
+  \item Possibilité de consulter les tickets du réseau pour déterminer la nécessité d'intervenir ou non.
+  \item Possibilité de répondre ou ajouter un commentaire aux tickets afin de demander des précisions ou donner des solutions.
+  \item Possibilité de modifier l'état d'un problème afin d'en indiquer la prise en charge ou résolution.
+\end{itemize}
+
   \subsection{Questions et remarques}
+  \begin{itemize}
+    \item Pour les graphes et statistiques présentés aux gestionnaires de fontaines ou de zone, nous en avons certains en tête, mais si quoique ce soit vous semble peu utile ou qu'au contraire il manque quelque chose d'essentiel, il serait bon de le préciser :
+    \begin{itemize}
+      \item Nombre total de fontaines dans la zone
+      \item Nombre total d'utilisateurs de ces fontaines
+      \item Nombre de consommateurs n'ayant pas encore payé sur cette période (période à déterminer)
+      \item Répartition du type de points d'eau (kiosques, fontaines ou point personnel)
+      \item Évolution du taux de recouvrement
+    \end{itemize}
+    \item Pour la fonctionnalité de dépenses et revenus est volontairement très flexible et peu spécifique pour l'instant. Des précisions sur comment exactement sont tenus les comptes seraient bénéfiques.
+  \end{itemize}
 \section{Exemples}
   \begin{shaded}
     Les visuels d'écran présents dans cette section sont des schémas. Ils cherchent à donner une idée de ce à quoi ressemblera l'application en terme de contenu. Les couleurs, agencements et formes ne représentent en rien l'esthétique finale de l'application. Vos désirs esthétiques sont en revanche bienvenus si vous avez des idées ou souhaits.
@@ -192,7 +241,7 @@ Dans cette section, nous allons détailler certaines caractéristiques souhaitab
   \end{shaded}
 
 \section{Choix technolgiques}
-  Conformément aux demandes, l'application utilisera des technologies gratuites. Les décisions des technologies utilisées dans le développement tentent de maximiser :
+  Conformément aux demandes, l'application utilisera des technologies gratuites et aussi peu différentes que possible afin de ne pas requérir trop d'apprentissages différents. Les décisions des technologies utilisées dans le développement tentent de maximiser :
   \begin{description}
     \item[Popularité] Plus une technologie est populaire, plus elle est susceptible d'être maintenue à jour, de disposer de guides et d'aides en ligne.
     \item[Simplicité] Pour permettre aux futurs développeurs de l'application de la maintenir à jour et de la faire évoluer avec un minimum de connaissances requises.
