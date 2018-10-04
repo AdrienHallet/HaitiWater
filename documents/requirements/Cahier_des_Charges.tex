@@ -9,59 +9,112 @@
 \usepackage{graphicx}
 \usepackage{eurosym}
 \usepackage{rotating}
-
-% TODO bullets
+\usepackage{enumitem}
 
 \usepackage{framed, color} % shade-box around the text to highlight
 \definecolor{shadecolor}{RGB}{211,211,211}
 
 \usepackage{fullpage} % changes the margin
 
+\setlist[itemize,1]{label={$\bullet$}}
 \begin{document}
-%Header-Make sure you update this information!!!!
-\noindent
-\large\textbf{Cahier des charges} \hfill \textbf{Distribution de l'eau en Haïti} \\
-\normalsize Deknop Céline \hfill Université catholique de Louvain \\
-Hallet Adrien \hfill \today \\
-Strebelle Sébastien
 
-% TODO page de garde
+\begin{titlepage}
 
-\section*{Abstract}
-Cahier des charges du projet de gestion de distribution d'eau en Haïti, mémoire UCLouvain 2018-2019. Destiné aux intervenants du projet et contenant les propositions pour la future application.
-\hrule
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Université catholique de Louvain }\\[2cm] % Name of your university/college
+\includegraphics[scale=0.45]{Cahier_des_Charges/epl.jpg}
+ \\[1cm]
+% \textsc{\Large Mémoire 2018-2019}\\[0.5cm] % Major heading such as course name
+\textsc{\large Gestion de la distribution d'eau en Haïti}\\[1cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Cahier des Charges}\\[0.4cm] % Title of your document
+\HRule \\[10cm]
+
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Auteurs:}\\
+\textsc{Deknop} Céline \\
+\textsc{Hallet} Adrien \\
+\textsc{Strebelle} Sébastien \\
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushright} \large
+\emph{Promoteurs:} \\
+\textsc{Mens} Kim \\
+ \textsc{Soares-Frazão} Sandra \\% Supervisor's Name
+\end{flushright}
+\end{minipage}\\[1cm]
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+%\Large \emph{Author:}\\
+%John \textsc{Smith}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[2cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+% Include a department/university logo - this will require the graphicx package
+
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+\title{Assignment 1 - Modeling phase}
+\newpage
+
 \section{Glossaire}
 % Liste exhaustive de tous les termes pouvant prêter à confusion
-  \begin{description} %ToDo : trouver un moyen de display ça beau, je sais pas si c'est l'idéal. Aussi y'a pas moyen d'auto-sort par ordre alphabétique ?
-    % TODO mettre les deux points
-    %ToDo 2 : définir les termes
-    %ToDo 3 : ordonner alphabétiquement le truc si on peut pas le faire automatiquement
-    %ToDo 4 : check le document régulièrement et ajouter tous les termes qui peuvent prêter à confusion
-    \item[Accès en lecture] Droit informatique autorisant la consultation d'une information.
-    \item[Accès en écriture] Droit informatique autorisant la modification d'une information (implique l'accès en lecture).
-    \item[Application ou système] Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti.
-    % TODO ajouter système à S
-    \item[CAEPA] Comité d'Approvisionnement en Eau Potable et d'Assainissement. Entité haïtienne chargée de toute activité nécessaire aux systèmes d'eau potable.
-    \item[Citizen science] Participation active des citoyens dans la récupération des informations pour l'application.
-    \item[Consommateur] Personne utilisant le réseau de distribution d'eau haïtien.
-    \item[DINEPA] Direction Nationale de l'Eau Potable et de l'Assainissement. Entité haïtienne rattachée au gouvernement, chargée d'exécuter la politique étatique dans le secteur de l'eau et de l'assainissement.
-    \item[Donnée] Information enregistrée dans l'application destinée à une ou plusieurs utilisations (\emph{e.g. : la quantité d'eau utilisée}).
-    \item[Fontaine] Point de sortie d'eau public avec abonnement annuel.
-    \item[HTG] Devise (monnaie) d'Haïti, la \emph{Gourde} ($\approx 0,012$ \euro \footnote{Cours consulté le 03 octobre 2018.}). %TODO : source
-    \item[Interface (graphique)] Dispositif visuel permettant à l'utilisateur d'interagir avec l'application (\emph{i.e. : ce qui s'affiche à l'écran}).
-    \item[Kiosque] Point de sortie d'eau. % Quelle est la différence ?
-    \item[Modulaire] Capacité d'une application à être facilement modifiée pour correspondre aux besoins changeants des utilisateurs.
-    \item[Permission (accès)] Droit informatique permettant à l'utilisateur d'accéder à des fonctionnalités ou données de l'application.
-    \item[Point d'eau] Terme générique utilisé pour désigner une sortie d'eau du réseau (fontaine, réservoir, kiosque, prise individuelle).
-    \item[Prise individuelle] Sortie d'eau au sein du domicile d'un consommateur.
-    \item[Rapport mensuel] Informations envoyées tous les mois à propos d'un point d'eau.
-    \item[Réseau] Ensemble des installations de distribution et d'assainissement des eaux.
-    \item[Réservoir] Endroit de stockage de l'eau potable avant d'être distribuée.
-    \item[Scalable] Capacité d'une application de gérer des quantités variables de données en gardant de bonnes performances.
-    %TODO TEPAC
-    \item[Ticket] Résumé d'un problème en cours dans un point d'eau.
-    \item[Utilisateur] Un être humain interagissant avec l'application.
-    \item[Zone (du réseau)] Sous-ensemble du réseau.
+  \begin{description}
+    \item[Accès en lecture:] Droit informatique autorisant la consultation d'une information.
+    \item[Accès en écriture:] Droit informatique autorisant la modification d'une information (implique l'accès en lecture).
+    \item[Application ou système:] Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti.
+    \item[CAEPA:] Comité d'Approvisionnement en Eau Potable et d'Assainissement. Entité haïtienne chargée de toute activité nécessaire aux systèmes d'eau potable.
+    \item[Citizen science:] Participation active des citoyens dans la récupération des informations pour l'application.
+    \item[Consommateur:] Personne utilisant le réseau de distribution d'eau haïtien.
+    \item[DINEPA:] Direction Nationale de l'Eau Potable et de l'Assainissement. Entité haïtienne rattachée au gouvernement, chargée d'exécuter la politique étatique dans le secteur de l'eau et de l'assainissement.
+    \item[Donnée:] Information enregistrée dans l'application destinée à une ou plusieurs utilisations (\emph{e.g. : la quantité d'eau utilisée}).
+    \item[Fontaine:] Point de sortie d'eau public avec abonnement annuel.
+    \item[HTG:] Devise (monnaie) d'Haïti, la \emph{Gourde} ($\approx 0,012$ \euro \footnote{https://www.xe.com/fr/currency/htg-haitian-gourde, cours consulté le 03 Octobre 2018}).
+    \item[Interface (graphique):] Dispositif visuel permettant à l'utilisateur d'interagir avec l'application (\emph{i.e. : ce qui s'affiche à l'écran}).
+    \item[Kiosque:] Point de sortie d'eau. % Quelle est la différence ?
+    \item[Modulaire:] Capacité d'une application à être facilement modifiée pour correspondre aux besoins changeants des utilisateurs.
+    \item[Permission (accès):] Droit informatique permettant à l'utilisateur d'accéder à des fonctionnalités ou données de l'application.
+    \item[Point d'eau:] Terme générique utilisé pour désigner une sortie d'eau du réseau (fontaine, réservoir, kiosque, prise individuelle).
+    \item[Prise individuelle:] Sortie d'eau au sein du domicile d'un consommateur.
+    \item[Rapport mensuel:] Informations envoyées tous les mois à propos d'un point d'eau.
+    \item[Réseau:] Ensemble des installations de distribution et d'assainissement des eaux.
+    \item[Réservoir:] Endroit de stockage de l'eau potable avant d'être distribuée.
+    \item[Scalable:] Capacité d'une application de gérer des quantités variables de données en gardant de bonnes performances.
+    \item[Système ou application:] Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti.
+    \item[TEPAC:] Technicien en Eau Potable et Assainissement pour les Communes.
+    \item[Ticket:] Résumé d'un problème en cours dans un point d'eau.
+    \item[Utilisateur:] Un être humain interagissant avec l'application.
+    \item[Zone (du réseau):] Sous-ensemble du réseau.
   \end{description}
 \section{Introduction}
 
@@ -103,6 +156,19 @@ Cette section du document contient une description détaillée de tous les types
     \item L'utilisateur "technicien/plombier" et les fonctionnalités qui lui seront associées sont une interprétation de notre part car il nous semblait pratique de pouvoir centraliser la gestion du réseau de distribution entièrement au sein de l'application. Cela vous semble-t-il utile d'avoir une interface destinée au technicien ?
   \end{itemize}
 
+  \section{Principe hiérarchique}
+    L'application fonctionne grâce à la hiérarchie de ses utilisateurs. Cette hiérarchie se base sur la hiérarchie actuelle sur place tout en se voulant plus flexible pour accomoder d'éventuels cas particuliers et changements futurs.
+
+    Ce principe est simple. Un gestionnaire de fontaines gère une ou plusieurs installations. Un gestionnaire de zone gère un ou plusieurs gestionnaires de zone et/ou de fontaines. En tant que gestionnaire de zone, j'ai accès aux données des utilisateurs que je gère. Ce principe est illustré sur la figure \ref{fig:hierarchie}.
+
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=.8\textwidth]{Cahier_des_Charges/principe_hierarchique}
+      \caption{Exemple de hiérarchie}
+      \label{fig:hierarchie}
+    \end{figure}
+
+    Les consommateurs étant reliés aux points d'eau, un utilisateur n'a accès qu'aux consommateurs et éléments du réseau qui lui sont liés. Pour reprendre cet exemple, Protos pourrait être un gestionnaire de zone en tête de liste et avoir accès à toutes les données collectées, tandis que le collectif gérant l'eau d'un village serait un gestionnaire de fontaines et ne pourrait consulter et modifier que les données dudit village. Ce système permet une grande flexibilité dans la répartition des responsabilités.
 \section{Fonctionnalités}
 % Liste exhaustive des fonctionnalités de l'application
 % Séparer directement en fonction des différents utilisateurs de l'application
@@ -162,21 +228,6 @@ Cette section du document contient une description détaillée de tous les types
     \item La fonctionnalité des dépenses et revenus est pour le moment très flexible et permet d'ajouter des dépenses et entrées d'argent pour consulter le solde et l'évolution des dépenses au fil des mois/années. Nous avons peu d'informations sur le fonctionnement des budgets et les informations dont nous disposons actuellement ne nous permettent pas de créer un système plus évolué.
     \item Lors du développement de l'application, la priorité sera de créer le coeur de l'application permettant de stocker et modifier les données. C'est sur cette base nécessaire que nous vous proposerons ensuite des outils plus avancés comme le système d'information géographique qui permettra de visualiser le réseau sur une carte interactive (type Google Maps).
   \end{itemize}
-
-\section{Principe hiérarchique}
-  L'application fonctionne grâce à la hiérarchie de ses utilisateurs. Cette hiérarchie se base sur la hiérarchie actuelle sur place tout en se voulant plus flexible pour accomoder d'éventuels cas particuliers et changements futurs.
-
-  Ce principe est simple. Un gestionnaire de fontaines gère une ou plusieurs installations. Un gestionnaire de zone gère un ou plusieurs gestionnaires de zone et/ou de fontaines. En tant que gestionnaire de zone, j'ai accès aux données des utilisateurs que je gère. Ce principe est illustré sur la figure \ref{fig:hierarchie}.
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=.8\textwidth]{Cahier_des_Charges/principe_hierarchique}
-    \caption{Exemple de hiérarchie}
-    \label{fig:hierarchie}
-  \end{figure}
-
-  Les consommateurs étant reliés aux points d'eau, un utilisateur n'a accès qu'aux consommateurs et éléments du réseau qui lui sont liés. Pour reprendre cet exemple, Protos pourrait être un gestionnaire de zone en tête de liste et avoir accès à toutes les données collectées, tandis que le collectif gérant l'eau d'un village serait un gestionnaire de fontaines et ne pourrait consulter et modifier que les données dudit village. Ce système permet une grande flexibilité dans la répartition des responsabilités.
-
 
 \section{Exemples}
   \begin{shaded}
@@ -282,26 +333,27 @@ Dans cette section, nous allons détailler certaines caractéristiques souhaitab
 \section{Choix technolgiques}
   Conformément aux demandes, l'application utilisera des technologies gratuites et aussi peu différentes que possible afin de ne pas requérir trop d'apprentissages différents. Les décisions des technologies utilisées dans le développement tentent de maximiser :
   \begin{description}
-    \item[Popularité] Plus une technologie est populaire, plus elle est susceptible d'être maintenue à jour, de disposer de guides et d'aides en ligne.
-    \item[Simplicité] Pour permettre aux futurs développeurs de l'application de la maintenir à jour et de la faire évoluer avec un minimum de connaissances requises.
-    \item[Performance] Afin que l'application soit utilisée le plus longtemps possible et qu'il ne soit pas nécessaire de recommencer à zéro à cause d'une technologie limitant l'application.
+    \item[Popularité:] Plus une technologie est populaire, plus elle est susceptible d'être maintenue à jour, de disposer de guides et d'aides en ligne.
+    \item[Simplicité:] Pour permettre aux futurs développeurs de l'application de la maintenir à jour et de la faire évoluer avec un minimum de connaissances requises.
+    \item[Performance:] Afin que l'application soit utilisée le plus longtemps possible et qu'il ne soit pas nécessaire de recommencer à zéro à cause d'une technologie limitant l'application.
   \end{description}
 
   Sur ces bases, nous avons déjà arrêté les choix généraux suivants :
   \begin{description}
-    \item[Interface] Les langages HTML5, CSS3 et JavaScript sont les plus populaires et peu d'alternatives existent pour le développement d'applications internet, aucune n'étant aussi simple à utiliser.
-    \item[Application] Nous allons utiliser le framework\footnote{Framework : structure logicielle encadrant l'application, permettant d'automatiser certaines phases du développement.} Django, le sixième plus populaire avec un score de 94\%\footnote{Statistique de https://hotframeworks.com/, septembre 2018.} et qui permet de programmer la logique de l'application dans le langage Python, très populaire et adapté autant pour un débutant que pour un expert en programmation.
-    \item[Base de Données] Pour stocker les données, nous allons utiliser la technologie SQL avec le système de gestion PostgreSQL\footnote{Quatrième mondial selon https://db-engines.com/en/ranking.} qui présente l'énorme avantage d'avoir un module géographique (PostGIS) qui peut interagir directement avec le module géographique de l'application (GeoDjango).
+    \item[Interface:] Les langages HTML5, CSS3 et JavaScript sont les plus populaires et peu d'alternatives existent pour le développement d'applications internet, aucune n'étant aussi simple à utiliser.
+    \item[Application:] Nous allons utiliser le framework\footnote{Framework : structure logicielle encadrant l'application, permettant d'automatiser certaines phases du développement.} Django, le sixième plus populaire avec un score de 94\%\footnote{Statistique de https://hotframeworks.com/, septembre 2018.} et qui permet de programmer la logique de l'application dans le langage Python, très populaire et adapté autant pour un débutant que pour un expert en programmation.
+    \item[Base de Données:] Pour stocker les données, nous allons utiliser la technologie SQL avec le système de gestion PostgreSQL\footnote{Quatrième mondial selon https://db-engines.com/en/ranking.} qui présente l'énorme avantage d'avoir un module géographique (PostGIS) qui peut interagir directement avec le module géographique de l'application (GeoDjango).
   \end{description}
+
+\newpage
 
 \appendix
 \section{Vision détaillée des visuels d'écran \label{annexe}}
-\pagebreak
-
-  \begin{sidewaysfigure}
+  \filbreak
+  \begin{figure}[H] % normal figure to prevent section break
     \centering
-    \includegraphics[width=\textwidth]{Cahier_des_Charges/accueil}
-  \end{sidewaysfigure}
+    \includegraphics[scale=0.32, angle=90]{Cahier_des_Charges/accueil}
+  \end{figure}
 
   \begin{sidewaysfigure}
     \centering
