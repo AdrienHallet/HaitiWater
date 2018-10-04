@@ -14,10 +14,6 @@
 
 \usepackage{fullpage} % changes the margin
 
-\renewcommand{\descriptionlabel}[1]{%
-  \hspace\labelsep \upshape\bfseries #1.%
-}
-
 \begin{document}
 %Header-Make sure you update this information!!!!
 \noindent
@@ -138,7 +134,7 @@ Cette section du document contient une description détaillée de tous les types
 
     \begin{figure}[H]
         \includegraphics[width=\textwidth]{Cahier_des_Charges/rapports_mensuel}
-        \caption{Test}
+        \caption{Rapport mensuel}
         \label{fig:monthly_report}
     \end{figure}
 
@@ -158,7 +154,7 @@ Cette section du document contient une description détaillée de tous les types
   \subsection{Vue du réseau}
     \begin{figure}[H]
         \includegraphics[width=\textwidth]{Cahier_des_Charges/reseau}
-        \caption{Test}
+        \caption{Visuel du réseau}
         \label{fig:network}
     \end{figure}
     La figure~\ref{fig:network} présente la vue d'accueil du réseau de distribution. A partir de cette page, le gestionnaire de distribution ou de fontaines peut voir les installations du réseau qui lui sont attribuées. Il y a à nouveau un espace dédié aux graphiques qu'il peut choisir et visualiser via la flèche à droite du titre.
@@ -170,21 +166,22 @@ Cette section du document contient une description détaillée de tous les types
 % Définir ce que c'est
 % Explication des besoins non-fonctionnels
 \section{Approche}
-  Pour créer ce cahier des charges qui établit les fonctionnalités et le fonctionnement général de l'application, nous avons utilisé les documents fournis par Protos et disponibles en ligne.
+  Pour créer ce cahier des charges qui établit les fonctionnalités et le fonctionnement général de l'application, nous avons utilisé les documents fournis par Protos et disponibles en ligne
   \begin{description}
     \item[Les fichiers Excel], au nombre de trois ont été principalement utilisés pour le choix des données et fonctionnalités de l'application. Deux des fichiers concernent les CAEPA et recensent leurs fontaines, consommateurs et comptabilités à l'échelle annuelle. Un fichier expose au niveau national et mensuel l'état du réseau (fonctionnement, quantités d'eau distribuées) et les recettes envoyées via formulaire par des TEPAC qui gèrent le réseau à leur échelle sur le terrain.
     \item[Les documents de contexte] envoyés par Protos faisant état de la situation en Haïti, le projet de Protos sur place et leur fonctionnement.
-    \item[Le document de rapport] fourni récemment et expliquant le processus, pour Poste Métier, de fonctionnement de la distribution de l'eau.
+    \item[Le rapport de capitalisation] fourni récemment et expliquant le processus, pour Poste Métier, de fonctionnement de la distribution de l'eau.
   \end{description}
   Les fichiers Excels ont été notre plus grande source d'information puisqu'ils nous permettent de connaître le système informatique actuel, quelles sont les données, comment sont-elles collectées et utilisées.
   Les fichiers de contexte ont permis de comprendre la situation, d'identifier les intervenants et risques de l'application.
   Le rapport de Poste Métier a été très intéressant pour comprendre le fonctionnement précis d'une zone du réseau de distribution.
 
-  Notre approche générale dans cette application est d'automatiser la collecte et faciliter la gestion de toutes les données présentes dans les documents actuellement utilisés en Haïti. Dans ce document, nous présentons une application hiérarchique où chaque utilisateur fait remonter l'information dont il dispose (exactement comme le fonctionnement actuel des données Excel qui sont extraites des formulaires).
+  Notre approche générale dans cette application est d'automatiser la collecte et faciliter la gestion de toutes les données présentes dans les documents Excel actuellement utilisés en Haïti. Dans ce cahier des charges, nous présentons une application hiérarchique où chaque utilisateur fait remonter l'information dont il dispose (exactement comme le fonctionnement actuel des données Excel qui sont extraites des formulaires).
 
-  % Faut-il expliquer plus ? Genre nos objectifs ?
+  \begin{shaded}
+    Si ce cahier des charges vous semble incorrect (incompréhension d'une fonctionnalité) ou incomplet (manque de fonctionnalités), tout nouveau document permettant de mieux comprendre votre fonctionnement et vos désirs pour l'application est le bienvenu.
+  \end{shaded}
 
-% PS au lecteur : si vous voyez une autre source d'idées envoyez là !
 \section{Choix technolgiques}
-% Point de vue purement "positif pour le projet" sans termes techniques
+  Le code n'a pas encore été 
 \end{document}
