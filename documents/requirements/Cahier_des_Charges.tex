@@ -58,6 +58,7 @@ Cahier des charges du projet de gestion de distribution d'eau en Haïti, mémoir
 % Contexte de l'application
 Dans chaque section du document, nous avons ajouté une partie "Questions et remarques", où nous demandons à Protos ou aux intervenant Haïtiens de donner des précisions ou leur avis car nous estimons n'avoir pas assez d'informations ou de connaissances sur le sujet. Ce sont les points sur lesquels nous avons le plus besoin d'aide et dont il faut discuter en priorité, mais toute remarque sera prise en compte et appréciée.
 \section{Types d'utilisateurs}
+\label{users}
 Cette section du document contient une description détaillée de tous les types d'utilisateurs qui, à terme, interagiront avec l'application. Nous détaillons aussi ce que ceux-ci pourront faire avec l'application, pour vous donner un contexte familier.
 
   \begin{description}
@@ -92,7 +93,56 @@ Cette section du document contient une description détaillée de tous les types
 % Liste exhaustive des fonctionnalités de l'application
 % Séparer directement en fonction des différents utilisateurs de l'application
 
+\subsection{Pour tout type d'utilisateur}
+\begin{itemize}
+  \item Connexion à l'application via un identifiant et un mot de passe.
+  \item En fonction de cet identifiant, l'utilisateur à accès uniquement à ce qui le concerne.
+  %\item Je peux effectuer mon travail hors ligne, pour l'envoyer plus tard quand j'aurai du réseau % <- Impossible avec Django, on laisserait pas ça de côté pour le moment ? ça fait déjà beaucoup de travail et ils peuvent toujours noter sur leur pc et uploader quand ils ont une connexion
+\end{itemize}
+
+\subsection{Pour les gestionnaires de fontaine(s)}
+\begin{itemize}
+  \item Possibilité de signaler un problème (matériel, qualité de l'eau, ...) à l'un de ses points d'eau via ticket pour que le technicien et ses supérieurs en soient informés. Le problème est modifiable (pour ajouter des détails par exemple) tant qu'il n'est pas cloturé
+  \item Possibilité de clôturer un problème pour indiquer qu'il est résolu.
+  \item Possibilité de rentrer les données d'utilisation mensuelles correspondant à ses points d'eau (cf section \ref{users} pour les détails du rapport).
+\end{itemize}
+
+% Ils doivent également gérer les conflits, est-ce qu'on veut faire un pannel pour ça ou de la doc ou whatever ?
+
+\subsection{Pour les gestionnaires de zone(s)}
+\begin{itemize}
+  \item Possibilité de visionner tous les points d'eau de la zone et leurs informations (statistiques : utilisateurs, revenus,... et tickets le concernant)
+  \item Possibilité de consulter toutes les données entrées par un gestionnaire de point d'eau (rapports mensuels) dans la zone.
+  \item Possibilité de consulter des graphiques générés automatiquement pour évaluer l'état du réseau, des utilisateurs et factures dans ma zone\footnote{Voir section questions et remarques}.
+  \item Possibilité de consulter les problèmes (tickets) déclarés pour voir uniquement quels points d'eau sont en difficulté.
+  \item Possibilité d'assigner un technicien à un problème particulier pour le prioriser.
+  \item Possibilité modifier l'état d'un ticket pour en marquer la résolution ou la prise en charge.
+  \item Possibilité d'aggréger les rapports mensuels pour préparer la réunion annuelle. %Pas trop spécifique à notre dernier document ?
+  \item Possibilité de créer ou supprimer des compte utilisateur (gestionaire de fontaine, de zone ou technicien). %tricky les gestionnaires de zone qui créent des gestionnaires de zone
+  \item Possibilité d'attribuer ou de retirer une fontaine ou une zone à un gestionaire de fontaine ou de zone
+  %Créer des points d'eau ?
+  %Budget ?
+\end{itemize}
+
+\subsection{Pour les techniciens/plombiers}
+\begin{itemize}
+  \item Possibilité de consulter les tickets du réseau pour déterminer la nécessité d'intervenir ou non.
+  \item Possibilité de répondre ou ajouter un commentaire aux tickets afin de demander des précisions ou donner des solutions.
+  \item Possibilité de modifier l'état d'un problème afin d'en indiquer la prise en charge ou résolution.
+\end{itemize}
+
   \subsection{Questions et remarques}
+  \begin{itemize}
+    \item Pour les graphes et statistiques présentés aux gestionnaires de fontaines ou de zone, nous en avons certains en tête, mais si quoique ce soit vous semble peu utile ou qu'au contraire il manque quelque chose d'essentiel, il serait bon de le préciser :
+    \begin{itemize}
+      \item Nombre total de fontaines dans la zone
+      \item Nombre total d'utilisateurs de ces fontaines
+      \item Nombre de consommateurs n'ayant pas encore payé sur cette période (période à déterminer)
+      \item Répartition du type de points d'eau (kiosques, fontaines ou point personnel)
+      \item Évolution du taux de recouvrement
+    \end{itemize}
+    \item Pour l'écran d'accueil du
+  \end{itemize}
 \section{Exemples}
   \begin{shaded}
     Les visuels d'écran présents dans cette section sont des schémas. Ils cherchent à donner une idée de ce à quoi ressemblera l'application en terme de contenu. Les couleurs, agencements et formes ne représentent en rien l'esthétique finale de l'application. Vos désirs esthétiques sont en revanche bienvenus si vous avez des idées ou souhaits.
@@ -165,7 +215,7 @@ Cette section du document contient une description détaillée de tous les types
     L'utilisateur voit à nouveau un écran de notifications indiquant les problèmes qu'il faut résoudre.
 
 \section{Besoins non-fonctionnels}
-Dans cette section, nous allons détailler certaines caractéristiques souhaitables pour l'application. Il s'agit d'exigences sur le système en lui-même et pas sur ce qu'il fait.  
+Dans cette section, nous allons détailler certaines caractéristiques souhaitables pour l'application. Il s'agit d'exigences sur le système en lui-même et pas sur ce qu'il fait.
 \begin{enumerate}
   \item Système performant pour permettre une utilisation dans les conditions haïtiennes.
   \item Sécurité des données.
@@ -192,5 +242,5 @@ Dans cette section, nous allons détailler certaines caractéristiques souhaitab
   \end{shaded}
 
 \section{Choix technolgiques}
-  Le code n'a pas encore été 
+  Le code n'a pas encore été
 \end{document}
