@@ -165,7 +165,7 @@ Cette section du document contient une description détaillée de tous les types
     L'utilisateur voit à nouveau un écran de notifications indiquant les problèmes qu'il faut résoudre.
 
 \section{Besoins non-fonctionnels}
-Dans cette section, nous allons détailler certaines caractéristiques souhaitables pour l'application. Il s'agit d'exigences sur le système en lui-même et pas sur ce qu'il fait.  
+Dans cette section, nous allons détailler certaines caractéristiques souhaitables pour l'application. Il s'agit d'exigences sur le système en lui-même et pas sur ce qu'il fait.
 \begin{enumerate}
   \item Système performant pour permettre une utilisation dans les conditions haïtiennes.
   \item Sécurité des données.
@@ -192,5 +192,17 @@ Dans cette section, nous allons détailler certaines caractéristiques souhaitab
   \end{shaded}
 
 \section{Choix technolgiques}
-  Le code n'a pas encore été 
+  Conformément aux demandes, l'application utilisera des technologies gratuites. Les décisions des technologies utilisées dans le développement tentent de maximiser :
+  \begin{description}
+    \item[Popularité] Plus une technologie est populaire, plus elle est susceptible d'être maintenue à jour, de disposer de guides et d'aides en ligne.
+    \item[Simplicité] Pour permettre aux futurs développeurs de l'application de la maintenir à jour et de la faire évoluer avec un minimum de connaissances requises.
+    \item[Performance] Afin que l'application soit utilisée le plus longtemps possible et qu'il ne soit pas nécessaire de recommencer à zéro à cause d'une technologie limitant l'application.
+  \end{description}
+
+  Sur ces bases, nous avons déjà arrêté les choix généraux suivants.
+  \begin{description}
+    \item[Interface] Les langages HTML5, CSS3 et JavaScript sont les plus populaires et peu d'alternatives existent pour le développement d'applications internet, aucune n'étant aussi simple à utiliser.
+    \item[Application] Nous allons utiliser le framework\footnote{Framework : structure logicielle encadrant l'application, permettant d'automatiser certaines phases du développement} Django, le sixième plus populaire avec un score de 94\%\footnote{statistique de https://hotframeworks.com/, septembre 2018} et qui permet de programmer la logique de l'application dans le langage Python, très populaire et adapté autant pour un débutant que pour un expert en programmation.
+    \item[Base de Données] Pour stocker les données, nous allons utiliser la technologie SQL avec le système de gestion PostgreSQL\footnote{Quatrième mondial selon https://db-engines.com/en/ranking} qui présente l'énorme avantage d'avoir un module géographique (PostGIS) qui peut interagir directement avec le module géographique de l'application (GeoDjango).
+  \end{description}
 \end{document}
