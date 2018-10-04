@@ -7,11 +7,17 @@
 \usepackage{eurosym}
 \usepackage{comment} % enables the use of multi-line comments (\ifx \fi)
 \usepackage{graphicx}
+\usepackage{eurosym}
 
 \usepackage{framed, color} % shade-box around the text to highlight
 \definecolor{shadecolor}{RGB}{211,211,211}
 
 \usepackage{fullpage} % changes the margin
+
+\renewcommand{\descriptionlabel}[1]{%
+  \hspace\labelsep \upshape\bfseries #1.%
+}
+
 \begin{document}
 %Header-Make sure you update this information!!!!
 \noindent
@@ -29,30 +35,31 @@ Cahier des charges du projet de gestion de distribution d'eau en Haïti, mémoir
     %ToDo 2 : définir les termes
     %ToDo 3 : ordonner alphabétiquement le truc si on peut pas le faire automatiquement
     %ToDo 4 : check le document régulièrement et ajouter tous les termes qui peuvent prêter à confusion
-    \item[CAEPA]
-    \item[DINEPA]
-    \item[HTG]
-    \item[Utilisateur]
-    \item[Application ou système]
-    \item[Permission]
+    \item[CAEPA] Comité d'Approvisionnement en Eau Potable et d'Assainissement. Entité haïtienne chargée de toute activité nécessaire aux systèmes d'eau potable.
+    \item[DINEPA] Direction Nationale de l'Eau Potable et de l'Assainissement. Entité haïtienne rattachée au gouvernement, chargée d'exécuter la politique étatique dans le secteur de l'eau et assainissement.
+    \item[HTG] Devise (monnaie) d'Haïti, la \emph{Gourde} ($\approx 0,012$ \euro \footnote{Cours consulté le 03 octobre 2018})
+    \item[Application ou système] Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti.
+    \item[Utilisateur] Un être humain interagissant avec l'application.
+    \item[Interface (graphique)] Dispositif visuel permettant à l'utilisateur d'interagir avec l'application (\emph{i.e. : ce qui s'affiche à l'écran}).
+    \item[Donnée] Information enregistrée dans l'application destinée à une ou plusieurs utilisations (\emph{e.g. : la quantité d'eau utilisée})
+    \item[Permission (accès)] Droit informatique permettant à l'utilisateur d'accéder à des fonctionnalités ou données de l'application.
+    \item[Accès en lecture] Droit informatique autorisant la consultation d'une information.
+    \item[Accès en écriture] Droit informatique autorisant la modification d'une information (implique l'accès en lecture).
     \item[Éléments du réseau de distribution de type "sortie"] %TODO change in text
     \item[Profils]
-    \item[Client]
     \item[Citizen science]
     \item[Réseau]
     \item[Fontaine]
     \item[Kiosque]
     \item[Réservoir]
     \item[Prise individuelle]
-    \item[Accès en lecture]
-    \item[Accès en écriture]
     \item[Zone (du réseau)]
     \item[Rapport mensuel]
     \item[Ticket]
   \end{description}
 \section{Introduction}
 % Contexte de l'application
-Dans chaque section du document, nous avons ajouté une partie "Questions et remarques", où nous demandons à Protos ou aux intervenant Haïtiens de donner des précisions ou leur avis car nous estimons n'avoir pas assez d'informations ou de connaissances sur le sujet. Ce sont les points sur lesquels nous avons le plus besoin d'aide et dont il faut discuter en priorité, mais toute remarque venant des clients sera prise en compte et appréciée.
+Dans chaque section du document, nous avons ajouté une partie "Questions et remarques", où nous demandons à Protos ou aux intervenant Haïtiens de donner des précisions ou leur avis car nous estimons n'avoir pas assez d'informations ou de connaissances sur le sujet. Ce sont les points sur lesquels nous avons le plus besoin d'aide et dont il faut discuter en priorité, mais toute remarque sera prise en compte et appréciée.
 \section{Types d'utilisateurs}
 Cette section du document contient une description détaillée de tous les types d'utilisateurs qui, à terme, interagiront avec l'application. Nous détaillons aussi ce que ceux-ci pourront faire avec l'application, pour vous donner un contexte familier.
 
@@ -69,7 +76,7 @@ Cette section du document contient une description détaillée de tous les types
 
     \emph{Exemple 2 : un CAEPA pourrait être assigné en tant que gestionnaire de zone et avoir accès aux infrastructures du réseau de distribution dans sa zone géographique et ainsi consulter les informations et les modifier pour venir en aide aux gestionnaires de fontaine.}
 
-    \item[Consommateur] est un utilisateur du réseau de distribution d'eau, mais dans un premier temps, n'aura pas accès à l'application. Dans le futur, l'additiond d'un volet \emph{Citizen science} lui permettra de signaler un problème sur le réseau, de consulter l'état de celui-ci et éventuellement d'autres fonctionnalités, qui seront détaillées par la suite.
+    \item[Consommateur] est un utilisateur du réseau de distribution d'eau, mais dans un premier temps, n'aura pas accès à l'application. Dans le futur, une nouvelle fonctionnalité de l'application lui permettra de signaler un problème sur le réseau, de consulter l'état de celui-ci et éventuellement d'autres fonctionnalités, qui seront détaillées par la suite.
 
     \item[Technicien/Plombier] est un utilisateur auquel on assigne des éléments du réseau de distribution (fontaine, réservoir, prise individuelle, etc). Chaque technicien/plombier utilise l'application pour voir les problèmes déclarés par les autres utilisateurs (gestionnaires de fontaine, de zone ou consommateurs quand le volet \emph{Citizen science} sera ajouté). Il peut utiliser l'application pour répondre aux demandes d'intervention pour demander plus d'informations ou proposer une solution si le déplacement n'est pas nécessaire. Il peut modifier l'état d'un problème, demander des précisions et le marquer en cours de résolution ou résolu une fois l'intervention terminée.
 
