@@ -42,16 +42,18 @@ Cahier des charges du projet de gestion de distribution d'eau en Haïti, mémoir
     \item[Accès en lecture] Droit informatique autorisant la consultation d'une information.
     \item[Accès en écriture] Droit informatique autorisant la modification d'une information (implique l'accès en lecture).
     \item[Éléments du réseau de distribution de type "sortie"] %TODO change in text
-    \item[Citizen science] Future amélioration de l'applicaiton permettant une participation active des citoyens à l'amélioration de la distribution d'eau potable en Haïti (\emph{e.g. : en rapportant des problèmes})
-    \item[Scalable] Désignant la capacité d'un logiciel à s'adapter aux changements d'ordre de grandeur
-    \item[Réseau]
-    \item[Fontaine]
-    \item[Kiosque]
-    \item[Réservoir]
-    \item[Prise individuelle]
-    \item[Zone (du réseau)]
-    \item[Rapport mensuel]
-    \item[Ticket]
+    \item[Profil] Compte et informations d'un utilisateur de l'application.
+    \item[Citizen science] Participation active des citoyens dans la récupération des informations pour l'application.
+    \item[Scalable] Capacité d'une application de gérer des quantités variables de données en gardant de bonnes performances.
+    \item[Modulaire] Capacité d'une application à être facilement modifiée pour correspondre aux besoins changeants des utilisateurs.
+    \item[Réseau] Ensemble des installations de distribution et d'assainissement d'eau.
+    \item[Zone (du réseau)] Sous-ensemble du réseau.
+    \item[Fontaine] Point de sortie d'eau public avec abonnement annuel.
+    \item[Kiosque] Point de sortie d'eau. % Quelle est la différence ?
+    \item[Réservoir] Endroit de stockage de l'eau potable avant d'être disrubuée.
+    \item[Prise individuelle] Sortie d'eau au sein du domicile d'un consommateur.
+    \item[Rapport mensuel] Informations envoyées tous les mois à propos d'un point de sortie d'eau.
+    \item[Ticket] Résumé d'un problème en cours dans un point d'eau.
   \end{description}
 \section{Introduction}
 % Contexte de l'application
@@ -110,14 +112,14 @@ Cette section du document contient une description détaillée de tous les types
 
 \subsection{Pour les gestionnaires de zone(s)}
 \begin{itemize}
-  \item Possibilité de visionner tous les points d'eau de la zone et leurs informations (statistiques : utilisateurs, revenus,... et tickets le concernant)
+  \item Possibilité de visionner tous les points d'eau de la zone et leurs informations (statistiques : utilisateurs, revenus,... et tickets les concernant)
   \item Possibilité de consulter toutes les données entrées par un gestionnaire de point d'eau (rapports mensuels) dans la zone.
   \item Possibilité de consulter des graphiques générés automatiquement pour évaluer l'état du réseau, des utilisateurs et factures dans ma zone\footnote{Voir section questions et remarques}.
   \item Possibilité de consulter les problèmes (tickets) déclarés pour voir uniquement quels points d'eau sont en difficulté.
   \item Possibilité d'assigner un technicien à un problème particulier pour le prioriser.
   \item Possibilité modifier l'état d'un ticket pour en marquer la résolution ou la prise en charge.
   \item Possibilité d'aggréger les rapports mensuels pour préparer la réunion annuelle. %Pas trop spécifique à notre dernier document ?
-  \item Possibilité de créer ou supprimer des compte utilisateur (gestionaire de fontaine, de zone ou technicien). %tricky les gestionnaires de zone qui créent des gestionnaires de zone
+  \item Possibilité de créer ou supprimer des comptes utilisateur (gestionaire de fontaine, de zone ou technicien). %tricky les gestionnaires de zone qui créent des gestionnaires de zone
   \item Possibilité d'attribuer ou de retirer une fontaine ou une zone à un gestionaire de fontaine ou de zone
   \item Possibilité de créer des points d'eau (au sein d'une de ses zone)
   \item Possibilité d'ajouter, modifier ou supprimer des dépenses et des revenus pour la/les zones
@@ -220,7 +222,7 @@ Dans cette section, nous allons détailler certaines caractéristiques souhaitab
   \item Sécurité des données.
   \item Fonctionnement sur périphérique mobile (tablettes et smartphones).
   \item Présence d'une documentation qualitative pour les développeurs et les utilisateurs du système.
-  \item Application scalable pour permettre une utilisation à différentes échelles.
+  \item Application scalable et modulaire pour permettre une utilisation à différentes échelles.
 \end{enumerate}
 % Explication des besoins non-fonctionnels
 \section{Approche}
