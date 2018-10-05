@@ -1,0 +1,203 @@
+% Comment ça marche ?
+% \usepckage[style=long,nonumberlist,toc,xindy,acronym,nomain]{glossaries}
+% \makenoidxglossaries
+% \input{fichier_du_glossaire}
+% \printnoidxglossary là où on veut le glossaire
+
+% N'apparaissent dans le glossaire que les mots référencés dans le texte.
+
+% Créer une entrée :
+  % Acronyme :
+    % \newacronym{label}{acronyme}{version complète}
+  % Terme :
+    % \newglossaryentry{label} <- ATTENTION le label ne peut contenir d'accents ou espaces
+    % {
+    %   name=mot qui apparaît dans le glossaire,
+    %   text=mot qui apparaît dans le texte au singulier,
+    %   plural=mot qui apparaît dans le texte au pluriel,
+    %   description = {la description}
+    % } <- notez que c'est du CSV et qu'il faut pas oublier les virgules ;-)
+
+% Utiliser une entrée :
+  % \gls{label} pour appeler le mot au singulier
+  % \glspl{label} pour appeler le mot au pluriel
+
+  % Ce n'est pas nécessaire de le faire systématiquement. Une seule fois permet de l'afficher dans le glossaire. L'avoir plus pourrait à terme permettre de créer un index complet, mais on peut le faire automatiquement avec un search&replace également
+
+
+\newacronym{caepa}{CAEPA}{Comité d'Approvisionnement en Eau Potable et d'Assainissement}
+\newacronym{dinepa}{DINEPA}{Direction Nationale de l'Eau Potable et de l'Assainissement}
+\newacronym{tepac}{TEPAC}{Technicien en Eau Potable et Assainissement pour les Communes}
+\newacronym{htg}{HTG}{Gourde ha\"itienne}
+\glsunsetall % Don't use the full name when using an acronym for the first time
+
+\newglossaryentry{acces_lecture}
+{
+  name=Accès en lecture,
+  text=accès en lecture,
+  description={Droit informatique autorisant la consultation d'une information}
+}
+
+\newglossaryentry{acces_ecriture}
+{
+  name=Accès en écriture,
+  text=accès en écriture,
+  description={Droit informatique autorisant la modification d'une information (implique l'accès en lecture)}
+}
+
+\newglossaryentry{application}
+{
+  name=Application,
+  text=application,
+  description={Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti}
+}
+
+\newglossaryentry{systeme}
+{
+  name=Système,
+  text=système,
+  description={Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti}
+}
+
+\newglossaryentry{citizen_science}
+{
+  name=Citizen Science,
+  text=citizen science,
+  description={Participation active des citoyens dans la récupération des informations utilisées dans l'application}
+}
+
+\newglossaryentry{consommateur}
+{
+  name=Consommateur,
+  text=consommateur,
+  plural=consommateurs,
+  description={Personne utilisant le réseau de distribution d'eau haïtien}
+}
+
+\newglossaryentry{donnee}
+{
+  name=Donnée,
+  text=donnée,
+  plural=données,
+  description={Information enregistrée dans l'application}
+}
+
+\newglossaryentry{element_reseau}
+{
+  name=\'Element du réseau,
+  text=élément du réseau,
+  plural=éléments du réseau,
+  description={Tout élément physique faisant partie du réseau (e.g. :pompe, canalisation, point d'eau)}
+}
+
+\newglossaryentry{fontaine}
+{
+  name=Fontaine,
+  text=fontaine,
+  plural=fontaines,
+  description={Point de sortie d'eau public}
+}
+
+\newglossaryentry{kiosque}
+{
+  name=Kiosque,
+  text=kiosque,
+  plural=kiosques,
+  description={Point de sortie d'eau public}
+}
+
+\newglossaryentry{interface}
+{
+  name=Interface (graphique),
+  text=interface,
+  plural=interfaces,
+  description={Affichage à l'écran permettant à l'utilisateur d'interagir avec l'application}
+}
+
+\newglossaryentry{modulaire}
+{
+  name=Modulaire,
+  text=modulaire,
+  plural=modulaires,
+  description={Capacité d'une application à être facilement modifiée pour répondre aux besoins des utilisateurs (fonctionnement par modules)}
+}
+
+\newglossaryentry{permission}
+{
+  name=Permission (accès),
+  text=permission,
+  plural=permissions,
+  description={Droit informatique permettant à un utilisateur d'accéder à une fonctionnalité ou une donnée de l'application}
+}
+
+\newglossaryentry{point_eau}
+{
+  name=Point d'eau,
+  text=point d'eau,
+  plural=points d'eau,
+  description={Terme générique utilisé pour désigner une sortie d'eau du réseau (fontaine, kiosque, prise individuelle, réservoir)}
+}
+
+\newglossaryentry{prise_individuelle}
+{
+  name=Prise individuelle,
+  text=prise individuelle,
+  plural=prises individuelles,
+  description={Sortie d'eau au sein d'un bâtiment appartenant à un consommateur}
+}
+
+\newglossaryentry{rapport_mensuel}
+{
+  name=Rapport mensuel,
+  text=rapport mensuel,
+  plural=rapports mensuels,
+  description={Ensemble des informations envoyées tout les mois concernant un point d'eau}
+}
+
+\newglossaryentry{reseau}
+{
+  name=Réseau,
+  text=réseau,
+  plural=réseaux,
+  description={Ensemble des installations de distribution et d'assainissement des eaux}
+}
+
+\newglossaryentry{reservoir}
+{
+  name=Réservoir,
+  text=réservoir,
+  plural=réservoirs,
+  description={Instllation stockant de l'eau potable avant sa distribution}
+}
+
+\newglossaryentry{scalable}
+{
+  name=Scalable,
+  text=scalable,
+  plural=scalables,
+  description={Capacité d'un système à gérer des quantités variables de données en conservant des bonnes performances}
+}
+
+\newglossaryentry{ticket}
+{
+  name=Ticket (support),
+  text=ticket,
+  plural=tickets,
+  description={Déclaration d'un problème dans l'application}
+}
+
+\newglossaryentry{utilisateur}
+{
+  name=Utilisateur,
+  text=utilisateur,
+  plural=utilisateurs,
+  description={Un être humain interagissant avec l'application}
+}
+
+\newglossaryentry{zone}
+{
+  name=Zone (du réseau),
+  text=zone,
+  plural=zones,
+  description={Sous-ensemble du réseau}
+}

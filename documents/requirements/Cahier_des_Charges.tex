@@ -10,6 +10,7 @@
 \usepackage{eurosym}
 \usepackage{rotating}
 \usepackage{enumitem}
+\usepackage[style=long,nonumberlist,toc,xindy,acronym,nomain]{glossaries} % glossary with acronyms
 
 \usepackage{framed, color} % shade-box around the text to highlight
 \definecolor{shadecolor}{RGB}{211,211,211}
@@ -17,7 +18,12 @@
 \usepackage{fullpage} % changes the margin
 
 \setlist[itemize,1]{label={$\bullet$}}
+\makenoidxglossaries
+\renewcommand{\glossarysection}[2][]{} % Do not print glossary title
+\input{glossary.gloss}
 \begin{document}
+
+
 
 \begin{titlepage}
 
@@ -92,79 +98,51 @@
 \newpage
 
 \section{Glossaire}
-% Liste exhaustive de tous les termes pouvant prêter à confusion
-  \begin{description}
-    \item[Accès en lecture:] Droit informatique autorisant la consultation d'une information.
-    \item[Accès en écriture:] Droit informatique autorisant la modification d'une information (implique l'accès en lecture).
-    \item[Application ou système:] Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti.
-    \item[CAEPA:] Comité d'Approvisionnement en Eau Potable et d'Assainissement. Entité haïtienne chargée de toute activité nécessaire aux systèmes d'eau potable.
-    \item[Citizen science:] Participation active des citoyens dans la récupération des informations pour l'application.
-    \item[Consommateur:] Personne utilisant le réseau de distribution d'eau haïtien.
-    \item[DINEPA:] Direction Nationale de l'Eau Potable et de l'Assainissement. Entité haïtienne rattachée au gouvernement, chargée d'exécuter la politique étatique dans le secteur de l'eau et de l'assainissement.
-    \item[Donnée:] Information enregistrée dans l'application destinée à une ou plusieurs utilisations (\emph{e.g. : la quantité d'eau utilisée}).
-    \item[\'Elément du réseau:] Tout élément physique faisant partie du réseau (\emph{e.g. : point d'eau, canalisation, pompe})
-    \item[Fontaine:] Point de sortie d'eau public avec abonnement annuel.
-    \item[HTG:] Devise (monnaie) d'Haïti, la \emph{Gourde} ($\approx 0,012$ \euro \footnote{https://www.xe.com/fr/currency/htg-haitian-gourde, cours consulté le 03 Octobre 2018}).
-    \item[Interface (graphique):] Dispositif visuel permettant à l'utilisateur d'interagir avec l'application (\emph{i.e. : ce qui s'affiche à l'écran}).
-    \item[Kiosque:] Point de sortie d'eau. % Quelle est la différence ?
-    \item[Modulaire:] Capacité d'une application à être facilement modifiée pour correspondre aux besoins changeants des utilisateurs.
-    \item[Permission (accès):] Droit informatique permettant à l'utilisateur d'accéder à des fonctionnalités ou données de l'application.
-    \item[Point d'eau:] Terme générique utilisé pour désigner une sortie d'eau du réseau (fontaine, réservoir, kiosque, prise individuelle).
-    \item[Prise individuelle:] Sortie d'eau au sein du domicile d'un consommateur.
-    \item[Rapport mensuel:] Informations envoyées tous les mois à propos d'un point d'eau.
-    \item[Réseau:] Ensemble des installations de distribution et d'assainissement des eaux.
-    \item[Réservoir:] Endroit de stockage de l'eau potable avant d'être distribuée.
-    \item[Scalable:] Capacité d'une application de gérer des quantités variables de données en gardant de bonnes performances.
-    \item[Système ou application:] Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti.
-    \item[TEPAC:] Technicien en Eau Potable et Assainissement pour les Communes.
-    \item[Ticket:] Résumé d'un problème en cours dans un point d'eau.
-    \item[Utilisateur:] Un être humain interagissant avec l'application.
-    \item[Zone (du réseau):] Sous-ensemble du réseau.
-  \end{description}
+  \printnoidxglossary
 \section{Introduction}
 
-L'ONG Protos\footnote{https://www.protos.ngo} nous a contactés afin que nous produisions une application en ligne permettant de gérer le réseau de distribution d'eau haïtien. Ce document expose les propositions pour la gestion des installations, consommateurs et finances du réseau.
+L'ONG Protos\footnote{https://www.protos.ngo} nous a contactés afin que nous produisions une \gls{application} en ligne permettant de gérer le \gls{reseau} de distribution d'eau haïtien. Ce document expose les propositions pour la gestion des installations, \glspl{consommateur} et finances du \gls{reseau}.
 
-Nous débutons par une exposition des propositions d'utilisateurs et fonctionnalités qui expliquent le principe de fonctionnement de l'application. Ensuite, quelques ébauches (non-exhaustives) de l'interface graphique permettent de comprendre les propositions en pratique. Enfin, quelques informations pratiques vous informent de notre démarche dans ce projet.
+Nous débutons par une exposition des propositions d'\glspl{utilisateur} et fonctionnalités qui expliquent le principe de fonctionnement de l'\gls{application}. Ensuite, quelques ébauches (non-exhaustives) de l'\gls{interface} graphique permettent de comprendre les propositions en pratique. Enfin, quelques informations pratiques vous informent de notre démarche dans ce projet.
 
 Vous êtes invités à réagir à ce cahier des charges pour l'ajout et la modification de toute fonctionnalité qui vous semblerait manquante ou incohérente. Des sections \emph{Questions et Remarques} sont d'ailleurs présentes pour attirer votre attention sur certains points pour lesquels nous nécessitons des précisions. Ce sont des points importants mais la totalité du document est soumise à votre approbation.
 
-\section{Types d'utilisateurs}
+\section{Types d'\glspl{utilisateur}}
 \label{users}
-Cette section du document contient une description détaillée de tous les types d'utilisateurs qui, à terme, interagiront avec l'application. Nous détaillons aussi ce que ceux-ci pourront faire avec l'application, pour vous donner un contexte.
+Cette section du document contient une description détaillée de tous les types d'\glspl{utilisateur} qui, à terme, interagiront avec l'\gls{application}. Nous détaillons aussi ce que ceux-ci pourront faire avec l'\gls{application}, pour vous donner un contexte.
 
   \begin{description}
-    \item[Gestionnaire de fontaines] est un type d'utilisateur auquel on assigne un ou plusieurs éléments du réseau de distribution de type "sortie" (fontaine, kiosque, réservoir, branchement individuel) dont il est responsable.
-    Il gère également la gestion des consommateurs d'eau dans sa zone et les ajoute/supprime/modifie dans le système lorsque c'est nécessaire (naissance, décès, déménagement).
-    Il utilise l'application pour signaler des problèmes et ainsi pouvoir en avertir le technicien/plombier et sa hiérarchie. Chaque mois, le gestionnaire de fontaines utilise l'application pour déposer un rapport. Ce rapport contient, pour chaque élément du réseau sous sa responsabilité, les quantités d'eau distribuées (si un compteur est présent), les recettes (HTG), l'état (en service, hors service). Une section générale (une seule fois par rapport) déclare également les heures et jours de service du gestionnaire de fontaines.
+    \item[Gestionnaire de \glspl{fontaine}] est un type d'\gls{utilisateur} auquel on assigne un ou plusieurs éléments du \gls{reseau} de distribution de type "sortie" (\gls{fontaine}, \gls{kiosque}, \gls{reservoir}, branchement individuel) dont il est responsable.
+    Il gère également la gestion des \glspl{consommateur} d'eau dans sa \gls{zone} et les ajoute/supprime/modifie dans le \gls{systeme} lorsque c'est nécessaire (naissance, décès, déménagement).
+    Il utilise l'\gls{application} pour signaler des problèmes et ainsi pouvoir en avertir le technicien/plombier et sa hiérarchie. Chaque mois, le gestionnaire de \glspl{fontaine} utilise l'\gls{application} pour déposer un rapport. Ce rapport contient, pour chaque \gls{element_reseau} sous sa responsabilité, les quantités d'eau distribuées (si un compteur est présent), les recettes (\gls{htg}), l'état (en service, hors service). Une section générale (une seule fois par rapport) déclare également les heures et jours de service du gestionnaire de \glspl{fontaine}.
 
-    \emph{Exemple : une personne chargée de gérer un point d'eau pourrait être un gestionnaire de fontaines. Il peut ainsi utiliser l'application pour envoyer mensuellement les données, ajouter les utilisateurs lorsque nécessaire et déclarer les problèmes.}
+    \emph{Exemple : une personne chargée de gérer un \gls{point_eau} pourrait être un gestionnaire de \glspl{fontaine}. Il peut ainsi utiliser l'\gls{application} pour envoyer mensuellement les \glspl{donnee}, ajouter les \glspl{utilisateur} lorsque nécessaire et déclarer les problèmes.}
 
-    \item[Gestionnaire de zone] est un type d'utilisateur qui gère un groupe de gestionnaires de fontaines. Il dispose des mêmes permissions que les gestionnaires de fontaines dans sa zone et peut donc effectuer les mêmes actions avec l'application. En plus, le gestionnaire de zone peut créer et supprimer des utilisateurs "gestionnaire de fontaines" et  "techniciens/plombiers" et leur assigner des permissions sur les éléments du réseau. Le gestionnaire de zone peut également créer, supprimer et modifier des éléments du réseau.
+    \item[Gestionnaire de \gls{zone}] est un type d'\gls{utilisateur} qui gère un groupe de gestionnaires de \glspl{fontaine}. Il dispose des mêmes \glspl{permission} que les gestionnaires de \glspl{fontaine} dans sa \gls{zone} et peut donc effectuer les mêmes actions avec l'\gls{application}. En plus, le gestionnaire de \gls{zone} peut créer et supprimer des \glspl{utilisateur} "gestionnaire de \glspl{fontaine}" et  "techniciens/plombiers" et leur assigner des \glspl{permission} sur les éléments du \gls{reseau}. Le gestionnaire de \gls{zone} peut également créer, supprimer et modifier des éléments du \gls{reseau}.
 
-    \emph{Exemple 1 : Protos ou la DINEPA peuvent être assignées en tant que gestionnaires de zone ayant les accès sur tous les systèmes et agir en tant que gestionnaires généraux de tout le système. Ils peuvent donc consulter toutes les informations rapportées par les autres utilisateurs.}
+    \emph{Exemple 1 : Protos ou la \gls{dinepa} peuvent être assignées en tant que gestionnaires de \gls{zone} ayant les accès sur tous les \gls{systeme}s et agir en tant que gestionnaires généraux de tout le \gls{systeme}. Ils peuvent donc consulter toutes les informations rapportées par les autres \glspl{utilisateur}.}
 
-    \emph{Exemple 2 : un CAEPA pourrait être assigné en tant que gestionnaire de zone et avoir accès aux infrastructures du réseau de distribution dans sa zone géographique et ainsi consulter les informations et les modifier pour venir en aide aux gestionnaires de fontaines.}
+    \emph{Exemple 2 : un \gls{caepa} pourrait être assigné en tant que gestionnaire de \gls{zone} et avoir accès aux infrastructures du \gls{reseau} de distribution dans sa \gls{zone} géographique et ainsi consulter les informations et les modifier pour venir en aide aux gestionnaires de \glspl{fontaine}.}
 
-    \item[Consommateur] est un type d'utilisateur du réseau de distribution d'eau, mais dans un premier temps, il n'aura pas accès à l'application. Dans le futur, une nouvelle fonctionnalité de l'application lui permettra de signaler un problème sur le réseau, de consulter l'état de celui-ci et éventuellement d'autres fonctionnalités, qui seront détaillées par la suite.
+    \item[\gls{consommateur}] est un type d'\gls{utilisateur} du \gls{reseau} de distribution d'eau, mais dans un premier temps, il n'aura pas accès à l'\gls{application}. Dans le futur, une nouvelle fonctionnalité de l'\gls{application} lui permettra de signaler un problème sur le \gls{reseau}, de consulter l'état de celui-ci et éventuellement d'autres fonctionnalités, qui seront détaillées par la suite.
 
-    \item[Technicien/Plombier] est un type d'utilisateur auquel on assigne des éléments du réseau de distribution (fontaine, réservoir, prise individuelle, etc). Chaque technicien/plombier utilise l'application pour voir les problèmes déclarés par les autres utilisateurs (gestionnaires de fontaine, de zone ou consommateurs quand le volet \emph{Citizen science} sera ajouté). Il peut utiliser l'application pour répondre aux demandes d'intervention, pour demander plus d'informations ou proposer une solution si le déplacement n'est pas nécessaire. Il peut modifier l'état d'un problème, demander des précisions et le marquer en cours de résolution ou résolu une fois l'intervention terminée.
+    \item[Technicien/Plombier] est un type d'\gls{utilisateur} auquel on assigne des éléments du \gls{reseau} de distribution (\gls{fontaine}, \gls{reservoir}, \gls{prise_individuelle}, etc). Chaque technicien/plombier utilise l'\gls{application} pour voir les problèmes déclarés par les autres \glspl{utilisateur} (gestionnaires de \gls{fontaine}, de \gls{zone} ou \glspl{consommateur} quand le volet \emph{\gls{citizen_science}} sera ajouté). Il peut utiliser l'\gls{application} pour répondre aux demandes d'intervention, pour demander plus d'informations ou proposer une solution si le déplacement n'est pas nécessaire. Il peut modifier l'état d'un problème, demander des précisions et le marquer en cours de résolution ou résolu une fois l'intervention terminée.
 
-    \emph{Exemple : un technicien/plombier démarrant sa journée peut consulter l'application et voir quels sont les problèmes qui requièrent son attention. Il peut dialoguer avec les gestionnaires et modifier l'état des problèmes afin qu'à terme le réseau fonctionne sans problème.}
+    \emph{Exemple : un technicien/plombier démarrant sa journée peut consulter l'\gls{application} et voir quels sont les problèmes qui requièrent son attention. Il peut dialoguer avec les gestionnaires et modifier l'état des problèmes afin qu'à terme le \gls{reseau} fonctionne sans problème.}
 
   \end{description}
   \subsection{Questions et remarques}
   % Questions
   \begin{itemize}
-    \item Le contenu du rapport mensuel d'un gestionaire de fontaine est pour le moment basé sur le rapport mensuel existant (voir section~\ref{sec:approach}). Si vous souhaitez que l'application récolte plus d'information auprès des gestionnaires, veuillez nous indiquer lesquelles et sous quelle forme (cela peut être un texte libre, un choix dans une liste, ce que vous voulez).
-    \item Un gestionnaire de zone dont la zone recouvre tous les systèmes peut être vu comme un administrateur et aurait dès lors accès en lecture et écriture à toutes les données de l'application. Par erreur ou malveillance, il pourrait en effacer ou modifier certaines, faussant l'ensemble. Une pratique courante en informatique pour gérer ce problème potentiel est d'archiver les données : elles ne sont ainsi jamais vraiment modifiées ou effacées et peuvent être restaurées à l'état précédent. Est-ce une fonctionnalité que vous souhaitez pour l'application, ou n'est-ce pas nécéssaire de s'en occuper ? Si ce modèle d'archivage ne vous convient pas, souhaitez-vous autre chose ?
-    \item L'utilisateur "technicien/plombier" et les fonctionnalités qui lui seront associées sont une interprétation de notre part car il nous semblait pratique de pouvoir centraliser la gestion du réseau de distribution entièrement au sein de l'application. Cela vous semble-t-il utile d'avoir une interface destinée au technicien ?
+    \item Le contenu du \gls{rapport_mensuel} d'un gestionaire de \gls{fontaine} est pour le moment basé sur le \gls{rapport_mensuel} existant (voir section~\ref{sec:approach}). Si vous souhaitez que l'\gls{application} récolte plus d'information auprès des gestionnaires, veuillez nous indiquer lesquelles et sous quelle forme (cela peut être un texte libre, un choix dans une liste, ce que vous voulez).
+    \item Un gestionnaire de \gls{zone} dont la \gls{zone} recouvre tous les \gls{systeme}s peut être vu comme un administrateur et aurait dès lors \gls{acces_lecture} et \gls{acces_ecriture} à toutes les \glspl{donnee} de l'\gls{application}. Par erreur ou malveillance, il pourrait en effacer ou modifier certaines, faussant l'ensemble. Une pratique courante en informatique pour gérer ce problème potentiel est d'archiver les \glspl{donnee} : elles ne sont ainsi jamais vraiment modifiées ou effacées et peuvent être restaurées à l'état précédent. Est-ce une fonctionnalité que vous souhaitez pour l'\gls{application}, ou n'est-ce pas nécéssaire de s'en occuper ? Si ce modèle d'archivage ne vous convient pas, souhaitez-vous autre chose ?
+    \item L'\gls{utilisateur} "technicien/plombier" et les fonctionnalités qui lui seront associées sont une interprétation de notre part car il nous semblait pratique de pouvoir centraliser la gestion du \gls{reseau} de distribution entièrement au sein de l'\gls{application}. Cela vous semble-t-il utile d'avoir une \gls{interface} destinée au technicien ?
   \end{itemize}
 
   \section{Principe hiérarchique}
-    L'application fonctionne grâce à la hiérarchie de ses utilisateurs. Cette hiérarchie se base sur la hiérarchie actuelle sur place tout en se voulant plus flexible pour accomoder d'éventuels cas particuliers et changements futurs.
+    L'\gls{application} fonctionne grâce à la hiérarchie de ses \glspl{utilisateur}. Cette hiérarchie se base sur la hiérarchie actuelle sur place tout en se voulant plus flexible pour accomoder d'éventuels cas particuliers et changements futurs.
 
-    Ce principe est simple. Un gestionnaire de fontaines gère une ou plusieurs installations. Un gestionnaire de zone gère un ou plusieurs gestionnaires de zone et/ou de fontaines. En tant que gestionnaire de zone, j'ai accès aux données des utilisateurs que je gère. Si j'ajoute un élément du réseau ou un consommateur, tous les utilisateurs parents (\emph{i.e. : qui ont un lien hiérarchique vers le haut}) y ont accès également. Ce principe est illustré sur la figure \ref{fig:hierarchie}.
+    Ce principe est simple. Un gestionnaire de \glspl{fontaine} gère une ou plusieurs installations. Un gestionnaire de \gls{zone} gère un ou plusieurs gestionnaires de \gls{zone} et/ou de \glspl{fontaine}. En tant que gestionnaire de \gls{zone}, j'ai accès aux \glspl{donnee} des \glspl{utilisateur} que je gère. Si j'ajoute un \gls{element_reseau} ou un \gls{consommateur}, tous les \glspl{utilisateur} parents (\emph{i.e. : qui ont un lien hiérarchique vers le haut}) y ont accès également. Ce principe est illustré sur la figure \ref{fig:hierarchie}.
 
     \begin{figure}[H]
       \centering
@@ -173,71 +151,71 @@ Cette section du document contient une description détaillée de tous les types
       \label{fig:hierarchie}
     \end{figure}
 
-    Les consommateurs étant reliés aux points d'eau, un utilisateur n'a accès qu'aux consommateurs et éléments du réseau qui lui sont liés. Pour reprendre cet exemple, Protos pourrait être un gestionnaire de zone en tête de liste et avoir accès à toutes les données collectées, tandis que le collectif gérant l'eau d'un village serait un gestionnaire de fontaines et ne pourrait consulter et modifier que les données dudit village. Ce système permet une grande flexibilité dans la répartition des responsabilités.
+    Les \glspl{consommateur} étant reliés aux \glspl{point_eau}, un \gls{utilisateur} n'a accès qu'aux \glspl{consommateur} et éléments du \gls{reseau} qui lui sont liés. Pour reprendre cet exemple, Protos pourrait être un gestionnaire de \gls{zone} en tête de liste et avoir accès à toutes les \glspl{donnee} collectées, tandis que le collectif gérant l'eau d'un village serait un gestionnaire de \glspl{fontaine} et ne pourrait consulter et modifier que les \glspl{donnee} dudit village. Ce \gls{systeme} permet une grande flexibilité dans la répartition des responsabilités.
 \section{Fonctionnalités}
-% Liste exhaustive des fonctionnalités de l'application
-% Séparer directement en fonction des différents utilisateurs de l'application
+% Liste exhaustive des fonctionnalités de l'\gls{application}
+% Séparer directement en fonction des différents \glspl{utilisateur} de l'\gls{application}
 
-\subsection{Tout utilisateur peut :}
+\subsection{Tout \gls{utilisateur} peut :}
 \begin{itemize}
-  \item Se connecter à l'application via un identifiant et un mot de passe.
-  \item Accéder aux pages de l'application auxquelles il a accès en fonction de ses permissions et de son type d'utilisateur (gestionnaire de zone, gestionnaire de fontaines, technicien/plombier).
-  %\item Je peux effectuer mon travail hors ligne, pour l'envoyer plus tard quand j'aurai du réseau % <- Impossible avec Django, on laisserait pas ça de côté pour le moment ? ça fait déjà beaucoup de travail et ils peuvent toujours noter sur leur pc et uploader quand ils ont une connexion
+  \item Se connecter à l'\gls{application} via un identifiant et un mot de passe.
+  \item Accéder aux pages de l'\gls{application} auxquelles il a accès en fonction de ses \glspl{permission} et de son type d'\gls{utilisateur} (gestionnaire de \gls{zone}, gestionnaire de \glspl{fontaine}, technicien/plombier).
+  %\item Je peux effectuer mon travail hors ligne, pour l'envoyer plus tard quand j'aurai du \gls{reseau} % <- Impossible avec Django, on laisserait pas ça de côté pour le moment ? ça fait déjà beaucoup de travail et ils peuvent toujours noter sur leur pc et uploader quand ils ont une connexion
 \end{itemize}
 
-\subsection{Le gestionnaire de fontaine(s) peut :}
+\subsection{Le gestionnaire de \gls{fontaine}(s) peut :}
 \begin{itemize}
-  \item Signaler un problème (matériel, qualité de l'eau, ...) à l'un des éléments du réseau auquel il est assigné via ticket pour que le technicien et ses supérieurs en soient informés. Le problème est modifiable (pour ajouter des détails par exemple) tant qu'il n'est pas cloturé.
-  \item Clôturer un ticket pour indiquer que le problème est résolu.
-  \item Rentrer les données d'utilisation mensuelles correspondant aux points d'eau auxquels il est assigné (\emph{cf section \ref{users} pour les détails du rapport}).
-  \item Ajouter/supprimer/modifier un consommateur (ou groupe de consommateurs en indiquant le nombre de consommateurs dans le foyer du chef de famille).
-  \item Assigner un consommateur ou groupe de consommateurs à un point d'eau.
-  \item Indiquer le montant payé par un consommateur et pour quelle durée.
-  \item Consulter l'état de recouvrement de son ou ses point(s) d'eau, obtenir les statistiques de recouvrement, lister les consommateurs qui n'ont pas encore payé.
+  \item Signaler un problème (matériel, qualité de l'eau, ...) à l'un des éléments du \gls{reseau} auquel il est assigné via \gls{ticket} pour que le technicien et ses supérieurs en soient informés. Le problème est modifiable (pour ajouter des détails par exemple) tant qu'il n'est pas cloturé.
+  \item Clôturer un \gls{ticket} pour indiquer que le problème est résolu.
+  \item Rentrer les \glspl{donnee} d'utilisation mensuelles correspondant aux \glspl{point_eau} auxquels il est assigné (\emph{cf section \ref{users} pour les détails du rapport}).
+  \item Ajouter/supprimer/modifier un \gls{consommateur} (ou groupe de \glspl{consommateur} en indiquant le nombre de \glspl{consommateur} dans le foyer du chef de famille).
+  \item Assigner un \gls{consommateur} ou groupe de \glspl{consommateur} à un \gls{point_eau}.
+  \item Indiquer le montant payé par un \gls{consommateur} et pour quelle durée.
+  \item Consulter l'état de recouvrement de son ou ses point(s) d'eau, obtenir les statistiques de recouvrement, lister les \glspl{consommateur} qui n'ont pas encore payé.
 \end{itemize}
 
 % Ils doivent également gérer les conflits, est-ce qu'on veut faire un pannel pour ça ou de la doc ou whatever ?
 
-\subsection{Le gestionnaire de zone peut :}
+\subsection{Le gestionnaire de \gls{zone} peut :}
 \begin{itemize}
-  \item Visionner tous les éléments du réseau la zone et leurs informations (emplacement, utilisateur responsable, état actuel, problèmes déclarés). Les informations pour un point d'eau (\emph{e.g. : une fontaine}) sont plus nombreuses (statistiques sur le nombre d'utilisateurs, débit mensuel, recettes mensuelles) que les informations d'un autre type d'élément (\emph{e.g. : une canalisation})
-  \item Consulter toutes les données entrées par un gestionnaire de point d'eau (rapports mensuels) dans la zone.
-  \item Consulter des graphiques générés automatiquement pour évaluer l'état du réseau, des utilisateurs et recouvrement dans la zone assignée\footnote{Voir section Questions et remarques.}.
-  \item Consulter les problèmes (tickets) déclarés dans la zone assignée pour voir uniquement quels points d'eau sont en difficulté.
+  \item Visionner tous les éléments du \gls{reseau} la \gls{zone} et leurs informations (emplacement, \gls{utilisateur} responsable, état actuel, problèmes déclarés). Les informations pour un \gls{point_eau} (\emph{e.g. : une \gls{fontaine}}) sont plus nombreuses (statistiques sur le nombre d'\glspl{utilisateur}, débit mensuel, recettes mensuelles) que les informations d'un autre type d'élément (\emph{e.g. : une canalisation})
+  \item Consulter toutes les \glspl{donnee} entrées par un gestionnaire de \gls{point_eau} (\glspl{rapport_mensuel}) dans la \gls{zone}.
+  \item Consulter des graphiques générés automatiquement pour évaluer l'état du \gls{reseau}, des \glspl{utilisateur} et recouvrement dans la \gls{zone} assignée\footnote{Voir section Questions et remarques.}.
+  \item Consulter les problèmes (\glspl{ticket}) déclarés dans la \gls{zone} assignée pour voir uniquement quels \glspl{point_eau} sont en difficulté.
   \item Assigner un technicien à un problème particulier pour le prioriser.
-  \item Modifier l'état d'un ticket pour en marquer la résolution ou la prise en charge.
-  \item Agréger les rapports mensuels pour obtenir des statistiques annuelles ou globales. %Pas trop spécifique à notre dernier document ? < hop, comme ça c'est réglé
-  \item Créer ou supprimer des utilisateurs (gestionaire de fontaines, gestionnaire de zone ou technicien). %tricky les gestionnaires de zone qui créent des gestionnaires de zone
-  \item Attribuer ou retirer un élément du réseau/zone à un gestionaire de fontaines/zone.
-  \item Créer un élément du réseau dans sa zone.
-  \item Ajouter, modifier ou supprimer des dépenses et des revenus pour la zone.
+  \item Modifier l'état d'un \gls{ticket} pour en marquer la résolution ou la prise en charge.
+  \item Agréger les \glspl{rapport_mensuel} pour obtenir des statistiques annuelles ou globales. %Pas trop spécifique à notre dernier document ? < hop, comme ça c'est réglé
+  \item Créer ou supprimer des \glspl{utilisateur} (gestionaire de \glspl{fontaine}, gestionnaire de \gls{zone} ou technicien). %tricky les gestionnaires de \gls{zone} qui créent des gestionnaires de \gls{zone}
+  \item Attribuer ou retirer un \gls{element_reseau}/\gls{zone} à un gestionaire de \glspl{fontaine}/\gls{zone}.
+  \item Créer un \gls{element_reseau} dans sa \gls{zone}.
+  \item Ajouter, modifier ou supprimer des dépenses et des revenus pour la \gls{zone}.
 \end{itemize}
 
 \subsection{Le technicien/plombier peut :}
 \begin{itemize}
-  \item Consulter les tickets du réseau pour déterminer la nécessité d'intervenir ou non.
-  \item Répondre aux tickets afin de demander des précisions ou donner des solutions (si le déplacement n'est pas nécessaire/possible).
+  \item Consulter les \glspl{ticket} du \gls{reseau} pour déterminer la nécessité d'intervenir ou non.
+  \item Répondre aux \glspl{ticket} afin de demander des précisions ou donner des solutions (si le déplacement n'est pas nécessaire/possible).
   \item Modifier l'état d'un problème afin d'en indiquer la prise en charge ou résolution.
 \end{itemize}
 
   \subsection{Questions et remarques}
   \begin{itemize}
-    \item Pour les graphes et statistiques présentés aux gestionnaires de fontaines ou de zone, nous en avons certains en tête, mais si quoi que ce soit vous semble peu utile ou qu'au contraire il manque quelque chose d'essentiel, il serait bon de le préciser :
+    \item Pour les graphes et statistiques présentés aux gestionnaires de \glspl{fontaine} ou de \gls{zone}, nous en avons certains en tête, mais si quoi que ce soit vous semble peu utile ou qu'au contraire il manque quelque chose d'essentiel, il serait bon de le préciser :
     \begin{itemize}
-      \item Nombre total de fontaines dans la zone
-      \item Nombre total d'utilisateurs de ces fontaines
-      \item Nombre de consommateurs n'ayant pas encore payé sur cette période (période à déterminer)
-      \item Répartition du type de points d'eau (kiosques, fontaines ou prise individuelle)
+      \item Nombre total de \glspl{fontaine} dans la \gls{zone}
+      \item Nombre total d'\glspl{utilisateur} de ces \glspl{fontaine}
+      \item Nombre de \glspl{consommateur} n'ayant pas encore payé sur cette période (période à déterminer)
+      \item Répartition du type de \glspl{point_eau} (kiosques, \glspl{fontaine} ou \gls{prise_individuelle})
       \item Évolution du taux de recouvrement
     \end{itemize}
-    \item La fonctionnalité des dépenses et revenus est pour le moment très flexible et permet d'ajouter des dépenses et entrées d'argent pour consulter le solde et l'évolution des dépenses au fil des mois/années. Nous avons peu d'informations sur le fonctionnement des budgets et les informations dont nous disposons actuellement ne nous permettent pas de créer un système plus évolué.
-    \item Lors du développement de l'application, la priorité sera de créer le coeur de l'application permettant de stocker et modifier les données. C'est sur cette base nécessaire que nous vous proposerons ensuite des outils plus avancés comme le système d'information géographique qui permettra de visualiser le réseau sur une carte interactive (type Google Maps).
-    \item Vous constatez que le gestionnaire de zone a un rôle important dans l'application car il peut créer et modifier des éléments du réseau ainsi que des utilisateurs dans sa zone. Dans l'application, par défaut cela signifie que tout gestionnaire de zone peut créer, supprimer et modifier les éléments du réseau ou les utilisateurs. Si vous trouvez que c'est une trop grosse responsabilité, on vous propose d'ajouter un paramètre spécial qui autorise ou refuse au gestionnaire de zone la \textbf{création et suppression} des éléments du réseau ou utilisateurs. Grâce à ce paramètre, vous pourriez avoir des gestionnaires de haut niveau (national, régional, ... vous choisissez) qui peuvent tout faire, et des gestionnaires de bas niveau (par exemple un groupe de quelques villages) qui peuvent consulter et modifier les informations pour les mettre à jour sans pour autant avoir le droit de créer des éléments du réseau ou utilisateurs. On vous conseille d'opter pour cette option si vous pensez qu'il pourrait y avoir des gestionnaires qui causeraient des problèmes avec les droits de création et suppression. On vous conseille de ne pas prendre cette option si les gestionnaires de réseau sont indépendants et capables d'utiliser correctement la création et suppression.
+    \item La fonctionnalité des dépenses et revenus est pour le moment très flexible et permet d'ajouter des dépenses et entrées d'argent pour consulter le solde et l'évolution des dépenses au fil des mois/années. Nous avons peu d'informations sur le fonctionnement des budgets et les informations dont nous disposons actuellement ne nous permettent pas de créer un \gls{systeme} plus évolué.
+    \item Lors du développement de l'\gls{application}, la priorité sera de créer le coeur de l'\gls{application} permettant de stocker et modifier les \glspl{donnee}. C'est sur cette base nécessaire que nous vous proposerons ensuite des outils plus avancés comme le \gls{systeme} d'information géographique qui permettra de visualiser le \gls{reseau} sur une carte interactive (type Google Maps).
+    \item Vous constatez que le gestionnaire de \gls{zone} a un rôle important dans l'\gls{application} car il peut créer et modifier des éléments du \gls{reseau} ainsi que des \glspl{utilisateur} dans sa \gls{zone}. Dans l'\gls{application}, par défaut cela signifie que tout gestionnaire de \gls{zone} peut créer, supprimer et modifier les éléments du \gls{reseau} ou les \glspl{utilisateur}. Si vous trouvez que c'est une trop grosse responsabilité, on vous propose d'ajouter un paramètre spécial qui autorise ou refuse au gestionnaire de \gls{zone} la \textbf{création et suppression} des éléments du \gls{reseau} ou \glspl{utilisateur}. Grâce à ce paramètre, vous pourriez avoir des gestionnaires de haut niveau (national, régional, ... vous choisissez) qui peuvent tout faire, et des gestionnaires de bas niveau (par exemple un groupe de quelques villages) qui peuvent consulter et modifier les informations pour les mettre à jour sans pour autant avoir le droit de créer des éléments du \gls{reseau} ou \glspl{utilisateur}. On vous conseille d'opter pour cette option si vous pensez qu'il pourrait y avoir des gestionnaires qui causeraient des problèmes avec les droits de création et suppression. On vous conseille de ne pas prendre cette option si les gestionnaires de \gls{reseau} sont indépendants et capables d'utiliser correctement la création et suppression.
   \end{itemize}
 
 \section{Exemples}
   \begin{shaded}
-    Les visuels d'écran présents dans cette section sont des schémas. Ils cherchent à donner une idée de ce à quoi ressemblera l'application en terme de contenu. Les couleurs, agencements et formes ne représentent en rien l'esthétique finale de l'application. Vos désirs esthétiques sont en revanche bienvenus si vous avez des idées ou souhaits. Une version agrandie de ces schémas est disponible dans l'annexe \ref{annexe}.
+    Les visuels d'écran présents dans cette section sont des schémas. Ils cherchent à donner une idée de ce à quoi ressemblera l'\gls{application} en terme de contenu. Les couleurs, agencements et formes ne représentent en rien l'esthétique finale de l'\gls{application}. Vos désirs esthétiques sont en revanche bienvenus si vous avez des idées ou souhaits. Une version agrandie de ces schémas est disponible dans l'annexe \ref{annexe}.
   \end{shaded}
 
   \subsection{Accueil}
@@ -249,23 +227,23 @@ Cette section du document contient une description détaillée de tous les types
         \label{fig:zone_dashboard}
     \end{figure}
 
-    Une fois identifié par son nom d'utilisateur et mot de passe, l'utilisateur arrive sur son tableau de bord. Le tableau de bord est personnalisé pour chaque type d'utilisateur (gestionnaire de zone, de fontaines, technicien/plombier).
+    Une fois identifié par son nom d'\gls{utilisateur} et mot de passe, l'\gls{utilisateur} arrive sur son tableau de bord. Le tableau de bord est personnalisé pour chaque type d'\gls{utilisateur} (gestionnaire de \gls{zone}, de \glspl{fontaine}, technicien/plombier).
 
-    La figure~\ref{fig:zone_dashboard} présente le tableau de bord du gestionnaire de zone. En en-tête, l'utilisateur peut cliquer sur le logo de l'application pour retourner à ce même tableau de bord à tout moment de sa navigation. Il peut aussi se déconnecter.
+    La figure~\ref{fig:zone_dashboard} présente le tableau de bord du gestionnaire de \gls{zone}. En en-tête, l'\gls{utilisateur} peut cliquer sur le logo de l'\gls{application} pour retourner à ce même tableau de bord à tout moment de sa navigation. Il peut aussi se déconnecter.
 
-    À gauche, le menu principal indique à l'utilisateur les pages auxquelles il peut accéder en cliquant sur les boutons. Le bouton étendu indique à l'utilisateur sur quelle page il se trouve (ici "Accueil").
+    À gauche, le menu principal indique à l'\gls{utilisateur} les pages auxquelles il peut accéder en cliquant sur les boutons. Le bouton étendu indique à l'\gls{utilisateur} sur quelle page il se trouve (ici "Accueil").
 
-    Au centre, le contenu de la page propose tout d'abord trois zones informatives générales :
+    Au centre, le contenu de la page propose tout d'abord trois \glspl{zone} informatives générales :
     \begin{itemize}
-      \item Zone courante, son nom et le nombre de points d'eau (kiosques, fontaines, réservoirs, prises individuelles)
-      \item Consommateurs, nombre de foyers
+      \item \gls{zone} courante, son nom et le nombre de \glspl{point_eau} (kiosques, \glspl{fontaine}, \glspl{reservoir}, \glspl{prise_individuelle})
+      \item \glspl{consommateur}, nombre de foyers
       \item Recettes, pourcentage de recouvrement des paiements, recettes totales
     \end{itemize}
-    L'utilisateur peut cliquer sur chacune des zones pour aller sur la page comprenant le détail des informations (respectivement les pages \emph{Réseau, Consommateurs, Comptabilité}).
+    L'\gls{utilisateur} peut cliquer sur chacune des \glspl{zone} pour aller sur la page comprenant le détail des informations (respectivement les pages \emph{\gls{reseau}, \glspl{consommateur}, Comptabilité}).
 
-    Ensuite, des graphiques sont proposés à l'utilisateur (ici, la répartition des types de points d'eau et l'évolution du taux de recouvrement en fonction du temps). L'utilisateur peut utiliser la flèche à droite du titre du graphique pour en choisir un autre (quantité d'eau distribuée en fonction du mois, évolution du nombre de consommateurs, ...).
+    Ensuite, des graphiques sont proposés à l'\gls{utilisateur} (ici, la répartition des types de \glspl{point_eau} et l'évolution du taux de recouvrement en fonction du temps). L'\gls{utilisateur} peut utiliser la flèche à droite du titre du graphique pour en choisir un autre (quantité d'eau distribuée en fonction du mois, évolution du nombre de \glspl{consommateur}, ...).
 
-    Enfin, une zone de notification alerte l'utilisateur des problèmes non-résolus sur le réseau de distribution d'eau. Il peut également cliquer dessus pour aller à la page des problèmes.
+    Enfin, une \gls{zone} de notification alerte l'\gls{utilisateur} des problèmes non-résolus sur le \gls{reseau} de distribution d'eau. Il peut également cliquer dessus pour aller à la page des problèmes.
 
   \subsection{Rapports et problèmes}
     \begin{figure}[H]
@@ -274,81 +252,81 @@ Cette section du document contient une description détaillée de tous les types
         \caption{\'Ecran des rapports}
         \label{fig:report}
     \end{figure}
-    La figure~\ref{fig:report} présente la vue de rapport d'un gestionnaire de zone et d'un gestionnaire de fontaines. Le gestionnaire peut signaler un problème ou déposer le rapport mensuel (voir figure~\ref{fig:monthly_report}).
+    La figure~\ref{fig:report} présente la vue de rapport d'un gestionnaire de \gls{zone} et d'un gestionnaire de \glspl{fontaine}. Le gestionnaire peut signaler un problème ou déposer le \gls{rapport_mensuel} (voir figure~\ref{fig:monthly_report}).
 
-    En dessous, le gestionnaire voit la liste de ses tickets en cours de traitement et leur statut. En cliquant dessus, il peut répondre aux messages du technicien/plombier (qui peut lui demander des précisions, proposer une solution, \dots). Des notifications alertent le gestionnaire lorsqu'il a reçu une réponse à son ticket.
+    En dessous, le gestionnaire voit la liste de ses \glspl{ticket} en cours de traitement et leur statut. En cliquant dessus, il peut répondre aux messages du technicien/plombier (qui peut lui demander des précisions, proposer une solution, \dots). Des notifications alertent le gestionnaire lorsqu'il a reçu une réponse à son \gls{ticket}.
 
     \begin{figure}[H]
         \centering
         \includegraphics[width=.8\textwidth]{Cahier_des_Charges/rapports_mensuel}
-        \caption{Rapport mensuel}
+        \caption{\gls{rapport_mensuel}}
         \label{fig:monthly_report}
     \end{figure}
 
-    En figure~\ref{fig:monthly_report}, le gestionnaire fait son rapport mensuel. Chaque mois, ce formulaire doit être rempli pour obtenir les données du réseau. Si un rapport a déjà été rempli (par exemple si le gestionnaire de zone accède au rapport mensuel et qu'une partie des données a déjà été remplie par un gestionnaire de fontaines), il peut être modifié par ce même moyen.
+    En figure~\ref{fig:monthly_report}, le gestionnaire fait son \gls{rapport_mensuel}. Chaque mois, ce formulaire doit être rempli pour obtenir les \glspl{donnee} du \gls{reseau}. Si un rapport a déjà été rempli (par exemple si le gestionnaire de \gls{zone} accède au \gls{rapport_mensuel} et qu'une partie des \glspl{donnee} a déjà été remplie par un gestionnaire de \glspl{fontaine}), il peut être modifié par ce même moyen.
 
-    Ici, nous voyons le formulaire d'un gestionnaire de fontaines. Il se présente en cinq parties :
+    Ici, nous voyons le formulaire d'un gestionnaire de \glspl{fontaine}. Il se présente en cinq parties :
     \begin{itemize}
-      \item Le gestionnaire de fontaines sélectionne la ou les sorties d'eau (fontaine, prises individuelles, kiosques, réservoirs) parmis celles qui lui sont attribuées, pour lesquelles il souhaite faire son rapport.
-      \item Le gestionnaire de fontaines indique s'il a pu être en service durant ce mois, si oui il indique le nombre de jours et d'heures durant lesquels le service était disponible.
-      \item Le gestionnaire de fontaines indique les recettes pour les fontaines, kiosques et prises individuelles, le total est affiché automatiquement.
-      \item Pour chaque sortie d'eau sélectionnée au début du rapport, le gestionnaire de fontaines indique la quantité d'eau distribuée ainsi que les prix de distribution.
-      \item Le gestionnaire de fontaines peut enfin ajouter un commentaire au rapport mensuel.
+      \item Le gestionnaire de \glspl{fontaine} sélectionne la ou les sorties d'eau (\gls{fontaine}, \glspl{prise_individuelle}, kiosques, \glspl{reservoir}) parmis celles qui lui sont attribuées, pour lesquelles il souhaite faire son rapport.
+      \item Le gestionnaire de \glspl{fontaine} indique s'il a pu être en service durant ce mois, si oui il indique le nombre de jours et d'heures durant lesquels le service était disponible.
+      \item Le gestionnaire de \glspl{fontaine} indique les recettes pour les \glspl{fontaine}, kiosques et \glspl{prise_individuelle}, le total est affiché automatiquement.
+      \item Pour chaque sortie d'eau sélectionnée au début du rapport, le gestionnaire de \glspl{fontaine} indique la quantité d'eau distribuée ainsi que les prix de distribution.
+      \item Le gestionnaire de \glspl{fontaine} peut enfin ajouter un commentaire au \gls{rapport_mensuel}.
     \end{itemize}
 
     Le gestionnaire peut soumettre le rapport quand il le souhaite, même partiellement complété. Il peut y revenir plus tard et modifier les informations.
 
-  \subsection{Vue du réseau}
+  \subsection{Vue du \gls{reseau}}
     \begin{figure}[H]
         \centering
         \includegraphics[width=.8\textwidth]{Cahier_des_Charges/reseau}
-        \caption{Visuel du réseau}
+        \caption{Visuel du \gls{reseau}}
         \label{fig:network}
     \end{figure}
-    La figure~\ref{fig:network} présente la vue d'accueil du réseau de distribution. A partir de cette page, le gestionnaire de distribution ou de fontaines peut voir les installations du réseau qui lui sont attribuées. Il y a à nouveau un espace dédié aux graphiques qu'il peut choisir et visualiser via la flèche à droite du titre.
+    La figure~\ref{fig:network} présente la vue d'accueil du \gls{reseau} de distribution. A partir de cette page, le gestionnaire de distribution ou de \glspl{fontaine} peut voir les installations du \gls{reseau} qui lui sont attribuées. Il y a à nouveau un espace dédié aux graphiques qu'il peut choisir et visualiser via la flèche à droite du titre.
 
     A droite, des informations générales sont disponibles ainsi que des statistiques (ici, en exemple, le volume mensuel total distribué).
-    L'utilisateur voit à nouveau un écran de notifications indiquant les problèmes qu'il faut résoudre.
+    L'\gls{utilisateur} voit à nouveau un écran de notifications indiquant les problèmes qu'il faut résoudre.
 
 \section{Besoins non-fonctionnels}
-Dans cette section, nous allons détailler certaines caractéristiques souhaitables pour l'application. Il s'agit d'exigences sur le système en lui-même et pas sur ce qu'il fait.
+Dans cette section, nous allons détailler certaines caractéristiques souhaitables pour l'\gls{application}. Il s'agit d'exigences sur le \gls{systeme} en lui-même et pas sur ce qu'il fait.
 \begin{enumerate}
-  \item Sécurité des données.
+  \item Sécurité des \glspl{donnee}.
   \item Fonctionnement sur périphérique mobile (tablettes et smartphones).
-  \item Présence d'une documentation qualitative pour les développeurs et les utilisateurs du système.
-  \item Application scalable et modulaire pour permettre une utilisation à différentes échelles.
+  \item Présence d'une documentation qualitative pour les développeurs et les \glspl{utilisateur} du \gls{systeme}.
+  \item \gls{application} \gls{scalable} et \gls{modulaire} pour permettre une utilisation à différentes échelles.
 \end{enumerate}
 % Explication des besoins non-fonctionnels
 \section{Approche \label{sec:approach}}
-  Pour créer ce cahier des charges qui établit les fonctionnalités et le fonctionnement général de l'application, nous avons utilisé les documents fournis par Protos et disponibles en ligne.
+  Pour créer ce cahier des charges qui établit les fonctionnalités et le fonctionnement général de l'\gls{application}, nous avons utilisé les documents fournis par Protos et disponibles en ligne.
   \begin{description}
-    \item[Les fichiers Excel,] au nombre de trois ont été principalement utilisés pour le choix des données et fonctionnalités de l'application. Deux des fichiers concernent les CAEPA et recensent leurs fontaines, consommateurs et comptabilités à l'échelle annuelle. Un fichier expose au niveau national et mensuel l'état du réseau (fonctionnement, quantités d'eau distribuées) et les recettes envoyées via formulaire par des TEPAC qui gèrent le réseau à leur échelle sur le terrain.
+    \item[Les fichiers Excel,] au nombre de trois ont été principalement utilisés pour le choix des \glspl{donnee} et fonctionnalités de l'\gls{application}. Deux des fichiers concernent les \gls{caepa} et recensent leurs \glspl{fontaine}, \glspl{consommateur} et comptabilités à l'échelle annuelle. Un fichier expose au niveau national et mensuel l'état du \gls{reseau} (fonctionnement, quantités d'eau distribuées) et les recettes envoyées via formulaire par des \gls{tepac} qui gèrent le \gls{reseau} à leur échelle sur le terrain.
     \item[Les documents de contexte] envoyés par Protos faisant état de la situation en Haïti, le projet de Protos sur place et leur fonctionnement.
     \item[Le rapport de capitalisation] fourni récemment et expliquant le processus, pour Poste Métier, de fonctionnement de la distribution de l'eau.
   \end{description}
-  Les fichiers Excel ont été notre plus grande source d'information puisqu'ils nous permettent de connaître le système informatique actuel, quelles sont les données, comment sont-elles collectées et utilisées.
-  Les fichiers de contexte ont permis de comprendre la situation, d'identifier les intervenants et risques de l'application.
-  Le rapport de Poste Métier a été très intéressant pour comprendre le fonctionnement précis d'une zone du réseau de distribution.
+  Les fichiers Excel ont été notre plus grande source d'information puisqu'ils nous permettent de connaître le \gls{systeme} informatique actuel, quelles sont les \glspl{donnee}, comment sont-elles collectées et utilisées.
+  Les fichiers de contexte ont permis de comprendre la situation, d'identifier les intervenants et risques de l'\gls{application}.
+  Le rapport de Poste Métier a été très intéressant pour comprendre le fonctionnement précis d'une \gls{zone} du \gls{reseau} de distribution.
 
-  Notre approche générale dans cette application est d'automatiser la collecte et faciliter la gestion de toutes les données présentes dans les documents Excel actuellement utilisés en Haïti. Dans ce cahier des charges, nous présentons une application hiérarchique où chaque utilisateur fait remonter l'information dont il dispose (exactement comme le fonctionnement actuel des données Excel qui sont extraites des formulaires).
+  Notre approche générale dans cette \gls{application} est d'automatiser la collecte et faciliter la gestion de toutes les \glspl{donnee} présentes dans les documents Excel actuellement utilisés en Haïti. Dans ce cahier des charges, nous présentons une \gls{application} hiérarchique où chaque \gls{utilisateur} fait remonter l'information dont il dispose (exactement comme le fonctionnement actuel des \glspl{donnee} Excel qui sont extraites des formulaires).
 
   \begin{shaded}
-    Si ce cahier des charges vous semble incorrect (incompréhension d'une fonctionnalité) ou incomplet (manque de fonctionnalités), tout nouveau document permettant de mieux comprendre votre fonctionnement et vos désirs pour l'application est le bienvenu.
+    Si ce cahier des charges vous semble incorrect (incompréhension d'une fonctionnalité) ou incomplet (manque de fonctionnalités), tout nouveau document permettant de mieux comprendre votre fonctionnement et vos désirs pour l'\gls{application} est le bienvenu.
   \end{shaded}
 
 \section{Choix technolgiques}
-  Conformément aux demandes, l'application utilisera des technologies gratuites et aussi peu différentes que possible afin de ne pas requérir trop d'apprentissages différents. Les décisions des technologies utilisées dans le développement tentent de maximiser :
+  Conformément aux demandes, l'\gls{application} utilisera des technologies gratuites et aussi peu différentes que possible afin de ne pas requérir trop d'apprentissages différents. Les décisions des technologies utilisées dans le développement tentent de maximiser :
   \begin{description}
     \item[Popularité:] Plus une technologie est populaire, plus elle est susceptible d'être maintenue à jour, de disposer de guides et d'aides en ligne.
-    \item[Simplicité:] Pour permettre aux futurs développeurs de l'application de la maintenir à jour et de la faire évoluer avec un minimum de connaissances requises.
-    \item[Performance:] Afin que l'application soit utilisée le plus longtemps possible et qu'il ne soit pas nécessaire de recommencer à zéro à cause d'une technologie limitant l'application.
+    \item[Simplicité:] Pour permettre aux futurs développeurs de l'\gls{application} de la maintenir à jour et de la faire évoluer avec un minimum de connaissances requises.
+    \item[Performance:] Afin que l'\gls{application} soit utilisée le plus longtemps possible et qu'il ne soit pas nécessaire de recommencer à zéro à cause d'une technologie limitant l'\gls{application}.
   \end{description}
 
   Sur ces bases, nous avons déjà arrêté les choix généraux suivants :
   \begin{description}
-    \item[Interface:] Les langages HTML5, CSS3 et JavaScript sont les plus populaires et peu d'alternatives existent pour le développement d'applications internet, aucune n'étant aussi simple à utiliser.
-    \item[Application:] Nous allons utiliser le framework\footnote{Framework : structure logicielle encadrant l'application, permettant d'automatiser certaines phases du développement.} Django, le sixième plus populaire avec un score de 94\%\footnote{Statistique de https://hotframeworks.com/, septembre 2018.} et qui permet de programmer la logique de l'application dans le langage Python, très populaire et adapté autant pour un débutant que pour un expert en programmation.
-    \item[Base de Données:] Pour stocker les données, nous allons utiliser la technologie SQL avec le système de gestion PostgreSQL\footnote{Quatrième mondial selon https://db-engines.com/en/ranking.} qui présente l'énorme avantage d'avoir un module géographique (PostGIS) qui peut interagir directement avec le module géographique de l'application (GeoDjango).
+    \item[\gls{interface}:] Les langages HTML5, CSS3 et JavaScript sont les plus populaires et peu d'alternatives existent pour le développement d'\gls{application}s internet, aucune n'étant aussi simple à utiliser.
+    \item[\gls{application}:] Nous allons utiliser le framework\footnote{Framework : structure logicielle encadrant l'\gls{application}, permettant d'automatiser certaines phases du développement.} Django, le sixième plus populaire avec un score de 94\%\footnote{Statistique de https://hotframeworks.com/, septembre 2018.} et qui permet de programmer la logique de l'\gls{application} dans le langage Python, très populaire et adapté autant pour un débutant que pour un expert en programmation.
+    \item[Base de \glspl{donnee}:] Pour stocker les \glspl{donnee}, nous allons utiliser la technologie SQL avec le \gls{systeme} de gestion PostgreSQL\footnote{Quatrième mondial selon https://db-engines.com/en/ranking.} qui présente l'énorme avantage d'avoir un module géographique (PostGIS) qui peut interagir directement avec le module géographique de l'\gls{application} (GeoDjango).
   \end{description}
 
 \newpage

@@ -111,3 +111,10 @@ venv.bak/
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+
+#LaTeX glossary compilation
+*.acn
+*.acr
+*.alg
+*.glsdefs
+*.xdy
