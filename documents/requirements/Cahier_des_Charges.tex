@@ -98,6 +98,7 @@
     \item[Consommateur:] Personne utilisant le réseau de distribution d'eau haïtien.
     \item[DINEPA:] Direction Nationale de l'Eau Potable et de l'Assainissement. Entité haïtienne rattachée au gouvernement, chargée d'exécuter la politique étatique dans le secteur de l'eau et de l'assainissement.
     \item[Donnée:] Information enregistrée dans l'application destinée à une ou plusieurs utilisations (\emph{e.g. : la quantité d'eau utilisée}).
+    \item[\'Elément du réseau:] Tout élément physique faisant partie du réseau (\emph{e.g. : point d'eau, canalisation, pompe})
     \item[Fontaine:] Point de sortie d'eau public avec abonnement annuel.
     \item[HTG:] Devise (monnaie) d'Haïti, la \emph{Gourde} ($\approx 0,012$ \euro \footnote{https://www.xe.com/fr/currency/htg-haitian-gourde, cours consulté le 03 Octobre 2018}).
     \item[Interface (graphique):] Dispositif visuel permettant à l'utilisateur d'interagir avec l'application (\emph{i.e. : ce qui s'affiche à l'écran}).
@@ -135,7 +136,7 @@ Cette section du document contient une description détaillée de tous les types
 
     \emph{Exemple : une personne chargée de gérer un point d'eau pourrait être un gestionnaire de fontaines. Il peut ainsi utiliser l'application pour envoyer mensuellement les données, ajouter les utilisateurs lorsque nécessaire et déclarer les problèmes.}
 
-    \item[Gestionnaire de zone] est un type d'utilisateur qui gère un groupe de gestionnaires de fontaines. Il dispose des mêmes permissions que les gestionnaires de fontaines dans sa zone et peut donc effectuer les mêmes actions avec l'application. En plus, le gestionnaire de zone peut créer des utilisateurs "gestionnaire de fontaines" et  "techniciens/plombiers" et leur assigner des permissions sur les éléments du réseau. %Meh
+    \item[Gestionnaire de zone] est un type d'utilisateur qui gère un groupe de gestionnaires de fontaines. Il dispose des mêmes permissions que les gestionnaires de fontaines dans sa zone et peut donc effectuer les mêmes actions avec l'application. En plus, le gestionnaire de zone peut créer et supprimer des utilisateurs "gestionnaire de fontaines" et  "techniciens/plombiers" et leur assigner des permissions sur les éléments du réseau. Le gestionnaire de zone peut également créer, supprimer et modifier des éléments du réseau.
 
     \emph{Exemple 1 : Protos ou la DINEPA peuvent être assignées en tant que gestionnaires de zone ayant les accès sur tous les systèmes et agir en tant que gestionnaires généraux de tout le système. Ils peuvent donc consulter toutes les informations rapportées par les autres utilisateurs.}
 
@@ -159,7 +160,7 @@ Cette section du document contient une description détaillée de tous les types
   \section{Principe hiérarchique}
     L'application fonctionne grâce à la hiérarchie de ses utilisateurs. Cette hiérarchie se base sur la hiérarchie actuelle sur place tout en se voulant plus flexible pour accomoder d'éventuels cas particuliers et changements futurs.
 
-    Ce principe est simple. Un gestionnaire de fontaines gère une ou plusieurs installations. Un gestionnaire de zone gère un ou plusieurs gestionnaires de zone et/ou de fontaines. En tant que gestionnaire de zone, j'ai accès aux données des utilisateurs que je gère. Ce principe est illustré sur la figure \ref{fig:hierarchie}.
+    Ce principe est simple. Un gestionnaire de fontaines gère une ou plusieurs installations. Un gestionnaire de zone gère un ou plusieurs gestionnaires de zone et/ou de fontaines. En tant que gestionnaire de zone, j'ai accès aux données des utilisateurs que je gère. Si j'ajoute un élément du réseau ou un consommateur, tous les utilisateurs parents (\emph{i.e. : qui ont un lien hiérarchique vers le haut}) y ont accès également. Ce principe est illustré sur la figure \ref{fig:hierarchie}.
 
     \begin{figure}[H]
       \centering
@@ -182,7 +183,7 @@ Cette section du document contient une description détaillée de tous les types
 
 \subsection{Le gestionnaire de fontaine(s) peut :}
 \begin{itemize}
-  \item Signaler un problème (matériel, qualité de l'eau, ...) à l'un des points d'eau auquel il est assigné via ticket pour que le technicien et ses supérieurs en soient informés. Le problème est modifiable (pour ajouter des détails par exemple) tant qu'il n'est pas cloturé.
+  \item Signaler un problème (matériel, qualité de l'eau, ...) à l'un des éléments du réseau auquel il est assigné via ticket pour que le technicien et ses supérieurs en soient informés. Le problème est modifiable (pour ajouter des détails par exemple) tant qu'il n'est pas cloturé.
   \item Clôturer un ticket pour indiquer que le problème est résolu.
   \item Rentrer les données d'utilisation mensuelles correspondant aux points d'eau auxquels il est assigné (\emph{cf section \ref{users} pour les détails du rapport}).
   \item Ajouter/supprimer/modifier un consommateur (ou groupe de consommateurs en indiquant le nombre de consommateurs dans le foyer du chef de famille).
@@ -195,7 +196,7 @@ Cette section du document contient une description détaillée de tous les types
 
 \subsection{Le gestionnaire de zone peut :}
 \begin{itemize}
-  \item Visionner tous les points d'eau de la zone et leurs informations (statistiques : consommateurs, revenus, débits mensuels et tickets les concernant).
+  \item Visionner tous les éléments du réseau la zone et leurs informations (emplacement, utilisateur responsable, état actuel, problèmes déclarés). Les informations pour un point d'eau (\emph{e.g. : une fontaine}) sont plus nombreuses (statistiques sur le nombre d'utilisateurs, débit mensuel, recettes mensuelles) que les informations d'un autre type d'élément (\emph{e.g. : une canalisation})
   \item Consulter toutes les données entrées par un gestionnaire de point d'eau (rapports mensuels) dans la zone.
   \item Consulter des graphiques générés automatiquement pour évaluer l'état du réseau, des utilisateurs et recouvrement dans la zone assignée\footnote{Voir section Questions et remarques.}.
   \item Consulter les problèmes (tickets) déclarés dans la zone assignée pour voir uniquement quels points d'eau sont en difficulté.
@@ -203,8 +204,8 @@ Cette section du document contient une description détaillée de tous les types
   \item Modifier l'état d'un ticket pour en marquer la résolution ou la prise en charge.
   \item Agréger les rapports mensuels pour obtenir des statistiques annuelles ou globales. %Pas trop spécifique à notre dernier document ? < hop, comme ça c'est réglé
   \item Créer ou supprimer des utilisateurs (gestionaire de fontaines, gestionnaire de zone ou technicien). %tricky les gestionnaires de zone qui créent des gestionnaires de zone
-  \item Attribuer ou retirer une fontaine/zone à un gestionaire de fontaine/zone.
-  \item Créer des points d'eau (au sein de sa zone).
+  \item Attribuer ou retirer un élément du réseau/zone à un gestionaire de fontaines/zone.
+  \item Créer un élément du réseau dans sa zone.
   \item Ajouter, modifier ou supprimer des dépenses et des revenus pour la zone.
 \end{itemize}
 
@@ -227,6 +228,7 @@ Cette section du document contient une description détaillée de tous les types
     \end{itemize}
     \item La fonctionnalité des dépenses et revenus est pour le moment très flexible et permet d'ajouter des dépenses et entrées d'argent pour consulter le solde et l'évolution des dépenses au fil des mois/années. Nous avons peu d'informations sur le fonctionnement des budgets et les informations dont nous disposons actuellement ne nous permettent pas de créer un système plus évolué.
     \item Lors du développement de l'application, la priorité sera de créer le coeur de l'application permettant de stocker et modifier les données. C'est sur cette base nécessaire que nous vous proposerons ensuite des outils plus avancés comme le système d'information géographique qui permettra de visualiser le réseau sur une carte interactive (type Google Maps).
+    \item Vous constatez que le gestionnaire de zone a un rôle important dans l'application car il peut créer et modifier des éléments du réseau ainsi que des utilisateurs dans sa zone. Dans l'application, par défaut cela signifie que tout gestionnaire de zone peut créer, supprimer et modifier les éléments du réseau ou les utilisateurs. Si vous trouvez que c'est une trop grosse responsabilité, on vous propose d'ajouter un paramètre spécial qui autorise ou refuse au gestionnaire de zone la \textbf{création et suppression} des éléments du réseau ou utilisateurs. Grâce à ce paramètre, vous pourriez avoir des gestionnaires de haut niveau (national, régional, ... vous choisissez) qui peuvent tout faire, et des gestionnaires de bas niveau (par exemple un groupe de quelques villages) qui peuvent consulter et modifier les informations pour les mettre à jour sans pour autant avoir le droit de créer des éléments du réseau ou utilisateurs. On vous conseille d'opter pour cette option si vous pensez qu'il pourrait y avoir des gestionnaires qui causeraient des problèmes avec les droits de création et suppression. On vous conseille de ne pas prendre cette option si les gestionnaires de réseau sont indépendants et capables d'utiliser correctement la création et suppression.
   \end{itemize}
 
 \section{Exemples}
