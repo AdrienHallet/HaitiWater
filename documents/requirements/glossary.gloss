@@ -87,7 +87,7 @@
   name=\'Element du réseau,
   text=élément du réseau,
   plural=éléments du réseau,
-  description={Tout élément physique faisant partie du réseau (e.g. :pompe, canalisation, point d'eau)}
+  description={Tout élément physique faisant partie du réseau (e.g. : pompe, canalisation, point d'eau)}
 }
 
 \newglossaryentry{fontaine}
@@ -207,5 +207,5 @@
   name=Déploiement,
   text=déploiement,
   plural=déploiements,
-  description={Phase du développement consistant à distribuer, installer ou mettre à jour un système informatique dans son environnement final en vue de réaliser des essais ou de le mettre en service.}
+  description={Phase du développement consistant à distribuer, installer ou mettre à jour un système informatique dans son environnement final en vue de réaliser des essais ou de le mettre en service}
 }
