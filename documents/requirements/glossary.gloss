@@ -201,3 +201,11 @@
   plural=zones,
   description={Sous-ensemble du réseau}
 }
+
+\newglossaryentry{deploiement}
+{
+  name=Déploiement,
+  text=déploiement,
+  plural=déploiements,
+  description={Phase du développement consistant à distribuer, installer ou mettre à jour un système informatique dans son environnement final en vue de réaliser des essais ou de le mettre en service.}
+}
