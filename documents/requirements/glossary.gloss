@@ -26,37 +26,37 @@
 
 
 \newacronym{caepa}{CAEPA}{Comité d'Approvisionnement en Eau Potable et d'Assainissement}
-\newacronym{dinepa}{DINEPA}{Direction Nationale de l'Eau Potable et de l'Assainissement}
+\newacronym{dinepa}{DINEPA}{Direction Nationale de l'Eau Potable et de l'Assainissement (entité gouvernementale haïtienne chargée d'exécuter la politique de l'état dans le secteur de l'eau potable et assainissement)}
 \newacronym{tepac}{TEPAC}{Technicien en Eau Potable et Assainissement pour les Communes}
-\newacronym{htg}{HTG}{Gourde ha\"itienne}
+\newacronym{htg}{HTG}{Gourde ha\"itienne (devise monétaire nationale)}
 \glsunsetall % Don't use the full name when using an acronym for the first time
 
 \newglossaryentry{acces_lecture}
 {
   name=Accès en lecture,
   text=accès en lecture,
-  description={Droit informatique autorisant la consultation d'une information}
+  description={Permission nécessaire à un utilisateur pour visionner des pages ou données dans l'application}
 }
 
 \newglossaryentry{acces_ecriture}
 {
   name=Accès en écriture,
   text=accès en écriture,
-  description={Droit informatique autorisant la modification d'une information (implique l'accès en lecture)}
+  description={Permission nécessaire à un utilisateur pour modifier/ajouter des pages ou données dans l'application (implique l'accès en lecture dans notre application)}
 }
 
 \newglossaryentry{application}
 {
   name=Application,
   text=application,
-  description={Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti}
+  description={Ensemble des pages et données de l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti. L'application créée sera en ligne, signifiant qu'elle fonctionne uniquement à partir d'un navigateur et d'une connexion internet}
 }
 
 \newglossaryentry{systeme}
 {
   name=Système,
   text=système,
-  description={Ensemble des productions relatives à l'outil informatique en cours de création pour la gestion de l'eau et facturation en Haïti}
+  description={Ensemble constitué de l'application et des sous-systèmes permettant de la faire fonctionner (ex.: la base de données)}
 }
 
 \newglossaryentry{citizen_science}
@@ -79,7 +79,15 @@
   name=Donnée,
   text=donnée,
   plural=données,
-  description={Information enregistrée dans l'application}
+  description={Information enregistrée dans la base de données de l'application}
+}
+
+\newglossaryentry{base_de_donnees}
+{
+  name=Base de données,
+  text=base de données,
+  plural=bases de données,
+  description={Structure informatique invisible pour l'utilisateur qui enregistre les données utilisées par l'application afin de les restituer lorsque nécessaire}
 }
 
 \newglossaryentry{element_reseau}
@@ -119,7 +127,7 @@
   name=Modulaire,
   text=modulaire,
   plural=modulaires,
-  description={Capacité d'une application à être facilement modifiée pour répondre aux besoins des utilisateurs (fonctionnement par modules)}
+  description={Décrivant une application capable d'être facilement entretenue et améliorée grâce à l'existence de modules pouvant être modifiés, ajoutés et supprimés indépendamment les uns des autres}
 }
 
 \newglossaryentry{permission}
@@ -127,7 +135,7 @@
   name=Permission (accès),
   text=permission,
   plural=permissions,
-  description={Droit informatique permettant à un utilisateur d'accéder à une fonctionnalité ou une donnée de l'application}
+  description={Autorisation informatique permettant à un utilisateur d'accéder à une fonctionnalité ou une donnée de l'application}
 }
 
 \newglossaryentry{point_eau}
@@ -151,7 +159,7 @@
   name=Rapport mensuel,
   text=rapport mensuel,
   plural=rapports mensuels,
-  description={Ensemble des informations envoyées tout les mois concernant un point d'eau}
+  description={Ensemble des informations envoyées tout les mois, par un utilisateur, dans l'application, concernant un point d'eau}
 }
 
 \newglossaryentry{reseau}
@@ -167,14 +175,14 @@
   name=Réservoir,
   text=réservoir,
   plural=réservoirs,
-  description={Instllation stockant de l'eau potable avant sa distribution}
+  description={Installation stockant de l'eau potable avant sa distribution}
 }
 
 \newglossaryentry{scalable}
 {
-  name=Scalable,
-  text=scalable,
-  plural=scalables,
+  name=\'Elasticité,
+  text=élastique,
+  plural=élastiques,
   description={Capacité d'un système à gérer des quantités variables de données en conservant des bonnes performances}
 }
 
@@ -183,7 +191,7 @@
   name=Ticket (support),
   text=ticket,
   plural=tickets,
-  description={Déclaration d'un problème dans l'application}
+  description={Moyen permettant de déclarer un problème dans l'application ou le réseau}
 }
 
 \newglossaryentry{utilisateur}
@@ -199,7 +207,7 @@
   name=Zone (du réseau),
   text=zone,
   plural=zones,
-  description={Sous-ensemble du réseau}
+  description={Sous-ensemble du réseau (liée à une zone géographique ou non)}
 }
 
 \newglossaryentry{deploiement}
