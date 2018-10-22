@@ -191,7 +191,7 @@
   name=Ticket (support),
   text=ticket,
   plural=tickets,
-  description={Moyen permettant de déclarer un problème dans l'application ou le réseau}
+  description={Moyen permettant de déclarer un problème dans le réseau}
 }
 
 \newglossaryentry{utilisateur}
@@ -207,7 +207,7 @@
   name=Zone (du réseau),
   text=zone,
   plural=zones,
-  description={Sous-ensemble du réseau (liée à une zone géographique ou non)}
+  description={Sous-ensemble du réseau (liée à une zone géographique ou non). Une fontaine ne peut se trouver dans deux zones différentes}
 }
 
 \newglossaryentry{deploiement}
