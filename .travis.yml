@@ -6,4 +6,4 @@ env:
   - DJANGO_VERSION=2.1.2
 install:
   - pip install -q Django==$DJANGO_VERSION
-before_script: cd code/haitiwater
+before_install: cd code/haitiwater
