@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'apps.authentication',
 ]
 
 MIDDLEWARE = [
@@ -75,11 +77,14 @@ WSGI_APPLICATION = 'haitiwater.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'haitiwater',
+        'HOST': 'localhost',
+        'PORT': '5433',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -103,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'UTC-4' # Haiti time zone
 
 USE_I18N = True
 
@@ -118,3 +123,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# GDAL library import
+# Use the installer from https://trac.osgeo.org/osgeo4w/ (32/64 bits according to your python installation)
+if os.name == 'nt':
+    import platform
+    OSGEO4W = r"C:\OSGeo4W"
+    if '64' in platform.architecture()[0]:
+        OSGEO4W += "64"
+    assert os.path.isdir(OSGEO4W), "Directory does not exist: " + OSGEO4W
+    os.environ['OSGEO4W_ROOT'] = OSGEO4W
+    os.environ['GDAL_DATA'] = OSGEO4W + r"\share\gdal"
+    os.environ['PROJ_LIB'] = OSGEO4W + r"\share\proj"
+    os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
