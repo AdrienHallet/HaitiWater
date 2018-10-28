@@ -1,0 +1,22 @@
+language: python
+
+python:
+  - 3.6.2
+
+env:
+  - DJANGO_VERSION=2.1.2
+
+install:
+  - pip install -q Django==$DJANGO_VERSION
+
+script:
+  python manage.py test
+
+before_install: cd code/haitiwater
+
+notifications:
+  email: false
+  slack: haitiwater:nGhgFD7tT0dBG7trZzCOAWm8
+    on_success: always
+    on_failure: always
+    on_pull_requests: always
