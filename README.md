@@ -9,6 +9,10 @@ Tuto temporaire, à bouger dans une section d'installation, antérieure à une s
 #### Python
 1. [Télécharger la dernière version de Python 3](https://www.python.org/downloads/windows/)
 2. Installer avec les valeurs par défaut
+3. Installer l'utilitaire python pour la BDD :
+~~~
+pip install psycopg2
+~~~
 
 #### Base de Données
 1. [Télécharger PostgreSQL (v9.4+)](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
