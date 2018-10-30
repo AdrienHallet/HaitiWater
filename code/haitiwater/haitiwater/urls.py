@@ -19,5 +19,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.dashboard.urls')),  # ToDo change to login page
-    path('accueil', include('apps.dashboard.urls')),
+    path('accueil/', include('apps.dashboard.urls')),
+    path('réseau/', include('apps.water_network.urls')),
+
 ]
