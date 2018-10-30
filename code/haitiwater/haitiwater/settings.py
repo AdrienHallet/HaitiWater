@@ -74,6 +74,12 @@ TEMPLATES = [
     },
 ]
 
+# Have Django look in template and its sub-folders for template loading
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
 WSGI_APPLICATION = 'haitiwater.wsgi.application'
 
 
