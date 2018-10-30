@@ -754,8 +754,8 @@ html.dark .checkbox-text-primary input[type="checkbox"]:checked + label:after,
 html.dark .radio-primary input[type="radio"]:checked + label:after,
 .radio-primary input[type="radio"]:checked + label:after {
 	background: #ee6c4d;
-	-webkit-box-shadow: 0px 0px 1px #ee6c4d;
-	box-shadow: 0px 0px 1px #ee6c4d;
+	-webkit-box-shadow: 0 0 1px #ee6c4d;
+	box-shadow: 0 0 1px #ee6c4d;
 }
 /* Switch */
 .switch.switch-primary .ios-switch .on-background {

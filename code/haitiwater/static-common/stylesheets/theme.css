@@ -1448,6 +1448,7 @@ html.fixed .visible-xl-inline-block {
 	text-align: center;
 	top: 14px;
 	width: 30px;
+	cursor: pointer;
 }
 
 .header-right {
@@ -5255,7 +5256,7 @@ html.header-dark .userbox .dropdown-menu a {
 	font-size: 1.7rem;
 	line-height: 13px;
 	line-height: 1.3rem;
-	color: #EOFBC;
+	color: #e0fbfc;
 	position: absolute;
 	right: 0;
 	top: 0;
