@@ -178,47 +178,73 @@
 						<div class="nano-content">
 							<nav id="menu" class="nav-main" role="navigation">
 								<ul class="nav nav-main">
-									<li class="nav-active">
-										<a href="/accueil">
-											<i class="fa fa-home" aria-hidden="true"></i>
-											<span>Accueil</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="pull-right label label-primary">Notification</span>
-											<i class="fa fa-tint" aria-hidden="true"></i>
-											<span>Réseau</span>
-										</a>
-									</li>
-                                    <li>
-										<a href="#">
-											<span class="pull-right label label-primary">Notification</span>
-											<i class="fa fa-wrench" aria-hidden="true"></i>
-											<span>Techniciens (todo better)</span>
-										</a>
-									</li>
-                                    <li>
-										<a href="#">
-											<span class="pull-right label label-primary">Notification</span>
-											<i class="fas fa-sticky-note" aria-hidden="true"></i>
-											<span>Rapports</span>
-										</a>
-									</li>
-                                    <li>
-										<a href="#">
-											<span class="pull-right label label-primary">Notification</span>
-											<i class="fa fa-users" aria-hidden="true"></i>
-											<span>Consommateurs</span>
-										</a>
-									</li>
+                                    {% if request.path == '/accueil' %}
+									    <li class="nav-active">
+                                    {% else %}
+                                        <li>
+                                    {% endif %}
+                                            <a href="/accueil">
+                                                <i class="fa fa-home" aria-hidden="true"></i>
+                                                <span>Accueil</span>
+                                            </a>
+                                        </li>
+
+									{% if request.path == '/reseau' %}
+									    <li class="nav-active">
+                                    {% else %}
+                                        <li>
+                                    {% endif %}
+                                            <a href="#">
+                                                <span class="pull-right label label-primary">Notification</span>
+                                                <i class="fa fa-tint" aria-hidden="true"></i>
+                                                <span>Réseau</span>
+                                            </a>
+                                        </li>
+                                    {% if request.path == '/techniciens' %}
+									    <li class="nav-active">
+                                    {% else %}
+                                        <li>
+                                    {% endif %}
+                                            <a href="#">
+                                                <span class="pull-right label label-primary">Notification</span>
+                                                <i class="fa fa-wrench" aria-hidden="true"></i>
+                                                <span>Techniciens (todo better)</span>
+                                            </a>
+                                        </li>
+                                    {% if request.path == '/rapports' %}
+									    <li class="nav-active">
+                                    {% else %}
+                                        <li>
+                                    {% endif %}
+                                            <a href="#">
+                                                <span class="pull-right label label-primary">Notification</span>
+                                                <i class="fas fa-sticky-note" aria-hidden="true"></i>
+                                                <span>Rapports</span>
+                                            </a>
+                                        </li>
+                                    {% if request.path == '/consommateurs' %}
+									    <li class="nav-active">
+                                    {% else %}
+                                        <li>
+                                    {% endif %}
+                                            <a href="#">
+                                                <span class="pull-right label label-primary">Notification</span>
+                                                <i class="fa fa-users" aria-hidden="true"></i>
+                                                <span>Consommateurs</span>
+                                            </a>
+                                        </li>
                                     <hr class="separator" />
-                                    <li>
-										<a href="#">
-											<i class="fa fa-question" aria-hidden="true"></i>
-											<span>Aide</span>
-										</a>
-									</li>
+
+                                    {% if request.path == '/aide' %}
+									    <li class="nav-active">
+                                    {% else %}
+                                        <li>
+                                    {% endif %}
+                                            <a href="#">
+                                                <i class="fa fa-question" aria-hidden="true"></i>
+                                                <span>Aide</span>
+                                            </a>
+                                        </li>
 								</ul>
 							</nav>
 						</div>
