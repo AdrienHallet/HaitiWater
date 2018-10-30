@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'apps.authentication',
+    'apps.dashboard',
+    'apps.water_network',
 ]
 
 MIDDLEWARE = [
