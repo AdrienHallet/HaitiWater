@@ -9,5 +9,20 @@ def index(request):
     context = {
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
+        'network_element': debug_fill_table(),
     }
     return HttpResponse(template.render(context, request))
+
+def debug_fill_table():
+    table = []
+    for i in range(1000):
+        table.append({
+                'id': 1,
+                'type': 'Fontaine',
+                'address': 'Rue du bois joli, 4',
+                'users': 600,
+                'state': "En service",
+                'volume_m3': 10,
+                'volume_gal': 2641.72,
+            })
+    return table

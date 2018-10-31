@@ -1,84 +1,55 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block page_name %}
+    Réseau de distribution
+{% endblock %}
 
-    {% block page_name %}
-        Réseau de distribution
-    {% endblock %}
-
-    {% block page_content %}
-        <!-- Theme special case import -->
-<link rel="stylesheet" href="{% static "stylesheets/theme-special-cases.css" %}"/>
-        <section class="panel">
-            <header class="panel-heading">
-                <div class="panel-actions">
-                    <a href="#" class="fa fa-caret-down"></a>
-                    <a href="#" class="fa fa-times"></a>
-                </div>
-                <h2 class="panel-title">Éléments du réseau</h2>
-            </header>
-            <div class="panel-body">
-                <table class="table table-bordered table-striped table-condensed mb-none">
-                    <thead>
-                        <tr>
-                            <th class="hidden-xs hidden-sm">ID</th> {# Colonne se cache sur les layouts xs et sm #}
-                            <th class="text-right">Type</th>
-                            <th class="text-right hidden-xs hidden-sm">Emplacement</th> {# Colonne se cache sur les layouts xs et sm #}
-                            <th class="text-right">Utilisateurs</th>
-                            <th class="text-right">État</th>
-                            <th class="text-right hidden-xs hidden-sm">Volume distribué (septembre)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="hidden-xs hidden-sm">1</td>
-                            <td class="text-right">Fontaine</td>
-                            <td class="text-right hidden-xs hidden-sm">Rue du bois joli</td>
-                            <td class="text-right">600</td>
-                            <td class="text-right">En service</td>
-                            <td class="text-center">x m³ = y gal.</td>
-                        </tr>
-                    </tbody>
-                </table>
+{% block page_content %}
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
             </div>
-        </section>
+            <h2 class="panel-title">Éléments du réseau</h2>
+        </header>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-condensed mb-none">
+                <thead>
+                    <tr>
+                        <th class="text-left">ID</th> {# Colonne se cache sur les layouts xs et sm #}
+                        <th class="text-right">Type</th>
+                        <th class="text-right hidden-xs hidden-sm">Emplacement</th> {# Colonne se cache sur les layouts xs et sm #}
+                        <th class="text-right">Utilisateurs</th>
+                        <th class="text-right">État</th>
+                        <th class="text-right hidden-xs hidden-sm">Volume distribué (septembre)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="hidden-xs hidden-sm">1</td>
+                        <td class="text-right">Fontaine</td>
+                        <td class="text-right hidden-xs hidden-sm">Rue du bois joli</td>
+                        <td class="text-right">600</td>
+                        <td class="text-right">En service</td>
+                        <td class="text-center">x m³ = y gal.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-        <section class="panel">
-            <header class="panel-heading">
-                <div class="panel-actions">
-                    <a href="#" class="fa fa-caret-down"></a>
-                    <a href="#" class="fa fa-times"></a>
-                </div>
-                <h2 class="panel-title">Éléments du réseau (design alternatif)</h2>
-            </header>
-            <div class="panel-body">
-                <table class="table table-bordered table-striped table-condensed mb-none">
-                    <thead>
-                        <tr>
-                            <th class="all-center hidden-xs hidden-sm"  rowspan="2">ID</th> {# Colonne se cache sur les layouts xs et sm #}
-                            <th class="all-center" rowspan="2">Type</th>
-                            <th class="all-center hidden-xs hidden-sm" rowspan="2">Emplacement</th> {# Colonne se cache sur les layouts xs et sm #}
-                            <th class="all-center text-right" rowspan="2">Utilisateurs</th>
-                            <th class="all-center text-right" rowspan="2">État</th>
-                            <th class="all-center text-right hidden-xs hidden-sm" colspan="2">Volume distribué (septembre)</th>
-                        </tr>
-                        <tr>
-                            <th class="all-center hidden-xs hidden-sm">m³</th>
-                            <th class="all-center hidden-xs hidden-sm">gal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="hidden-xs hidden-sm">1</td>
-                            <td class="text-right">Fontaine</td>
-                            <td class="text-right hidden-xs hidden-sm">Rue du bois joli</td>
-                            <td class="text-right">600</td>
-                            <td class="text-right">En service</td>
-                            <td class="text-center">x</td>
-                            <td class="text-center">y</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
             </div>
-        </section>
-    {% endblock %}
+            <h2 class="panel-title">Éléments du réseau (design alternatif)</h2>
+        </header>
+        <div class="panel-body">
+            {% include 'network_element_table.html' %}
+        </div>
+    </section>
+{% endblock %}

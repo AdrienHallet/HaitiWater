@@ -16,10 +16,19 @@ import os
 PROJECT_VERSION = 'Alpha 0'
 PROJECT_NAME = 'HaïtiWater'
 
+COMPRESS_ENABLED = True
+
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.cssmin.CSSMinFilter'
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter'
+]
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 PROJECT_DIR = os.getcwd()
-APPS_DIR = os.path.join(PROJECT_DIR, 'static-common/')
+APPS_DIR = os.path.join(PROJECT_DIR, 'apps/')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -30,7 +39,11 @@ SECRET_KEY = 'gy@$c!a3r15-#=hy#!$ge%)2i%eaj&v_$g*ww-=kc(d6my=%(q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '0.0.0.0',
+    '127.0.0.1',
+    'haitiwater-1.herokuapp.com',
+]
 
 
 # Application definition
@@ -46,6 +59,7 @@ INSTALLED_APPS = [
     'apps.authentication',
     'apps.dashboard',
     'apps.water_network',
+    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -87,16 +101,10 @@ WSGI_APPLICATION = 'haitiwater.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
+import dj_database_url
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'haitiwater',
-        'HOST': 'localhost',
-        'PORT': '5433',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-    }
+    'default': dj_database_url.config()
+
 }
 
 # Password validation
@@ -135,21 +143,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static/')
+STATIC_ROOT = os.path.join(os.getcwd(), 'static/')
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, 'static-common/'),
+    os.path.join(os.getcwd(), 'static-common/'),
 ]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 ]
 
 
-# GDAL library import
+# GDAL library import for Windows
 # Use the installer from https://trac.osgeo.org/osgeo4w/ (32/64 bits according to your python installation)
 if os.name == 'nt':
     import platform
