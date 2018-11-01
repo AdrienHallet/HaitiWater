@@ -118,3 +118,11 @@ venv.bak/
 *.alg
 *.glsdefs
 *.xdy
+
+#IDE config files
+.idea
+
+#Files from Haiti
+documents/input/input/Haïti/Base_de_donnees_CAEPA.xlsm
+documents/input/input/Haïti/Copie de Base_de_donnees_CAEPA_Poste_Métier.xlsm
+documents/input/input/Haïti/Copie de Copie de Ensemble du Pays_SIP_Janv  2016.xls
