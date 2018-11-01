@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     'apps.dashboard',
     'apps.water_network',
     'compressor',
+    'django_tables2',
+    'bootstrap3'
 ]
 
 MIDDLEWARE = [
@@ -103,7 +105,14 @@ WSGI_APPLICATION = 'haitiwater.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 import dj_database_url
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'haitiwater',
+        'HOST': 'localhost',
+        'PORT': '5433',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+    }
 
 }
 

@@ -1,15 +1,26 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.template import loader
 from django.template.loader import render_to_string
+from django_tables2 import RequestConfig, Table
+
+from .classes.water_element_table import DummyTable, DummyFilter
+
+from apps.water_network.models import Dummy
 from haitiwater.settings import PROJECT_VERSION, PROJECT_NAME
 
 
 def index(request):
     template = loader.get_template('water_network.html')
+    table = DummyTable(Dummy.objects.all(), template_name="components/tables/custom1.html")
+    filter = DummyFilter(request.GET, queryset=Dummy.objects.all())
+    RequestConfig(request, paginate={'per_page': 25}).configure(table)
     context = {
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
         'network_element': debug_fill_table(),
+        'dummy': filter.qs,
+        'filter': filter,
     }
     return HttpResponse(template.render(context, request))
 
