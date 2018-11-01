@@ -61,7 +61,8 @@ INSTALLED_APPS = [
     'apps.water_network',
     'compressor',
     'django_tables2',
-    'bootstrap3'
+    'bootstrap3',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
