@@ -3,11 +3,27 @@
 {% load bootstrap3 %}
 {% load widget_tweaks %}
 
-{% if filter %}
-    <form action="" method="get" class="form form-inline">
-        {% render_field filter.form.name %}
-        {% bootstrap_button 'Filtrer' %}
-    </form>
-{% endif %}
+<script src="{% static "javascripts/tables/table.js" %}"></script>
 
-{% render_table dummy 'components/tables/custom1.html' %}
+<div class="dataTable_wrapper no-footer">
+    <div class="text-right mb-md">
+        <div class="DTTT btn-group">
+            <a class="btn btn-default DTTT_button_print" title="View print view">
+                <span>Imprimer</span>
+            </a>
+        </div>
+    </div>
+    <div class="row datatables-header form-inline form-group">
+        <div class="col-sm-12 col-md-6"></div>
+        <div class="col-sm-12 col-md-6">
+            <div class="dataTables_filter pull-right">
+                <form action="" method="get">
+                    {% render_field filter.form.name id="submit-search" class="form-control dataTable_filter" placeholder="Nom contient ..."%}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        {% render_table dummy 'components/tables/custom1.html' %}
+    </div>
+</div>
