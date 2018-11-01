@@ -1,5 +1,5 @@
 {% load staticfiles %}
-{% load i18n %}
+{% load compress %}
 
 <!doctype html>
 <html class="fixed">
@@ -9,8 +9,7 @@
 		<meta charset="UTF-8">
 		<title>HaïtiWater {{ project_version }}</title>
 		<meta name="keywords" content="HTML5 Admin Template" />
-		<meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
-		<meta name="author" content="JSOFT.net">
+		<meta name="description" content="Système de gestion d'eau en Haïti">
 
 		<!-- Mobile Metas -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -25,9 +24,11 @@
               integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
               crossorigin="anonymous">
 
+        {% compress css %}
             <!-- Local Vendors -->
             <link rel="stylesheet" href="{% static "vendor/bootstrap/css/bootstrap.css" %}"/>
             <link rel="stylesheet" href="{% static "vendor/magnific-popup/magnific-popup.css" %}"/>
+            <link rel="stylesheet" href="{% static "vendor/pnotify/pnotify.custom.css" %}"/>
             <link rel="stylesheet" href="{% static "vendor/bootstrap-datepicker/css/datepicker3.css" %}"/>
 
 		<!-- Specific Page Vendor CSS -->
@@ -40,9 +41,7 @@
 
 		<!-- Skin CSS -->
 		<link rel="stylesheet" href="{% static "stylesheets/skins/default.css" %}"/>
-
-		<!-- Head Libs -->
-		<script src="{% static "vendor/modernizr/modernizr.js"%}"></script>
+        {% endcompress %}
 
 	</head>
 	<body>
@@ -192,17 +191,20 @@
 		</section>
 
 		<!-- Vendors -->
+        {% compress js %}
 		<script src="{% static "vendor/jquery/jquery.js" %}"></script>
 		<script src="{% static "vendor/jquery-browser-mobile/jquery.browser.mobile.js" %}"></script>
         <script src="{% static "vendor/nanoscroller/nanoscroller.js" %}"></script>
 		<script src="{% static "vendor/bootstrap/js/bootstrap.js" %}"></script>
-		<script src="{% static "vendor/bootstrap-datepicker/js/bootstrap-datepicker.js" %}"></script>
 		<script src="{% static "vendor/magnific-popup/magnific-popup.js" %}"></script>
 		<script src="{% static "vendor/jquery-placeholder/jquery.placeholder.js" %}"></script>
 		<script src="{% static "vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js" %}"></script>
 		<script src="{% static "vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js" %}"></script>
 		<script src="{% static "vendor/jquery-appear/jquery.appear.js" %}"></script>
 		<script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
+		<script src="{% static "vendor/modernizr/modernizr.js"%}"></script>
+		<script src="{% static "vendor/pnotify/pnotify.custom.js"%}"></script>
+		<script src="{% static "javascripts/ui-elements/modal.js"%}"></script>
 
 		<!-- Theme Base, Components and Settings -->
 		<script src="{% static "javascripts/theme.js" %}"></script>
@@ -212,5 +214,7 @@
 
 		<!-- Theme Initialization Files -->
 		<script src="{% static "javascripts/theme.init.js" %}"></script>
+
+        {% endcompress %}
 	</body>
 </html>

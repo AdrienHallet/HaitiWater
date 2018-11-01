@@ -1,0 +1,17 @@
+dj-database-url==0.5.0
+Django==2.1.2
+django-appconf==1.0.2
+django-bootstrap3==11.0.0
+django-compressor==2.2
+django-filter==2.0.0
+django-heroku==0.3.1
+django-tables2==2.0.2
+django-widget-tweaks==1.4.3
+GDAL==2.3.2
+gunicorn==19.9.0
+psycopg2==2.7.5
+pytz==2018.6
+rcssmin==1.0.6
+rjsmin==1.0.12
+virtualenv==16.0.0
+whitenoise==4.1
