@@ -12,11 +12,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-# HEROKU SPECIAL PARAMS
-import django_heroku
-django_heroku.settings(locals())
-# END HEROKU SPECIAL PARAMS
-
 # Strings containing build information to pass in context view
 PROJECT_VERSION = 'Alpha 0'
 PROJECT_NAME = 'HaïtiWater'
