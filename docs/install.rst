@@ -15,6 +15,13 @@ Python 3.x
     * Vérifier que la bonne version est installée::
     
       $ python3 --version
+      
+GDAL - Librairie géographique
+  Windows
+    * Il existe de nombreuses manières d'installer GDAL. La plus simple est d'utiliser une distribution géospatiale comme `OSGEO4W <https://trac.osgeo.org/osgeo4w/>`_
+  
+  Linux
+    * Téléchargez et installez les binaries GDAL pour votre distribution (`Exemple Ubuntu <http://www.sarasafavi.com/installing-gdalogr-on-ubuntu.html>`_)
 
 PostgreSQL 9.4 ou supérieure
   Windows
