@@ -83,13 +83,13 @@ Lancer le projet
 ----------------
 En vous positionnant au chemin (dernier laissé précédemment) ``../HaitiWater/code``:
   * Activer l'environnement virtuel Python
-    Windows ::
-      
-      env\Scripts\activate
-      
-    Linux ::
-    
-      $ source env/bin/activate
+      Windows ::
+
+        env\Scripts\activate
+
+      Linux ::
+
+        $ source env/bin/activate
       
   * Naviguer jusqu'au projet ::
   
