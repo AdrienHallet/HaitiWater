@@ -10,7 +10,6 @@ django-heroku==0.3.1
 django-tables2==2.0.2
 django-widget-tweaks==1.4.3
 et-xmlfile==1.0.1
-GDAL==2.3.2
 gunicorn==19.9.0
 heroku==0.1.4
 idna==2.7
