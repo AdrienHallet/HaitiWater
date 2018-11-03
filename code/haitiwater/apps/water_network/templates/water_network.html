@@ -7,42 +7,47 @@
 {% endblock %}
 
 {% block page_content %}
+
     <section class="panel">
         <header class="panel-heading">
+            <!-- Table block control actions -->
             <div class="panel-actions form-inline">
                 <a id="add-form" href="#modalForm" class="modal-with-form fa fa-plus"></a>
-                <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
-                    <section class="panel">
-                        <header class="panel-heading">
-                            <h2 class="panel-title">Ajouter un Élément au réseau</h2>
-                        </header>
-                        <div class="panel-body">
-                            <form id="demo-form" class="form-horizontal mb-lg" novalidate="novalidate">
-                                <div class="form-group mt-lg">
-                                    <label class="col-sm-3 control-label">Nom</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="name" class="form-control" placeholder="J'ai perdu !" required="">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <footer class="panel-footer">
-                            <div class="row">
-                                <div class="col-md-12 text-right">
-                                    <button class="btn btn-primary modal-confirm">Submit</button>
-                                    <button class="btn btn-default modal-dismiss">Cancel</button>
-                                </div>
-                            </div>
-                        </footer>
-                    </section>
-                </div>
                 <a href="{% export_url "csv" %}" class="fa fa-print"></a>
                 <a href="#" class="fa fa-caret-down"></a>
             </div>
             <h2 class="panel-title">Éléments du réseau</h2>
         </header>
         <div class="panel-body">
-            {% include 'network_element_table.html' %}
+            {% include "network_element_table.html" %}
         </div>
     </section>
+
+    <!-- Modal form to add network element -->
+    <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">Ajouter un Élément au réseau</h2>
+            </header>
+            <div class="panel-body">
+                <form id="demo-form" class="form-horizontal mb-lg" novalidate="novalidate">
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">Nom</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="name" class="form-control" placeholder="J'ai perdu !" required="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <footer class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button class="btn btn-primary modal-confirm">Submit</button>
+                        <button class="btn btn-default modal-dismiss">Cancel</button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </div>
 {% endblock %}
+
