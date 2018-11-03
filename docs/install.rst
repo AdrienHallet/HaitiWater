@@ -33,6 +33,11 @@ PostgreSQL 9.4 ou supérieure
     * Sélectionner la version PostgreSQL que vous avez choisie
     * Cocher ``Categories>Spatial Extensions>PostGIS 2.x`` (sélectionner la dernière version adaptée à votre installation PostgreSQL 32/64bits)
     * Terminer l'installation avec les valeurs par défaut
+  Linux
+    * PostgreSQL est installé par défaut
+    
+PostGIS
+  * La méthode d'installation peut varier selon la version de PostgreSQL et le système d'exploitation. Si StackBuilder n'a pas été exécuté, visitez `_PostGIS <https://postgis.net/install/>`_
 
 Environnement de développement python
   * Installer virtual environment via l'outil ``pip`` installé par défaut avec Python 3.x ::
