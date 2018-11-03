@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'apps.authentication',
     'apps.dashboard',
     'apps.water_network',
+    'apps.consumers',
     'compressor',
     'django_tables2',
     'bootstrap3',
