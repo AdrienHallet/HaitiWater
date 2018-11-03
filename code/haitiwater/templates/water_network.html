@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load django_tables2 %}
 
 {% block page_name %}
     Réseau de distribution
@@ -35,7 +36,7 @@
                         </footer>
                     </section>
                 </div>
-                <a href="#" class="fa fa-print"></a>
+                <a href="{% export_url "latex" %}" class="fa fa-print"></a>
                 <a href="#" class="fa fa-caret-down"></a>
             </div>
             <h2 class="panel-title">Éléments du réseau</h2>

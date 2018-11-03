@@ -9,6 +9,7 @@ from ..models import Dummy
 
 
 class DummyTable(tables.Table):
+    export_formats = ['csv', 'xls', 'latex']
     name = tables.Column()
     class Meta:
         model = Dummy
