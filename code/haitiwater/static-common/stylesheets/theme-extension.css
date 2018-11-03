@@ -1,0 +1,16 @@
+/* Display the burger menu when menu is closed, left arrow when open */
+.sidebar-left-collapsed .sidebar-left .fa-arrow-left {
+    display: none;
+}
+
+.sidebar-left-collapsed .sidebar-left .fa-bars {
+    display: block;
+}
+
+.sidebar-left .fa-arrow-left{
+    display: block;
+}
+
+.sidebar-left .fa-bars{
+    display: none;
+}
