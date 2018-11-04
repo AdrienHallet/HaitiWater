@@ -1,0 +1,17 @@
+{% load static %}
+
+<section class="panel">
+    <header class="panel-heading">
+        <!-- Table block control actions -->
+        <div class="panel-actions form-inline">
+            <a href="#" class="fa fa-caret-down"></a>
+        </div>
+        <h2 class="panel-title">Graphe</h2>
+    </header>
+    <div class="panel-body">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+        <script src="{% static 'javascripts/ui-elements/graph.js' %}"></script>
+        <canvas id="canvas"></canvas>
+
+    </div>
+</section>
