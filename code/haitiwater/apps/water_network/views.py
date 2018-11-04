@@ -4,11 +4,25 @@ from django.template import loader
 from django.template.loader import render_to_string
 from django_tables2 import RequestConfig
 from django_tables2.export.export import TableExport
+from chartjs.views.lines import BaseLineChartView
 
 from .classes.water_element_table import DummyTable, DummyFilter
 
 from apps.water_network.models import Dummy
 from haitiwater.settings import PROJECT_VERSION, PROJECT_NAME
+
+def graph(request):
+    export_format = request.GET.get('type', None)
+    if export_format == "json":
+        export_format = """{
+               "jsonarray": [{
+                  "name": "Joe",
+                  "age": 12
+               }, {
+                  "name": "Tom",
+                  "age": 14
+               }]}"""
+    return HttpResponse(export_format)
 
 
 def index(request):
@@ -27,6 +41,7 @@ def index(request):
         'project_name': PROJECT_NAME,
         'network_element': debug_fill_table(),
         'dummy': filter.qs,
+        'graph_json': export_format,
         'filter': filter,
     }
     return HttpResponse(template.render(context, request))

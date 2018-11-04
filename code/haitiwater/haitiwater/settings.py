@@ -63,7 +63,8 @@ INSTALLED_APPS = [
     'compressor',
     'django_tables2',
     'bootstrap3',
-    'widget_tweaks'
+    'widget_tweaks',
+    'chartjs'
 ]
 
 MIDDLEWARE = [
