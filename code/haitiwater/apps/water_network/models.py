@@ -35,7 +35,7 @@ class ElementStatus(Enum):
 class Zone(models.Model):
 
     name = models.CharField("Nom", max_length=50)
-    superzone = models.ForeignKey('self', verbose_name="Super-zone", related_name='subzones', on_delete=models.CASCADE)
+    superzone = models.ForeignKey('self', verbose_name="Superzone", related_name='subzones', null=True, on_delete=models.CASCADE)
     # TODO see if ManyToMany ?
 
     # Generated : subzones, locations
@@ -49,7 +49,7 @@ class Location(models.Model):
     zone = models.ForeignKey(Zone, verbose_name="Zone", related_name="locations", on_delete=models.CASCADE)
     lon = models.FloatField("Longitude")
     lat = models.FloatField("Latitude")
-    poly = models.MultiPolygonField("Multi-polygone")
+    poly = models.MultiPolygonField("Multi-polygone", null=True)
 
     # Generated : elements
 
