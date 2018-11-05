@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load django_tables2 %}
+
+{% block page_name %}
+    Réseau de distribution
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row">
+        <div class="col-md-6">
+            {% include "components/graphs/block_all_graphs.html" %}
+        </div>
+        <div class="col-md-6">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions form-inline">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">{{ zone_name }}</h2>
+                </header>
+                <div class="panel-body">
+                    <!-- Network users count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">Nous avons</h4>
+                                <div class="info">6700 consommateurs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Network outlets count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-tint"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">Le réseau compte</h4>
+                                <div class="info">42 points d'eau</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Network outputted water count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-water"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">En Septembre, nous avons distribué</h4>
+                                <div class="info">1337 m³ (353198 gals) d'eau</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <section class="panel">
+        <header class="panel-heading">
+            <!-- Table block control actions -->
+            <div class="panel-actions form-inline">
+                <a id="add-form" href="#modalForm" class="modal-with-form fa fa-plus"></a>
+                <a href="{% export_url "csv" %}" class="fa fa-print"></a>
+                <a href="#" class="fa fa-caret-down"></a>
+            </div>
+            <h2 class="panel-title">Éléments du réseau</h2>
+        </header>
+        <div class="panel-body">
+            {% include "network_element_table.html" %}
+        </div>
+    </section>
+
+    <!-- Modal form to add network element -->
+    <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">Ajouter un Élément au réseau</h2>
+            </header>
+            <div class="panel-body">
+                <form id="demo-form" class="form-horizontal mb-lg" novalidate="novalidate">
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">Nom</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="name" class="form-control" placeholder="J'ai perdu !" required="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <footer class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button class="btn btn-primary modal-confirm">Submit</button>
+                        <button class="btn btn-default modal-dismiss">Cancel</button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </div>
+{% endblock %}
+

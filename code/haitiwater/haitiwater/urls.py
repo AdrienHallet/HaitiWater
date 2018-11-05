@@ -20,6 +20,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.dashboard.urls')),  # ToDo change to login page
     path('accueil/', include('apps.dashboard.urls')),
-    path('réseau/', include('apps.water_network.urls')),
+    path('reseau/', include('apps.water_network.urls')),
+    path('consommateurs/', include('apps.consumers.urls')),
+    path('api/', include('apps.api.urls')),
 
 ]

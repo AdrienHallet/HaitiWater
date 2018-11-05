@@ -59,10 +59,13 @@ INSTALLED_APPS = [
     'apps.authentication',
     'apps.dashboard',
     'apps.water_network',
+    'apps.api',
+    'apps.consumers',
     'compressor',
     'django_tables2',
     'bootstrap3',
-    'widget_tweaks'
+    'widget_tweaks',
+    'chartjs'
 ]
 
 MIDDLEWARE = [
