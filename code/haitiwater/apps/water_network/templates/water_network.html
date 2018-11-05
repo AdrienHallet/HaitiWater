@@ -8,7 +8,65 @@
 
 {% block page_content %}
 
-    {% include "components/graphs/block_all_graphs.html" %}
+    <div class="row">
+        <div class="col-md-6">
+            {% include "components/graphs/block_all_graphs.html" %}
+        </div>
+        <div class="col-md-6">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions form-inline">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">{{ zone_name }}</h2>
+                </header>
+                <div class="panel-body">
+                    <!-- Network users count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">Nous avons</h4>
+                                <div class="info">6700 consommateurs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Network outlets count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-tint"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">Le réseau compte</h4>
+                                <div class="info">42 points d'eau</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Network outputted water count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-water"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">En Septembre, nous avons distribué</h4>
+                                <div class="info">1337 m³ (353198 gals) d'eau</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
 
     <section class="panel">
         <header class="panel-heading">
