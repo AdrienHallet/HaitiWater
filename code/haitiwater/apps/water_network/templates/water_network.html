@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load django_tables2 %}
+{% load compress %}
 
 {% block page_name %}
     Réseau de distribution
@@ -79,11 +80,12 @@
             <h2 class="panel-title">Éléments du réseau</h2>
         </header>
         <div class="panel-body">
-            {% include "network_element_table.html" %}
+            {% include "element_table.html" %}
         </div>
     </section>
 
     <!-- Modal form to add network element -->
+    <script src="{% static "javascripts/ui-elements/modal.js"%}"></script>
     <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
         <section class="panel">
             <header class="panel-heading">

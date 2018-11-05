@@ -25,7 +25,6 @@ def index(request):
     context = {
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
-        'network_element': debug_fill_table(),
         'elements': filter_set.qs,
         'filter': filter_set,
         'zone_name': "Nom de la zone",  # Todo Backend
