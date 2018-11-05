@@ -3,17 +3,4 @@
 {% load bootstrap3 %}
 {% load widget_tweaks %}
 
-<div class="dataTable_wrapper no-footer">
-    <div class="row datatables-header form-inline">
-        <div class="col-sm-6">
-            <div class="dataTables_filter">
-                <form action="" method="get">
-                    {% render_field filter.form.name id="submit-search" class="form-control dataTable_filter" placeholder="Nom contient ..."%}
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="table-responsive">
-        {% render_table elements 'components/tables/custom1.html' %}
-    </div>
-</div>
+{% include 'custom1.html' %}

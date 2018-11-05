@@ -4,6 +4,10 @@
 {% load compress %}
 
 {% block page_name %}
+{#    <script src="{% static "tableHandler.js" %}"></script>#}
+    <script src="{% static "vendor/select2/select2.js" %}"></script>
+    <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.js" %}"></script>
+    <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
     Réseau de distribution
 {% endblock %}
 
@@ -80,7 +84,7 @@
             <h2 class="panel-title">Éléments du réseau</h2>
         </header>
         <div class="panel-body">
-            {% include "element_table.html" %}
+            {% include "custom1.html" %}
         </div>
     </section>
 

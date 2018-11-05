@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 
+
 def graph(request):
     export_format = request.GET.get('type', None)
     if export_format == "json1":
@@ -21,3 +22,27 @@ def graph(request):
                   "age": 14
                }]}"""
     return HttpResponse(export_format)
+
+
+def table(request):
+    # Todo backend https://datatables.net/manual/server-side
+    table_name = request.GET.get('name', None)
+    print(table_name)
+    if table_name == "water_element":
+        print("true")
+        export = """{
+                  "draw": 1,
+                  "recordsTotal": 1,
+                  "recordsFiltered": 1,
+                  "data": [
+                    [
+                      "Fontaine",
+                      "Centre machin truc",
+                      "600",
+                      "En service",
+                      "60 m³"
+                    ]
+                  ]
+                }"""
+    return HttpResponse(export)
+

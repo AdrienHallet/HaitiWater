@@ -28,7 +28,7 @@ function refresh(){
         var chart = new Chart(ctx, config);
     }).done( function() {
         console.log("Finished graph request")
-    }).fail( function(e) {
+    }).fail( function() {
         console.log("Failed graph request")
     }).always( function() {
         console.log("Closing graph request")
