@@ -1,0 +1,19 @@
+{% load static %}
+
+<section class="panel">
+    <header class="panel-heading">
+        <!-- Table block control actions -->
+        <div class="panel-actions form-inline">
+            <a href="#" class="fa fa-caret-down"></a>
+        </div>
+            <select class="title-selection" id="graphTitle" size="1" onchange="refresh()">
+                <option value="json1">Graphe 1</option>
+                <option value="json2">Graphe 2</option>
+            </select>
+    </header>
+    <div class="panel-body">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+        <script src="{% static 'javascripts/ui-elements/graph.js' %}"></script>
+        <canvas id="canvas"></canvas>
+    </div>
+</section>

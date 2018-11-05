@@ -22,5 +22,6 @@ urlpatterns = [
     path('accueil/', include('apps.dashboard.urls')),
     path('reseau/', include('apps.water_network.urls')),
     path('consommateurs/', include('apps.consumers.urls')),
+    path('api/', include('apps.api.urls')),
 
 ]

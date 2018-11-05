@@ -14,3 +14,31 @@
 .sidebar-left .fa-bars{
     display: none;
 }
+
+/* SELECT tag size inside a block header */
+@media screen and (-webkit-min-device-pixel-ratio:0) {  /*safari and chrome*/
+    .title-selection {
+        background-color: transparent;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+.title-selection::-moz-focus-inner { /*Remove button padding in FF*/
+    background-color: transparent;
+        padding-top: 0;
+        padding-bottom: 0;
+}
+@-moz-document url-prefix() { /* targets Firefox only */
+    .title-selection {
+        background-color: transparent;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+@media screen\0 { /* IE Hacks: targets IE 8, 9 and 10 */
+    .title-selection {
+        background-color: transparent;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
