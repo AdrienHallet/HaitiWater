@@ -29,9 +29,9 @@ def table(request):
     table_name = request.GET.get('name', None)
     if table_name == "water_element":
         export = """{
-                  "draw": 1,
-                  "recordsTotal": 1,
-                  "recordsFiltered": 1,
+                  "draw": 2,
+                  "recordsTotal": 100,
+                  "recordsFiltered": 100,
                   "data": [
                     [
                       "1",

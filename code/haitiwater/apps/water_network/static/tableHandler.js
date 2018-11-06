@@ -48,7 +48,7 @@ $(document).ready(function() {
 /**
  * Tell the window to display a horizontal scroll if the entire table cannot be displayed.
  */
-resizeWraperIfNeeded()
+resizeWraperIfNeeded();
 function resizeWraperIfNeeded() {
     if ($('#datatable-ajax_wrapper').outerWidth() > 500){
         $('#datatable-ajax_wrapper').css("overflow-x","hidden");
