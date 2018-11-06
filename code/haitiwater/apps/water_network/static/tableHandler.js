@@ -52,8 +52,7 @@ $(document).ready(function() {
  */
 function prettifyHeader(){
     $('#datatable-ajax_filter').find('input').addClass("form-control");
-    $('#datatable-ajax_filter').find('input').attr("placeholder", "Rerchercher...");
-    $('#datatable-ajax_length').find('select').css("height", "40px");
+    $('#datatable-ajax_filter').find('input').attr("placeholder", "Recherche");
 }
 
 /**
