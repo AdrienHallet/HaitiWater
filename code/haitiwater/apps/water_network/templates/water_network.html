@@ -8,6 +8,7 @@
     <script src="{% static "vendor/select2/select2.js" %}"></script>
     <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.js" %}"></script>
     <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
+    <link src="{% static "vendor/jquery-datatables/extra/responsive/css/dataTables.responsive.scss" %}">
     Réseau de distribution
 {% endblock %}
 
@@ -78,13 +79,13 @@
             <!-- Table block control actions -->
             <div class="panel-actions form-inline">
                 <a id="add-form" href="#modalForm" class="modal-with-form fa fa-plus"></a>
-                <a href="{% export_url "csv" %}" class="fa fa-print"></a>
+                <a href="#" class="fa fa-print"></a>
                 <a href="#" class="fa fa-caret-down"></a>
             </div>
             <h2 class="panel-title">Éléments du réseau</h2>
         </header>
         <div class="panel-body">
-            {% include "custom1.html" %}
+            {% include "water_element_table.html" %}
         </div>
     </section>
 

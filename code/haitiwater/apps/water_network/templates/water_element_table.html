@@ -1,0 +1,23 @@
+{% load static %}
+
+<script src="{% static "tableHandler.js" %}"></script>
+<div id="datatable-ajax_wrapper" class="dataTables_wrapper no-footer">
+    <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-ajax" aria-describedby="datatable-ajax_info">
+        <thead>
+            <tr>
+                <th colspan="5" width="80%"></th>
+                <th class="text-center" colspan="2" width="20%">Quantité d'eau distribuée</th>
+            </tr>
+            <tr>
+                <th width="5%">Id</th>
+                <th width="15%">Type</th>
+                <th width="30%">Emplacement</th>
+                <th width="15%">Utilisateurs</th>
+                <th width="15%">État</th>
+                <th class="text-center" width="10%">m³</th>
+                <th class="text-center" width="10%">gallons</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>

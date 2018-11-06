@@ -27,20 +27,20 @@ def graph(request):
 def table(request):
     # Todo backend https://datatables.net/manual/server-side
     table_name = request.GET.get('name', None)
-    print(table_name)
     if table_name == "water_element":
-        print("true")
         export = """{
                   "draw": 1,
                   "recordsTotal": 1,
                   "recordsFiltered": 1,
                   "data": [
                     [
+                      "1",
                       "Fontaine",
                       "Centre machin truc",
                       "600",
                       "En service",
-                      "60 m³"
+                      "x",
+                      "y"
                     ]
                   ]
                 }"""
