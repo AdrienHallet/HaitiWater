@@ -16,7 +16,7 @@ $(document).ready(function() {
         "language": {
             "sProcessing":     "Chargement...",
             "sSearch":         "",
-            "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
+            "sLengthMenu":     "_MENU_ &eacute;l&eacute;ments",
             "sInfo":           "", //"Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
             "sInfoEmpty":      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
             "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
@@ -43,12 +43,22 @@ $(document).ready(function() {
             $('td', row).eq(6).addClass('text-center');
         }
     });
+    resizeWraperIfNeeded();
+    prettifyHeader();
 } );
+
+/**
+ * Add placeholder and CSS class in the search field
+ */
+function prettifyHeader(){
+    $('#datatable-ajax_filter').find('input').addClass("form-control");
+    $('#datatable-ajax_filter').find('input').attr("placeholder", "Rerchercher...");
+    $('#datatable-ajax_length').find('select').css("height", "40px");
+}
 
 /**
  * Tell the window to display a horizontal scroll if the entire table cannot be displayed.
  */
-resizeWraperIfNeeded();
 function resizeWraperIfNeeded() {
     if ($('#datatable-ajax_wrapper').outerWidth() > 500){
         $('#datatable-ajax_wrapper').css("overflow-x","hidden");
@@ -57,7 +67,5 @@ function resizeWraperIfNeeded() {
     }
 }
 $( window ).resize(function() {
-    console.log("Inside resize function");
-    console.log($('#datatable-ajax_wrapper').outerWidth());
     resizeWraperIfNeeded()
 });
