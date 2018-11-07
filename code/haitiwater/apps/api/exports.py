@@ -32,6 +32,15 @@ def table(request):
                       "En service",
                       "x",
                       "y"
+                    ],
+                    [
+                      "2",
+                      "Fontaine",
+                      "Centre machin truc",
+                      "600",
+                      "En service",
+                      "x",
+                      "y"
                     ]
                   ]
                 }"""

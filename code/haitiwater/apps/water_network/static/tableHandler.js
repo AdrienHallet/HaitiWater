@@ -13,6 +13,11 @@ $(document).ready(function() {
         "serverSide": true,
         "responsive": true,
         "autoWidth": false,
+        "columnDefs": [{
+            "targets": -1,
+            "data": null,
+            "defaultContent": getActionButtonsHTML(),
+        }],
         "language": {
             "sProcessing":     "Chargement...",
             "sSearch":         "",
@@ -43,9 +48,59 @@ $(document).ready(function() {
             $('td', row).eq(6).addClass('text-center');
         }
     });
+
+    let table = $('#example').DataTable();
+    $('#datatable-ajax tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    });
+
+    $('#datatable-ajax tbody').on( 'click', '.remove-row', function () {
+        let data = $(this).parents('tr')[0].getElementsByTagName('td');
+        if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
+            removeElement(data[0]);
+        } else {}
+    } );
+
     resizeWraperIfNeeded();
     prettifyHeader();
-} );
+});
+
+/**
+ * Remove an element from the water_element database
+ * @param id the ID of the element to remove
+ */
+function removeElement(id){
+    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    let postURL = baseURL + "/api/remove";
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", postURL, true);
+    xhttp.onreadystatechange = function() {
+        if(xhttp.readyState === 4) {
+            if (xhttp.status !== 200) {
+                console.log("POST error on remove element");
+                new PNotify({
+                    title: 'Échec!',
+                    text: "L'élement n'a pas pu être supprimé",
+                    type: 'alert'
+                });
+            } else {
+                new PNotify({
+                    title: 'Succès!',
+                    text: 'Élément ajouté avec succès',
+                    type: 'success'
+                });
+                $('#datatable-ajax').DataTable().reload();
+            }
+        }
+    };
+    xhttp.send('?table=water_element&id='+id)
+}
 
 /**
  * Add placeholder and CSS class in the search field
@@ -59,7 +114,7 @@ function prettifyHeader(){
  * Tell the window to display a horizontal scroll if the entire table cannot be displayed.
  */
 function resizeWraperIfNeeded() {
-    if ($('#datatable-ajax_wrapper').outerWidth() > 500){
+    if ($('#datatable-ajax_wrapper').outerWidth() > 600){ //Adjust value to table length
         $('#datatable-ajax_wrapper').css("overflow-x","hidden");
     } else {
         $('#datatable-ajax_wrapper').css("overflow-x","auto");
@@ -68,3 +123,10 @@ function resizeWraperIfNeeded() {
 $( window ).resize(function() {
     resizeWraperIfNeeded()
 });
+
+function getActionButtonsHTML(){
+    return '<a style="cursor:pointer;" class="on-default edit-row">' +
+                '<i class="fa fa-pen"></i></a>    ' +
+            '<a style="cursor:pointer;" class="on-default remove-row">' +
+                '<i class="fa fa-trash"></i></a>'
+}
