@@ -90,17 +90,49 @@
 
     <!-- Modal form to add network element -->
     <script src="{% static "javascripts/ui-elements/modal.js"%}"></script>
+    <script src="{% static "formHandler.js"%}"></script>
     <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
         <section class="panel">
             <header class="panel-heading">
                 <h2 class="panel-title">Ajouter un Élément au réseau</h2>
             </header>
             <div class="panel-body">
-                <form id="demo-form" class="form-horizontal mb-lg" novalidate="novalidate">
+                <div id="form-error" class="alert alert-danger hidden">
+                    <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
+                    <div id="form-error-msg"></div>
+                </div>
+                <form id="form-add-element" class="form-horizontal mb-lg">
                     <div class="form-group mt-lg">
                         <label class="col-sm-3 control-label">Nom</label>
                         <div class="col-sm-9">
-                            <input type="text" name="name" class="form-control" placeholder="J'ai perdu !" required="">
+                            <select id="select-type" name="type" class="form-control">
+                                <option value="none">...</option>
+                                <option value="fountain">Fontaine</option>
+                                <option value="kiosk">Kiosque</option>
+                                <option value="individual">Prise individuelle</option>
+                                <option value="source">Source</option>
+                                <option value="pipe">Conduite</option>
+                            </select>
+                            <label id="select-type-error" class="error">Champ requis</label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">Emplacement</label>
+                        <div class="col-sm-9">
+                            <input id="input-localization" name="input-localization" class="form-control">
+                            <label id="input-localization-error" class="error">Champ requis</label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">État</label>
+                        <div class="col-sm-9">
+                            <select id="select-state" name="state" class="form-control">
+                                <option value="none">...</option>
+                                <option value="ok">En service</option>
+                                <option value="repair">Nécessite réparation</option>
+                                <option value="ko">Hors service</option>
+                            </select>
+                            <label id="select-state-error" class="error">Champ requis</label>
                         </div>
                     </div>
                 </form>
@@ -108,8 +140,8 @@
             <footer class="panel-footer">
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <button class="btn btn-primary modal-confirm">Submit</button>
-                        <button class="btn btn-default modal-dismiss">Cancel</button>
+                        <button onclick="validateForm()" class="btn btn-primary modal-confirm">Ajouter</button>
+                        <button onclick="dismissModal()" class="btn btn-default modal-dismiss">Annuler</button>
                     </div>
                 </div>
             </footer>

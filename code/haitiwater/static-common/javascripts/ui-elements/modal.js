@@ -16,21 +16,3 @@ $('.modal-with-form').magnificPopup({
         }
     }
 });
-
-// Dismiss modal
-$(document).on('click', '.modal-dismiss', function (e) {
-    e.preventDefault();
-    $.magnificPopup.close();
-});
-
-// Confirm modal
-$(document).on('click', '.modal-confirm', function (e) {
-    e.preventDefault();
-    $.magnificPopup.close();
-
-    new PNotify({
-        title: 'Success!',
-        text: 'Modal Confirm Message.',
-        type: 'success'
-    });
-});
