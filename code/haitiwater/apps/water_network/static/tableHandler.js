@@ -108,6 +108,7 @@ function removeElement(id){
 function prettifyHeader(){
     $('#datatable-ajax_filter').find('input').addClass("form-control");
     $('#datatable-ajax_filter').find('input').attr("placeholder", "Recherche");
+    $('#datatable-ajax_filter').css("min-width", "400px");
 }
 
 /**
@@ -116,6 +117,7 @@ function prettifyHeader(){
 function resizeWraperIfNeeded() {
     if ($('#datatable-ajax_wrapper').outerWidth() > 600){ //Adjust value to table length
         $('#datatable-ajax_wrapper').css("overflow-x","hidden");
+
     } else {
         $('#datatable-ajax_wrapper').css("overflow-x","auto");
     }
@@ -125,8 +127,8 @@ $( window ).resize(function() {
 });
 
 function getActionButtonsHTML(){
-    return '<a style="cursor:pointer;" class="on-default edit-row">' +
+    return '<div class="center"><a style="cursor:pointer;" class="on-default edit-row">' +
                 '<i class="fa fa-pen"></i></a>    ' +
             '<a style="cursor:pointer;" class="on-default remove-row">' +
-                '<i class="fa fa-trash"></i></a>'
+                '<i class="fa fa-trash"></i></a></div>'
 }
