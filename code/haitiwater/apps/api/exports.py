@@ -17,9 +17,11 @@ def graph(request):
 
 def table(request):
     # Todo backend https://datatables.net/manual/server-side
+    # Note that "editable" is a custom field. Setting it to true displays the edit/delete buttons.
     table_name = request.GET.get('name', None)
     if table_name == "water_element":
         export = """{
+                  "editable": true,
                   "draw": 2,
                   "recordsTotal": 100,
                   "recordsFiltered": 100,
