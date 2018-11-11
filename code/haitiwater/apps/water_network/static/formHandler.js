@@ -161,17 +161,25 @@ function setupModalEdit(data){
     $('#modal-submit-edit').removeClass("hidden");
     $('#form-id-component').removeClass("hidden");
 
+    //Get the option that contains the values for data 2 and 4
+    let typeOption = $("#select-type option").filter(function() {
+        if (this.text.trim() === data[1].innerText.trim()) {
+            return this;
+        }
+    });
+    let stateOption = $("#select-state option").filter(function() {
+        if (this.text.trim() === data[4].innerText.trim()) {
+            return this;
+        }
+    });
+
     //Set form values to current values
-    $('#input-id').val(data[0].innerText);
-    $("#select-type option").filter(function() {
-        return this.text.trim() === data[1].innerText.trim();
-    }).attr('selected', true);
-    $('#input-localization').val(data[2].innerText);
-    //data[3] is the sum of users, not modifiable here
-    $("#select-state option").filter(function() {
-        return this.text.trim() === data[4].innerText.trim();
-    }).attr('selected', true);
-    //data[5]&data[6] are the output values, not modifiable here
+    let form = document.forms["form-add-element"];
+    form["input-id"].value = data[0].innerText;
+    form["select-type"].value = typeOption[0].value;
+    form["input-localization"].value = data[2].innerText;
+    form["select-state"].value = stateOption[0].value;
+
     showModal();
 }
 
