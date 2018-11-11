@@ -26,10 +26,26 @@ $(document).ready(function() {
             removeElement(data[0]);
         } else {}
     } );
+    $('#datatable-ajax tbody').on( 'click', '.edit-row', function () {
+        let data = $(this).parents('tr')[0].getElementsByTagName('td');
+        editElement(data);
+    } );
 
     resizeWraperIfNeeded();
     prettifyHeader();
 });
+
+function editElement(data){
+    if(data){
+        setupModalEdit(data);
+    } else {
+        new PNotify({
+            title: 'Échec!',
+            text: "L'élément ne peut être récupéré (tableHandler.js)",
+            type: 'error'
+        });
+    }
+}
 
 /**
  * Remove an element from the water_element database
@@ -47,7 +63,7 @@ function removeElement(id){
                 new PNotify({
                     title: 'Échec!',
                     text: "L'élement n'a pas pu être supprimé",
-                    type: 'alert'
+                    type: 'error'
                 });
             } else {
                 new PNotify({
@@ -140,8 +156,7 @@ function getDatatableConfiguration(dataURL){
 }
 
 function getActionButtonsHTML(){
-    return '<div class="center"><a style="cursor:pointer;" class="on-default edit-row">' +
-                '<i class="fa fa-pen"></i></a>    ' +
-            '<a style="cursor:pointer;" class="on-default remove-row">' +
-                '<i class="fa fa-trash"></i></a></div>'
+    return '<div class="center"><a href="#modalForm" class="modal-with-form edit-row fa fa-pen"></a>' +
+            '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
+            '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
 }

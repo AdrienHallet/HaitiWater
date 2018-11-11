@@ -14,13 +14,13 @@ window.onload = function() {
 /**
  * Validate (check if valid) the form.
  * If not valid, display messages
- * @returns {boolean}
  */
 function validateForm() {
     console.log("Form validation start");
 
     let form = document.forms["form-add-element"];
 
+    let id = form["input-id"].value;
     let type = form["select-type"].value;
     let localization = form["input-localization"].value;
     let state = form["select-state"].value;
@@ -42,20 +42,22 @@ function validateForm() {
     if(missing){
         return false
     } else {
-        let request = buildRequest(type, localization, state);
-        postNewElement(request);
+        return buildRequest(id, type, localization, state);
     }
 
 }
 
 /**
  * Build the request
+ * @param id
  * @param type
  * @param localization
+ * @param state
  * @returns {string}
  */
-function buildRequest(type, localization, state){
+function buildRequest(id, type, localization, state){
     let request = "table=water_element";
+    request += "&id=" + id;
     request += "&type=" + type;
     request += "&localization=" + localization;
     request += "&state=" + state;
@@ -68,9 +70,48 @@ function buildRequest(type, localization, state){
  * @param request as a String
  * //Todo extract
  */
-function postNewElement(request){
+function postNewElement(){
+    let request = validateForm();
+    if(!request){
+        // Form is not valid (missing/wrong fields)
+        return false;
+    }
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/add/";
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", postURL, true);
+    xhttp.onreadystatechange = function() {
+        if(xhttp.readyState !== 4 || xhttp.status !== 200) {
+            if(xhttp.responseText) {
+                console.log("POST error on new element");
+                document.getElementById("form-error").className = "alert alert-danger";
+                document.getElementById("form-error-msg").innerHTML = xhttp.responseText;
+            }
+        } else {
+            dismissModal();
+            new PNotify({
+                title: 'Succès!',
+                text: 'Élément ajouté avec succès',
+                type: 'success'
+            });
+        }
+    };
+    xhttp.send(request)
+}
+
+/**
+ * Send a post request to server and handle it
+ * @param request as a String
+ * //Todo extract
+ */
+function postEditElement(){
+    let request = validateForm();
+    if(!request){
+        // Form is not valid (missing/wrong fields)
+        return false;
+    }
+    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    let postURL = baseURL + "/api/edit/";
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.onreadystatechange = function() {
@@ -97,6 +138,61 @@ function postNewElement(request){
  */
 function hideFormErrorMsg(){
     document.getElementById("form-error").className = "alert alert-danger hidden";
+}
+
+function setupModalAdd(){
+    //Show add components
+    $('#modal-title-add').removeClass("hidden");
+    $('#modal-submit-add').removeClass("hidden");
+
+    //Hide edit components
+    $('#modal-title-edit').addClass("hidden");
+    $('#modal-submit-edit').addClass("hidden");
+    $('#form-id-component').addClass("hidden");
+}
+
+function setupModalEdit(data){
+    //Hide add components
+    $('#modal-title-add').addClass("hidden");
+    $('#modal-submit-add').addClass("hidden");
+
+    //Show edit components
+    $('#modal-title-edit').removeClass("hidden");
+    $('#modal-submit-edit').removeClass("hidden");
+    $('#form-id-component').removeClass("hidden");
+
+    //Set form values to current values
+    $('#input-id').val(data[0].innerText);
+    $("#select-type option").filter(function() {
+        return this.text.trim() === data[1].innerText.trim();
+    }).attr('selected', true);
+    $('#input-localization').val(data[2].innerText);
+    //data[3] is the sum of users, not modifiable here
+    $("#select-state option").filter(function() {
+        return this.text.trim() === data[4].innerText.trim();
+    }).attr('selected', true);
+    //data[5]&data[6] are the output values, not modifiable here
+    showModal();
+}
+
+function showModal(){
+    $('.modal-with-form').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#name',
+        modal: true,
+
+        // Do not zoom on mobile
+        callbacks: {
+            beforeOpen: function() {
+                if($(window).width() < 700) {
+                    this.st.focus = false;
+                } else {
+                    this.st.focus = '#name';
+                }
+            }
+        }
+    }).magnificPopup('open');
 }
 
 /**
