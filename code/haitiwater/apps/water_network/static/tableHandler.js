@@ -129,7 +129,7 @@ function getDatatableConfiguration(dataURL){
             }
         },
         "ajax": {
-            url: dataURL+"blblbl",
+            url: dataURL,
             error: function (xhr, error, thrown) {
                 console.log(xhr + '\n' + error + '\n' + thrown);
                 new PNotify({
