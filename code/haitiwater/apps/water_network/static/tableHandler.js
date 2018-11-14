@@ -31,7 +31,6 @@ $(document).ready(function() {
         editElement(data);
     } );
 
-    resizeWraperIfNeeded();
     prettifyHeader();
 });
 
@@ -87,28 +86,21 @@ function prettifyHeader(){
     $('#datatable-ajax_filter').css("min-width", "400px");
 }
 
-/**
- * Tell the window to display a horizontal scroll if the entire table cannot be displayed.
- */
-function resizeWraperIfNeeded() {
-    if ($('#datatable-ajax_wrapper').outerWidth() > 600){ //Adjust value to table length
-        $('#datatable-ajax_wrapper').css("overflow-x","hidden");
-
-    } else {
-        $('#datatable-ajax_wrapper').css("overflow-x","auto");
-    }
-}
-$( window ).resize(function() {
-    resizeWraperIfNeeded()
-});
 
 function getDatatableConfiguration(dataURL){
     let config = {
         "sortable": true,
         "processing": false,
         "serverSide": true,
-        "responsive": true,
+        "responsive": false,
         "autoWidth": false,
+        scrollX:        true,
+        scrollCollapse: true,
+        paging:         true,
+        fixedColumns:   {
+            leftColumns: 1,
+            rightColumns: 1
+        },
         "columnDefs": [{
                 "targets": -1,
                 "data": null,
@@ -136,7 +128,17 @@ function getDatatableConfiguration(dataURL){
                 "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
             }
         },
-        "ajax": dataURL,
+        "ajax": {
+            url: dataURL+"blblbl",
+            error: function (xhr, error, thrown) {
+                console.log(xhr + '\n' + error + '\n' + thrown);
+                new PNotify({
+                    title: 'Échec du téléchargement!',
+                    text: "Les données de la table n'ont pas pu être téléchargées",
+                    type: 'failure'
+                });
+            }
+        },
 
         //Callbacks on fetched data
         "createdRow": function (row, data, index) {
