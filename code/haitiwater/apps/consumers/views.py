@@ -8,5 +8,7 @@ def index(request):
     context = {
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
+        'zone_name': 'Nom de la zone',  # Todo Backend
+        'current_period': 'Septembre',  # Todo Backend (month of current computed paid info)
     }
     return HttpResponse(template.render(context, request))
