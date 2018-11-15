@@ -1,7 +1,9 @@
 {% load static %}
 
 <script src="{% static "consumerTableHandler.js" %}"></script>
-<link rel="stylesheet" href="{% static "vendor/jquery-datatables/datatables.min.css" %}"/>
+<link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
+<script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.js" %}"></script>
+<script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
 <div id="datatable-ajax_wrapper" class="dataTables_wrapper no-footer">
     <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-ajax" aria-describedby="datatable-ajax_info">
         <thead>

@@ -7,18 +7,23 @@ $(document).ready(function() {
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=consumer";
     console.log(dataURL);
-    $('#datatable-ajax').DataTable(getDatatableConfiguration(dataURL));
+    try {
+        $('#datatable-ajax').DataTable(getDatatableConfiguration(dataURL));
 
-    let table = $('#datatable-ajax').DataTable();
-    $('#datatable-ajax tbody').on('click', 'tr', function () {
-        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-        }
-        else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-    });
+        let table = $('#example').DataTable();
+        $('#datatable-ajax tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    }
+    catch(err) {
+        console.log(err);
+    }
 
     $('#datatable-ajax tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
@@ -30,6 +35,18 @@ $(document).ready(function() {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         editElement(data);
     } );
+
+    $.fn.dataTable.ext.errMode = 'none';
+    $('#datatable-ajax')
+        .on( 'error.dt', function ( e, settings, techNote, message ) {
+            console.log(message);
+            new PNotify({
+            title: 'Échec!',
+            text: "Réception des données de la table impossible",
+            type: 'error'
+        });
+        } )
+        .DataTable();
 
     prettifyHeader();
 });
@@ -91,15 +108,8 @@ function getDatatableConfiguration(dataURL){
         "sortable": true,
         "processing": false,
         "serverSide": true,
-        "responsive": false,
+        "responsive": true,
         "autoWidth": false,
-        scrollX:        true,
-        scrollCollapse: true,
-        paging:         true,
-        fixedColumns:   {
-            leftColumns: 1,
-            rightColumns: 1
-        },
         "columnDefs": [{
                 "targets": -1,
                 "data": null,
@@ -115,7 +125,7 @@ function getDatatableConfiguration(dataURL){
             "sInfoPostFix": "",
             "sLoadingRecords": "Chargement en cours...",
             "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
-            "semptyTable": "Aucune donn&eacute;e disponible dans le tableau",
+            "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
             "oPaginate": {
                 "sFirst": "Premier",
                 "sPrevious": "Pr&eacute;c&eacute;dent",
@@ -127,18 +137,7 @@ function getDatatableConfiguration(dataURL){
                 "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
             }
         },
-        "ajax": {
-            url: dataURL,
-            error: function (xhr, error, thrown) {
-                console.log(xhr + '\n' + error + '\n' + thrown);
-                $('#datatable-ajax_wrapper').hide();
-                new PNotify({
-                    title: 'Échec du téléchargement!',
-                    text: "Les données de la table n'ont pas pu être téléchargées",
-                    type: 'failure'
-                });
-            }
-        },
+        "ajax": dataURL,
 
         //Callbacks on fetched data
         "initComplete": function(settings, json){
