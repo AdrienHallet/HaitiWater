@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block page_name %}
+    Rapports
+{% endblock %}
+
+{% block page_content %}
+
+    <!-- Report buttons -->
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
+            </div>
+
+            <h2 class="panel-title">Envoyer un rapport</h2>
+            <p class="panel-subtitle">Le rapport sera visible pour tous vos gestionnaires et le(s) technicien(s) de votre région.</p>
+        </header>
+        <div class="panel-body">
+            <div class="btn-group-lg btn-group-justified">
+                <a class="btn btn-default" role="button"><i class="fa fa-exclamation-triangle"></i> Signaler un problème <i class="fa fa-exclamation-triangle"></i></a>
+                <a class="btn btn-default" role="button"><i class="fa fa-file"></i> Rapport mensuel <i class="fa fa-file"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support ticket table -->
+    <section class="panel">
+        <header class="panel-heading">
+            <!-- Table block control actions -->
+            <div class="panel-actions form-inline">
+                <a href="#" class="fa fa-caret-down"></a>
+            </div>
+            <h2 class="panel-title">Éléments du réseau</h2>
+        </header>
+        <div class="panel-body">
+            {% include "support_ticket_table.html" %}
+        </div>
+    </section>
+
+{% endblock %}
