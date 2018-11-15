@@ -44,7 +44,7 @@
             <link rel="stylesheet" href="{% static "stylesheets/skins/default.css" %}"/>
         {% endcompress %}
 
-        <!-- Vendors -->
+        <!-- Vendors JS -->
         {% compress js %}
             <script src="{% static "vendor/jquery/jquery.js" %}"></script>
             <script src="{% static "vendor/jquery-browser-mobile/jquery.browser.mobile.js" %}"></script>
@@ -58,6 +58,7 @@
             <script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
             <script src="{% static "vendor/modernizr/modernizr.js"%}"></script>
             <script src="{% static "vendor/pnotify/pnotify.custom.js"%}"></script>
+
             <!-- Theme Base, Components and Settings -->
             <script src="{% static "javascripts/theme.js" %}"></script>
 
@@ -66,6 +67,9 @@
 
             <!-- Theme Initialization Files -->
             <script src="{% static "javascripts/theme.init.js" %}"></script>
+
+            <!-- Scripts often needed, requested in main template for preload !-->
+            <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
         {% endcompress %}
 
 	</head>

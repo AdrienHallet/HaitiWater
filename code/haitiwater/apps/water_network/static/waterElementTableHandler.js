@@ -6,7 +6,7 @@
 $(document).ready(function() {
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=water_element";
-    console.log(dataURL);
+    console.log("Request data from: " + dataURL);
     $('#datatable-ajax').DataTable(getDatatableConfiguration(dataURL));
 
     let table = $('#example').DataTable();
@@ -33,59 +33,6 @@ $(document).ready(function() {
 
     prettifyHeader();
 });
-
-function editElement(data){
-    if(data){
-        setupModalEdit(data);
-    } else {
-        new PNotify({
-            title: 'Échec!',
-            text: "L'élément ne peut être récupéré (tableHandler.js)",
-            type: 'error'
-        });
-    }
-}
-
-/**
- * Remove an element from the water_element database
- * @param id the ID of the element to remove
- */
-function removeElement(id){
-    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/remove";
-    let xhttp = new XMLHttpRequest();
-    xhttp.open("POST", postURL, true);
-    xhttp.onreadystatechange = function() {
-        if(xhttp.readyState === 4) {
-            if (xhttp.status !== 200) {
-                console.log("POST error on remove element");
-                new PNotify({
-                    title: 'Échec!',
-                    text: "L'élement n'a pas pu être supprimé",
-                    type: 'error'
-                });
-            } else {
-                new PNotify({
-                    title: 'Succès!',
-                    text: 'Élément ajouté avec succès',
-                    type: 'success'
-                });
-                $('#datatable-ajax').DataTable().reload();
-            }
-        }
-    };
-    xhttp.send('?table=water_element&id='+id)
-}
-
-/**
- * Add placeholder and CSS class in the search field
- */
-function prettifyHeader(){
-    $('#datatable-ajax_filter').find('input').addClass("form-control");
-    $('#datatable-ajax_filter').find('input').attr("placeholder", "Recherche");
-    $('#datatable-ajax_filter').css("min-width", "400px");
-}
-
 
 function getDatatableConfiguration(dataURL){
     let config = {
@@ -147,18 +94,10 @@ function getDatatableConfiguration(dataURL){
         },
         "initComplete": function(settings, json){
             // Removes the last column (both header and body) if we cannot edit the table
-            console.log(json.hasOwnProperty('editable'));
-            console.log(json['editable']);
             if(!(json.hasOwnProperty('editable') && json['editable'])){
                 $('#datatable-ajax').find('tr:last-child th:last-child, td:last-child').remove();
             }
         }
     };
     return config;
-}
-
-function getActionButtonsHTML(){
-    return '<div class="center"><a href="#modalForm" class="modal-with-form edit-row fa fa-pen"></a>' +
-            '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
-            '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
 }

@@ -16,8 +16,6 @@ window.onload = function() {
  * If not valid, display messages
  */
 function validateForm() {
-    console.log("Form validation start");
-
     let form = document.forms["form-add-element"];
 
     let id = form["input-id"].value;
