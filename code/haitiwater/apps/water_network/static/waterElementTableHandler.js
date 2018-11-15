@@ -9,7 +9,7 @@ $(document).ready(function() {
     console.log("Request data from: " + dataURL);
     $('#datatable-ajax').DataTable(getDatatableConfiguration(dataURL));
 
-    let table = $('#example').DataTable();
+    let table = $('#datatable-ajax').DataTable();
     $('#datatable-ajax tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
@@ -79,6 +79,7 @@ function getDatatableConfiguration(dataURL){
             url: dataURL,
             error: function (xhr, error, thrown) {
                 console.log(xhr + '\n' + error + '\n' + thrown);
+                $('#datatable-ajax_wrapper').hide();
                 new PNotify({
                     title: 'Échec du téléchargement!',
                     text: "Les données de la table n'ont pas pu être téléchargées",
