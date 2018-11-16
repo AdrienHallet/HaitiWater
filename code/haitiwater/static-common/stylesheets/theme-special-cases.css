@@ -1,4 +1,10 @@
+/* Force center whatever happens */
 .all-center {
      vertical-align: middle !important;
      text-align: center;
+}
+
+/* Handling multiselect appearance */
+.multiselect-container > li > a{
+     white-space: normal;
 }
