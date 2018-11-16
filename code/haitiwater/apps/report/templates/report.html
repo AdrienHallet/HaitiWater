@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block page_name %}
     Rapports
@@ -15,12 +16,13 @@
             </div>
 
             <h2 class="panel-title">Envoyer un rapport</h2>
-            <p class="panel-subtitle">Le rapport sera visible pour tous vos gestionnaires et le(s) technicien(s) de votre région.</p>
+            <p class="panel-subtitle">Le rapport sera visible pour tous vos gestionnaires et le(s) technicien(s) de
+                votre région.</p>
         </header>
         <div class="panel-body">
             <div class="btn-group-lg btn-group-justified">
-                <a class="btn btn-default" role="button"><i class="fa fa-exclamation-triangle"></i> Signaler un problème <i class="fa fa-exclamation-triangle"></i></a>
-                <a class="btn btn-default" role="button"><i class="fa fa-file"></i> Rapport mensuel <i class="fa fa-file"></i></a>
+                <a class="btn btn-default" role="button">Signaler un problème</a>
+                <a class="btn btn-default modal-with-form" role="button" href="#modalMonthlyReport">Rapport mensuel</a>
             </div>
         </div>
     </section>
@@ -32,11 +34,89 @@
             <div class="panel-actions form-inline">
                 <a href="#" class="fa fa-caret-down"></a>
             </div>
-            <h2 class="panel-title">Éléments du réseau</h2>
+            <h2 class="panel-title">Tickets de support</h2>
         </header>
         <div class="panel-body">
             {% include "support_ticket_table.html" %}
         </div>
     </section>
+
+    <!-- Modal form to add/edit network element -->
+    <script src="{% static "javascripts/ui-elements/modal.js" %}"></script>
+    <script src="{% static "vendor/bootstrap-wizard/jquery.bootstrap.wizard.js" %}"></script>
+    <script src="{% static "monthlyReportFormHandler.js" %}"></script>
+    <script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
+
+    <div id="modalMonthlyReport" class="modal-block modal-block-primary mfp-hide">
+        <section class="panel form-wizard" id="wizardMonthlyReport">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+
+                <h2 class="panel-title">Rapport mensuel : {{ current_period }}</h2>
+            </header>
+            <div class="panel-body">
+                <div class="wizard-progress wizard-progress-lg">
+                    <div class="steps-progress">
+                        <div class="progress-indicator" style="width: 0%;"></div>
+                    </div>
+                    <ul class="wizard-steps">
+                        <li class="active">
+                            <a href="#wizardMonthlyReport-state" data-toggle="tab"><span>1</span>État général</a>
+                        </li>
+                        <li>
+                            <a href="#wizardMonthlyReport-details" data-toggle="tab"><span>2</span>Détails</a>
+                        </li>
+                        <li>
+                            <a href="#wizardMonthlyReport-billing" data-toggle="tab"><span>3</span>Recettes</a>
+                        </li>
+                        <li>
+                            <a href="#wizardMonthlyReport-confirm" data-toggle="tab"><span>3</span>Confirmation</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <form class="form-horizontal" novalidate="novalidate">
+                    <div class="tab-content">
+                        <div id="wizardMonthlyReport-state" class="tab-pane active">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="wizardMonthlyReport-username">Points d'eau concernés</label>
+                                <div class="btn-group col-sm-9">
+                                    <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-multiselect-toggle-all="true" id="multiselect-outlets">
+                                        <option value="1">Fontaine 1</option>
+                                        <option value="2">Fontaine 2</option>
+                                        <option value="3">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="4">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="5">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="6">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="7">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="8">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="9">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="10">Verylongnamewithlongwords Verylongnamewithlongwords Verylongnamewithlongwords Verylongnamewithlongwords</option>
+                                    </select>
+                                    <button id="multiselect-outlets-toggle" class="btn btn-primary">Tout sélectionner</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="panel-footer">
+                <ul class="pager">
+                    <li class="previous disabled">
+                        <a><i class="fa fa-angle-left"></i> Précédent</a>
+                    </li>
+                    <li class="finish hidden pull-right">
+                        <a>Terminer</a>
+                    </li>
+                    <li class="next">
+                        <a>Suivant <i class="fa fa-angle-right"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
 
 {% endblock %}

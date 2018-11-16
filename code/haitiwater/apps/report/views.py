@@ -8,5 +8,6 @@ def index(request):
     context = {
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
+        'current_period': 'Septembre'  # Todo Backend
     }
     return HttpResponse(template.render(context, request))
