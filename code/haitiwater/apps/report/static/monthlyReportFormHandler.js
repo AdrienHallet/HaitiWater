@@ -109,4 +109,33 @@ $(document).ready(function() {
 		e.preventDefault();
 		multiselect_toggle($("#multiselect-outlets"), $(this));
 	});
+
+    /**
+     * Listener to convert cubic to gallons and vice-versa
+     */
+    $('.water-outlet').each(function(i){
+        const CUBICMETER_GALLON_RATIO = 264.172;
+
+        let cubic = $('.cubic input', this);
+        let gallon = $('.gallon input', this);
+
+        cubic.on('input', function(){
+            gallon.val(cubic.val() * CUBICMETER_GALLON_RATIO);
+        });
+
+        gallon.on('input', function(){
+            cubic.val(gallon.val() / CUBICMETER_GALLON_RATIO);
+        });
+
+        let perCubic = $('.per-cubic input', this);
+        let perGallon = $('.per-gallon input', this);
+
+        perCubic.on('input', function(){
+            perGallon.val(perCubic.val() / CUBICMETER_GALLON_RATIO);
+        });
+
+        perGallon.on('input', function(){
+            perCubic.val(perGallon.val() * CUBICMETER_GALLON_RATIO);
+        });
+    });
 });

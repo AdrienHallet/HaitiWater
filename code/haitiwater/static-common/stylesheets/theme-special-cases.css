@@ -8,3 +8,55 @@
 .multiselect-container > li > a{
      white-space: normal;
 }
+
+.cubic::after {
+     content: "m³";
+     opacity: 0.8;
+     position: absolute;
+     right: 20px;
+     top: 50%;
+     transform: translateY(-50%);
+}
+
+.cubic input {
+     padding-right: 22px;
+}
+
+.gallon::after {
+     content: "gal.";
+     opacity: 0.8;
+     position: absolute;
+     right: 20px;
+     top: 50%;
+     transform: translateY(-50%);
+}
+
+.gallon input {
+     padding-right: 26px;
+}
+
+.per-cubic::after {
+     content: "/m³";
+     opacity: 0.8;
+     position: absolute;
+     right: 20px;
+     top: 50%;
+     transform: translateY(-50%);
+}
+
+.per-cubic input {
+     padding-right: 23px;
+}
+
+.per-gallon::after {
+     content: "/gal.";
+     opacity: 0.8;
+     position: absolute;
+     right: 20px;
+     top: 50%;
+     transform: translateY(-50%);
+}
+
+.per-gallon input {
+     padding-right: 28px;
+}
