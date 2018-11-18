@@ -1,9 +1,6 @@
+$(document).ready(function() {
 
-(function( $ ) {
-
-	'use strict';
-	
-	/*
+    /*
 	Wizard Controller
 	*/
 	let $wizardMonthlyReportfinish = $('#wizardMonthlyReport').find('ul.pager li.finish');
@@ -29,25 +26,21 @@
 		firstSelector: null,
 		lastSelector: null,
 		onNext: function( tab, navigation, index, newindex ) {
-			var validated = $('#wizardMonthlyReport form').valid();
+			var validated = true; //Todo validate current form window
 			if( !validated ) {
 				$wizardMonthlyReportvalidator.focusInvalid();
 				return false;
 			}
 		},
 		onTabClick: function( tab, navigation, index, newindex ) {
-			if ( newindex == index + 1 ) {
+			if ( newindex === index + 1 ) {
 				return this.onNext( tab, navigation, index, newindex);
-			} else if ( newindex > index + 1 ) {
-				return false;
-			} else {
-				return true;
-			}
+			} else return newindex <= index + 1;
 		},
 		onTabChange: function( tab, navigation, index, newindex ) {
 			var $total = navigation.find('li').size() - 1;
-			$wizardMonthlyReportfinish[ newindex != $total ? 'addClass' : 'removeClass' ]( 'hidden' );
-			$('#wizardMonthlyReport').find(this.nextSelector)[ newindex == $total ? 'addClass' : 'removeClass' ]( 'hidden' );
+			$wizardMonthlyReportfinish[ newindex !== $total ? 'addClass' : 'removeClass' ]( 'hidden' );
+			$('#wizardMonthlyReport').find(this.nextSelector)[ newindex === $total ? 'addClass' : 'removeClass' ]( 'hidden' );
 		},
 		onTabShow: function( tab, navigation, index ) {
 			var $total = navigation.find('li').length - 1;
@@ -58,11 +51,8 @@
 			tab.nextAll().removeClass('completed');
 		}
 	});
-}).apply( this, [ jQuery ]);
 
 
-
-$(document).ready(function() {
     $('#multiselect-outlets').multiselect({
         maxHeight: 300,
         buttonText: function(options, select) {

@@ -81,8 +81,8 @@
                     <div class="tab-content">
                         <div id="wizardMonthlyReport-state" class="tab-pane active">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="wizardMonthlyReport-username">Points d'eau concernés</label>
-                                <div class="btn-group col-sm-9">
+                                <label class="col-sm-3 control-label" for="wizardMonthlyReport-username">Points d'eau</label>
+                                <div class="col-sm-9">
                                     <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-multiselect-toggle-all="true" id="multiselect-outlets">
                                         <option value="1">Fontaine 1</option>
                                         <option value="2">Fontaine 2</option>
@@ -96,9 +96,83 @@
                                         <option value="10">Verylongnamewithlongwords Verylongnamewithlongwords Verylongnamewithlongwords Verylongnamewithlongwords</option>
                                     </select>
                                     <button id="multiselect-outlets-toggle" class="btn btn-primary">Tout sélectionner</button>
+                                    <label id="input-localization-error" class="error">Au moins un point d'eau est requis</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Activité</label>
+                                <div class="col-sm-9">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="">
+                                            Le service de distribution a été (au moins partiellement) actif.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Heures par jour</label>
+                                <div class="col-sm-9">
+                                    <input id="input-localization" name="input-hours" class="form-control" style="max-width:100px">
+                                    <label id="input-localization-error" class="error">Champ requis</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Jours par mois</label>
+                                <div class="col-sm-9">
+                                    <input id="input-localization" name="input-days" class="form-control" style="max-width:100px">
+                                    <label id="input-localization-error" class="error">Champ requis</label>
                                 </div>
                             </div>
                         </div>
+
+                        <div id="wizardMonthlyReport-details" class="tab-pane">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="wizardMonthlyReport-username">Points d'eau</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-multiselect-toggle-all="true" id="multiselect-outlets">
+                                        <option value="1">Fontaine 1</option>
+                                        <option value="2">Fontaine 2</option>
+                                        <option value="3">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="4">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="5">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="6">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="7">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="8">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="9">Very long long long long long long long long long long long long long long long long name</option>
+                                        <option value="10">Verylongnamewithlongwords Verylongnamewithlongwords Verylongnamewithlongwords Verylongnamewithlongwords</option>
+                                    </select>
+                                    <button id="multiselect-outlets-toggle" class="btn btn-primary">Tout sélectionner</button>
+                                    <label id="input-localization-error" class="error">Au moins un point d'eau est requis</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Activité</label>
+                                <div class="col-sm-9">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="">
+                                            Le service de distribution a été (au moins partiellement) actif.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Heures par jour</label>
+                                <div class="col-sm-9">
+                                    <input id="input-localization" name="input-hours" class="form-control" style="max-width:100px">
+                                    <label id="input-localization-error" class="error">Champ requis</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Jours par mois</label>
+                                <div class="col-sm-9">
+                                    <input id="input-localization" name="input-days" class="form-control" style="max-width:100px">
+                                    <label id="input-localization-error" class="error">Champ requis</label>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </form>
             </div>
