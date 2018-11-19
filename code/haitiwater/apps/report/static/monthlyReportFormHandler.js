@@ -138,4 +138,22 @@ $(document).ready(function() {
             perCubic.val(perGallon.val() * CUBICMETER_GALLON_RATIO);
         });
     });
+
+    /**
+	 * Listener to compute the total in the billing area
+     */
+    let totalInput = $('#input-total-billing');
+    let fountainInput = $('#input-fountain-billing');
+    let kioskInput = $('#input-kiosk-billing');
+    let individualInput = $('#input-individual-billing');
+    let computeTotal = function(){
+    	let total = (parseFloat(fountainInput.val()) || 0)
+						+ (parseFloat(kioskInput.val()) || 0)
+						+ (parseFloat(individualInput.val()) || 0);
+    	totalInput.val(total)
+	};
+
+    fountainInput.on('input', computeTotal);
+    kioskInput.on('input', computeTotal);
+    individualInput.on('input', computeTotal);
 });
