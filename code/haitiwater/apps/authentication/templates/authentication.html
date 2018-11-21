@@ -44,6 +44,7 @@
 					</div>
 					<div class="panel-body">
 						<form action="accueil/" method="post">
+                            {% csrf_token %}
 							<div class="form-group mb-lg">
 								<label>Utilisateur</label>
 								<div class="input-group input-group-icon">
