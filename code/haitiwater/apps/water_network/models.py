@@ -68,11 +68,6 @@ class Element(models.Model):
         return self.name
 
     def network_descript(self):
-        tab = []
-        tab.append(self.type)
-        tab.append(self.location.zone.name)
-        tab.append("todo #users")
-        tab.append(self.status)
-        tab.append("x")
-        tab.append(("y"))
+        tab = [ElementType[self.type].value, self.location.zone.name,
+               "todo #users", ElementStatus[self.status].value, "x", "y"]
         return tab
