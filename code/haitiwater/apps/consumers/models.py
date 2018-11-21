@@ -9,7 +9,7 @@ class Person(models.Model):
     gender = models.CharField("Genre", max_length=1, choices=[("M", "Homme"), ("F", "Femme"), ("O", "Autre")], null=True)
     phoneNumber = models.CharField("Numéro de téléphone", max_length=10, null=True)
     email = models.CharField("Adresse email", max_length=50, null=True)
-    location = models.ForeignKey(Location, verbose_name="Localité", related_name="people", on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, verbose_name="Localité", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
