@@ -54,7 +54,7 @@ function validateForm() {
  * @returns {string}
  */
 function buildRequest(id, type, localization, state){
-    let request = "?table=water_element";
+    let request = "table=water_element";
     request += "&id=" + id;
     request += "&type=" + type;
     request += "&localization=" + localization;
@@ -75,7 +75,7 @@ function postNewElement(){
         return false;
     }
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/add/" + request;
+    let postURL = baseURL + "/api/add/";
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -95,7 +95,7 @@ function postNewElement(){
             });
         }
     };
-    xhttp.send()
+    xhttp.send(request)
 }
 
 /**
@@ -130,7 +130,7 @@ function postEditElement(){
             });
         }
     };
-    xhttp.send()
+    xhttp.send(request)
 }
 
 /**
