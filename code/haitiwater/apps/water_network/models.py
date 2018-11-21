@@ -62,7 +62,13 @@ class Element(models.Model):
     name = models.CharField("Nom", max_length=50)
     type = models.CharField("Type", max_length=20, choices=[(i.name, i.value) for i in ElementType])
     status = models.CharField("État", max_length=20, choices=[(i.name, i.value) for i in ElementStatus])
-    location = models.ForeignKey(Location, verbose_name="Localité", related_name="elements", on_delete=models.CASCADE)
+    #location = models.ForeignKey(Location, verbose_name="Localité", related_name="elements", on_delete=models.CASCADE)
+    location = models.CharField("Localisation", max_length=50)
 
     def __str__(self):
         return self.name
+
+    def network_descript(self):
+        tab = [self.id, ElementType[self.type].value, self.location,
+               ElementStatus[self.status].value, "x", "y"]
+        return tab

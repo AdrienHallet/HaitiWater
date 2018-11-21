@@ -75,9 +75,10 @@ function postNewElement(){
         return false;
     }
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/add" + request + '/';
+    let postURL = baseURL + "/api/add/" + request;
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState !== 4 || xhttp.status !== 200) {
             if(xhttp.responseText) {
@@ -112,6 +113,7 @@ function postEditElement(){
     let postURL = baseURL + "/api/edit/" + request;
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState !== 4 || xhttp.status !== 200) {
             if(xhttp.responseText) {
