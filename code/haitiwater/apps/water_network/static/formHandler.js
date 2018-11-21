@@ -110,7 +110,7 @@ function postEditElement(){
         return false;
     }
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/edit/" + request;
+    let postURL = baseURL + "/api/edit/?" + request;
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
