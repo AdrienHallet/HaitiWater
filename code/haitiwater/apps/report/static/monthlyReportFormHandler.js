@@ -157,3 +157,10 @@ $(document).ready(function() {
     kioskInput.on('input', computeTotal);
     individualInput.on('input', computeTotal);
 });
+
+/**
+ * Dismiss modal (but keep values)
+ */
+function dismissModal() {
+    $.magnificPopup.close();
+}
