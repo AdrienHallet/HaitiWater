@@ -2,22 +2,30 @@ from django.http import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.water_network.models import Element
+from ..water_network.models import Element
+from ..consumers.models import Consumer
 import json
 
 
 def graph(request):
     export_format = request.GET.get('type', None)
     if export_format == "consumer_sex_pie":
-        export_format = """{
+        export = """{
                "jsonarray": [{
                   "label": "Femmes",
-                  "data": 550
+                  "data": 0
                }, {
                   "label": "Hommes",
-                  "data": 450
+                  "data": 0
                }]}"""
-    return HttpResponse(export_format)
+        json_val = json.loads(export)
+        all_consumers = Consumer.objects.all()
+        for elem in all_consumers:
+            if elem.gender == "M" or elem.gender == "Homme":
+                json_val['jsonarray'][1]['data'] += 1 #One more man
+            else:
+                json_val['jsonarray'][0]['data'] += 1 #One more women
+    return HttpResponse(json.dumps(json_val))
 
 
 def table(request):
@@ -36,8 +44,10 @@ def table(request):
         json_test = json.loads(export)
         id = 1
         for elem in all_water_element:
+            cust = Consumer.objects.filter(water_outlet=elem)
             tab = elem.network_descript()
             tab.insert(0, str(id))
+            tab.insert(3, len(cust))
             json_test['data'].append(tab)
             id += 1
 

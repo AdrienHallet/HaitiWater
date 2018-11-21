@@ -69,5 +69,5 @@ class Element(models.Model):
 
     def network_descript(self):
         tab = [ElementType[self.type].value, self.location.zone.name,
-               "todo #users", ElementStatus[self.status].value, "x", "y"]
+               ElementStatus[self.status].value, "x", "y"]
         return tab
