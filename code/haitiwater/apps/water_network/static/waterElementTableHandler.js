@@ -6,10 +6,10 @@
 $(document).ready(function() {
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=water_element";
-    console.log(dataURL);
+    console.log("Request data from: " + dataURL);
     $('#datatable-ajax').DataTable(getDatatableConfiguration(dataURL));
 
-    let table = $('#example').DataTable();
+    let table = $('#datatable-ajax').DataTable();
     $('#datatable-ajax tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
@@ -23,7 +23,7 @@ $(document).ready(function() {
     $('#datatable-ajax tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
-            removeElement(data[0]);
+            removeElement("water_element", data[0].innerText);
         } else {}
     } );
     $('#datatable-ajax tbody').on( 'click', '.edit-row', function () {
@@ -31,75 +31,7 @@ $(document).ready(function() {
         editElement(data);
     } );
 
-    resizeWraperIfNeeded();
     prettifyHeader();
-});
-
-function editElement(data){
-    if(data){
-        setupModalEdit(data);
-    } else {
-        new PNotify({
-            title: 'Échec!',
-            text: "L'élément ne peut être récupéré (tableHandler.js)",
-            type: 'error'
-        });
-    }
-}
-
-/**
- * Remove an element from the water_element database
- * @param id the ID of the element to remove
- */
-function removeElement(id){
-    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/remove";
-    let xhttp = new XMLHttpRequest();
-    xhttp.open("POST", postURL, true);
-    xhttp.onreadystatechange = function() {
-        if(xhttp.readyState === 4) {
-            if (xhttp.status !== 200) {
-                console.log("POST error on remove element");
-                new PNotify({
-                    title: 'Échec!',
-                    text: "L'élement n'a pas pu être supprimé",
-                    type: 'error'
-                });
-            } else {
-                new PNotify({
-                    title: 'Succès!',
-                    text: 'Élément ajouté avec succès',
-                    type: 'success'
-                });
-                $('#datatable-ajax').DataTable().reload();
-            }
-        }
-    };
-    xhttp.send('?table=water_element&id='+id)
-}
-
-/**
- * Add placeholder and CSS class in the search field
- */
-function prettifyHeader(){
-    $('#datatable-ajax_filter').find('input').addClass("form-control");
-    $('#datatable-ajax_filter').find('input').attr("placeholder", "Recherche");
-    $('#datatable-ajax_filter').css("min-width", "400px");
-}
-
-/**
- * Tell the window to display a horizontal scroll if the entire table cannot be displayed.
- */
-function resizeWraperIfNeeded() {
-    if ($('#datatable-ajax_wrapper').outerWidth() > 600){ //Adjust value to table length
-        $('#datatable-ajax_wrapper').css("overflow-x","hidden");
-
-    } else {
-        $('#datatable-ajax_wrapper').css("overflow-x","auto");
-    }
-}
-$( window ).resize(function() {
-    resizeWraperIfNeeded()
 });
 
 function getDatatableConfiguration(dataURL){
@@ -107,8 +39,15 @@ function getDatatableConfiguration(dataURL){
         "sortable": true,
         "processing": false,
         "serverSide": true,
-        "responsive": true,
+        "responsive": false,
         "autoWidth": false,
+        scrollX:        true,
+        scrollCollapse: true,
+        paging:         true,
+        fixedColumns:   {
+            leftColumns: 1,
+            rightColumns: 1
+        },
         "columnDefs": [{
                 "targets": -1,
                 "data": null,
@@ -136,7 +75,18 @@ function getDatatableConfiguration(dataURL){
                 "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
             }
         },
-        "ajax": dataURL,
+        "ajax": {
+            url: dataURL,
+            error: function (xhr, error, thrown) {
+                console.log(xhr + '\n' + error + '\n' + thrown);
+                $('#datatable-ajax_wrapper').hide();
+                new PNotify({
+                    title: 'Échec du téléchargement!',
+                    text: "Les données de la table n'ont pas pu être téléchargées",
+                    type: 'failure'
+                });
+            }
+        },
 
         //Callbacks on fetched data
         "createdRow": function (row, data, index) {
@@ -145,18 +95,10 @@ function getDatatableConfiguration(dataURL){
         },
         "initComplete": function(settings, json){
             // Removes the last column (both header and body) if we cannot edit the table
-            console.log(json.hasOwnProperty('editable'));
-            console.log(json['editable']);
             if(!(json.hasOwnProperty('editable') && json['editable'])){
                 $('#datatable-ajax').find('tr:last-child th:last-child, td:last-child').remove();
             }
         }
     };
     return config;
-}
-
-function getActionButtonsHTML(){
-    return '<div class="center"><a href="#modalForm" class="modal-with-form edit-row fa fa-pen"></a>' +
-            '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
-            '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
 }

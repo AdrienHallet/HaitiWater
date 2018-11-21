@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'apps.water_network',
     'apps.api',
     'apps.consumers',
+    'apps.report',
     'compressor',
     'django_tables2',
     'bootstrap3',

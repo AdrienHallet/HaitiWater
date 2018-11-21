@@ -4,11 +4,10 @@ from haitiwater.settings import PROJECT_VERSION, PROJECT_NAME
 
 
 def index(request):
-    template = loader.get_template('consumers.html')
+    template = loader.get_template('report.html')
     context = {
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
-        'zone_name': 'Nom de la zone',  # Todo Backend
-        'current_period': 'Septembre',  # Todo Backend (month of current computed paid info)
+        'current_period': 'Septembre'  # Todo Backend
     }
     return HttpResponse(template.render(context, request))

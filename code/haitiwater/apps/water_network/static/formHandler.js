@@ -16,8 +16,6 @@ window.onload = function() {
  * If not valid, display messages
  */
 function validateForm() {
-    console.log("Form validation start");
-
     let form = document.forms["form-add-element"];
 
     let id = form["input-id"].value;
@@ -56,7 +54,7 @@ function validateForm() {
  * @returns {string}
  */
 function buildRequest(id, type, localization, state){
-    let request = "table=water_element";
+    let request = "?table=water_element";
     request += "&id=" + id;
     request += "&type=" + type;
     request += "&localization=" + localization;
@@ -77,7 +75,7 @@ function postNewElement(){
         return false;
     }
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/add/";
+    let postURL = baseURL + "/api/add" + request + '/';
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.onreadystatechange = function() {
@@ -96,7 +94,7 @@ function postNewElement(){
             });
         }
     };
-    xhttp.send(request)
+    xhttp.send()
 }
 
 /**
@@ -111,7 +109,7 @@ function postEditElement(){
         return false;
     }
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/edit/";
+    let postURL = baseURL + "/api/edit/" + request;
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.onreadystatechange = function() {
@@ -130,7 +128,7 @@ function postEditElement(){
             });
         }
     };
-    xhttp.send(request)
+    xhttp.send()
 }
 
 /**
