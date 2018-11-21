@@ -23,7 +23,7 @@ $(document).ready(function() {
     $('#datatable-ajax tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
-            removeElement(data[0]);
+            removeElement("water_element", data[0].innerText);
         } else {}
     } );
     $('#datatable-ajax tbody').on( 'click', '.edit-row', function () {

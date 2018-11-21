@@ -17,7 +17,7 @@ function editElement(data){
  */
 function removeElement(table, id){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/remove";
+    let postURL = baseURL + "/api/remove/?table=" + table + "&id=" + id;
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.onreadystatechange = function() {
@@ -39,7 +39,7 @@ function removeElement(table, id){
             }
         }
     };
-    xhttp.send('?table=' + table + '&id='+id)
+    xhttp.send()
 }
 
 /**
