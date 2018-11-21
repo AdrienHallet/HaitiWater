@@ -1,5 +1,10 @@
 from django.http import HttpResponse
 
+from django.views.decorators.csrf import csrf_exempt
+
+from apps.water_network.models import Element
+import json
+
 
 def graph(request):
     export_format = request.GET.get('type', None)
@@ -20,31 +25,29 @@ def table(request):
     # Note that "editable" is a custom field. Setting it to true displays the edit/delete buttons.
     table_name = request.GET.get('name', None)
     if table_name == "water_element":
+        all_water_element = Element.objects.all() #TODO : this is ugly, talk with front-end
         export = """{
                   "editable": true,
                   "draw": 2,
                   "recordsTotal": 100,
                   "recordsFiltered": 100,
-                  "data": [
-                    [
-                      "1",
-                      "Fontaine",
-                      "Centre machin truc",
-                      "600",
-                      "En service",
-                      "x",
-                      "y"
-                    ],
-                    [
-                      "2",
-                      "Fontaine",
-                      "Centre machin truc",
-                      "600",
-                      "En service",
-                      "x",
-                      "y"
-                    ]
-                  ]
+                  "data": []
                 }"""
-    return HttpResponse(export)
+        json_test = json.loads(export)
+        id = 1
+        for elem in all_water_element:
+            tab = elem.network_descript()
+            tab.insert(0, str(id))
+            json_test['data'].append(tab)
+            id += 1
+
+    return HttpResponse(json.dumps(json_test))
+
+
+@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+def add_network_element(request):
+    print(request.POST.getlist('key'))
+    e = Element() #Créer l'élément
+
+    return HttpResponse()
 

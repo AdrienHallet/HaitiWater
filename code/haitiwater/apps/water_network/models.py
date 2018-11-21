@@ -66,3 +66,13 @@ class Element(models.Model):
 
     def __str__(self):
         return self.name
+
+    def network_descript(self):
+        tab = []
+        tab.append(self.type)
+        tab.append(self.location.zone.name)
+        tab.append("todo #users")
+        tab.append(self.status)
+        tab.append("x")
+        tab.append(("y"))
+        return tab
