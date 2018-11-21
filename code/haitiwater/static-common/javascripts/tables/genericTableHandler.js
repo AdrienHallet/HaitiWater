@@ -17,9 +17,10 @@ function editElement(data){
  */
 function removeElement(table, id){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/remove/?table=" + table + "&id=" + id;
+    let postURL = baseURL + "/api/remove/";
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
@@ -39,7 +40,7 @@ function removeElement(table, id){
             }
         }
     };
-    xhttp.send()
+    xhttp.send("table=" + table + "&id=" + id);
 }
 
 /**
