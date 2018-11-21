@@ -69,7 +69,7 @@ function editElement(data){
  */
 function removeElement(id){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/remove";
+    let postURL = baseURL + "/api/remove/?table=water_element&id=" + id;
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.onreadystatechange = function() {
@@ -91,7 +91,7 @@ function removeElement(id){
             }
         }
     };
-    xhttp.send('?table=water_element&id='+id)
+    xhttp.send();
 }
 
 /**

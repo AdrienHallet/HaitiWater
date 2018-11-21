@@ -75,7 +75,7 @@ function postNewElement(){
         return false;
     }
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/add/" + request;
+    let postURL = baseURL + "/api/add" + request + '/';
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.onreadystatechange = function() {

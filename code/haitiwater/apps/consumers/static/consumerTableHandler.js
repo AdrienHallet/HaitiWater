@@ -47,37 +47,6 @@ function editElement(data){
 }
 
 /**
- * Remove an element from the water_element database
- * @param id the ID of the element to remove
- */
-function removeElement(id){
-    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/remove";
-    let xhttp = new XMLHttpRequest();
-    xhttp.open("POST", postURL, true);
-    xhttp.onreadystatechange = function() {
-        if(xhttp.readyState === 4) {
-            if (xhttp.status !== 200) {
-                console.log("POST error on remove element");
-                new PNotify({
-                    title: 'Échec!',
-                    text: "L'élement n'a pas pu être supprimé",
-                    type: 'error'
-                });
-            } else {
-                new PNotify({
-                    title: 'Succès!',
-                    text: 'Élément ajouté avec succès',
-                    type: 'success'
-                });
-                $('#datatable-ajax').DataTable().reload();
-            }
-        }
-    };
-    xhttp.send('?table=water_element&id='+id)
-}
-
-/**
  * Add placeholder and CSS class in the search field
  */
 function prettifyHeader(){
