@@ -32,27 +32,31 @@ def graph(request):
 def table(request):
     # Todo backend https://datatables.net/manual/server-side
     # Note that "editable" is a custom field. Setting it to true displays the edit/delete buttons.
+    export = """{
+                      "editable": true,
+                      "draw": 2,
+                      "recordsTotal": 100,
+                      "recordsFiltered": 100,
+                      "data": []
+                    }"""
+    json_test = json.loads(export)
     d = parse(request)
+    all = []
     if d["table_name"] == "water_element":
         all_water_element = Element.objects.all()
-        export = """{
-                  "editable": true,
-                  "draw": 2,
-                  "recordsTotal": 100,
-                  "recordsFiltered": 100,
-                  "data": []
-                }"""
-        json_test = json.loads(export)
-        all = []
         for elem in all_water_element[d["start"]:d["start"]+d["length_max"]]:
             cust = Consumer.objects.filter(water_outlet=elem)
             tab = elem.network_descript()
             tab.insert(3, len(cust))
             all.append(tab)
-        final = sorted(all, key=lambda x: x[d["column_ordered"]],
-                      reverse=d["type_order"] != "asc")
-        json_test["data"] = final
 
+    elif d["table_name"] == "consumer":
+        all_consumers = Consumer.objects.all()
+        for elem in all_consumers[d["start"]:d["start"] + d["length_max"]]:
+            all.append(elem.descript())
+    final = sorted(all, key=lambda x: x[d["column_ordered"]],
+                   reverse=d["type_order"] != "asc")
+    json_test["data"] = final
     return HttpResponse(json.dumps(json_test))
 
 
@@ -66,6 +70,8 @@ def add_network_element(request):
         e = Element(name="", type=type, status=state, location=loc) #Créer l'élément
         e.save()
         return HttpResponse(status=200)
+    elif element == "consumer":
+        print("Hello")
 
     return HttpResponse(status=500)
 
@@ -76,6 +82,10 @@ def remove_network_element(request):
     if element == "water_element":
         id = request.POST.get("id", None)
         Element.objects.filter(id=id).delete()
+        return HttpResponse(status=200)
+    elif element == "consumer":
+        id = request.POST.get("id", None)
+        Consumer.objects.filter(id=id).delete()
         return HttpResponse(status=200)
 
     return HttpResponse(status=500)
