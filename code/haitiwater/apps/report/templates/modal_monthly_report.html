@@ -9,7 +9,7 @@
     <section class="panel form-wizard" id="wizardMonthlyReport">
         <header class="panel-heading">
             <div class="panel-actions">
-                <a href="#" class="fa fa-times"></a>
+                <button>Annuler</button>
             </div>
 
             <h2 class="panel-title">Rapport mensuel : {{ current_period }}</h2>
@@ -30,7 +30,7 @@
                         <a href="#wizardMonthlyReport-billing" data-toggle="tab"><span>3</span>Recettes</a>
                     </li>
                     <li>
-                        <a href="#wizardMonthlyReport-confirm" data-toggle="tab"><span>3</span>Confirmation</a>
+                        <a href="#wizardMonthlyReport-confirm" data-toggle="tab"><span>4</span>Confirmation</a>
                     </li>
                 </ul>
             </div>
@@ -203,6 +203,11 @@
                                 <input id="input-total-suggested" name="total-suggested" class="form-control" style="max-width:150px" readonly="readonly" type="number">
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Panel 4 - Confirmation -->
+                    <div id="wizardMonthlyReport-confirm" class="tab-pane">
+                        TODO
                     </div>
                 </div>
             </form>
