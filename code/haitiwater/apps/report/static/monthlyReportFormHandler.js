@@ -59,15 +59,13 @@ $(document).ready(function() {
 		firstSelector: null,
 		lastSelector: null,
 		onNext: function( tab, navigation, index, newindex ) {
-			var validated = validateStepOne(); //Todo validate current form window
+			var validated = validate(index);
 			if( !validated ) {
-				return false;
+				return false; // Do not switch tab if form is not valid
 			}
 		},
 		onTabClick: function( tab, navigation, index, newindex ) {
-			if ( newindex === index + 1 ) {
-				return this.onNext( tab, navigation, index, newindex);
-			} else return newindex <= index + 1;
+			return false; // Prevent switching tab by clicking on tab
 		},
 		onTabChange: function( tab, navigation, index, newindex ) {
 			var $total = navigation.find('li').size() - 1;
@@ -194,11 +192,25 @@ $(document).ready(function() {
  * Hide all the error messages in the form
  */
 function hideFormErrorMsg(){
-    let buttons = document.getElementsByClassName("error"),
-        len = buttons !== null ? buttons.length : 0,
-        i = 0;
-    for(i; i < len; i++) {
-        buttons[i].className += " hidden";
+    let buttons = $(".error");
+    buttons.each(function(index){
+    	$(this).addClass('hidden');
+	});
+}
+
+function validate(step){
+    console.log(step);
+    switch(step){
+        case 1:
+            console.log("validating form step 1");
+            return validateStepOne();
+        case 2:
+            console.log("validating form step 2");
+            return validateStepTwo();
+        default:
+            console.log("validating form all steps");
+            return validateStepOne() &&
+            		validateStepTwo();
     }
 }
 
@@ -207,15 +219,14 @@ function hideFormErrorMsg(){
  */
 function validateStepOne(){
     hideFormErrorMsg();
-    let valid = true;
+    let isValid = true;
 
     // Selected outlets
     let multiselectOutlets = $('#multiselect-outlets');
     if (!multiselectOutlets.val()){
         $('#input-multiselect-error').removeClass('hidden');
-        valid = false;
+        isValid = false;
     }
-
 
     // Activity stats
 	let checkboxActiveService = $('#checkbox-active-service');
@@ -225,18 +236,47 @@ function validateStepOne(){
 	if (checkboxActiveService.is(':checked')){
 		if((inputDays.val() < 1) || (inputDays.val() > 31) || (inputDays.val() === "")){
 			$('#input-days-error').removeClass('hidden');
-			valid = false;
+			isValid = false;
 		}
 		if((inputHours.val() <= 0) || (inputHours.val() > 24) || (inputHours.val() === "")){
 			$('#input-hours-error').removeClass('hidden');
-			valid = false;
+			isValid = false;
 		}
 	} else {
-	    // ?
+	    // Todo
 	}
 
-	return valid;
+	return isValid;
 
+}
+
+/**
+ * Validate data entry for Wizard step 2 - Details
+ */
+function validateStepTwo(){
+	let isValid = true;
+    let individualReports = $('#wizardMonthlyReport-details .water-outlet');
+
+    individualReports.each(function(index){
+      	let cubicValue = $(this).find('.cubic input').val();
+      	let gallonValue = $(this).find('.gallon input').val();
+
+		if ((cubicValue < 0 || cubicValue === '') || (gallonValue < 0 || gallonValue ==='')){
+			isValid = false;
+			$(this).find('label.volume.error').removeClass('hidden');
+		}
+
+		let perCubicValue = $(this).find('.per-cubic input').val();
+      	let perGallonValue = $(this).find('.per-gallon input').val();
+
+		if ((perCubicValue < 0 || perCubicValue === '') || (perGallonValue < 0 || perGallonValue ==='')){
+			isValid = false;
+			$(this).find('label.cost.error').removeClass('hidden');
+		}
+    });
+
+    console.log("step two :"+isValid);
+    return isValid;
 }
 
 /**
