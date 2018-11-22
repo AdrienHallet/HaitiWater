@@ -1,13 +1,54 @@
 $(document).ready(function() {
 
-    /*
-	Wizard Controller
+	let wizardReport = $('#wizardMonthlyReport');
+	let wizardForm = $('#wizardMonthlyReport form');
+
+    /**
+	 * Wizard form validation
+     */
+	// Hide all error class buttons (e.g. the invalid field label) in the 4 steps
+    let buttons = document.getElementsByClassName("error"),
+        len = buttons !== null ? buttons.length : 0,
+        i = 0;
+    for(i; i < len; i++) {
+        buttons[i].className += " hidden";
+    }
+
+    // Enable hours and days logging (step 1)
+	let checkboxActiveService = $('#checkbox-active-service');
+	checkboxActiveService.on('change', function(){
+		// Elements to enable/disable if the checkbox is checked/unchecked
+		let dependentElements = [
+			$("#input-hours"),
+			$("#input-days")
+		];
+		if (this.checked){
+			dependentElements.forEach(function(element){
+				element.removeAttr('disabled');
+			});
+		} else {
+			dependentElements.forEach(function(element){
+				element.attr('disabled', 'disabled');
+			});
+		}
+	});
+
+    /**
+	 * Wizard form key events
+     */
+    // This listener is to disable default enter key to prevent any false submission
+	wizardForm.on('keypress', function(event){
+		event.preventDefault();
+	});
+
+    /**
+	*	Wizard Controller
 	*/
-	let $wizardMonthlyReportfinish = $('#wizardMonthlyReport').find('ul.pager li.finish');
+	let $wizardMonthlyReportfinish = wizardReport.find('ul.pager li.finish');
 
 	$wizardMonthlyReportfinish.on('click', function( ev ) {
 		ev.preventDefault();
-		var validated = $('#wizardMonthlyReport form').valid();
+		var validated = wizardForm.valid();
 		if ( validated ) {
 			new PNotify({
 				title: 'Congratulations',
@@ -19,13 +60,14 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#wizardMonthlyReport').bootstrapWizard({
+	wizardReport.bootstrapWizard({
 		tabClass: 'wizard-steps',
 		nextSelector: 'ul.pager li.next',
 		previousSelector: 'ul.pager li.previous',
 		firstSelector: null,
 		lastSelector: null,
 		onNext: function( tab, navigation, index, newindex ) {
+			console.log(tab);
 			var validated = true; //Todo validate current form window
 			if( !validated ) {
 				$wizardMonthlyReportvalidator.focusInvalid();
@@ -40,13 +82,13 @@ $(document).ready(function() {
 		onTabChange: function( tab, navigation, index, newindex ) {
 			var $total = navigation.find('li').size() - 1;
 			$wizardMonthlyReportfinish[ newindex !== $total ? 'addClass' : 'removeClass' ]( 'hidden' );
-			$('#wizardMonthlyReport').find(this.nextSelector)[ newindex === $total ? 'addClass' : 'removeClass' ]( 'hidden' );
+			wizardReport.find(this.nextSelector)[ newindex === $total ? 'addClass' : 'removeClass' ]( 'hidden' );
 		},
 		onTabShow: function( tab, navigation, index ) {
 			var $total = navigation.find('li').length - 1;
 			var $current = index;
 			var $percent = Math.floor(( $current / $total ) * 100);
-			$('#wizardMonthlyReport').find('.progress-indicator').css({ 'width': $percent + '%' });
+			wizardReport.find('.progress-indicator').css({ 'width': $percent + '%' });
 			tab.prevAll().addClass('completed');
 			tab.nextAll().removeClass('completed');
 		}

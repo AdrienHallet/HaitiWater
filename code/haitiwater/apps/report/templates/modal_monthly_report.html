@@ -9,7 +9,7 @@
     <section class="panel form-wizard" id="wizardMonthlyReport">
         <header class="panel-heading">
             <div class="panel-actions">
-                <button>Annuler</button>
+                <button onclick="dismissModal()">Annuler</button>
             </div>
 
             <h2 class="panel-title">Rapport mensuel : {{ current_period }}</h2>
@@ -36,7 +36,7 @@
             </div>
 
             <!-- The Wizard form contents -->
-            <form class="form-horizontal" novalidate="novalidate">
+            <form id="form-monthly-report" name="monthly-report" class="form-horizontal" novalidate="novalidate">
                 <div class="tab-content">
 
                     <!--- Panel 1 : General State-->
@@ -57,7 +57,7 @@
                                     <option value="10">Verylongnamewithlongwords Verylongnamewithlongwords Verylongnamewithlongwords Verylongnamewithlongwords</option>
                                 </select>
                                 <button id="multiselect-outlets-toggle" class="btn btn-primary">Tout sélectionner</button>
-                                <label id="input-localization-error" class="error">Au moins un point d'eau est requis</label>
+                                <label id="input-multiselect-error" class="error">Au moins un point d'eau est requis</label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -65,7 +65,7 @@
                             <div class="col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="">
+                                        <input id="checkbox-active-service" name="active-service" type="checkbox" value="">
                                         Le service de distribution a été (au moins partiellement) actif.
                                     </label>
                                 </div>
@@ -74,15 +74,15 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Heures par jour</label>
                             <div class="col-sm-9">
-                                <input id="input-localization" name="input-hours" class="form-control" style="max-width:100px">
-                                <label id="input-localization-error" class="error">Champ requis</label>
+                                <input id="input-hours" disabled name="input-hours" class="form-control" style="max-width:100px" type="number" min="0" max="24">
+                                <label id="input-hours-error" class="error">Champ requis</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Jours par mois</label>
                             <div class="col-sm-9">
-                                <input id="input-localization" name="input-days" class="form-control" style="max-width:100px">
-                                <label id="input-localization-error" class="error">Champ requis</label>
+                                <input id="input-days" disabled name="input-days" class="form-control" style="max-width:100px" type="number" min="0" max="31">
+                                <label id="input-days-error" class="error">Champ requis</label>
                             </div>
                         </div>
                     </div>
