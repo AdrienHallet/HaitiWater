@@ -3,16 +3,7 @@ $(document).ready(function() {
 	let wizardReport = $('#wizardMonthlyReport');
 	let wizardForm = $('#wizardMonthlyReport form');
 
-    /**
-	 * Wizard form validation
-     */
-	// Hide all error class buttons (e.g. the invalid field label) in the 4 steps
-    let buttons = document.getElementsByClassName("error"),
-        len = buttons !== null ? buttons.length : 0,
-        i = 0;
-    for(i; i < len; i++) {
-        buttons[i].className += " hidden";
-    }
+	hideFormErrorMsg();
 
     // Enable hours and days logging (step 1)
 	let checkboxActiveService = $('#checkbox-active-service');
@@ -38,7 +29,8 @@ $(document).ready(function() {
      */
     // This listener is to disable default enter key to prevent any false submission
 	wizardForm.on('keypress', function(event){
-		event.preventDefault();
+	    if(event.keyCode === 13)
+		    event.preventDefault();
 	});
 
     /**
@@ -67,10 +59,8 @@ $(document).ready(function() {
 		firstSelector: null,
 		lastSelector: null,
 		onNext: function( tab, navigation, index, newindex ) {
-			console.log(tab);
-			var validated = true; //Todo validate current form window
+			var validated = validateStepOne(); //Todo validate current form window
 			if( !validated ) {
-				$wizardMonthlyReportvalidator.focusInvalid();
 				return false;
 			}
 		},
@@ -199,6 +189,55 @@ $(document).ready(function() {
     kioskInput.on('input', computeTotal);
     individualInput.on('input', computeTotal);
 });
+
+/**
+ * Hide all the error messages in the form
+ */
+function hideFormErrorMsg(){
+    let buttons = document.getElementsByClassName("error"),
+        len = buttons !== null ? buttons.length : 0,
+        i = 0;
+    for(i; i < len; i++) {
+        buttons[i].className += " hidden";
+    }
+}
+
+/**
+ * Validate data entry for Wizard step 1 - General state
+ */
+function validateStepOne(){
+    hideFormErrorMsg();
+    let valid = true;
+
+    // Selected outlets
+    let multiselectOutlets = $('#multiselect-outlets');
+    if (!multiselectOutlets.val()){
+        $('#input-multiselect-error').removeClass('hidden');
+        valid = false;
+    }
+
+
+    // Activity stats
+	let checkboxActiveService = $('#checkbox-active-service');
+	let inputDays = $('#input-days');
+	let inputHours = $('#input-hours');
+
+	if (checkboxActiveService.is(':checked')){
+		if((inputDays.val() < 1) || (inputDays.val() > 31) || (inputDays.val() === "")){
+			$('#input-days-error').removeClass('hidden');
+			valid = false;
+		}
+		if((inputHours.val() <= 0) || (inputHours.val() > 24) || (inputHours.val() === "")){
+			$('#input-hours-error').removeClass('hidden');
+			valid = false;
+		}
+	} else {
+	    // ?
+	}
+
+	return valid;
+
+}
 
 /**
  * Dismiss modal (but keep values)

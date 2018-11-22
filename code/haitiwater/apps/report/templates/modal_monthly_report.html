@@ -9,7 +9,7 @@
     <section class="panel form-wizard" id="wizardMonthlyReport">
         <header class="panel-heading">
             <div class="panel-actions">
-                <button onclick="dismissModal()">Annuler</button>
+                <button onclick="dismissModal()" class="btn">Annuler</button>
             </div>
 
             <h2 class="panel-title">Rapport mensuel : {{ current_period }}</h2>
@@ -75,14 +75,14 @@
                             <label class="col-sm-3 control-label">Heures par jour</label>
                             <div class="col-sm-9">
                                 <input id="input-hours" disabled name="input-hours" class="form-control" style="max-width:100px" type="number" min="0" max="24">
-                                <label id="input-hours-error" class="error">Champ requis</label>
+                                <label id="input-hours-error" class="error">Champ requis entre 1 et 24</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Jours par mois</label>
                             <div class="col-sm-9">
                                 <input id="input-days" disabled name="input-days" class="form-control" style="max-width:100px" type="number" min="0" max="31">
-                                <label id="input-days-error" class="error">Champ requis</label>
+                                <label id="input-days-error" class="error">Champ requis entre 1 et 31</label>
                             </div>
                         </div>
                     </div>
