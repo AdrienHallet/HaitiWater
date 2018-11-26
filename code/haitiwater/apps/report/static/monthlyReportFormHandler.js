@@ -199,9 +199,9 @@ function hideFormErrorMsg(){
 }
 
 function validate(step){
-    console.log(step);
     switch(step){
         case 1:
+        	setupStepTwo();
             return validateStepOne();
         case 2:
             return validateStepTwo();
@@ -300,6 +300,59 @@ function validateStepThree(){
 
 
 	return valid;
+}
+
+/**
+ * Dynamically set the content of step 2 according to selected water outlets in step 1
+ */
+function setupStepTwo(){
+
+	// Panel body containing the data
+	let panelBody = '' +
+		'<div class="panel-body">' +
+			'<div class="row">' +
+				'<div class="col-sm-6">' +
+					'<h5>Volume d\'eau distribué</h5>' +
+					'<div class="row">' +
+						'<div class="col-sm-6 cubic">' +
+							'<input class="form-control" type="number">' +
+						'</div>' +
+						'<div class="col-sm-6 gallon">\n' +
+							'<input class="form-control" type="number">' +
+						'</div>' +
+					'</div>' +
+					'<label class="volume error">Valeurs de volume incorrectes</label>' +
+				'</div>' +
+				'<div class="col-sm-6">' +
+					'<h5>Coût au volume (HTG)</h5>' +
+					'<div class="row">' +
+						'<div class="col-sm-6 per-cubic">' +
+							'<input class="form-control" type="number">' +
+						'</div>' +
+						'<div class="col-sm-6 per-gallon">' +
+							'<input class="form-control" type="number">' +
+						'</div>' +
+					'</div>' +
+					'<label class="cost error">Valeurs de coût incorrectes</label>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+
+	// For each selected outlet, setup the data section
+	let selectedOutlets = $('#multiselect-outlets option:selected');
+	selectedOutlets.each(function(){
+		let detailsWindow = $('#wizardMonthlyReport-details');
+		let name = this.text; // Displayed name
+		let id = this.value; // ID of the fountain to send back to server
+
+		let sectionHeader = '<section class="panel water-outlet" id="'+ id +'">' +
+								'<header class="panel-heading">' +
+									'<h2 class="panel-title">' + name + '</h2>' +
+								'</header>';
+
+		detailsWindow.append(sectionHeader + panelBody);
+	});
+
 }
 
 /**
