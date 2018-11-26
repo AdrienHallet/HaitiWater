@@ -5,7 +5,7 @@
 <script src="{% static "monthlyReportFormHandler.js" %}"></script>
 <script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
 
-<div id="modalMonthlyReport" class="modal-block modal-block-primary mfp-hide">
+<div id="modalMonthlyReport" class="modal-block modal-block-lg mfp-hide">
     <section class="panel form-wizard" id="wizardMonthlyReport">
         <header class="panel-heading">
             <div class="panel-actions">
@@ -45,16 +45,10 @@
                             <label class="col-sm-3 control-label" for="wizardMonthlyReport-username">Points d'eau</label>
                             <div class="col-sm-9">
                                 <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-multiselect-toggle-all="true" id="multiselect-outlets">
-                                    <option value="1">Fontaine 1</option>
-                                    <option value="2">Fontaine 2</option>
-                                    <option value="3">Very long long long long long long long long long long long long long long long long name</option>
-                                    <option value="4">Very long long long long long long long long long long long long long long long long name</option>
-                                    <option value="5">Very long long long long long long long long long long long long long long long long name</option>
-                                    <option value="6">Very long long long long long long long long long long long long long long long long name</option>
-                                    <option value="7">Very long long long long long long long long long long long long long long long long name</option>
-                                    <option value="8">Very long long long long long long long long long long long long long long long long name</option>
-                                    <option value="9">Very long long long long long long long long long long long long long long long long name</option>
-                                    <option value="10">Verylongnamewithlongwords Verylongnamewithlongwords Verylongnamewithlongwords Verylongnamewithlongwords</option>
+                                    {% for water_outlet in water_outlets %}
+                                        {# Display an option for each available outlet #}
+                                        <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>
+                                    {% endfor %}
                                 </select>
                                 <button id="multiselect-outlets-toggle" class="btn btn-primary">Tout sélectionner</button>
                                 <label id="input-multiselect-error" class="error">Au moins un point d'eau est requis</label>

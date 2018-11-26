@@ -202,13 +202,12 @@ function validate(step){
     console.log(step);
     switch(step){
         case 1:
-            console.log("validating form step 1");
             return validateStepOne();
         case 2:
-            console.log("validating form step 2");
             return validateStepTwo();
+		case 3:
+			return validateStepThree();
         default:
-            console.log("validating form all steps");
             return validateStepOne() &&
             		validateStepTwo();
     }
@@ -245,7 +244,6 @@ function validateStepOne(){
 	} else {
 	    // Todo
 	}
-
 	return isValid;
 
 }
@@ -274,9 +272,34 @@ function validateStepTwo(){
 			$(this).find('label.cost.error').removeClass('hidden');
 		}
     });
-
-    console.log("step two :"+isValid);
     return isValid;
+}
+
+/**
+ * Validate data entry for Wizard step 3 - Billing
+ */
+function validateStepThree(){
+	let valid = true;
+
+	let fountainBilling = $('#input-fountain-billing');
+	let kioskBilling = $('#input-kiosk-billing');
+	let individualBilling = $('#input-individual-billing');
+
+	if (fountainBilling.val() < 0 || fountainBilling.val() === ""){
+		$('#input-fountain-billing-error').removeClass('hidden');
+		valid = false;
+	}
+	if (kioskBilling.val() < 0 || kioskBilling.val() === ""){
+		$('#input-kiosk-billing-error').removeClass('hidden');
+		valid = false;
+	}
+	if (individualBilling.val() < 0 || individualBilling.val() === ""){
+		$('#input-individual-billing-error').removeClass('hidden');
+		valid = false;
+	}
+
+
+	return valid;
 }
 
 /**
