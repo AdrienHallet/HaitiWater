@@ -328,8 +328,10 @@ function setupStepTwo(){
 			detailsWindow.append(sectionHeader + panelBody);
 		});
 	} else {
-		// Todo create text
-		detailsWindow.html("<div class=\"center-text\">Texte explicatif</div>");
+		detailsWindow.html("<div class=\"well info text-center\">" +
+			"Vous n'avez aucun détail à entrer puisque le service n'a pas été en activité.<br>" +
+			"Si vous avez des détails à entrer, cochez la case de service à l'étape 1.<br>" +
+			"Si c'est correct, passez à l'étape suivante.</div>");
 	}
 
 	/**

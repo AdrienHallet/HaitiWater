@@ -125,8 +125,8 @@ DATABASES = {
         'NAME': 'haitiwater',
         'HOST': 'localhost',
         'PORT': '5432',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
     }
 
 }
