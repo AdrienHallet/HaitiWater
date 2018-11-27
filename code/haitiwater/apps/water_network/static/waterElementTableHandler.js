@@ -4,6 +4,10 @@
  *
  */
 $(document).ready(function() {
+    drawTable();
+});
+
+function drawTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=water_element";
     console.log("Request data from: " + dataURL);
@@ -32,7 +36,7 @@ $(document).ready(function() {
     } );
 
     prettifyHeader();
-});
+}
 
 function getDatatableConfiguration(dataURL){
     let config = {

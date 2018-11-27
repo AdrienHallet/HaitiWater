@@ -11,6 +11,12 @@ window.onload = function() {
     }
 };
 
+function drawDataTable() {
+    $('#datatable-ajax').DataTable().destroy();
+    drawTable();
+
+}
+
 /**
  * Validate (check if valid) the form.
  * If not valid, display messages
@@ -93,6 +99,7 @@ function postNewElement(){
                 text: 'Élément ajouté avec succès',
                 type: 'success'
             });
+            drawDataTable();
         }
     };
     xhttp.send(request)
@@ -125,9 +132,10 @@ function postEditElement(){
             dismissModal();
             new PNotify({
                 title: 'Succès!',
-                text: 'Élément ajouté avec succès',
+                text: 'Élément édité avec succès',
                 type: 'success'
             });
+            drawDataTable();
         }
     };
     xhttp.send(request)
