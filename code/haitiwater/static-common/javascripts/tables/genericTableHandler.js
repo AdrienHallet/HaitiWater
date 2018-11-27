@@ -1,3 +1,16 @@
+/**
+ * Hide all the error messages from start.
+ * It is better to hide them than to append HTML with JS
+ */
+window.onload = function() {
+    let buttons = document.getElementsByClassName("error"),
+        len = buttons !== null ? buttons.length : 0,
+        i = 0;
+    for(i; i < len; i++) {
+        buttons[i].className += " hidden";
+    }
+};
+
 function editElement(data){
     if(data){
         setupModalEdit(data);
@@ -60,4 +73,72 @@ function prettifyHeader(){
     $('#datatable-ajax_filter').find('input').addClass("form-control");
     $('#datatable-ajax_filter').find('input').attr("placeholder", "Recherche");
     $('#datatable-ajax_filter').css("min-width", "300px");
+}
+
+/**
+ * Send a post request to server and handle it
+ */
+function postNewRow(){
+    let request = validateForm();
+    if(!request){
+        // Form is not valid (missing/wrong fields)
+        return false;
+    }
+    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    let postURL = baseURL + "/api/add/";
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", postURL, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.onreadystatechange = function() {
+        if(xhttp.readyState !== 4 || xhttp.status !== 200) {
+            if(xhttp.responseText) {
+                console.log("POST error on new element");
+                document.getElementById("form-error").className = "alert alert-danger";
+                document.getElementById("form-error-msg").innerHTML = xhttp.responseText;
+            }
+        } else {
+            dismissModal();
+            new PNotify({
+                title: 'Succès!',
+                text: 'Élément ajouté avec succès',
+                type: 'success'
+            });
+            drawDataTable();
+        }
+    };
+    xhttp.send(request)
+}
+
+/**
+ * Send a post request to server and handle it
+ */
+function postEditRow(){
+    let request = validateForm();
+    if(!request){
+        // Form is not valid (missing/wrong fields)
+        return false;
+    }
+    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    let postURL = baseURL + "/api/edit/?" + request;
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", postURL, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.onreadystatechange = function() {
+        if(xhttp.readyState !== 4 || xhttp.status !== 200) {
+            if(xhttp.responseText) {
+                console.log("POST error on new element");
+                document.getElementById("form-error").className = "alert alert-danger";
+                document.getElementById("form-error-msg").innerHTML = xhttp.responseText;
+            }
+        } else {
+            dismissModal();
+            new PNotify({
+                title: 'Succès!',
+                text: 'Élément édité avec succès',
+                type: 'success'
+            });
+            drawDataTable();
+        }
+    };
+    xhttp.send(request)
 }
