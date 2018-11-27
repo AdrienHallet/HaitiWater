@@ -1,0 +1,122 @@
+{% load static %}
+{% load compress %}
+
+<!doctype html>
+<html class="fixed">
+	<head>
+		<!-- Basic -->
+		<meta charset="UTF-8">
+
+		<meta name="keywords" content="HaitiWater - Portail accès" />
+		<meta name="description" content="HaitiWater - Portail d'accès">
+
+		<!-- Mobile Metas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+		<!-- Web Fonts  -->
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+        <!-- Download & Cache vendors -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="{% static "vendor/bootstrap/css/bootstrap.css" %}" />
+
+        <!-- Theme CSS -->
+        <link rel="stylesheet" href="{% static "stylesheets/theme.css" %}"/>
+        <link rel="stylesheet" href="{% static "stylesheets/theme-extension.css" %}"/>
+        <link rel="stylesheet" href="{% static "stylesheets/theme-special-cases.css" %}"/>
+
+        <!-- Skin CSS -->
+        <link rel="stylesheet" href="{% static "stylesheets/skins/default.css" %}"/>
+	</head>
+	<body>
+		<!-- start: page -->
+		<section class="body-sign bg-default">
+			<div class="center-sign">
+				<a href="/" class="logo pull-left">
+					<img src="{% static "images/logo.png" %}" height="54" alt="Porto Admin" />
+				</a>
+
+				<div class="panel panel-sign">
+					<div class="panel-title-sign mt-xl text-right">
+						<h2 class="title text-uppercase text-bold m-none"><i class="fa fa-user mr-xs"></i> Connexion</h2>
+					</div>
+					<div class="panel-body">
+						<form action="accueil/" method="post">
+                            {% csrf_token %}
+							<div class="form-group mb-lg">
+								<label>Utilisateur</label>
+								<div class="input-group input-group-icon">
+									<input name="username" type="text" class="form-control input-lg" />
+									<span class="input-group-addon">
+										<span class="icon icon-lg">
+											<i class="fa fa-user"></i>
+										</span>
+									</span>
+								</div>
+							</div>
+
+							<div class="form-group mb-lg">
+								<div class="clearfix">
+									<label class="pull-left">Mot de passe</label>
+									<a href="recuperer-mot-de-passe" class="pull-right">Mot de passe oublié?</a>
+								</div>
+								<div class="input-group input-group-icon">
+									<input name="pwd" type="password" class="form-control input-lg" />
+									<span class="input-group-addon">
+										<span class="icon icon-lg">
+											<i class="fa fa-lock"></i>
+										</span>
+									</span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-8">
+{#									<div class="checkbox-default">#}
+{#										<input id="RememberMe" name="rememberme" type="checkbox"/>#}
+{#										<label for="RememberMe">Se souvenir de moi</label>#}
+{#									</div>#}
+								</div>
+								<div class="col-sm-4 text-right">
+									<button type="submit" class="btn btn-primary hidden-xs">Connexion</button>
+									<button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Connexion</button>
+								</div>
+							</div>
+
+							<p class="text-center">Pas encore de compte ? <a href="enregistrement">Enregistrez-vous !</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end: page -->
+
+		{% compress js %}
+            <script src="{% static "vendor/jquery/jquery.js" %}"></script>
+            <script src="{% static "vendor/jquery-browser-mobile/jquery.browser.mobile.js" %}"></script>
+            <script src="{% static "vendor/nanoscroller/nanoscroller.js" %}"></script>
+            <script src="{% static "vendor/bootstrap/js/bootstrap.js" %}"></script>
+            <script src="{% static "vendor/magnific-popup/magnific-popup.js" %}"></script>
+            <script src="{% static "vendor/jquery-placeholder/jquery.placeholder.js" %}"></script>
+            <script src="{% static "vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js" %}"></script>
+            <script src="{% static "vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js" %}"></script>
+            <script src="{% static "vendor/jquery-appear/jquery.appear.js" %}"></script>
+            <script src="{% static "vendor/modernizr/modernizr.js"%}"></script>
+            <script src="{% static "vendor/pnotify/pnotify.custom.js"%}"></script>
+
+            <!-- Theme Base, Components and Settings -->
+            <script src="{% static "javascripts/theme.js" %}"></script>
+
+            <!-- Theme Custom -->
+            <script src="{% static "javascripts/theme.custom.js" %}"></script>
+
+            <!-- Theme Initialization Files -->
+            <script src="{% static "javascripts/theme.init.js" %}"></script>
+
+            <!-- Scripts often needed, requested in main template for preload !-->
+            <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
+        {% endcompress %}
+	</body>
+</html>

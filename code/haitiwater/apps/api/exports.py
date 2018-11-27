@@ -10,7 +10,7 @@ import json
 
 def graph(request):
     export_format = request.GET.get('type', None)
-    if export_format == "consumer_sex_pie":
+    if export_format == "consumer_gender_pie":
         export = """{
                "jsonarray": [{
                   "label": "Femmes",

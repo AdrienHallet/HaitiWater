@@ -4,8 +4,8 @@ refresh();
 // Request the JSON from server and update the graph
 function refresh(){
     switch (document.getElementById('graphTitle').value){
-        case 'consumerSexPie':
-            consumerSexPie();
+        case 'consumerGenderPie':
+            consumerGenderPie();
             break;
         default:
             console.log("Undefined graph type: " + document.getElementById('graphTitle').value)
@@ -25,9 +25,9 @@ function colorThemes(){
     ]
 }
 
-function consumerSexPie(){
+function consumerGenderPie(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let dataURL = baseURL + "/api/graph/?type=consumer_sex_pie";
+    let dataURL = baseURL + "/api/graph/?type=consumer_gender_pie";
     $.getJSON(dataURL, function(jsonfile) {
         var labels = jsonfile.jsonarray.map(function(e) {
            return e.label;
