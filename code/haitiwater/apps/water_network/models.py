@@ -17,12 +17,13 @@ class ElementType(Enum):
     KIOSK = "Kiosque"
     INDIVIDUAL = "Prise individuelle"
     # Conduite
-    PIPE = "Tuyau"
+    PIPE = "Conduite"
 
 
 class ElementStatus(Enum):
     OK = "En service"
-    REPAIR = "En réparation"
+    REPAIR = "Nécessite réparation"
+    REPAIRING = "En réparation"
     URGENT = "Hors service (Urgent)"
     KO = "Hors service"
 
