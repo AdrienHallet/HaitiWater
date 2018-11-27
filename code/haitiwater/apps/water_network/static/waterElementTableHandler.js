@@ -4,6 +4,10 @@
  *
  */
 $(document).ready(function() {
+    drawTable();
+});
+
+function drawTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=water_element";
     console.log("Request data from: " + dataURL);
@@ -32,12 +36,12 @@ $(document).ready(function() {
     } );
 
     prettifyHeader();
-});
+}
 
 function getDatatableConfiguration(dataURL){
     let config = {
         "sortable": true,
-        "processing": false,
+        "processing": true,
         "serverSide": true,
         "responsive": false,
         "autoWidth": false,
@@ -76,16 +80,7 @@ function getDatatableConfiguration(dataURL){
             }
         },
         "ajax": {
-            url: dataURL,
-            error: function (xhr, error, thrown) {
-                console.log(xhr + '\n' + error + '\n' + thrown);
-                $('#datatable-ajax_wrapper').hide();
-                new PNotify({
-                    title: 'Échec du téléchargement!',
-                    text: "Les données de la table n'ont pas pu être téléchargées",
-                    type: 'failure'
-                });
-            }
+            url: dataURL
         },
 
         //Callbacks on fetched data

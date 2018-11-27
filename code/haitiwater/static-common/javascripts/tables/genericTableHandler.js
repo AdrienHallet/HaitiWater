@@ -33,10 +33,10 @@ function removeElement(table, id){
             } else {
                 new PNotify({
                     title: 'Succès!',
-                    text: 'Élément ajouté avec succès',
+                    text: 'Élément supprimé avec succès',
                     type: 'success'
                 });
-                $('#datatable-ajax').DataTable().reload();
+                drawDataTable();
             }
         }
     };
