@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'rest_framework',
+    'rest_framework.authtoken',
     'apps.authentication',
     'apps.dashboard',
     'apps.water_network',
@@ -68,6 +70,14 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'chartjs'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -114,9 +124,9 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'haitiwater',
         'HOST': 'localhost',
-        'PORT': '5433',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PORT': '5432',
+        'USER': 'admin',
+        'PASSWORD': 'admin',
     }
 
 }

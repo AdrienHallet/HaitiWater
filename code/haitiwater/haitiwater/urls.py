@@ -24,5 +24,6 @@ urlpatterns = [
     path('consommateurs/', include('apps.consumers.urls')),
     path('rapport/', include('apps.report.urls')),
     path('api/', include('apps.api.urls')),
+    path('user/', include('apps.authentication.urls')),
 
 ]

@@ -43,12 +43,12 @@
 						<h2 class="title text-uppercase text-bold m-none"><i class="fa fa-user mr-xs"></i> Connexion</h2>
 					</div>
 					<div class="panel-body">
-						<form action="accueil/" method="post">
+						<form id="form-connect-user">
                             {% csrf_token %}
 							<div class="form-group mb-lg">
 								<label>Utilisateur</label>
 								<div class="input-group input-group-icon">
-									<input name="username" type="text" class="form-control input-lg" />
+									<input id="username" name="username" type="text" class="form-control input-lg" />
 									<span class="input-group-addon">
 										<span class="icon icon-lg">
 											<i class="fa fa-user"></i>
@@ -63,7 +63,7 @@
 									<a href="recuperer-mot-de-passe" class="pull-right">Mot de passe oublié?</a>
 								</div>
 								<div class="input-group input-group-icon">
-									<input name="pwd" type="password" class="form-control input-lg" />
+									<input id="pwd" name="pwd" type="password" class="form-control input-lg" />
 									<span class="input-group-addon">
 										<span class="icon icon-lg">
 											<i class="fa fa-lock"></i>
@@ -80,9 +80,9 @@
 {#									</div>#}
 								</div>
 								<div class="col-sm-4 text-right">
-									<button type="submit" class="btn btn-primary hidden-xs">Connexion</button>
-									<button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Connexion</button>
-								</div>
+									<button type="button" onclick="authUser()" class="btn btn-primary hidden-xs">Connexion</button>
+                                    <button type="button" onclick="authUser()" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Connexion</button>
+                                </div>
 							</div>
 
 							<p class="text-center">Pas encore de compte ? <a href="enregistrement">Enregistrez-vous !</a>
@@ -94,6 +94,7 @@
 		<!-- end: page -->
 
 		{% compress js %}
+            <script src="{% static "authHandler.js"%}"></script>
             <script src="{% static "vendor/jquery/jquery.js" %}"></script>
             <script src="{% static "vendor/jquery-browser-mobile/jquery.browser.mobile.js" %}"></script>
             <script src="{% static "vendor/nanoscroller/nanoscroller.js" %}"></script>
