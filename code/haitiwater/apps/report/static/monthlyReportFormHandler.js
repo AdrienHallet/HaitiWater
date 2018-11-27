@@ -314,16 +314,23 @@ function setupStepTwo(){
 	let detailsWindow = $('#wizardMonthlyReport-details');
 	detailsWindow.empty(); // Flush old content
 
-	selectedOutlets.each(function(){
-		let name = this.text; // Displayed name
-		let id = this.value; // ID of the fountain to send back to server
+	let checkboxActiveService = $('#checkbox-active-service');
+	if (checkboxActiveService.is(':checked')){
+		// Service was active, ask user to input details
+		selectedOutlets.each(function(){
+			let name = this.text; // Displayed name
+			let id = this.value; // ID of the fountain to send back to server
 
-		let sectionHeader = '<section class="panel water-outlet" id="'+ id +'">' +
-								'<header class="panel-heading">' +
-									'<h2 class="panel-title">' + name + '</h2>' +
-								'</header>';
-		detailsWindow.append(sectionHeader + panelBody);
-	});
+			let sectionHeader = '<section class="panel water-outlet" id="'+ id +'">' +
+									'<header class="panel-heading">' +
+										'<h2 class="panel-title">' + name + '</h2>' +
+									'</header>';
+			detailsWindow.append(sectionHeader + panelBody);
+		});
+	} else {
+		// Todo create text
+		detailsWindow.html("<div class=\"center-text\">Texte explicatif</div>");
+	}
 
 	/**
      * Listener to convert cubic to gallons and vice-versa
