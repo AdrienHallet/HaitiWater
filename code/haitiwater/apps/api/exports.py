@@ -40,6 +40,7 @@ def table(request):
                       "data": []
                     }"""
     json_test = json.loads(export)
+    json_test["draw"] = str(int(request.GET.get('draw', "1")) + 1)
     d = parse(request)
     all = []
     if d["table_name"] == "water_element":
@@ -86,7 +87,7 @@ def remove_network_element(request):
     elif element == "consumer":
         id = request.POST.get("id", None)
         Consumer.objects.filter(id=id).delete()
-        return HttpResponse(status=200)
+        return HttpResponse({"draw": request.POST.get("draw", 0)+1}, status=200)
 
     return HttpResponse(status=500)
 
