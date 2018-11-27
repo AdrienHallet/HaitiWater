@@ -141,35 +141,6 @@ $(document).ready(function() {
 	});
 
     /**
-     * Listener to convert cubic to gallons and vice-versa
-     */
-    $('.water-outlet').each(function(i){
-        const CUBICMETER_GALLON_RATIO = 264.172;
-
-        let cubic = $('.cubic input', this);
-        let gallon = $('.gallon input', this);
-
-        cubic.on('input', function(){
-            gallon.val(cubic.val() * CUBICMETER_GALLON_RATIO);
-        });
-
-        gallon.on('input', function(){
-            cubic.val(gallon.val() / CUBICMETER_GALLON_RATIO);
-        });
-
-        let perCubic = $('.per-cubic input', this);
-        let perGallon = $('.per-gallon input', this);
-
-        perCubic.on('input', function(){
-            perGallon.val(perCubic.val() / CUBICMETER_GALLON_RATIO);
-        });
-
-        perGallon.on('input', function(){
-            perCubic.val(perGallon.val() * CUBICMETER_GALLON_RATIO);
-        });
-    });
-
-    /**
 	 * Listener to compute the total in the billing area
      */
     let totalInput = $('#input-total-billing');
@@ -340,8 +311,10 @@ function setupStepTwo(){
 
 	// For each selected outlet, setup the data section
 	let selectedOutlets = $('#multiselect-outlets option:selected');
+	let detailsWindow = $('#wizardMonthlyReport-details');
+	detailsWindow.empty(); // Flush old content
+
 	selectedOutlets.each(function(){
-		let detailsWindow = $('#wizardMonthlyReport-details');
 		let name = this.text; // Displayed name
 		let id = this.value; // ID of the fountain to send back to server
 
@@ -349,9 +322,37 @@ function setupStepTwo(){
 								'<header class="panel-heading">' +
 									'<h2 class="panel-title">' + name + '</h2>' +
 								'</header>';
-
 		detailsWindow.append(sectionHeader + panelBody);
 	});
+
+	/**
+     * Listener to convert cubic to gallons and vice-versa
+     */
+    $('.water-outlet').each(function(i){
+        const CUBICMETER_GALLON_RATIO = 264.172;
+
+        let cubic = $('.cubic input', this);
+        let gallon = $('.gallon input', this);
+
+        cubic.on('input', function(){
+            gallon.val(cubic.val() * CUBICMETER_GALLON_RATIO);
+        });
+
+        gallon.on('input', function(){
+            cubic.val(gallon.val() / CUBICMETER_GALLON_RATIO);
+        });
+
+        let perCubic = $('.per-cubic input', this);
+        let perGallon = $('.per-gallon input', this);
+
+        perCubic.on('input', function(){
+            perGallon.val(perCubic.val() / CUBICMETER_GALLON_RATIO);
+        });
+
+        perGallon.on('input', function(){
+            perCubic.val(perGallon.val() * CUBICMETER_GALLON_RATIO);
+        });
+    });
 
 }
 
