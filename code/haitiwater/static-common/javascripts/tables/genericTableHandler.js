@@ -91,11 +91,8 @@ function postNewRow(){
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState !== 4 || xhttp.status !== 200) {
-            if(xhttp.responseText) {
-                console.log("POST error on new element");
-                document.getElementById("form-error").className = "alert alert-danger";
-                document.getElementById("form-error-msg").innerHTML = xhttp.responseText;
-            }
+            document.getElementById("form-error").className = "alert alert-danger";
+            document.getElementById("form-error-msg").innerHTML = xhttp.status + ': ' +xhttp.statusText;
         } else {
             dismissModal();
             new PNotify({
