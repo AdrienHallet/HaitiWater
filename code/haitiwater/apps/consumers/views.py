@@ -10,5 +10,6 @@ def index(request):
         'project_name': PROJECT_NAME,
         'zone_name': 'Nom de la zone',  # Todo Backend
         'current_period': 'Septembre',  # Todo Backend (month of current computed paid info)
+        'water_outlets': [(1, 'Fontaine Bidule'), (2, 'Kiosque Machin'), (3, 'Prise Truc')] # Todo Backend (see report/views.py, it is the same)
     }
     return HttpResponse(template.render(context, request))

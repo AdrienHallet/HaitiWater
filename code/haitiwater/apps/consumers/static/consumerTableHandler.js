@@ -23,7 +23,7 @@ $(document).ready(function() {
     $('#datatable-ajax tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
-            removeElement(data[0]);
+            removeElement("consumer", data[0].innerText);
         } else {}
     } );
     $('#datatable-ajax tbody').on( 'click', '.edit-row', function () {
@@ -33,27 +33,6 @@ $(document).ready(function() {
 
     prettifyHeader();
 });
-
-function editElement(data){
-    if(data){
-        setupModalEdit(data);
-    } else {
-        new PNotify({
-            title: 'Échec!',
-            text: "L'élément ne peut être récupéré (tableHandler.js)",
-            type: 'error'
-        });
-    }
-}
-
-/**
- * Add placeholder and CSS class in the search field
- */
-function prettifyHeader(){
-    $('#datatable-ajax_filter').find('input').addClass("form-control");
-    $('#datatable-ajax_filter').find('input').attr("placeholder", "Recherche");
-    $('#datatable-ajax_filter').css("min-width", "300px");
-}
 
 function getDatatableConfiguration(dataURL){
     let config = {
@@ -120,21 +99,4 @@ function getDatatableConfiguration(dataURL){
         }
     };
     return config;
-}
-
-function onAjaxFailure(xhr, error, thrown){
-    new PNotify({
-        title: 'Échec!',
-        text: 'Le contenu de la table n\'a pu être récupéré',
-        type: 'fail'
-    });
-    console.log(xhr);
-    console.log(error);
-    console.log(thrown);
-}
-
-function getActionButtonsHTML(){
-    return '<div class="center"><a href="#modalForm" class="modal-with-form edit-row fa fa-pen"></a>' +
-            '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
-            '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
 }
