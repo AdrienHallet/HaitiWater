@@ -139,4 +139,13 @@ function setupModalAdd(){
 function dismissModal() {
     $.magnificPopup.close();
     let form = document.forms["form-add-consumer"];
+
+    form["input-last-name"].value = "";
+    form["input-first-name"].value = "";
+    form["select-gender"].value = "none";
+    form["input-address"].value = "";
+    form["input-phone"].value = "";
+    form["input-sub-consumers"].value = "";
+    form["select-main-outlet"].value = "none";
+
 }
