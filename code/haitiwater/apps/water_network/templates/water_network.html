@@ -4,10 +4,8 @@
 {% load compress %}
 
 {% block page_name %}
-    <script src="{% static "vendor/select2/select2.js" %}"></script>
-    <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.js" %}"></script>
-    <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
     <link href="{% static "water_network.css" %}">
+    <script src="{% static "waterNetwork.js" %}"></script>
     Réseau de distribution
 {% endblock %}
 
@@ -88,77 +86,6 @@
         </div>
     </section>
 
-    <!-- Modal form to add/edit network element -->
-    <script src="{% static "javascripts/ui-elements/modal.js"%}"></script>
-    <script src="{% static "formHandler.js"%}"></script>
-    <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
-        <section class="panel">
-            <header class="panel-heading">
-                <h2 id="modal-title-add" class="panel-title hidden">Ajouter un Élément au réseau</h2>
-                <h2 id="modal-title-edit" class="panel-title hidden">Modifier un élément du réseau</h2>
-            </header>
-            <div class="panel-body">
-                <div id="form-error" class="alert alert-danger hidden">
-                    <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
-                    <div id="form-error-msg"></div>
-                </div>
-                <form id="form-add-element" class="form-horizontal mb-lg">
-                    <div id="form-id-component" class="form-group mt-lg hidden">
-                        <label class="col-sm-3 control-label">Identifiant</label>
-                        <div class="col-sm-9">
-                            <input id="input-id" name="input-id" class="form-control" disabled>
-                        </div>
-                    </div>
-                    <div class="form-group mt-lg">
-                        <label class="col-sm-3 control-label">Type</label>
-                        <div class="col-sm-9">
-                            <select id="select-type" name="type" class="form-control">
-                                <option value="none">...</option>
-                                <option value="fountain">Fontaine</option>
-                                <option value="kiosk">Kiosque</option>
-                                <option value="individual">Prise individuelle</option>
-                                <option value="source">Source</option>
-                                <option value="pipe">Conduite</option>
-                            </select>
-                            <label id="select-type-error" class="error">Champ requis</label>
-                        </div>
-                    </div>
-                    <div class="form-group mt-lg">
-                        <label class="col-sm-3 control-label">Emplacement</label>
-                        <div class="col-sm-9">
-                            <input id="input-localization" name="input-localization" class="form-control">
-                            <label id="input-localization-error" class="error">Champ requis</label>
-                        </div>
-                    </div>
-                    <div class="form-group mt-lg">
-                        <label class="col-sm-3 control-label">État</label>
-                        <div class="col-sm-9">
-                            <select id="select-state" name="state" class="form-control">
-                                <option value="none">...</option>
-                                <option value="ok">En service</option>
-                                <option value="repair">Nécessite réparation</option>
-                                <option value="ko">Hors service</option>
-                            </select>
-                            <label id="select-state-error" class="error">Champ requis</label>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <footer class="panel-footer">
-                <div class="row">
-                    <div class="col-md-12 text-right">
-                        <button id="modal-submit-add" onclick="postNewRow()" class="btn btn-primary modal-confirm">
-                            Ajouter
-                        </button>
-                        <button id="modal-submit-edit" onclick="postEditRow()" class="btn btn-primary modal-confirm hidden">
-                            Modifier
-                        </button>
-                        <button onclick="dismissModal()" class="btn btn-default modal-dismiss">
-                            Annuler
-                        </button>
-                    </div>
-                </div>
-            </footer>
-        </section>
-    </div>
+
+    {% include 'water_element_modal.html' %}
 {% endblock %}
