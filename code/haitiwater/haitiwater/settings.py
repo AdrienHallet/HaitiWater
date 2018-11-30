@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'apps.authentication',
     'apps.dashboard',
     'apps.water_network',
+    'apps.zone_management',
     'apps.api',
     'apps.consumers',
     'apps.report',
