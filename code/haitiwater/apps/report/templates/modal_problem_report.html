@@ -1,0 +1,32 @@
+{% load static %}
+
+<!-- Modal form to add/edit network element -->
+<script src="{% static "javascripts/ui-elements/modal.js"%}"></script>
+<div id="modalProblemReport" class="modal-block modal-block-primary mfp-hide">
+    <section class="panel">
+        <header class="panel-heading">
+            <h2 id="modal-title-add" class="panel-title">Signaler un problème</h2>
+        </header>
+        <div class="panel-body">
+            <div id="form-error" class="alert alert-danger hidden">
+                <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
+                <div id="form-error-msg"></div>
+            </div>
+            <form id="form-signal-problem" class="form-horizontal mb-lg">
+                Body todo
+            </form>
+        </div>
+        <footer class="panel-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button id="modal-submit-add" onclick="" class="btn btn-primary modal-confirm">
+                        Envoyer
+                    </button>
+                    <button onclick="dismissModal()" class="btn btn-default modal-dismiss">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>
