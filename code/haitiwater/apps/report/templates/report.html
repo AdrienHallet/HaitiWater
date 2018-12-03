@@ -20,7 +20,7 @@
         </header>
         <div class="panel-body">
             <div class="btn-group-lg btn-group-justified">
-                <a class="btn btn-default" role="button">Signaler un problème</a>
+                <a class="btn btn-default modal-with-form" role="button" href="#modalProblemReport">Signaler un problème</a>
                 <a class="btn btn-default modal-with-form" role="button" href="#modalMonthlyReport">Rapport mensuel</a>
             </div>
         </div>
@@ -40,7 +40,10 @@
         </div>
     </section>
 
-    <!-- Modal form to add/edit network element -->
+    <!-- Modal form to report the monthly values -->
     {% include "modal_monthly_report.html" %}
+
+    <!-- Modal form to report a problem on a water outlet -->
+    {% include "modal_problem_report.html" %}
 
 {% endblock %}

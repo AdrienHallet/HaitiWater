@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_name %}
+    <script src="{% static "zoneManagement.js"%}"></script>
+    Gestion de {{ zone_name }}
+{% endblock %}
+
+{% block page_content %}
+
+    <section class="panel">
+        <header class="panel-heading">
+            <!-- Table block control actions -->
+            <div class="panel-actions form-inline">
+                <a href="#" onclick="" class="modal-with-form fa fa-plus"></a>
+                <a href="#" class="fa fa-print"></a>
+                <a href="#" class="fa fa-caret-down"></a>
+            </div>
+            <h2 class="panel-title">Gestionnaires</h2>
+        </header>
+        <div class="panel-body">
+            Todo et lier le clic à un filtre sur la table suivante
+        </div>
+    </section>
+
+    <section class="panel">
+        <header class="panel-heading">
+            <!-- Table block control actions -->
+            <div class="panel-actions form-inline">
+                <a href="#modalForm" onclick="setupModalAdd()" class="modal-with-form fa fa-plus"></a>
+                <a href="#" class="fa fa-print"></a>
+                <a href="#" class="fa fa-caret-down"></a>
+            </div>
+            <h2 class="panel-title">Éléments du réseau</h2>
+        </header>
+        <div class="panel-body">
+            {% include "water_element_table.html" %}
+        </div>
+    </section>
+
+    {% include 'water_element_modal.html' %}
+{% endblock %}

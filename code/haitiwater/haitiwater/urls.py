@@ -23,6 +23,7 @@ urlpatterns = [
     path('reseau/', include('apps.water_network.urls')),
     path('consommateurs/', include('apps.consumers.urls')),
     path('rapport/', include('apps.report.urls')),
+    path('gestion/', include('apps.zone_management.urls')),
     path('api/', include('apps.api.urls')),
     path('user/', include('apps.authentication.urls')),
 
