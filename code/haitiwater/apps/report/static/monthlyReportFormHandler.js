@@ -40,15 +40,20 @@ $(document).ready(function() {
 
 	$wizardMonthlyReportfinish.on('click', function( ev ) {
 		ev.preventDefault();
-		var validated = wizardForm.valid();
+		var validated = validate();
 		if ( validated ) {
+			//Todo send to back-end
 			new PNotify({
-				title: 'Congratulations',
-				text: 'You completed the wizard form.',
+				title: 'Envoyé',
+				text: 'Le rapport a été envoyé (en fait non, on a pas de back-end).',
 				type: 'custom',
 				addclass: 'notification-success',
 				icon: 'fa fa-check'
 			});
+			dismissModal();
+		}
+		else {
+			return false;
 		}
 	});
 
@@ -181,7 +186,8 @@ function validate(step){
 			return validateStepThree();
         default:
             return validateStepOne() &&
-            		validateStepTwo();
+            		validateStepTwo() &&
+					 validateStepThree();
     }
 }
 
