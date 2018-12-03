@@ -13,7 +13,43 @@
                 <div id="form-error-msg"></div>
             </div>
             <form id="form-signal-problem" class="form-horizontal mb-lg">
-                Body todo
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Type de problème</label>
+                    <div class="col-sm-9">
+                        <select id="select-type" name="type" class="form-control">
+                            <option value="none">...</option>
+                            <option value="mechanical">Mécanique</option>
+                            <option value="quality">Qualité</option>
+                            <option value="other">Autre</option>
+                        </select>
+                        <label id="select-type-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Niveau d'urgence</label>
+                    <div class="col-sm-9">
+                        <select id="select-urgency" name="urgency" class="form-control">
+                            <option value="none">...</option>
+                            <option value="low">Bas</option>
+                            <option value="medium">Moyen</option>
+                            <option value="high">Haut</option>
+                        </select>
+                        <label id="select-urgency-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Description</label>
+                    <div class="col-sm-9">
+                        <textarea id="input-comment" name="comment" class="form-control"></textarea>
+                        <label id="select-comment-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">(Optionnel) Photographie</label>
+                    <div class="col-sm-9">
+                        <input type="file" name="pic" accept="image/*">
+                    </div>
+                </div>
             </form>
         </div>
         <footer class="panel-footer">
