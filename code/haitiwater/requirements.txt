@@ -1,5 +1,6 @@
 certifi==2018.10.15
 chardet==3.0.4
+dj-config-url==0.1.1
 dj-database-url==0.5.0
 Django==2.1.2
 django-appconf==1.0.2
@@ -10,6 +11,7 @@ django-filter==2.0.0
 django-heroku==0.3.1
 django-tables2==2.0.2
 django-widget-tweaks==1.4.3
+djangorestframework==3.9.0
 et-xmlfile==1.0.1
 gunicorn==19.9.0
 heroku==0.1.4
