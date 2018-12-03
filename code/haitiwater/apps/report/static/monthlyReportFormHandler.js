@@ -177,6 +177,7 @@ function validate(step){
         case 2:
             return validateStepTwo();
 		case 3:
+			setupConfirmation();
 			return validateStepThree();
         default:
             return validateStepOne() &&
@@ -363,6 +364,10 @@ function setupStepTwo(){
         });
     });
 
+}
+
+function setupConfirmation(){
+	$("#wizardMonthlyReport-confirm").append("TODO");
 }
 
 /**
