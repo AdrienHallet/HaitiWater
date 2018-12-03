@@ -367,7 +367,21 @@ function setupStepTwo(){
 }
 
 function setupConfirmation(){
-	$("#wizardMonthlyReport-confirm").append("TODO");
+	let selectedOutlets = $('#multiselect-outlets option:selected');
+	let selectionAsHTMLList = "";
+
+	selectedOutlets.each(function() {
+        let name = this.text;
+        selectionAsHTMLList += "<li>" + name +"</li>"
+    });
+
+	$("#wizardMonthlyReport-confirm").html("<div class=\"well info\">" +
+			"Vous allez soumettre les informations de :" +
+			"<ul>" +
+			selectionAsHTMLList +
+			"</ul>"+
+			"Cette opération est irréversible, cliquez sur \"Terminer\" pour confirmer l'envoi." +
+			"</div>");
 }
 
 /**
