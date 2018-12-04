@@ -1,3 +1,7 @@
+function drawDataTable() {
+    $('#datatable-ajax').DataTable().draw();
+}
+
 function validateForm() {
     let form = document.forms["form-add-consumer"];
 
