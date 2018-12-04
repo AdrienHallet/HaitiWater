@@ -56,7 +56,7 @@ def table(request):
                 tab = elem.network_descript()
                 tab.insert(3, len(cust))
                 for cols in d["searchable"]:
-                    if cols < len(tab) and d["search"] in str(tab[cols]):
+                    if cols < len(tab) and d["search"].lower() in str(tab[cols]).lower():
                         all.append(tab)
                         tot += 1
                         break
@@ -74,7 +74,7 @@ def table(request):
             for elem in all_consumers:
                 for cols in d["searchable"]:
                     tab = elem.descript()
-                    if cols < len(tab) and d["search"] in str(tab[cols]):
+                    if cols < len(tab) and d["search"].lower() in str(tab[cols]).lower():
                         all.append(tab)
                         tot += 1
                         break
