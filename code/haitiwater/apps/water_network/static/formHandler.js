@@ -1,7 +1,5 @@
 function drawDataTable() {
-    $('#datatable-ajax').DataTable().destroy();
-    drawTable();
-
+    $('#datatable-ajax').DataTable().draw();
 }
 
 /**

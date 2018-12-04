@@ -12,5 +12,6 @@ def index(request):
         'water_outlets': [(1, 'Fontaine Bidule'), (2, 'Kiosque Machin'), (3, 'Prise Truc')]
         # Todo Backend. Liste de fontaines sous forme de [ID, Nom] (vu qu'on a pas de champ "nom", on peut utiliser la concaténation type + emplacement)
         # Notez que l'ID est ce que je vais renvoyer via l'API pour le rapport mensuel, donc envoyez l'ID de l'élément, pas simplement l'ID local
+        # Il ne faut envoyer que les éléments qui n'ont PAS encore reçu de rapport mensuel. Ainsi le gestionnaire peut envoyer des rapports un par un ou tout d'un coup.
     }
     return HttpResponse(template.render(context, request))

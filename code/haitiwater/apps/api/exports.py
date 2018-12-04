@@ -34,7 +34,7 @@ def table(request):
     # Note that "editable" is a custom field. Setting it to true displays the edit/delete buttons.
     export = """{
                       "editable": true,
-                      "draw": 2,
+                      "draw": 0,
                       "recordsTotal": 100,
                       "recordsFiltered": 100,
                       "data": []

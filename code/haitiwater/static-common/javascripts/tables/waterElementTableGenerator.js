@@ -1,17 +1,8 @@
-/**
- * Custom Table Handler
- * Used to prettify the table and make it respond to custom input and commands
- *
- */
-$(document).ready(function() {
-    drawTable();
-});
-
-function drawTable(){
+function drawWaterElementTable(withManagers){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=water_element";
     console.log("Request data from: " + dataURL);
-    $('#datatable-ajax').DataTable(getDatatableConfiguration(dataURL));
+    $('#datatable-ajax').DataTable(getDatatableConfiguration(dataURL, withManagers));
 
     let table = $('#datatable-ajax').DataTable();
     $('#datatable-ajax tbody').on( 'click', 'tr', function () {
@@ -38,7 +29,7 @@ function drawTable(){
     prettifyHeader();
 }
 
-function getDatatableConfiguration(dataURL){
+function getDatatableConfiguration(dataURL, withManagers){
     let config = {
         "sortable": true,
         "processing": true,
@@ -56,7 +47,13 @@ function getDatatableConfiguration(dataURL){
                 "targets": -1,
                 "data": null,
                 "defaultContent": getActionButtonsHTML(),
-            }],
+            },
+            {
+                "targets": -2,
+                "defaultContent": "Pas de gestionnaire",
+                "visible": withManagers,
+            }
+            ],
         "language": {
             "sProcessing": "Chargement...",
             "sSearch": "",

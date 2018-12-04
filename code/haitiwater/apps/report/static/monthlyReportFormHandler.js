@@ -40,15 +40,20 @@ $(document).ready(function() {
 
 	$wizardMonthlyReportfinish.on('click', function( ev ) {
 		ev.preventDefault();
-		var validated = wizardForm.valid();
+		var validated = validate();
 		if ( validated ) {
+			//Todo send to back-end
 			new PNotify({
-				title: 'Congratulations',
-				text: 'You completed the wizard form.',
+				title: 'Envoyé',
+				text: 'Le rapport a été envoyé (en fait non, on a pas de back-end).',
 				type: 'custom',
 				addclass: 'notification-success',
 				icon: 'fa fa-check'
 			});
+			dismissModal();
+		}
+		else {
+			return false;
 		}
 	});
 
@@ -175,12 +180,15 @@ function validate(step){
         	setupStepTwo();
             return validateStepOne();
         case 2:
+        	setupStepThree();
             return validateStepTwo();
 		case 3:
+			setupConfirmation();
 			return validateStepThree();
         default:
             return validateStepOne() &&
-            		validateStepTwo();
+            		validateStepTwo() &&
+					 validateStepThree();
     }
 }
 
@@ -363,6 +371,62 @@ function setupStepTwo(){
         });
     });
 
+}
+
+/**
+ * Get the volumes distributed by the water network, multiply them by the cost and put the computed total
+ * inside the suggestion field for the billing step
+ */
+function setupStepThree(){
+	let totalFountain = 0;
+	let totalKiosk = 0;
+	let totalIndividual = 0;
+
+	// Compute the totals
+	$('.water-outlet').each(function(i){
+
+		let name = $('.panel-title', this)[0].innerText.toLowerCase();
+		let volume = $('.cubic input', this).val();
+		let cost = $('.per-cubic input', this).val();
+		let value = volume * cost;
+
+		// This only works if the name contains the type. Rework if that changes
+		if (name.includes('fontaine'))
+			totalFountain += value;
+		else if (name.includes('kiosque'))
+			totalKiosk += value;
+		else if (name.includes('prise'))
+			totalIndividual += value;
+		else
+			console.error("La sortie d'eau ne rentre dans aucune catégorie (fontaine, kiosque, prise individuelle");
+	});
+
+	// Put the totals in the fields
+	$('#input-fountain-suggested').val(totalFountain);
+	$('#input-kiosk-suggested').val(totalKiosk);
+	$('#input-individual-suggested').val(totalIndividual);
+	$('#input-total-suggested').val(totalFountain + totalKiosk + totalIndividual);
+}
+
+/**
+ * List the water outlets that will have their information pushed to the server
+ */
+function setupConfirmation(){
+	let selectedOutlets = $('#multiselect-outlets option:selected');
+	let selectionAsHTMLList = "";
+
+	selectedOutlets.each(function() {
+        let name = this.text;
+        selectionAsHTMLList += "<li>" + name +"</li>"
+    });
+
+	$("#wizardMonthlyReport-confirm").html("<div class=\"well info\">" +
+			"Vous allez soumettre les informations de :" +
+			"<ul>" +
+			selectionAsHTMLList +
+			"</ul>"+
+			"Cette opération est irréversible, cliquez sur \"Terminer\" pour confirmer l'envoi." +
+			"</div>");
 }
 
 /**
