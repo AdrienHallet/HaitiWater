@@ -34,9 +34,6 @@ def table(request):
     # Note that "editable" is a custom field. Setting it to true displays the edit/delete buttons.
     export = """{
                       "editable": true,
-                      "draw": 0,
-                      "recordsTotal": 100,
-                      "recordsFiltered": 100,
                       "data": []
                     }"""
     json_test = json.loads(export)
@@ -45,19 +42,49 @@ def table(request):
     all = []
     if d["table_name"] == "water_element":
         all_water_element = Element.objects.all()
-        for elem in all_water_element[d["start"]:d["start"]+d["length_max"]]:
-            cust = Consumer.objects.filter(water_outlet=elem)
-            tab = elem.network_descript()
-            tab.insert(3, len(cust))
-            all.append(tab)
+        json_test["recordsTotal"] = len(all_water_element)
+        if d["search"] == "":
+            for elem in all_water_element[d["start"]:d["start"]+d["length_max"]]:
+                cust = Consumer.objects.filter(water_outlet=elem)
+                tab = elem.network_descript()
+                tab.insert(3, len(cust))
+                all.append(tab)
+        else:
+            tot = 0
+            for elem in all_water_element:
+                cust = Consumer.objects.filter(water_outlet=elem)
+                tab = elem.network_descript()
+                tab.insert(3, len(cust))
+                for cols in d["searchable"]:
+                    if cols < len(tab) and d["search"] in str(tab[cols]):
+                        all.append(tab)
+                        tot += 1
+                        break
+                if tot == d["length_max"]:
+                    break
 
     elif d["table_name"] == "consumer":
         all_consumers = Consumer.objects.all()
-        for elem in all_consumers[d["start"]:d["start"] + d["length_max"]]:
-            all.append(elem.descript())
+        json_test["recordsTotal"] = len(all_consumers)
+        if d["search"] == "":
+            for elem in all_consumers[d["start"]:d["start"] + d["length_max"]]:
+                all.append(elem.descript())
+        else:
+            tot = 0
+            for elem in all_consumers:
+                for cols in d["searchable"]:
+                    tab = elem.descript()
+                    if cols < len(tab) and d["search"] in str(tab[cols]):
+                        all.append(tab)
+                        tot += 1
+                        break
+                if tot == d["length_max"]:
+                    break
+
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
                    reverse=d["type_order"] != "asc")
     json_test["data"] = final
+    json_test["recordsFiltered"] = len(final)
     return HttpResponse(json.dumps(json_test))
 
 
@@ -112,10 +139,17 @@ def parse(request):
     test2 = re.compile('order\[\d*\]\[dir\]')
     res1 = list(filter(test1.match, dict(request.GET).keys()))
     res2 = list(filter(test2.match, dict(request.GET).keys()))
+    searchable_cols = []
+    for i in range(25):
+        if request.GET.get('columns['+str(i)+'][searchable]', False):
+            searchable_cols.append(i)
     d = {"table_name": request.GET.get('name', None),
          "length_max": int(request.GET.get('length', 10)),
          "start": int(request.GET.get('start', 0)),
          "column_ordered": int(request.GET.get(res1[0], 0)),
-         "type_order": request.GET.get(res2[0], 'asc')
+         "type_order": request.GET.get(res2[0], 'asc'),
+         "search": request.GET.get('search[value]', ""),
+         "searchable": searchable_cols
          }
+
     return d
