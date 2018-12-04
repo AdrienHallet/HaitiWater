@@ -108,12 +108,14 @@ def edit_network_element(request):
 
 
 def parse(request):
-    test = re.compile('order\[\d*\]\[dir\]')
-    res = list(filter(test.match, dict(request.GET).keys()))
+    test1 = re.compile('order\[\d*\]\[column\]')
+    test2 = re.compile('order\[\d*\]\[dir\]')
+    res1 = list(filter(test1.match, dict(request.GET).keys()))
+    res2 = list(filter(test2.match, dict(request.GET).keys()))
     d = {"table_name": request.GET.get('name', None),
          "length_max": int(request.GET.get('length', 10)),
          "start": int(request.GET.get('start', 0)),
-         "column_ordered": int(re.search('order\[(\d*)\]\[dir\]', res[0]).group(1)),
-         "type_order": request.GET.get(res[0], 'asc')
+         "column_ordered": int(request.GET.get(res1[0], 0)),
+         "type_order": request.GET.get(res2[0], 'asc')
          }
     return d
