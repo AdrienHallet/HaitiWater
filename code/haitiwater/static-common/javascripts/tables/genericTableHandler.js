@@ -90,17 +90,20 @@ function postNewRow(){
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
-        if(xhttp.readyState !== 4 || xhttp.status !== 200) {
-            document.getElementById("form-error").className = "alert alert-danger";
-            document.getElementById("form-error-msg").innerHTML = xhttp.status + ': ' +xhttp.statusText;
-        } else {
-            dismissModal();
-            new PNotify({
-                title: 'Succès!',
-                text: 'Élément ajouté avec succès',
-                type: 'success'
-            });
-            drawDataTable();
+        if(xhttp.readyState !== 4) {
+            if (xhttp.status !== 200) {
+                document.getElementById("form-error").className = "alert alert-danger";
+                document.getElementById("form-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
+            } else {
+                document.getElementById("form-error").className = "alert alert-danger hidden"; // hide old msg
+                dismissModal();
+                new PNotify({
+                    title: 'Succès!',
+                    text: 'Élément ajouté avec succès',
+                    type: 'success'
+                });
+                drawDataTable();
+            }
         }
     };
     xhttp.send(request)
@@ -121,20 +124,23 @@ function postEditRow(){
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
-        if(xhttp.readyState !== 4 || xhttp.status !== 200) {
-            if(xhttp.responseText) {
-                console.log("POST error on new element");
-                document.getElementById("form-error").className = "alert alert-danger";
-                document.getElementById("form-error-msg").innerHTML = xhttp.responseText;
+        if(xhttp.readyState !== 4) {
+            if (xhttp.status !== 200) {
+                if (xhttp.responseText) {
+                    console.log("POST error on new element");
+                    document.getElementById("form-error").className = "alert alert-danger";
+                    document.getElementById("form-error-msg").innerHTML = xhttp.responseText;
+                }
+            } else {
+                document.getElementById("form-error").className = "alert alert-danger hidden"; // hide old msg
+                dismissModal();
+                new PNotify({
+                    title: 'Succès!',
+                    text: 'Élément édité avec succès',
+                    type: 'success'
+                });
+                drawDataTable();
             }
-        } else {
-            dismissModal();
-            new PNotify({
-                title: 'Succès!',
-                text: 'Élément édité avec succès',
-                type: 'success'
-            });
-            drawDataTable();
         }
     };
     xhttp.send(request)
