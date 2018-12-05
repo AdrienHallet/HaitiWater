@@ -3,6 +3,7 @@
 
 {% block page_name %}
     <script src="{% static "zoneManagement.js"%}"></script>
+    <script src="{% static "javascripts/ui-elements/modal.js"%}"></script>
     Gestion de {{ zone_name }}
 {% endblock %}
 
@@ -14,7 +15,7 @@
                 <header class="panel-heading">
                     <!-- Table block control actions -->
                     <div class="panel-actions form-inline">
-                        <a href="#" onclick="" class="modal-with-form fa fa-plus"></a>
+                        <a href="#modalZone" onclick="setupModalZoneAdd()" class="modal-with-form fa fa-plus" id="plus-zone"></a>
                         <a href="#" class="fa fa-caret-down"></a>
                     </div>
                     <h2 class="panel-title">Zones</h2>
@@ -29,7 +30,7 @@
                 <header class="panel-heading">
                     <!-- Table block control actions -->
                     <div class="panel-actions form-inline">
-                        <a href="#" onclick="" class="modal-with-form fa fa-plus"></a>
+                        <a href="#modalManager" onclick="setupModalManagerAdd()" class="modal-with-form fa fa-plus" id="plus-manager"></a>
                         <a href="#" class="fa fa-print"></a>
                         <a href="#" class="fa fa-caret-down"></a>
                     </div>
@@ -54,4 +55,9 @@
             {% include "water_element_table.html" %}
         </div>
     </section>
+
+    {% include "zone_modal.html" %}
+
+    {% include "manager_modal.html" %}
+
 {% endblock %}
