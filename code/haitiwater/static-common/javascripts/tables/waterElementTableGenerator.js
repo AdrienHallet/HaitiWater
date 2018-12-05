@@ -85,6 +85,8 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
         "createdRow": function (row, data, index) {
             $('td', row).eq(5).addClass('text-center');
             $('td', row).eq(6).addClass('text-center');
+            if(!withActions) // Hide last column content if we don't need the actions
+                $('td', row).eq(8).addClass('hidden');
         },
         "initComplete": function(settings, json){
             // Removes the last column (both header and body) if we cannot edit or if required by withAction argument
