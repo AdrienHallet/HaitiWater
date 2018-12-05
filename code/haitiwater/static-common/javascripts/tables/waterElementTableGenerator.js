@@ -1,8 +1,8 @@
-function drawWaterElementTable(withManagers){
+function drawWaterElementTable(withManagers, withActions){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=water_element";
     console.log("Request data from: " + dataURL);
-    $('#datatable-ajax').DataTable(getDatatableConfiguration(dataURL, withManagers));
+    $('#datatable-ajax').DataTable(getWaterDatatableConfiguration(dataURL, withManagers, withActions));
 
     let table = $('#datatable-ajax').DataTable();
     $('#datatable-ajax tbody').on( 'click', 'tr', function () {
@@ -29,7 +29,7 @@ function drawWaterElementTable(withManagers){
     prettifyHeader();
 }
 
-function getDatatableConfiguration(dataURL, withManagers){
+function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
     let config = {
         "sortable": true,
         "processing": true,
@@ -43,7 +43,8 @@ function getDatatableConfiguration(dataURL, withManagers){
             leftColumns: 1,
             rightColumns: 1
         },
-        "columnDefs": [{
+        "columnDefs": [
+            {
                 "targets": -1,
                 "data": null,
                 "defaultContent": getActionButtonsHTML(),
@@ -86,9 +87,11 @@ function getDatatableConfiguration(dataURL, withManagers){
             $('td', row).eq(6).addClass('text-center');
         },
         "initComplete": function(settings, json){
-            // Removes the last column (both header and body) if we cannot edit the table
-            if(!(json.hasOwnProperty('editable') && json['editable'])){
-                $('#datatable-ajax').find('tr:last-child th:last-child, td:last-child').remove();
+            // Removes the last column (both header and body) if we cannot edit or if required by withAction argument
+            console.log(json['editable']);
+            if(!withActions || !(json.hasOwnProperty('editable') && json['editable'])){
+                $("#datatable-ajax th:last-child, #datatable-ajax td:last-child").addClass("hidden");
+                $("#datatable-ajax_wrapper tr:last-child th:last-child").addClass("hidden");
             }
         }
     };

@@ -2,7 +2,7 @@ function drawManagersTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=managers";
     console.log("Request data from: " + dataURL);
-    $('#datatable-managers').DataTable(getDatatableConfiguration(dataURL));
+    $('#datatable-managers').DataTable(getManagersDatatableConfiguration(dataURL));
 
     let table = $('#datatable-managers').DataTable();
     $('#datatable-managers tbody').on( 'click', 'tr', function () {
@@ -37,7 +37,7 @@ function prettifyManagersHeader(){
     $('#datatable-managers_filter').css("min-width", "300px");
 }
 
-function getDatatableConfiguration(dataURL){
+function getManagersDatatableConfiguration(dataURL){
     let config = {
         "sortable": true,
         "processing": true,
