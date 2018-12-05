@@ -89,12 +89,17 @@ function getDatatableConfiguration(dataURL){
         },
 
         //Callbacks on fetched data
+        "createdRow": function (row, data, index) {
+            if ($("#datatable-ajax th:last-child, #datatable-ajax td:last-child").hasClass("hidden")){
+                $('td', row).eq(10).addClass('hidden');
+            }
+        },
+
         "initComplete": function(settings, json){
-            // Removes the last column (both header and body) if we cannot edit the table
-            console.log(json.hasOwnProperty('editable'));
-            console.log(json['editable']);
+            // Removes the last column (both header and body) if we cannot edit
             if(!(json.hasOwnProperty('editable') && json['editable'])){
-                $('#datatable-ajax').find('tr:last-child th:last-child, td:last-child').remove();
+                $("#datatable-ajax th:last-child, #datatable-ajax td:last-child").addClass("hidden");
+                $("#datatable-ajax_wrapper tr:last-child th:last-child").addClass("hidden");
             }
         }
     };
