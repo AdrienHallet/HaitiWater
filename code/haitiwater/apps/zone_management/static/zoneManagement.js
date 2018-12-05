@@ -3,4 +3,6 @@ $(document).ready(function() {
     drawWaterElementTable(true);
     // Draw the managers table
     drawManagersTable();
+    // Draw the zone table
+    drawZoneTable();
 });

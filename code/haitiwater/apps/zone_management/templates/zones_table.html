@@ -1,6 +1,6 @@
 {% load static %}
 
-<script src="{% static "managersTableGenerator.js" %}"></script>
+<script src="{% static "zoneTableGenerator.js" %}"></script>
 
 {# /!\ Don't forget to uncomment those imports if the table is used on a page where it is the only datatable #}
 {#<script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>#}
@@ -9,14 +9,11 @@
 {#<script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>#}
 
 <div id="datatable-ajax_wrapper-managers" class="dataTables_wrapper no-footer">
-    <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-managers" aria-describedby="datatable-ajax_info">
+    <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-zones" aria-describedby="datatable-ajax_info">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
-                <th>Prénom</th>
-                <th>Rôle</th>
-                <th>Zone</th>
                 <th>Actions</th>
             </tr>
         </thead>

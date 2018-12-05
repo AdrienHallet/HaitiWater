@@ -1,11 +1,11 @@
-function drawManagersTable(){
+function drawZoneTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let dataURL = baseURL + "/api/table/?name=managers";
+    let dataURL = baseURL + "/api/table/?name=zones";
     console.log("Request data from: " + dataURL);
-    $('#datatable-managers').DataTable(getDatatableConfiguration(dataURL));
+    $('#datatable-zones').DataTable(getDatatableConfiguration(dataURL));
 
-    let table = $('#datatable-managers').DataTable();
-    $('#datatable-managers tbody').on( 'click', 'tr', function () {
+    let table = $('#datatable-zones').DataTable();
+    $('#datatable-zones tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
@@ -15,26 +15,26 @@ function drawManagersTable(){
         }
     });
 
-    $('#datatable-managers tbody').on( 'click', '.remove-row', function () {
+    $('#datatable-zones tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
-            removeElement("managers", data[0].innerText);
+            removeElement("zones", data[0].innerText);
         } else {}
     } );
-    $('#datatable-managers tbody').on( 'click', '.edit-row', function () {
+    $('#datatable-zones tbody').on( 'click', '.edit-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         editElement(data);
     } );
 
-    prettifyManagersHeader();
+    prettifyZonesHeader();
 }
 /**
  * Add placeholder and CSS class in the search field
  */
-function prettifyManagersHeader(){
-    $('#datatable-managers_filter').find('input').addClass("form-control");
-    $('#datatable-managers_filter').find('input').attr("placeholder", "Recherche");
-    $('#datatable-managers_filter').css("min-width", "300px");
+function prettifyZonesHeader(){
+    $('#datatable-zones_filter').find('input').addClass("form-control");
+    $('#datatable-zones_filter').find('input').attr("placeholder", "Recherche");
+    $('#datatable-zones_filter').css("min-width", "75px");
 }
 
 function getDatatableConfiguration(dataURL){
@@ -91,7 +91,7 @@ function getDatatableConfiguration(dataURL){
         "initComplete": function(settings, json){
             // Removes the last column (both header and body) if we cannot edit the table
             if(!(json.hasOwnProperty('editable') && json['editable'])){
-                $('#datatable-managers').find('tr:last-child th:last-child, td:last-child').remove();
+                $('#datatable-zones').find('tr:last-child th:last-child, td:last-child').remove();
             }
         }
     };

@@ -8,27 +8,44 @@
 
 {% block page_content %}
 
-    <section class="panel">
-        <header class="panel-heading">
-            <!-- Table block control actions -->
-            <div class="panel-actions form-inline">
-                <a href="#" onclick="" class="modal-with-form fa fa-plus"></a>
-                <a href="#" class="fa fa-print"></a>
-                <a href="#" class="fa fa-caret-down"></a>
-            </div>
-            <h2 class="panel-title">Gestionnaires et Techniciens</h2>
-        </header>
-        <div class="panel-body">
-            {% include 'managers_table.html' %}
+    <div class="row">
+        <div class="col-md-4">
+            <section class="panel">
+                <header class="panel-heading">
+                    <!-- Table block control actions -->
+                    <div class="panel-actions form-inline">
+                        <a href="#" onclick="" class="modal-with-form fa fa-plus"></a>
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">Zones</h2>
+                </header>
+                <div class="panel-body">
+                    {% include 'zones_table.html' %}
+                </div>
+            </section>
         </div>
-    </section>
+        <div class="col-md-8">
+            <section class="panel">
+                <header class="panel-heading">
+                    <!-- Table block control actions -->
+                    <div class="panel-actions form-inline">
+                        <a href="#" onclick="" class="modal-with-form fa fa-plus"></a>
+                        <a href="#" class="fa fa-print"></a>
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">Gestionnaires et Techniciens</h2>
+                </header>
+                <div class="panel-body">
+                    {% include 'managers_table.html' %}
+                </div>
+            </section>
+        </div>
+    </div>
 
     <section class="panel">
         <header class="panel-heading">
             <!-- Table block control actions -->
             <div class="panel-actions form-inline">
-                <a href="#modalForm" onclick="setupModalAdd()" class="modal-with-form fa fa-plus"></a>
-                <a href="#" class="fa fa-print"></a>
                 <a href="#" class="fa fa-caret-down"></a>
             </div>
             <h2 class="panel-title">Éléments du réseau</h2>
@@ -37,6 +54,4 @@
             {% include "water_element_table.html" %}
         </div>
     </section>
-
-    {% include 'water_element_modal.html' %}
 {% endblock %}
