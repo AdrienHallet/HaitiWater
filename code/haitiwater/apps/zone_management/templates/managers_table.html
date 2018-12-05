@@ -1,10 +1,13 @@
 {% load static %}
 
-<script src="{% static "managersTableHandler.js" %}"></script>
-<script src="{% static "genericTableHandler.js" %}"></script>
-<link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
-<script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.js" %}"></script>
-<script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
+<script src="{% static "managersTableGenerator.js" %}"></script>
+
+{# /!\ Don't forget to uncomment those imports if the table is used on a page where it is the only datatable #}
+{#<script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>#}
+{#<link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>#}
+{#<script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.js" %}"></script>#}
+{#<script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>#}
+
 <div id="datatable-ajax_wrapper-managers" class="dataTables_wrapper no-footer">
     <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-managers" aria-describedby="datatable-ajax_info">
         <thead>
