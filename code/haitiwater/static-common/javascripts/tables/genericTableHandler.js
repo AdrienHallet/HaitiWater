@@ -74,9 +74,9 @@ function getActionButtonsHTML(){
  * Add placeholder and CSS class in the search field
  */
 function prettifyHeader(){
-    $('#datatable-ajax_filter').find('input').addClass("form-control");
-    $('#datatable-ajax_filter').find('input').attr("placeholder", "Recherche");
-    $('#datatable-ajax_filter').css("min-width", "300px");
+    $('#datatable-water_element_filter').find('input').addClass("form-control");
+    $('#datatable-water_element_filter').find('input').attr("placeholder", "Recherche");
+    $('#datatable-water_element_filter').css("min-width", "300px");
 }
 
 /**
