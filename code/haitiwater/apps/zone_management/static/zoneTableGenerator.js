@@ -54,7 +54,7 @@ function getDatatableConfiguration(dataURL){
         "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": getActionButtonsHTML(),
+                "defaultContent": getActionButtonsHTML("modalZone"),
             },
             ],
         "language": {

@@ -64,8 +64,8 @@ function removeElement(table, id){
  *
  * @returns {string} containing edit and remove buttons HTML code
  */
-function getActionButtonsHTML(){
-    return '<div class="center"><a href="#modalForm" class="modal-with-form edit-row fa fa-pen"></a>' +
+function getActionButtonsHTML(modalName){
+    return '<div class="center"><a href="#'+ modalName + '" class="modal-with-form edit-row fa fa-pen"></a>' +
             '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
             '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
 }
@@ -73,10 +73,11 @@ function getActionButtonsHTML(){
 /**
  * Add placeholder and CSS class in the search field
  */
-function prettifyHeader(){
-    $('#datatable-water_element_filter').find('input').addClass("form-control");
-    $('#datatable-water_element_filter').find('input').attr("placeholder", "Recherche");
-    $('#datatable-water_element_filter').css("min-width", "300px");
+function prettifyHeader(tableName){
+    let searchField = $('#datatable-' + tableName + '_filter');
+    searchField.find('input').addClass("form-control");
+    searchField.find('input').attr("placeholder", "Recherche");
+    searchField.css("min-width", "300px");
 }
 
 /**

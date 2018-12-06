@@ -73,7 +73,7 @@
         <header class="panel-heading">
             <!-- Table block control actions -->
             <div class="panel-actions form-inline">
-                <a href="#modalForm" onclick="setupModalAdd()" class="modal-with-form fa fa-plus"></a>
+                <a id="call-consumer-modal" href="#modal-consumer" onclick="setupModalAdd()" class="modal-with-form fa fa-plus"></a>
                 <a href="#" class="fa fa-print"></a>
                 <a href="#" class="fa fa-caret-down"></a>
             </div>
@@ -85,9 +85,8 @@
     </section>
 
     <!-- Modal form to add/edit network element -->
-    <script src="{% static "javascripts/ui-elements/modal.js"%}"></script>
     <script src="{% static "consumerFormHandler.js"%}"></script>
-    <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+    <div id="modal-consumer" class="modal-block modal-block-primary mfp-hide">
         <section class="panel">
             <header class="panel-heading">
                 <h2 id="modal-title-add" class="panel-title hidden">Ajouter un Consommateur</h2>
@@ -167,10 +166,10 @@
             <footer class="panel-footer">
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <button id="modal-submit-add" onclick="postNewRow(ajax)" class="btn btn-primary modal-confirm">
+                        <button id="modal-submit-add" onclick="postNewRow('consumer')" class="btn btn-primary modal-confirm">
                             Ajouter
                         </button>
-                        <button id="modal-submit-edit" onclick="postEditRow(ajax)" class="btn btn-primary modal-confirm hidden">
+                        <button id="modal-submit-edit" onclick="postEditRow('consumer')" class="btn btn-primary modal-confirm hidden">
                             Modifier
                         </button>
                         <button onclick="dismissModal()" class="btn btn-default modal-dismiss">

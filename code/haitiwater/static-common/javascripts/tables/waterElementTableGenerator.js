@@ -25,11 +25,7 @@ function drawWaterElementTable(withManagers, withActions){
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         editElement(data);
     } );
-    prettifyHeader();
-}
-
-function editManager(data){
-    console.log(data[0].textContent);
+    prettifyHeader('water_element');
 }
 
 function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
@@ -50,7 +46,7 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             {
                 "targets": -1,
                 "data": null,
-                "defaultContent": getActionButtonsHTML(),
+                "defaultContent": getActionButtonsHTML('modalWaterElement'),
             },
             {
                 "targets": -2,
@@ -89,7 +85,7 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             $('td', row).eq(5).addClass('text-center');
             $('td', row).eq(6).addClass('text-center');
             //Hide actions if column hidden
-            if ($("#datatable-ajax th:last-child, #datatable-ajax td:last-child").hasClass("hidden")){
+            if ($("#datatable-water_element th:last-child, #datatable-ajax td:last-child").hasClass("hidden")){
                 $('td', row).eq(8).addClass('hidden');
             }
             if (withManagers) {
@@ -100,8 +96,8 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             // Removes the last column (both header and body) if we cannot edit or if required by withAction argument
             console.log(json['editable']);
             if(!withActions || !(json.hasOwnProperty('editable') && json['editable'])){
-                $("#datatable-ajax th:last-child, #datatable-ajax td:last-child").addClass("hidden");
-                $("#datatable-ajax_wrapper tr:last-child th:last-child").addClass("hidden");
+                $("#datatable-water_element th:last-child, #datatable-ajax td:last-child").addClass("hidden");
+                $("#datatable-water_element_wrapper tr:last-child th:last-child").addClass("hidden");
             }
         }
     };

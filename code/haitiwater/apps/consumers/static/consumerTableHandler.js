@@ -7,10 +7,13 @@ $(document).ready(function() {
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=consumer";
     console.log(dataURL);
-    $('#datatable-ajax').DataTable(getDatatableConfiguration(dataURL));
 
-    let table = $('#datatable-ajax').DataTable();
-    $('#datatable-ajax tbody').on('click', 'tr', function () {
+    let datatable = $('#datatable-consumer');
+
+    datatable.DataTable(getDatatableConfiguration(dataURL));
+
+    let table = datatable.DataTable();
+    datatable.find('tbody').on('click', 'tr', function () {
         if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
         }
@@ -20,18 +23,18 @@ $(document).ready(function() {
         }
     });
 
-    $('#datatable-ajax tbody').on( 'click', '.remove-row', function () {
+    datatable.find('tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
             removeElement("consumer", data[0].innerText);
         } else {}
     } );
-    $('#datatable-ajax tbody').on( 'click', '.edit-row', function () {
+    datatable.find('tbody').on( 'click', '.edit-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         editElement(data);
     } );
 
-    prettifyHeader();
+    prettifyHeader('consumer');
 });
 
 function getDatatableConfiguration(dataURL){
@@ -51,7 +54,7 @@ function getDatatableConfiguration(dataURL){
         "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": getActionButtonsHTML(),
+                "defaultContent": getActionButtonsHTML("modalConsumer"),
             }],
         "language": {
             "sProcessing": "Chargement...",
@@ -90,7 +93,7 @@ function getDatatableConfiguration(dataURL){
 
         //Callbacks on fetched data
         "createdRow": function (row, data, index) {
-            if ($("#datatable-ajax th:last-child, #datatable-ajax td:last-child").hasClass("hidden")){
+            if ($("#datatable-consumer th:last-child, #datatable-ajax td:last-child").hasClass("hidden")){
                 $('td', row).eq(10).addClass('hidden');
             }
         },
@@ -98,7 +101,7 @@ function getDatatableConfiguration(dataURL){
         "initComplete": function(settings, json){
             // Removes the last column (both header and body) if we cannot edit
             if(!(json.hasOwnProperty('editable') && json['editable'])){
-                $("#datatable-ajax th:last-child, #datatable-ajax td:last-child").addClass("hidden");
+                $("#datatable-consumer th:last-child, #datatable-ajax td:last-child").addClass("hidden");
                 $("#datatable-ajax_wrapper tr:last-child th:last-child").addClass("hidden");
             }
         }
