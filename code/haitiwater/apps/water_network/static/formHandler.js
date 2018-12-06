@@ -1,7 +1,3 @@
-function drawDataTable() {
-    $('#datatable-ajax').DataTable().draw();
-}
-
 /**
  * Validate (check if valid) the form.
  * If not valid, display messages

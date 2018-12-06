@@ -23,6 +23,10 @@ function editElement(data){
     }
 }
 
+function drawDataTable(tableName){
+    $('#datatable-' + tableName).DataTable().draw();
+}
+
 /**
  * Request the removal of element # id in table
  * @param table a String containing the table name
@@ -49,7 +53,7 @@ function removeElement(table, id){
                     text: 'Élément supprimé avec succès',
                     type: 'success'
                 });
-                drawDataTable();
+                drawDataTable(table);
             }
         }
     };
@@ -78,7 +82,7 @@ function prettifyHeader(){
 /**
  * Send a post request to server and handle it
  */
-function postNewRow(){
+function postNewRow(table){
     let request = validateForm();
     if(!request){
         // Form is not valid (missing/wrong fields)
@@ -102,7 +106,7 @@ function postNewRow(){
                     text: 'Élément ajouté avec succès',
                     type: 'success'
                 });
-                drawDataTable();
+                drawDataTable(table);
             }
         }
     };
@@ -112,7 +116,7 @@ function postNewRow(){
 /**
  * Send a post request to server and handle it
  */
-function postEditRow(){
+function postEditRow(table){
     let request = validateForm();
     if(!request){
         // Form is not valid (missing/wrong fields)
@@ -139,7 +143,7 @@ function postEditRow(){
                     text: 'Élément édité avec succès',
                     type: 'success'
                 });
-                drawDataTable();
+                drawDataTable(table);
             }
         }
     };

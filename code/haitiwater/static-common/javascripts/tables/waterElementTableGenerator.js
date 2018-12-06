@@ -2,10 +2,10 @@ function drawWaterElementTable(withManagers, withActions){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=water_element";
     console.log("Request data from: " + dataURL);
-    $('#datatable-ajax').DataTable(getWaterDatatableConfiguration(dataURL, withManagers, withActions));
+    $('#datatable-water_element').DataTable(getWaterDatatableConfiguration(dataURL, withManagers, withActions));
 
-    let table = $('#datatable-ajax').DataTable();
-    $('#datatable-ajax tbody').on( 'click', 'tr', function () {
+    let table = $('#datatable-water_element').DataTable();
+    $('#datatable-water_element tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
@@ -15,18 +15,21 @@ function drawWaterElementTable(withManagers, withActions){
         }
     });
 
-    $('#datatable-ajax tbody').on( 'click', '.remove-row', function () {
+    $('#datatable-water_element tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
             removeElement("water_element", data[0].innerText);
         } else {}
     } );
-    $('#datatable-ajax tbody').on( 'click', '.edit-row', function () {
+    $('#datatable-water_element tbody').on( 'click', '.edit-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         editElement(data);
     } );
-
     prettifyHeader();
+}
+
+function editManager(data){
+    console.log(data[0].textContent);
 }
 
 function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
@@ -51,7 +54,7 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             },
             {
                 "targets": -2,
-                "defaultContent": "Pas de gestionnaire",
+                "defaultContent": 'Pas de gestionnaire',
                 "visible": withManagers,
             }
             ],
@@ -88,6 +91,9 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             //Hide actions if column hidden
             if ($("#datatable-ajax th:last-child, #datatable-ajax td:last-child").hasClass("hidden")){
                 $('td', row).eq(8).addClass('hidden');
+            }
+            if (withManagers) {
+                $('td', row).eq(7).addClass('text-center');
             }
         },
         "initComplete": function(settings, json){
