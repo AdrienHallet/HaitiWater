@@ -20,7 +20,57 @@
                         <input id="input-id" name="input-id" class="form-control" disabled>
                     </div>
                 </div>
-                TODO
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Nom</label>
+                    <div class="col-sm-9">
+                        <input id="input-manager-lastname" name="lastname" class="form-control">
+                        <label id="input-manager-lastname-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Prénom</label>
+                    <div class="col-sm-9">
+                        <input id="input-manager-firstname" name="firstname" class="form-control">
+                        <label id="input-manager-firstname-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Courriel</label>
+                    <div class="col-sm-9">
+                        <input id="input-manager-email" name="email" class="form-control" type="email">
+                        <label id="input-manager-email-error" class="error">Adresse courriel valide requise</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Fonction</label>
+                    <div class="col-sm-9">
+                        <select id="select-type" name="type" class="form-control">
+                            <option value="none">...</option>
+                            <option value="fountain-manager">Gestionnaire de fontaine(s)</option>
+                            <option value="zone-manager">Gestionnaire de zone</option>
+                        </select>
+                        <label id="select-type-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Zone assignée</label>
+                    <div class="col-sm-9">
+                        <select id="select-zone" name="zone" class="form-control">
+                            <option value="none">...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Fontaine(s) assignée(s)</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="multiselect-outlets" multiple="multiple">
+                            {% for water_outlet in water_outlets %}
+                                {# Display an option for each available outlet #}
+                                <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
             </form>
         </div>
         <footer class="panel-footer">
