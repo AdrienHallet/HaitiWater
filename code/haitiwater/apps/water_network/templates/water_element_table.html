@@ -1,6 +1,6 @@
 {% load static %}
 
-<script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.js" %}"></script>
+<script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
 <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
 <script src="{% static "javascripts/tables/waterElementTableGenerator.js" %}"></script>
 
@@ -13,13 +13,13 @@
                 <th class="text-center" colspan="2" width="20%">Quantité d'eau distribuée</th>
             </tr>
             <tr>
-                <th width="5%">Id</th>
-                <th width="15%">Type</th>
-                <th width="30%">Emplacement</th>
-                <th width="15%">Utilisateurs</th>
-                <th width="15%">État</th>
-                <th class="text-center" width="10%">m³</th>
-                <th class="text-center" width="10%">gallons</th>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Emplacement</th>
+                <th>Utilisateurs</th>
+                <th>État</th>
+                <th class="text-center">m³</th>
+                <th class="text-center">gallons</th>
                 <th id="managerColumn">Gestionnaire</th>
                 <th>Actions</th>
             </tr>

@@ -30,11 +30,22 @@ function drawWaterElementTable(withManagers, withActions){
 
 function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
     let config = {
+        lengthMenu: [10,25,50],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7],
+                },
+            },
+            'pageLength'
+        ],
         "sortable": true,
         "processing": true,
         "serverSide": true,
-        "responsive": false,
-        "autoWidth": false,
+        "responsive": true,
+        "autoWidth": true,
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,

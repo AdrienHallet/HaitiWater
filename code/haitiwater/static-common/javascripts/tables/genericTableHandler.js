@@ -77,7 +77,16 @@ function prettifyHeader(tableName){
     let searchField = $('#datatable-' + tableName + '_filter');
     searchField.find('input').addClass("form-control");
     searchField.find('input').attr("placeholder", "Recherche");
-    searchField.css("min-width", "300px");
+    //searchField.css("min-width", "300px");
+
+    let wrapper = $('#datatable-'+ tableName + '_wrapper');
+    wrapper.find('.dt-buttons').addClass('hidden');
+
+    let print = wrapper.find('.buttons-print');
+    $('#print-' + tableName).on('click', function(){
+        print.trigger('click');
+    });
+
 }
 
 /**
