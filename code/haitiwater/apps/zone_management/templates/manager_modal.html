@@ -13,7 +13,7 @@
                 <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
                 <div id="form-manager-error-msg"></div>
             </div>
-            <form id="form-manager-add-element" class="form-horizontal mb-lg">
+            <form id="form-add-manager" class="form-horizontal mb-lg">
                 <div id="form-manager-id-component" class="form-group mt-lg hidden">
                     <label class="col-sm-3 control-label">Identifiant</label>
                     <div class="col-sm-9">
@@ -52,7 +52,7 @@
                         <label id="select-type-error" class="error">Champ requis</label>
                     </div>
                 </div>
-                <div class="form-group mt-lg">
+                <div id="form-group-select-zone" class="form-group mt-lg hidden">
                     <label class="col-sm-3 control-label">Zone assignée</label>
                     <div class="col-sm-9">
                         <select id="select-zone" name="zone" class="form-control">
@@ -60,7 +60,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group mt-lg">
+                <div id="form-group-multiselect-outlets" class="form-group mt-lg hidden">
                     <label class="col-sm-3 control-label">Fontaine(s) assignée(s)</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="multiselect-outlets" multiple="multiple">

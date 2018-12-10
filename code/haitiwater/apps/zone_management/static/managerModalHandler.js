@@ -1,3 +1,20 @@
+$(document).ready(function() {
+
+    //Show only relevant form component to the desired user type
+    $('#form-add-manager').find('#select-type').on('click', function(){
+        $('#form-group-select-zone').addClass('hidden');
+        $('#form-group-multiselect-outlets').addClass('hidden');
+
+        if(this.value === 'fountain-manager'){
+            $('#form-group-multiselect-outlets').removeClass('hidden');
+        }
+        else if (this.value === 'zone-manager'){
+            $('#form-group-select-zone').removeClass('hidden');
+        }
+    });
+});
+
+
 /**
  * Validate (check if valid) the form.
  * If not valid, display messages
