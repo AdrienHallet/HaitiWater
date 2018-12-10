@@ -44,13 +44,12 @@ def table(request):
         all_water_element = Element.objects.all()
         json_test["recordsTotal"] = len(all_water_element)
         if d["search"] == "":
-            for elem in all_water_element[d["start"]:d["start"]+d["length_max"]]:
+            for elem in all_water_element:
                 cust = Consumer.objects.filter(water_outlet=elem)
                 tab = elem.network_descript()
                 tab.insert(3, len(cust))
                 all.append(tab)
         else:
-            tot = 0
             for elem in all_water_element:
                 cust = Consumer.objects.filter(water_outlet=elem)
                 tab = elem.network_descript()
@@ -58,32 +57,25 @@ def table(request):
                 for cols in d["searchable"]:
                     if cols < len(tab) and d["search"].lower() in str(tab[cols]).lower():
                         all.append(tab)
-                        tot += 1
                         break
-                if tot == d["length_max"]:
-                    break
 
     elif d["table_name"] == "consumer":
         all_consumers = Consumer.objects.all()
         json_test["recordsTotal"] = len(all_consumers)
         if d["search"] == "":
-            for elem in all_consumers[d["start"]:d["start"] + d["length_max"]]:
+            for elem in all_consumers:
                 all.append(elem.descript())
         else:
-            tot = 0
             for elem in all_consumers:
                 for cols in d["searchable"]:
                     tab = elem.descript()
                     if cols < len(tab) and d["search"].lower() in str(tab[cols]).lower():
                         all.append(tab)
-                        tot += 1
                         break
-                if tot == d["length_max"]:
-                    break
 
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
                    reverse=d["type_order"] != "asc")
-    json_test["data"] = final
+    json_test["data"] = final[d["start"]:d["start"]+d["length_max"]]
     json_test["recordsFiltered"] = len(final)
     return HttpResponse(json.dumps(json_test))
 
