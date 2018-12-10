@@ -39,11 +39,21 @@ $(document).ready(function() {
 
 function getDatatableConfiguration(dataURL){
     let config = {
+        "lengthMenu": [25,50],
+        "dom": 'Bfrtip',
+        "buttons": [
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7,8,9],
+                },
+            }
+        ],
         "sortable": true,
         "processing": false,
         "serverSide": true,
-        "responsive": false,
-        "autoWidth": false,
+        "responsive": true,
+        "autoWidth": true,
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
