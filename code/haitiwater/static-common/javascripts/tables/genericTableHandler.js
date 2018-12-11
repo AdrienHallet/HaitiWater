@@ -77,15 +77,23 @@ function prettifyHeader(tableName){
     let searchField = $('#datatable-' + tableName + '_filter');
     searchField.find('input').addClass("form-control");
     searchField.find('input').attr("placeholder", "Recherche");
-    //searchField.css("min-width", "300px");
 
     let wrapper = $('#datatable-'+ tableName + '_wrapper');
-    wrapper.find('.dt-buttons').addClass('hidden');
+    let buttons = wrapper.find('.dt-buttons');
 
+    buttons.addClass('hidden');
+    buttons.find('.buttons-print').addClass('hidden');
+
+    // Link the custom print button to the DataTable one (hidden)
     let print = wrapper.find('.buttons-print');
     $('#print-' + tableName).on('click', function(){
         print.trigger('click');
     });
+
+    let pageLength = wrapper.find('.buttons-page-length');
+    $('#change-' + tableName + '-length').on('click', function(){
+        (buttons.hasClass('hidden') ? buttons.removeClass('hidden') : buttons.addClass('hidden'))
+    })
 
 }
 

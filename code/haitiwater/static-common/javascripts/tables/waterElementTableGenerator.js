@@ -30,7 +30,10 @@ function drawWaterElementTable(withManagers, withActions){
 
 function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
     let config = {
-        lengthMenu: [10,25,50],
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10', '25', '50', 'Tout montrer' ]
+        ],
         dom: 'Bfrtip',
         buttons: [
             {
@@ -85,7 +88,13 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             "oAria": {
                 "sSortAscending": ": activer pour trier la colonne par ordre croissant",
                 "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
-            }
+            },
+            buttons: {
+                pageLength: {
+                    _: "Afficher %d éléments ▼",
+                    '-1': "Tout afficher ▼"
+                }
+            },
         },
         "ajax": {
             url: dataURL
