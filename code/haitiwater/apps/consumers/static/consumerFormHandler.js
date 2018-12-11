@@ -1,3 +1,7 @@
+function drawDataTable() {
+    $('#datatable-ajax').DataTable().draw();
+}
+
 function validateForm() {
     let form = document.forms["form-add-consumer"];
 
@@ -78,6 +82,28 @@ function setupModalAdd(){
     $('#modal-title-edit').addClass("hidden");
     $('#modal-submit-edit').addClass("hidden");
     $('#form-id-component').addClass("hidden");
+
+    showModal();
+}
+
+function showModal(){
+    $('#call-consumer-modal').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#name',
+        modal: true,
+
+        // Do not zoom on mobile
+        callbacks: {
+            beforeOpen: function() {
+                if($(window).width() < 700) {
+                    this.st.focus = false;
+                } else {
+                    this.st.focus = '#name';
+                }
+            }
+        }
+    }).magnificPopup('open');
 }
 
 /**

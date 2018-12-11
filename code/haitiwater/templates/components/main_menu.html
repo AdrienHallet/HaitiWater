@@ -13,7 +13,7 @@
                         </a>
                     </li>
 
-                {% if request.path == '/réseau/' %}
+                {% if request.path == '/reseau/' %}
                     <li class="nav-active">
                 {% else %}
                     <li>
@@ -24,7 +24,7 @@
                             <span>Réseau</span>
                         </a>
                     </li>
-                {% if request.path == '/techniciens/' %}
+                {% if request.path == '/gestion/' %}
                     <li class="nav-active">
                 {% else %}
                     <li>
@@ -32,7 +32,7 @@
                         <a href="/gestion/">
                             <span class="pull-right label label-primary">Notification</span>
                             <i class="fa fa-wrench" aria-hidden="true"></i>
-                            <span>Techniciens (todo better)</span>
+                            <span>Gestion de zone</span>
                         </a>
                     </li>
                 {% if request.path == '/rapport/' %}

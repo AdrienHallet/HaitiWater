@@ -1,7 +1,3 @@
-function drawDataTable() {
-    $('#datatable-ajax').DataTable().draw();
-}
-
 /**
  * Validate (check if valid) the form.
  * If not valid, display messages
@@ -70,6 +66,8 @@ function setupModalAdd(){
     $('#modal-title-edit').addClass("hidden");
     $('#modal-submit-edit').addClass("hidden");
     $('#form-id-component').addClass("hidden");
+
+    showModal();
 }
 
 function setupModalEdit(data){
@@ -105,7 +103,7 @@ function setupModalEdit(data){
 }
 
 function showModal(){
-    $('.modal-with-form').magnificPopup({
+    $('#call-water-modal').magnificPopup({
         type: 'inline',
         preloader: false,
         focus: '#name',

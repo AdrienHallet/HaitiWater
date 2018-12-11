@@ -1,26 +1,26 @@
 {% load static %}
 
-<script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.js" %}"></script>
+<script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
 <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
 <script src="{% static "javascripts/tables/waterElementTableGenerator.js" %}"></script>
 
 <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
-<div id="datatable-ajax_wrapper" class="dataTables_wrapper no-footer">
-    <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-ajax" aria-describedby="datatable-ajax_info">
+<div id="datatable-water_element_wrapper" class="dataTables_wrapper no-footer">
+    <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-water_element" aria-describedby="datatable-ajax_info">
         <thead>
             <tr>
                 <th colspan="5" width="80%"></th>
                 <th class="text-center" colspan="2" width="20%">Quantité d'eau distribuée</th>
             </tr>
             <tr>
-                <th width="5%">Id</th>
-                <th width="15%">Type</th>
-                <th width="30%">Emplacement</th>
-                <th width="15%">Utilisateurs</th>
-                <th width="15%">État</th>
-                <th class="text-center" width="10%">m³</th>
-                <th class="text-center" width="10%">gallons</th>
-                <th>Gestionnaire</th>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Emplacement</th>
+                <th>Utilisateurs</th>
+                <th>État</th>
+                <th class="text-center">m³</th>
+                <th class="text-center">gallons</th>
+                <th id="managerColumn">Gestionnaire</th>
                 <th>Actions</th>
             </tr>
         </thead>

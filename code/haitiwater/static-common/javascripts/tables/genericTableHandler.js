@@ -23,6 +23,10 @@ function editElement(data){
     }
 }
 
+function drawDataTable(tableName){
+    $('#datatable-' + tableName).DataTable().draw();
+}
+
 /**
  * Request the removal of element # id in table
  * @param table a String containing the table name
@@ -49,7 +53,7 @@ function removeElement(table, id){
                     text: 'Élément supprimé avec succès',
                     type: 'success'
                 });
-                drawDataTable();
+                drawDataTable(table);
             }
         }
     };
@@ -60,8 +64,8 @@ function removeElement(table, id){
  *
  * @returns {string} containing edit and remove buttons HTML code
  */
-function getActionButtonsHTML(){
-    return '<div class="center"><a href="#modalForm" class="modal-with-form edit-row fa fa-pen"></a>' +
+function getActionButtonsHTML(modalName){
+    return '<div class="center"><a href="#'+ modalName + '" class="modal-with-form edit-row fa fa-pen"></a>' +
             '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
             '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
 }
@@ -69,16 +73,26 @@ function getActionButtonsHTML(){
 /**
  * Add placeholder and CSS class in the search field
  */
-function prettifyHeader(){
-    $('#datatable-ajax_filter').find('input').addClass("form-control");
-    $('#datatable-ajax_filter').find('input').attr("placeholder", "Recherche");
-    $('#datatable-ajax_filter').css("min-width", "300px");
+function prettifyHeader(tableName){
+    let searchField = $('#datatable-' + tableName + '_filter');
+    searchField.find('input').addClass("form-control");
+    searchField.find('input').attr("placeholder", "Recherche");
+    //searchField.css("min-width", "300px");
+
+    let wrapper = $('#datatable-'+ tableName + '_wrapper');
+    wrapper.find('.dt-buttons').addClass('hidden');
+
+    let print = wrapper.find('.buttons-print');
+    $('#print-' + tableName).on('click', function(){
+        print.trigger('click');
+    });
+
 }
 
 /**
  * Send a post request to server and handle it
  */
-function postNewRow(){
+function postNewRow(table){
     let request = validateForm();
     if(!request){
         // Form is not valid (missing/wrong fields)
@@ -90,17 +104,20 @@ function postNewRow(){
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
-        if(xhttp.readyState !== 4 || xhttp.status !== 200) {
-            document.getElementById("form-error").className = "alert alert-danger";
-            document.getElementById("form-error-msg").innerHTML = xhttp.status + ': ' +xhttp.statusText;
-        } else {
-            dismissModal();
-            new PNotify({
-                title: 'Succès!',
-                text: 'Élément ajouté avec succès',
-                type: 'success'
-            });
-            drawDataTable();
+        if(xhttp.readyState !== 4) {
+            if (xhttp.status !== 200) {
+                document.getElementById("form-error").className = "alert alert-danger";
+                document.getElementById("form-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
+            } else {
+                document.getElementById("form-error").className = "alert alert-danger hidden"; // hide old msg
+                dismissModal();
+                new PNotify({
+                    title: 'Succès!',
+                    text: 'Élément ajouté avec succès',
+                    type: 'success'
+                });
+                drawDataTable(table);
+            }
         }
     };
     xhttp.send(request)
@@ -109,7 +126,7 @@ function postNewRow(){
 /**
  * Send a post request to server and handle it
  */
-function postEditRow(){
+function postEditRow(table){
     let request = validateForm();
     if(!request){
         // Form is not valid (missing/wrong fields)
@@ -121,20 +138,23 @@ function postEditRow(){
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
-        if(xhttp.readyState !== 4 || xhttp.status !== 200) {
-            if(xhttp.responseText) {
-                console.log("POST error on new element");
-                document.getElementById("form-error").className = "alert alert-danger";
-                document.getElementById("form-error-msg").innerHTML = xhttp.responseText;
+        if(xhttp.readyState !== 4) {
+            if (xhttp.status !== 200) {
+                if (xhttp.responseText) {
+                    console.log("POST error on new element");
+                    document.getElementById("form-error").className = "alert alert-danger";
+                    document.getElementById("form-error-msg").innerHTML = xhttp.responseText;
+                }
+            } else {
+                document.getElementById("form-error").className = "alert alert-danger hidden"; // hide old msg
+                dismissModal();
+                new PNotify({
+                    title: 'Succès!',
+                    text: 'Élément édité avec succès',
+                    type: 'success'
+                });
+                drawDataTable(table);
             }
-        } else {
-            dismissModal();
-            new PNotify({
-                title: 'Succès!',
-                text: 'Élément édité avec succès',
-                type: 'success'
-            });
-            drawDataTable();
         }
     };
     xhttp.send(request)

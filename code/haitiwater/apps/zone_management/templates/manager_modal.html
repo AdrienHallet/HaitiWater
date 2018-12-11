@@ -1,0 +1,92 @@
+{% load static %}
+
+<!-- Modal form to add/edit manager -->
+<script src="{% static "managerModalHandler.js"%}"></script>
+<div id="modalManager" class="modal-block modal-block-primary mfp-hide">
+    <section class="panel">
+        <header class="panel-heading">
+            <h2 id="modal-manager-title-add" class="panel-title hidden">Ajouter un gestionnaire ou technicien</h2>
+            <h2 id="modal-manager-title-edit" class="panel-title hidden">Modifier un gestionnaire ou technicien</h2>
+        </header>
+        <div class="panel-body">
+            <div id="form-manager-error" class="alert alert-danger hidden">
+                <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
+                <div id="form-manager-error-msg"></div>
+            </div>
+            <form id="form-add-manager" class="form-horizontal mb-lg">
+                <div id="form-manager-id-component" class="form-group mt-lg hidden">
+                    <label class="col-sm-3 control-label">Identifiant</label>
+                    <div class="col-sm-9">
+                        <input id="input-id" name="input-id" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Nom</label>
+                    <div class="col-sm-9">
+                        <input id="input-manager-lastname" name="lastname" class="form-control">
+                        <label id="input-manager-lastname-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Prénom</label>
+                    <div class="col-sm-9">
+                        <input id="input-manager-firstname" name="firstname" class="form-control">
+                        <label id="input-manager-firstname-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Courriel</label>
+                    <div class="col-sm-9">
+                        <input id="input-manager-email" name="email" class="form-control" type="email">
+                        <label id="input-manager-email-error" class="error">Adresse courriel valide requise</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Fonction</label>
+                    <div class="col-sm-9">
+                        <select id="select-type" name="type" class="form-control">
+                            <option value="none">...</option>
+                            <option value="fountain-manager">Gestionnaire de fontaine(s)</option>
+                            <option value="zone-manager">Gestionnaire de zone</option>
+                        </select>
+                        <label id="select-type-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div id="form-group-select-zone" class="form-group mt-lg hidden">
+                    <label class="col-sm-3 control-label">Zone assignée</label>
+                    <div class="col-sm-9">
+                        <select id="select-zone" name="zone" class="form-control">
+                            <option value="none">...</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="form-group-multiselect-outlets" class="form-group mt-lg hidden">
+                    <label class="col-sm-3 control-label">Fontaine(s) assignée(s)</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="multiselect-outlets" multiple="multiple">
+                            {% for water_outlet in water_outlets %}
+                                {# Display an option for each available outlet #}
+                                <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <footer class="panel-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button id="modal-submit-add" onclick="postNewRow('managers')" class="btn btn-primary modal-confirm">
+                        Ajouter
+                    </button>
+                    <button id="modal-submit-edit" onclick="postEditRow('managers')" class="btn btn-primary modal-confirm hidden">
+                        Modifier
+                    </button>
+                    <button onclick="dismissModal()" class="btn btn-default modal-dismiss">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>

@@ -1,9 +1,8 @@
 {% load static %}
 
 <!-- Modal form to add/edit network element -->
-<script src="{% static "javascripts/ui-elements/modal.js"%}"></script>
-<script src="{% static "formHandler.js"%}"></script>
-<div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+<script src="{% static "javascripts/forms/waterElementFormHandler.js"%}"></script>
+<div id="modal-water-element" class="modal-block modal-block-primary mfp-hide">
     <section class="panel">
         <header class="panel-heading">
             <h2 id="modal-title-add" class="panel-title hidden">Ajouter un Élément au réseau</h2>
@@ -59,10 +58,10 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <button id="modal-submit-add" onclick="postNewRow()" class="btn btn-primary modal-confirm">
+                    <button id="modal-submit-add" onclick="postNewRow('water_element')" class="btn btn-primary modal-confirm">
                         Ajouter
                     </button>
-                    <button id="modal-submit-edit" onclick="postEditRow()" class="btn btn-primary modal-confirm hidden">
+                    <button id="modal-submit-edit" onclick="postEditRow('water_element')" class="btn btn-primary modal-confirm hidden">
                         Modifier
                     </button>
                     <button onclick="dismissModal()" class="btn btn-default modal-dismiss">
