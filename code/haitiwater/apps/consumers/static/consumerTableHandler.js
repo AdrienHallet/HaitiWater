@@ -64,6 +64,7 @@ function getDatatableConfiguration(dataURL){
         "columnDefs": [{
                 "targets": -1,
                 "data": null,
+                "orderable": false,
                 "defaultContent": getActionButtonsHTML("modalConsumer"),
             }],
         "language": getDataTableFrenchTranslation(),

@@ -54,6 +54,7 @@ function getManagersDatatableConfiguration(dataURL){
         "columnDefs": [{
                 "targets": -1,
                 "data": null,
+                "orderable": false,
                 "defaultContent": getActionButtonsHTML("modalManager"),
             },
             ],

@@ -60,6 +60,7 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             {
                 "targets": -1,
                 "data": null,
+                "orderable": false,
                 "defaultContent": getActionButtonsHTML('modalWaterElement'),
             },
             {
