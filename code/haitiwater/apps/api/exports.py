@@ -75,7 +75,7 @@ def table(request):
 
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
                    reverse=d["type_order"] != "asc")
-    if d["start"] == -1:
+    if d["length_max"] == -1:
         json_test["data"] = final
     else:
         json_test["data"] = final[d["start"]:d["start"]+d["length_max"]]
