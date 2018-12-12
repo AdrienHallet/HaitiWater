@@ -5,5 +5,35 @@
     {% endblock %}
 
     {% block page_content %}
-        <div class="text-center">Contenu en chantier</div>
+        <div class="text-center">
+            <div class="row">
+
+                <div class="pricing-table">
+
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="plan">
+                            <h3>Le réseau de votre zone<span><a class="fa fa-tint"></a></span></h3>
+                            <a class="btn btn-lg btn-default" href="/reseau/">{{ zone_name }}</a>
+                            <ul>
+                                <li><b>{{ amount_fountain }}</b> Fontaines</li>
+                                <li><b>{{ amount_kiosk }}</b> Kiosques</li>
+                                <li><b>{{ amount_individual }}</b> Prises individuelles</li>
+                                <li><b>{{ amount_pipe }}</b> Conduites</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="plan">
+                            <h3>Vos consommateurs<span><a class="fa fa-users"></a></span></h3>
+                            <a class="btn btn-lg btn-default" href="/consommateurs/">{{ zone_name }}</a>
+                            <ul>
+                                <li><b>{{ amount_registered_consumers }}</b> Foyers enregistrés</li>
+                                <li><b>{{ amount_individual_consumers }}</b> Consommateurs individuels</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endblock %}

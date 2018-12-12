@@ -1,11 +1,11 @@
-function drawWaterElementTable(withManagers, withActions){
+function drawZoneTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let dataURL = baseURL + "/api/table/?name=water_element";
+    let dataURL = baseURL + "/api/table/?name=zones";
     console.log("Request data from: " + dataURL);
-    $('#datatable-water_element').DataTable(getWaterDatatableConfiguration(dataURL, withManagers, withActions));
+    $('#datatable-zones').DataTable(getDatatableConfiguration(dataURL));
 
-    let table = $('#datatable-water_element').DataTable();
-    $('#datatable-water_element tbody').on( 'click', 'tr', function () {
+    let table = $('#datatable-zones').DataTable();
+    $('#datatable-zones tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
@@ -15,37 +15,35 @@ function drawWaterElementTable(withManagers, withActions){
         }
     });
 
-    $('#datatable-water_element tbody').on( 'click', '.remove-row', function () {
+    $('#datatable-zones tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
-            removeElement("water_element", data[0].innerText);
+            removeElement("zones", data[0].innerText);
         } else {}
     } );
-    $('#datatable-water_element tbody').on( 'click', '.edit-row', function () {
+    $('#datatable-zones tbody').on( 'click', '.edit-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         editElement(data);
     } );
-    prettifyHeader('water_element');
+
+    prettifyZonesHeader();
+}
+/**
+ * Add placeholder and CSS class in the search field
+ */
+function prettifyZonesHeader(){
+    $('#datatable-zones_filter').find('input').addClass("form-control");
+    $('#datatable-zones_filter').find('input').attr("placeholder", "Recherche");
+    $('#datatable-zones_filter').css("min-width", "75px");
 }
 
-function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
+function getDatatableConfiguration(dataURL){
     let config = {
-        lengthMenu: [10,25,50],
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: [0,1,2,3,4,5,6,7],
-                },
-            },
-            'pageLength'
-        ],
         "sortable": true,
         "processing": true,
         "serverSide": true,
-        "responsive": true,
-        "autoWidth": true,
+        "responsive": false,
+        "autoWidth": false,
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
@@ -53,17 +51,11 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             leftColumns: 1,
             rightColumns: 1
         },
-        "columnDefs": [
-            {
+        "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": getActionButtonsHTML('modalWaterElement'),
+                "defaultContent": getActionButtonsHTML("modalZone"),
             },
-            {
-                "targets": -2,
-                "defaultContent": 'Pas de gestionnaire',
-                "visible": withManagers,
-            }
             ],
         "language": {
             "sProcessing": "Chargement...",
@@ -95,20 +87,11 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
         "createdRow": function (row, data, index) {
             $('td', row).eq(5).addClass('text-center');
             $('td', row).eq(6).addClass('text-center');
-            //Hide actions if column hidden
-            if ($("#datatable-water_element th:last-child, #datatable-ajax td:last-child").hasClass("hidden")){
-                $('td', row).eq(8).addClass('hidden');
-            }
-            if (withManagers) {
-                $('td', row).eq(7).addClass('text-center');
-            }
         },
         "initComplete": function(settings, json){
-            // Removes the last column (both header and body) if we cannot edit or if required by withAction argument
-            console.log(json['editable']);
-            if(!withActions || !(json.hasOwnProperty('editable') && json['editable'])){
-                $("#datatable-water_element th:last-child, #datatable-ajax td:last-child").addClass("hidden");
-                $("#datatable-water_element_wrapper tr:last-child th:last-child").addClass("hidden");
+            // Removes the last column (both header and body) if we cannot edit the table
+            if(!(json.hasOwnProperty('editable') && json['editable'])){
+                $('#datatable-zones').find('tr:last-child th:last-child, td:last-child').remove();
             }
         }
     };

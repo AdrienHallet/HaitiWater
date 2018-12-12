@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block page_name %}
+    <script src="{% static "report.js" %}"></script>
     Rapports
 {% endblock %}
 
@@ -20,8 +21,8 @@
         </header>
         <div class="panel-body">
             <div class="btn-group-lg btn-group-justified">
-                <a class="btn btn-default modal-with-form" role="button" href="#modalProblemReport">Signaler un problème</a>
-                <a class="btn btn-default modal-with-form" role="button" href="#modalMonthlyReport">Rapport mensuel</a>
+                <a id="show-ticket-modal" class="btn btn-default modal-with-form" role="button" href="#modalProblemReport" onclick="showModal('#show-ticket-modal')">Signaler un problème</a>
+                <a id="show-monthly-report-modal" class="btn btn-default modal-with-form" role="button" href="#modalMonthlyReport" onclick="showModal('#show-monthly-report-modal')">Rapport mensuel</a>
             </div>
         </div>
     </section>

@@ -1,0 +1,48 @@
+{% load static %}
+
+<!-- Modal form to add/edit zone -->
+<script src="{% static "zoneModalHandler.js"%}"></script>
+<div id="modalZone" class="modal-block modal-block-primary mfp-hide">
+    <section class="panel">
+        <header class="panel-heading">
+            <h2 id="modal-zone-title-add" class="panel-title hidden">Ajouter une zone</h2>
+            <h2 id="modal-zone-title-edit" class="panel-title hidden">Modifier une zone</h2>
+        </header>
+        <div class="panel-body">
+            <div id="form-zone-error" class="alert alert-danger hidden">
+                <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
+                <div id="form-zone-error-msg"></div>
+            </div>
+            <form id="form-zone-add-element" class="form-horizontal mb-lg">
+                <div id="form-zone-id-component" class="form-group mt-lg hidden">
+                    <label class="col-sm-3 control-label">Identifiant</label>
+                    <div class="col-sm-9">
+                        <input id="input-zone-id" name="id" class="form-control" disabled>
+                    </div>
+                </div>
+                <div id="form-zone-name-component" class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Nom</label>
+                    <div class="col-sm-9">
+                        <input id="input-zone-name" name="name" class="form-control">
+                        <label id="input-zone-name-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <footer class="panel-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button id="modal-submit-add" onclick="postNewRow('zone')" class="btn btn-primary modal-confirm">
+                        Ajouter
+                    </button>
+                    <button id="modal-submit-edit" onclick="postEditRow('zone')" class="btn btn-primary modal-confirm hidden">
+                        Modifier
+                    </button>
+                    <button onclick="dismissModal()" class="btn btn-default modal-dismiss">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>
