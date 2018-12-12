@@ -75,7 +75,10 @@ def table(request):
 
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
                    reverse=d["type_order"] != "asc")
-    json_test["data"] = final[d["start"]:d["start"]+d["length_max"]]
+    if d["start"] == -1:
+        json_test["data"] = final
+    else:
+        json_test["data"] = final[d["start"]:d["start"]+d["length_max"]]
     json_test["recordsFiltered"] = len(final)
     return HttpResponse(json.dumps(json_test))
 
