@@ -71,5 +71,5 @@ class Element(models.Model):
 
     def network_descript(self):
         tab = [self.id, ElementType[self.type].value, self.location,
-               ElementStatus[self.status].value, "x", "y"]
+               ElementStatus[self.status].value]
         return tab

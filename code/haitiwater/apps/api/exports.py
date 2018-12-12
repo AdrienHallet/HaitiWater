@@ -52,7 +52,13 @@ def table(request):
         if d["search"] == "":
             for elem in all_water_element:
                 cust = Consumer.objects.filter(water_outlet=elem)
+                distributed = Report.objects.filter(water_outlet=elem)
+                quantity = 0
+                for report in distributed:
+                    quantity += report.quantity_distributed
                 tab = elem.network_descript()
+                tab.insert(4, quantity)
+                tab.insert(5, quantity*219.969) #TODO make sure this is correct
                 tab.insert(3, len(cust))
                 all.append(tab)
         else:
