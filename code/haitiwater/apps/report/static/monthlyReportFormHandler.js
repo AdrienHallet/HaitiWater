@@ -1,3 +1,8 @@
+var monthlyReport = {
+	// Complete on validation
+};
+
+
 $(document).ready(function() {
 
 	let wizardReport = $('#wizardMonthlyReport');
@@ -42,15 +47,35 @@ $(document).ready(function() {
 		ev.preventDefault();
 		var validated = validate();
 		if ( validated ) {
-			//Todo send to back-end
-			new PNotify({
-				title: 'Envoyé',
-				text: 'Le rapport a été envoyé (en fait non, on a pas de back-end).',
-				type: 'custom',
-				addclass: 'notification-success',
-				icon: 'fa fa-check'
-			});
-			dismissModal();
+
+			let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+			let postURL = baseURL + "/api/report/";
+			let xhttp = new XMLHttpRequest();
+			xhttp.open("POST", postURL, true);
+			xhttp.setRequestHeader('Content-type', 'application/json');
+			xhttp.onreadystatechange = function() {
+				if(xhttp.readyState === 4) {
+					if (xhttp.status !== 200) {
+						new PNotify({
+							title: 'Échec!',
+							text: "Le rapport mensuel n'a pas pu être envoyé",
+							type: 'error'
+						});
+						console
+						$('#monthly-report-error-msg').html(xhttp.responseText);
+						$('#monthly-report-error').removeClass('hidden');
+					} else {
+						new PNotify({
+							title: 'Succès!',
+							text: 'Le rapport mensuel a été envoyé !',
+							type: 'success'
+						});
+						dismissModal();
+					}
+				}
+			};
+			console.log(JSON.stringify(monthlyReport));
+			xhttp.send(JSON.stringify(monthlyReport));
 		}
 		else {
 			return false;
@@ -205,6 +230,10 @@ function validateStepOne(){
         $('#input-multiselect-error').removeClass('hidden');
         isValid = false;
     }
+    else {
+    	// Save in report
+    	this.monthlyReport.selectedOutlets = multiselectOutlets.val();
+	}
 
     // Activity stats
 	let checkboxActiveService = $('#checkbox-active-service');
@@ -220,9 +249,12 @@ function validateStepOne(){
 			$('#input-hours-error').removeClass('hidden');
 			isValid = false;
 		}
+		this.monthlyReport.isActive = true; // Save in report
 	} else {
-	    // Todo
+	    this.monthlyReport.isActive = false; // Save in report
 	}
+
+	console.log(this.monthlyReport);
 	return isValid;
 
 }
@@ -233,6 +265,8 @@ function validateStepOne(){
 function validateStepTwo(){
 	let isValid = true;
     let individualReports = $('#wizardMonthlyReport-details .water-outlet');
+
+    this.monthlyReport.details = [];
 
     individualReports.each(function(index){
       	let cubicValue = $(this).find('.cubic input').val();
@@ -250,7 +284,15 @@ function validateStepTwo(){
 			isValid = false;
 			$(this).find('label.cost.error').removeClass('hidden');
 		}
+
+		monthlyReport.details.push(
+			{
+				cubic: cubicValue,
+				perCubic: perCubicValue,
+			}
+		)
     });
+    console.log(this.monthlyReport);
     return isValid;
 }
 
@@ -277,6 +319,9 @@ function validateStepThree(){
 		valid = false;
 	}
 
+	this.monthlyReport.fountainBill = fountainBilling.val();
+	this.monthlyReport.kioskBill = kioskBilling.val();
+	this.monthlyReport.individualBill = individualBilling.val();
 
 	return valid;
 }
@@ -420,7 +465,7 @@ function setupConfirmation(){
         selectionAsHTMLList += "<li>" + name +"</li>"
     });
 
-	$("#wizardMonthlyReport-confirm").html("<div class=\"well info\">" +
+	$("#confirmation-generated-content").html("<div class=\"well info\">" +
 			"Vous allez soumettre les informations de :" +
 			"<ul>" +
 			selectionAsHTMLList +
@@ -434,4 +479,8 @@ function setupConfirmation(){
  */
 function dismissModal() {
     $.magnificPopup.close();
+}
+
+function serializeWizardAsJSON(){
+
 }
