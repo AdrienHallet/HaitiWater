@@ -18,14 +18,19 @@ def graph(request):
                }, {
                   "label": "Hommes",
                   "data": 0
+               }, {
+                  "label": "Autre",
+                  "data": 0
                }]}"""
         json_val = json.loads(export)
         all_consumers = Consumer.objects.all()
         for elem in all_consumers:
-            if elem.gender == "M" or elem.gender == "Homme":
+            if elem.gender == "F" or elem.gender == "Femme":
+                json_val['jsonarray'][0]['data'] += 1 #One more women
+            elif elem.gender == "M" or elem.gender == "Homme":
                 json_val['jsonarray'][1]['data'] += 1 #One more man
             else:
-                json_val['jsonarray'][0]['data'] += 1 #One more women
+                json_val['jsonarray'][2]['data'] += 1 #One more other
     return HttpResponse(json.dumps(json_val))
 
 
