@@ -16,9 +16,8 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def get_outlets():
-    all_outlets = Element.objects.all()
+    all_outlets = Element.objects.filter(type__in=["KIOSK", "FOUNTAIN", "INDIVIDUAL"])
     result = []
     for elem in all_outlets:
-        if elem.type in ["KIOSK", "FOUNTAIN", "INDIVIDUAL"]:
-            result.append((elem.id, elem.name))
+        result.append((elem.id, elem.name))
     return result
