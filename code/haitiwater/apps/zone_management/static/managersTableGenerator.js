@@ -26,7 +26,7 @@ function drawManagersTable(){
         editElement(data);
     } );
 
-    prettifyManagersHeader();
+    prettifyHeader('managers');
 }
 /**
  * Add placeholder and CSS class in the search field
@@ -39,6 +39,20 @@ function prettifyManagersHeader(){
 
 function getManagersDatatableConfiguration(dataURL){
     let config = {
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10', '25', '50', 'Tout afficher' ]
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6],
+                },
+            },
+            'pageLength'
+        ],
         "sortable": true,
         "processing": true,
         "serverSide": true,

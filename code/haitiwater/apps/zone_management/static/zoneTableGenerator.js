@@ -26,19 +26,25 @@ function drawZoneTable(){
         editElement(data);
     } );
 
-    prettifyZonesHeader();
-}
-/**
- * Add placeholder and CSS class in the search field
- */
-function prettifyZonesHeader(){
-    $('#datatable-zones_filter').find('input').addClass("form-control");
-    $('#datatable-zones_filter').find('input').attr("placeholder", "Recherche");
-    $('#datatable-zones_filter').css("min-width", "75px");
+    prettifyHeader('zones');
 }
 
 function getDatatableConfiguration(dataURL){
     let config = {
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10', '25', '50', 'Tout afficher' ]
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6],
+                },
+            },
+            'pageLength'
+        ],
         "sortable": true,
         "processing": true,
         "serverSide": true,
