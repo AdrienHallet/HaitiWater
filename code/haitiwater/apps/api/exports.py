@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from ..water_network.models import Element, ElementType
 from ..consumers.models import Consumer
+from ..report.models import Report
 import json
 
 
@@ -125,6 +126,27 @@ def add_network_element(request):
     string_type = ElementType[type].value
     e = Element(name=string_type+" "+loc, type=type, status=state, location=loc) #Créer l'élément
     e.save()
+    return HttpResponse(status=200)
+
+@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+def add_report_element(request):
+    values = json.loads(request.body.decode("utf-8"))
+    for index, elem in enumerate(values["selectedOutlets"]):
+        outlets = Element.objects.filter(id=elem)
+        if len(outlets) < 1:
+            return HttpResponse(status=500)
+        else:
+            outlet = outlets[0]
+        active = values["isActive"]
+        meters_distr = values["details"][index]["cubic"]
+        value_meter = values["details"][index]["perCubic"]
+        month = values["month"]
+        year = 2018 #TODO : Temporary
+        recette = values["fountainBill"] #Temporary, TODO : discuss with front
+        report_line = Report(water_outlet=outlet, was_active=active,
+                             quantity_distributed=meters_distr, price=value_meter,
+                             month=month, year=year, recette=recette)
+        report_line.save()
     return HttpResponse(status=200)
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
