@@ -82,7 +82,7 @@ function setupModalAdd(){
     showModal();
 }
 
-function setupModalEdit(){
+function setupModalEdit(data){
     //Show add components
     $('#modal-title-add').addClass("hidden");
     $('#modal-submit-add').addClass("hidden");
@@ -91,6 +91,36 @@ function setupModalEdit(){
     $('#modal-title-edit').removeClass("hidden");
     $('#modal-submit-edit').removeClass("hidden");
     $('#form-id-component').removeClass("hidden");
+
+    //Fill the form with existing data
+    let form = document.forms['form-add-consumer'];
+    form['input-id'].value = data[0].innerText;
+    form['input-last-name'].value = data[1].innerText;
+    form['input-first-name'].value = data[2].innerText;
+
+     //Get the option that contains the values for data 2 and 4
+    let genderOption = $("#select-gender option").filter(function() {
+        if (this.text.trim() === data[3].innerText.trim()) {
+            return this;
+        }
+    });
+    form['select-gender'].value = genderOption[0].value;
+
+    form['input-address'].value = data[4].innerText;
+    let currentPhone = data[5].innerText;
+    console.log(currentPhone);
+    if(currentPhone !== '0' && currentPhone !== "")
+        form['input-phone'].value = currentPhone;
+    form['input-sub-consumers'].value = data[6].innerText;
+
+     //Get the option that contains the values for data 2 and 4
+    let mainOutlet = $("#select-main-outlet option").filter(function() {
+        if (this.text.trim() === data[7].innerText.trim()) {
+            return this;
+        }
+    });
+    if(mainOutlet[0] != null)
+        form['select-main-outlet'].vaule = mainOutlet[0].value;
 
     showModal();
 }
