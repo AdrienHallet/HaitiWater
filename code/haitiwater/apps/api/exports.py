@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from ..water_network.models import Element
-from ..consumers.models import Consumer
+from ..consumers.models import Consumer, Person
 import json
 
 
@@ -82,21 +82,44 @@ def table(request):
     json_test["recordsFiltered"] = len(final)
     return HttpResponse(json.dumps(json_test))
 
+@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+def add_element(request):
+    element = request.POST.get("table", None)
+    if element == "water_element":
+        return add_network_element(request)
+    elif element == "consumer":
+        return add_consumer_element(request)
+    else:
+        return HttpResponse(status=500)
+
+@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+def add_consumer_element(request):
+    first_name = request.POST.get("firstname", None)
+    last_name = request.POST.get("lastname", None)
+    gender = request.POST.get("gender", None)
+    address = request.POST.get("address", None)
+    sub = request.POST.get("subconsumer", None)
+    phone = request.POST.get("phone", None)
+    outlet_id = request.POST.get("mainOutlet", None)
+    outlet = Element.objects.filter(id=outlet_id)
+    if len(outlet) > 0:
+        outlet = outlet[0]
+    else:
+        return HttpResponse(status=404) #Outlet not found, can't create
+    new_c = Consumer(last_name=last_name, first_name=first_name,
+                          gender=gender, location=address, phone_number=phone,
+                          email="", household_size=sub, water_outlet=outlet)
+    new_c.save()
+    return HttpResponse(status=200)
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def add_network_element(request):
-    element = request.POST.get("table", None)
-    if element == "water_element":
-        type = request.POST.get("type", None).upper()
-        loc = request.POST.get("localization", None)
-        state = request.POST.get("state", None).upper()
-        e = Element(name="", type=type, status=state, location=loc) #Créer l'élément
-        e.save()
-        return HttpResponse(status=200)
-    elif element == "consumer":
-        print("Hello")
-
-    return HttpResponse(status=500)
+    type = request.POST.get("type", None).upper()
+    loc = request.POST.get("localization", None)
+    state = request.POST.get("state", None).upper()
+    e = Element(name="", type=type, status=state, location=loc) #Créer l'élément
+    e.save()
+    return HttpResponse(status=200)
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def remove_network_element(request):
@@ -110,7 +133,6 @@ def remove_network_element(request):
         id = request.POST.get("id", None)
         Consumer.objects.filter(id=id).delete()
         return HttpResponse({"draw": request.POST.get("draw", 0)+1}, status=200)
-
     return HttpResponse(status=500)
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
