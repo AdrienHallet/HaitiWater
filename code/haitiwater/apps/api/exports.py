@@ -122,7 +122,7 @@ def add_network_element(request):
     return HttpResponse(status=200)
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
-def remove_network_element(request):
+def remove_element(request):
     print(request.POST)
     element = request.POST.get("table", None)
     if element == "water_element":
@@ -136,19 +136,50 @@ def remove_network_element(request):
     return HttpResponse(status=500)
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
-def edit_network_element(request):
+def edit_element(request):
     element = request.POST.get("table", None)
     if element == "water_element":
-        id = request.POST.get("id", None)
-        elems = Element.objects.filter(id=id)
-        elem = elems[0]
-        elem.type = request.POST.get("type", None).upper()
-        elem.location = request.POST.get("localization", None)
-        elem.status = request.POST.get("state", None).upper()
-        elem.save()
-        return HttpResponse(status=200)
+        return edit_water_element(request)
+    elif element == "consumer":
+        return edit_consummer(request)
+    else:
+        return HttpResponse(status=500)
 
-    return HttpResponse(status=500)
+
+def edit_water_element(request):
+    id = request.POST.get("id", None)
+    elems = Element.objects.filter(id=id)
+    if len(elems) < 0:
+        return HttpResponse(status=404)
+    elem = elems[0]
+    elem.type = request.POST.get("type", None).upper()
+    elem.location = request.POST.get("localization", None)
+    elem.status = request.POST.get("state", None).upper()
+    elem.save()
+    return HttpResponse(status=200)
+
+
+def edit_consummer(request):
+    id = request.POST.get("id", None)
+    consummers = Consumer.objects.filter(id=id)
+    if len(consummers) < 0:
+        return HttpResponse(status=404)
+    consummer = consummers[0]
+    consummer.first_name = request.POST.get("firstname", None)
+    consummer.last_name = request.POST.get("lastname", None)
+    consummer.gender = request.POST.get("gender", None)
+    consummer.location = request.POST.get("address", None)
+    consummer.household_size = request.POST.get("subconsumer", None)
+    consummer.phone = request.POST.get("phone", None)
+    outlet_id = request.POST.get("mainOutlet", None)
+    outlet = Element.objects.filter(id=outlet_id)
+    if len(outlet) > 0:
+        outlet = outlet[0]
+    else:
+        return HttpResponse(status=404)  # Outlet not found, can't create
+    consummer.water_outlet = outlet
+    consummer.save()
+    return HttpResponse(status=200)
 
 
 def parse(request):
