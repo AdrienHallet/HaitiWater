@@ -61,7 +61,6 @@ $(document).ready(function() {
 							text: "Le rapport mensuel n'a pas pu être envoyé",
 							type: 'error'
 						});
-						console
 						$('#monthly-report-error-msg').html(xhttp.responseText);
 						$('#monthly-report-error').removeClass('hidden');
 					} else {
@@ -253,8 +252,8 @@ function validateStepOne(){
 	} else {
 	    this.monthlyReport.isActive = false; // Save in report
 	}
-
-	console.log(this.monthlyReport);
+	// Todo modify once control to change month is done
+	monthlyReport.month = $('#wizardMonthlyReport').find('.panel-title')[0].innerText.replace('Rapport mensuel : ','');
 	return isValid;
 
 }
