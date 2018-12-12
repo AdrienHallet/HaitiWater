@@ -3,8 +3,8 @@ from django.http import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
 
-from ..water_network.models import Element
-from ..consumers.models import Consumer, Person
+from ..water_network.models import Element, ElementType
+from ..consumers.models import Consumer
 import json
 
 
@@ -122,7 +122,8 @@ def add_network_element(request):
     type = request.POST.get("type", None).upper()
     loc = request.POST.get("localization", None)
     state = request.POST.get("state", None).upper()
-    e = Element(name="", type=type, status=state, location=loc) #Créer l'élément
+    string_type = ElementType[type].value
+    e = Element(name=string_type+" "+loc, type=type, status=state, location=loc) #Créer l'élément
     e.save()
     return HttpResponse(status=200)
 
