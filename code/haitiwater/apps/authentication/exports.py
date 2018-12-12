@@ -1,9 +1,12 @@
 from django.http import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
+from django.contrib.contenttypes.models import ContentType
+from ..water_network.models import Element
+from ..consumers.models import Consumer
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def connect(request):
