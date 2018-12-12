@@ -25,7 +25,7 @@ class Consumer(Person):
     water_outlet = models.ForeignKey(Element, verbose_name="Sortie d'eau", related_name="consumers", on_delete=models.CASCADE)
 
     def descript(self):
-        tab = [self.id, self.last_name, self.first_name, self.gender,
+        tab = [self.id, self.last_name, self.first_name, self.get_gender_display(),
                self.location, self.phone_number, self.household_size,
                ElementType[self.water_outlet.type].value, self.water_outlet.name, ""]
         return tab
