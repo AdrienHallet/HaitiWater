@@ -26,7 +26,7 @@ function drawManagersTable(){
         editElement(data);
     } );
 
-    prettifyManagersHeader();
+    prettifyHeader('managers');
 }
 /**
  * Add placeholder and CSS class in the search field
@@ -39,6 +39,20 @@ function prettifyManagersHeader(){
 
 function getManagersDatatableConfiguration(dataURL){
     let config = {
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10', '25', '50', 'Tout afficher' ]
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6],
+                },
+            },
+            'pageLength'
+        ],
         "sortable": true,
         "processing": true,
         "serverSide": true,
@@ -54,31 +68,11 @@ function getManagersDatatableConfiguration(dataURL){
         "columnDefs": [{
                 "targets": -1,
                 "data": null,
+                "orderable": false,
                 "defaultContent": getActionButtonsHTML("modalManager"),
             },
             ],
-        "language": {
-            "sProcessing": "Chargement...",
-            "sSearch": "",
-            "sLengthMenu": "_MENU_ &eacute;l&eacute;ments",
-            "sInfo": "", //"Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-            "sInfoEmpty": "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
-            "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
-            "sInfoPostFix": "",
-            "sLoadingRecords": "Chargement en cours...",
-            "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
-            "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
-            "oPaginate": {
-                "sFirst": "Premier",
-                "sPrevious": "Pr&eacute;c&eacute;dent",
-                "sNext": "Suivant",
-                "sLast": "Dernier"
-            },
-            "oAria": {
-                "sSortAscending": ": activer pour trier la colonne par ordre croissant",
-                "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
-            }
-        },
+        "language": getDataTableFrenchTranslation(),
         "ajax": {
             url: dataURL
         },

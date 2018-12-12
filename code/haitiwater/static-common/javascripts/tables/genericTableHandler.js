@@ -77,15 +77,23 @@ function prettifyHeader(tableName){
     let searchField = $('#datatable-' + tableName + '_filter');
     searchField.find('input').addClass("form-control");
     searchField.find('input').attr("placeholder", "Recherche");
-    //searchField.css("min-width", "300px");
 
     let wrapper = $('#datatable-'+ tableName + '_wrapper');
-    wrapper.find('.dt-buttons').addClass('hidden');
+    let buttons = wrapper.find('.dt-buttons');
 
+    buttons.addClass('hidden');
+    buttons.find('.buttons-print').addClass('hidden');
+
+    // Link the custom print button to the DataTable one (hidden)
     let print = wrapper.find('.buttons-print');
     $('#print-' + tableName).on('click', function(){
         print.trigger('click');
     });
+
+    let pageLength = wrapper.find('.buttons-page-length');
+    $('#' + tableName + '-options').on('click', function(){
+        (buttons.hasClass('hidden') ? buttons.removeClass('hidden') : buttons.addClass('hidden'))
+    })
 
 }
 
@@ -158,4 +166,35 @@ function postEditRow(table){
         }
     };
     xhttp.send(request)
+}
+
+function getDataTableFrenchTranslation(){
+    return {
+        "sProcessing": "Chargement...",
+        "sSearch": "",
+        "sLengthMenu": "_MENU_ &eacute;l&eacute;ments",
+        "sInfo": "", //"Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+        "sInfoEmpty": "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+        "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+        "sInfoPostFix": "",
+        "sLoadingRecords": "Chargement en cours...",
+        "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
+        "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
+        "oPaginate": {
+            "sFirst": "Premier",
+            "sPrevious": "Pr&eacute;c&eacute;dent",
+            "sNext": "Suivant",
+            "sLast": "Dernier"
+        },
+        "oAria": {
+            "sSortAscending": ": activer pour trier la colonne par ordre croissant",
+            "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
+        },
+        buttons: {
+            pageLength: {
+                _: "Afficher %d éléments ▼",
+                '-1': "Tout afficher ▼"
+            }
+        },
+    }
 }

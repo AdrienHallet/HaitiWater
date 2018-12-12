@@ -60,3 +60,11 @@
 .per-gallon input {
      padding-right: 28px;
 }
+
+.fa {
+    cursor: pointer;
+}
+
+.fas {
+    cursor: pointer;
+}
