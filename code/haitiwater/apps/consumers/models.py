@@ -26,6 +26,5 @@ class Consumer(Person):
 
     def descript(self):
         tab = [self.id, self.last_name, self.first_name, self.get_gender_display(),
-               self.location, self.phone_number, self.household_size,
-               ElementType[self.water_outlet.type].value, self.water_outlet.name, ""]
+               self.location, self.phone_number, self.household_size, self.water_outlet.name, ""]
         return tab
