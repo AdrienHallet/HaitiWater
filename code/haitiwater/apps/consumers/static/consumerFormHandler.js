@@ -1,7 +1,3 @@
-function drawDataTable() {
-    $('#datatable-ajax').DataTable().draw();
-}
-
 function validateForm() {
     let form = document.forms["form-add-consumer"];
 
@@ -82,6 +78,19 @@ function setupModalAdd(){
     $('#modal-title-edit').addClass("hidden");
     $('#modal-submit-edit').addClass("hidden");
     $('#form-id-component').addClass("hidden");
+
+    showModal();
+}
+
+function setupModalEdit(){
+    //Show add components
+    $('#modal-title-add').addClass("hidden");
+    $('#modal-submit-add').addClass("hidden");
+
+    //Hide edit components
+    $('#modal-title-edit').removeClass("hidden");
+    $('#modal-submit-edit').removeClass("hidden");
+    $('#form-id-component').removeClass("hidden");
 
     showModal();
 }
