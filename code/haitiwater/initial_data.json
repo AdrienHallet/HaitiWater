@@ -84,13 +84,21 @@
       "is_superuser": true,
       "username": "Protos",
       "first_name": "Protos",
-      "last_name": "Protos",
+      "last_name": "",
       "email": "",
       "is_staff": false,
       "is_active": true,
       "date_joined": "2018-12-07T15:13:17.857Z",
-      "groups": [],
+      "groups": [1],
       "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.profile",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "zone": 1
     }
   }
 ]
