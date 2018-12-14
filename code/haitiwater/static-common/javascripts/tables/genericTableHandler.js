@@ -97,11 +97,23 @@ function prettifyHeader(tableName){
 
 }
 
+function getRequest(table){
+    switch(table){
+        case 'manager':
+            return validateManagerForm();
+        case 'zone':
+            return validateZoneForm();
+        default:
+            return validateForm();
+    }
+}
+
 /**
  * Send a post request to server and handle it
  */
 function postNewRow(table){
-    let request = validateForm();
+    let request = getRequest(table);
+    console.log(request);
     if(!request){
         // Form is not valid (missing/wrong fields)
         return false;
@@ -114,10 +126,10 @@ function postNewRow(table){
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState !== 4) {
             if (xhttp.status !== 200) {
-                document.getElementById("form-error").className = "alert alert-danger";
-                document.getElementById("form-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
+                document.getElementById("form-" + table + "-error").className = "alert alert-danger";
+                document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
             } else {
-                document.getElementById("form-error").className = "alert alert-danger hidden"; // hide old msg
+                document.getElementById("form-" + table + "-error").className = "alert alert-danger hidden"; // hide old msg
                 dismissModal();
                 new PNotify({
                     title: 'Succès!',

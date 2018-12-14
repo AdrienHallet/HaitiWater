@@ -6,7 +6,7 @@ $(document).ready(function() {
     // Draw the zone table
     drawZoneTable();
 
-    $('#multiselect-outlets').select2({
+    $('#multiselect-manager-outlets').select2({
         dropdownParent: $('#modalManager'),
         width: '100%',
     });
