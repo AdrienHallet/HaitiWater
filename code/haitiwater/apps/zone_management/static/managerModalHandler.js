@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     //Show only relevant form component to the desired user type
-    $('#form-add-manager').find('#select-type').on('click', function(){
+    $('#form-add-manager').find('#select-manager-type').on('click', function(){
         $('#form-group-select-zone').addClass('hidden');
         $('#form-group-multiselect-outlets').addClass('hidden');
 
@@ -19,44 +19,92 @@ $(document).ready(function() {
  * Validate (check if valid) the form.
  * If not valid, display messages
  */
-function validateForm() {
+function validateManagerForm() {
+    console.log("validating");
     let form = document.forms["form-add-manager"];
 
-    let id = form["input-id"].value;
-    let name = form["input-name"].value;
+    let id = form["input-manager-id"].value;
+    let lastName = form["input-manager-last-name"].value;
+    let firstName = form["input-manager-first-name"].value;
+    let email = form["input-manager-email"].value;
+    let password = form["input-manager-password"].value;
+    let type = form["select-manager-type"].value;
+    let zone = form["select-manager-zone"].value;
 
-    let missing = false;
-    if (name.trim() === "") {
-        document.getElementById("input-name-error").className = "error";
-        missing = true;
+    let outlets = $('#multiselect-manager-outlets').val();
+
+
+    // Construct an object with selectors for the fields as keys, and
+    // per-field validation functions as values like so
+    const fieldsToValidate = {
+      '#input-manager-last-name' : value => value.trim() !== '',
+      '#input-manager-first-name' : value => value.trim() !== '',
+      '#input-manager-id' : value => value.trim() !== '',
+      '#input-manager-email' : value => value.trim() !== '', //Todo check if email
+      '#input-manager-password' : value => value.trim() !== '', //Todo modify
+      '#select-manager-type' : value => value.trim() !== 'none',
+    };
+
+    const invalidFields = Object.entries(fieldsToValidate)
+    .filter(entry => {
+        // Extract field selector and validator for this field
+        const fieldSelector = entry[0];
+        const fieldValueValidator = entry[1];
+        const field = form.querySelector(fieldSelector);
+
+        if(!fieldValueValidator(field.value)) {
+            // For invalid field, apply the error class
+            let fieldErrorSelector = '#' + field.id + '-error';
+            form.querySelector(fieldErrorSelector).className = 'error';
+            return true;
+        }
+
+        return false;
+    });
+
+    if (type === 'fountain-manager'){
+        if (outlets == null){
+            console.log('no fountain');
+            $('#multiselect-manager-outlets-error').removeClass('hidden');
+            return false;
+        }
+    }
+    if (type === 'zone-manager'){
+        if (zone === 'none'){
+            console.log('no zone');
+            $('#select-manager-zone-error').removeClass('hidden');
+            return false;
+        }
     }
 
-    //TODO
-
-    if(missing){
+    // If invalid field length is greater than zero, this signifies
+    // a form state that failed validation
+    if(invalidFields.length > 0){
+        console.log('invalid');
         return false
     } else {
-        return buildRequest(id, name);
+        return buildManagerRequest(id,
+            lastName,
+            firstName,
+            email,
+            password,
+            type,
+            zone,
+            outlets);
     }
 
 }
 
-/**
- * Build the request
- * @param id
- * @param lastName
- * @param firstName
- * @param role
- * @param zone
- * @returns {string}
- */
-function buildRequest(id, lastName, firstName, role, zone){
+function buildManagerRequest(id, lastName, firstName, email, password, type, zone, outlets){
     let request = "table=manager";
     request += "&id=" + id;
     request += "&lastname=" + lastName;
     request += "&firstname=" + firstName;
-    request += "&role=" + role;
+    request += "&email=" + email;
+    request += "&password=" + password;
+    request += "&type=" + type;
     request += "&zone=" + zone;
+    request += "&outlets=" + outlets;
 
     return request;
 }
@@ -76,7 +124,6 @@ function setupModalManagerAdd(){
     //Hide edit components
     $('#modal-manager-title-edit').addClass("hidden");
     $('#modal-manager-submit-edit').addClass("hidden");
-    $('#form-manager-id-component').addClass("hidden");
 
     showManagerModal();
 }
