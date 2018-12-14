@@ -23,17 +23,24 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 #TODO zone
+def get_amount(type, zone):
+    result = 0
+    for elem in Element.objects.filter(type=type):
+        if elem.zone.name in zone.subzones:
+            result += 1
+    return result
+
 def get_amount_fountain(zone):
-    return len(Element.objects.filter(type="FOUNTAIN", zone__in=zone.subzones))
+    return get_amount("FOUNTAIN", zone)
 
 def get_amount_kiosk(zone):
-    return len(Element.objects.filter(type="KIOSK", zone__in=zone.subzones))
+    return get_amount("KIOSK", zone)
 
 def get_amount_individual(zone):
-    return len(Element.objects.filter(type="INDIVIDUAL", zone__in=zone.subzones))
+    return get_amount("INDIVIDUAL", zone)
 
 def get_amount_pipe(zone):
-    return len(Element.objects.filter(type="PIPE", zone__in=zone.subzones))
+    return get_amount("PIPE", zone)
 
 def get_amount_consumer(zone):
     res = 0

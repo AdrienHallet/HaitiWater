@@ -171,7 +171,9 @@ def add_zone_element(request):
             for z in Zone.objects.all():
                 if z.name == super.name: #If the zone is the superZone
                     z.subzones.append(name)
+                    z.save()
             to_add.save()
+            return HttpResponse(status=200)
         else:
             return HttpResponse(status=404)
     else:
