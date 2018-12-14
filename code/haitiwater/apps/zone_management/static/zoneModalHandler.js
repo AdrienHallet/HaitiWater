@@ -2,22 +2,22 @@
  * Validate (check if valid) the form.
  * If not valid, display messages
  */
-function validateForm() {
+function validateZoneForm() {
     let form = document.forms["form-add-zone"];
 
-    let id = form["input-id"].value;
-    let name = form["input-name"].value;
+    let id = form["input-zone-id"].value;
+    let name = form["input-zone-name"].value;
 
     let missing = false;
     if (name.trim() === "") {
-        document.getElementById("input-name-error").className = "error";
+        document.getElementById("input-zone-name-error").className = "error";
         missing = true;
     }
 
     if(missing){
         return false
     } else {
-        return buildRequest(id, name);
+        return buildZoneRequest(id, name);
     }
 
 }
@@ -28,7 +28,7 @@ function validateForm() {
  * @param name
  * @returns {string}
  */
-function buildRequest(id, name){
+function buildZoneRequest(id, name){
     let request = "table=zone";
     request += "&id=" + id;
     request += "&name=" + name;
@@ -40,7 +40,7 @@ function buildRequest(id, name){
  * Hide the error message in the form
  */
 function hideFormErrorMsg(){
-    document.getElementById("form-error").className = "alert alert-danger hidden";
+    document.getElementById("form-zone-error").className = "alert alert-danger hidden";
 }
 
 function setupModalZoneAdd(){
