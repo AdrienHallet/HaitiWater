@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
 
-from ..water_network.models import Element, ElementType
+from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report
 import json
@@ -96,11 +96,14 @@ def table(request):
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def add_element(request):
+    print(request.POST)
     element = request.POST.get("table", None)
     if element == "water_element":
         return add_network_element(request)
     elif element == "consumer":
         return add_consumer_element(request)
+    elif element == "zone":
+        return add_zone_element(request)
     else:
         return HttpResponse(status=500)
 
@@ -156,6 +159,23 @@ def add_report_element(request):
                              month=month, year=year, recette=recette)
         report_line.save()
     return HttpResponse(status=200)
+
+@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+def add_zone_element(request):
+    name = request.POST.get("name", None)
+    if request.user:
+        result = Zone.objects.filter(name=request.user.profile.zone)
+        if len(result) == 1:
+            super = result[0]
+            to_add = Zone(name=name, superzone=super, subzones=[name])
+            for z in Zone.objects.all():
+                if z.name == super.name: #If the zone is the superZone
+                    z.subzones.append(name)
+            to_add.save()
+        else:
+            return HttpResponse(status=404)
+    else:
+        return HttpResponse(status=500)
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def remove_element(request):

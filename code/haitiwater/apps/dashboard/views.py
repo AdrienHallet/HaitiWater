@@ -24,22 +24,27 @@ def index(request):
 
 #TODO zone
 def get_amount_fountain(zone):
-    return len(Element.objects.filter(type="FOUNTAIN"))
+    return len(Element.objects.filter(type="FOUNTAIN", zone__in=zone.subzones))
 
 def get_amount_kiosk(zone):
-    return len(Element.objects.filter(type="KIOSK"))
+    return len(Element.objects.filter(type="KIOSK", zone__in=zone.subzones))
 
 def get_amount_individual(zone):
-    return len(Element.objects.filter(type="INDIVIDUAL"))
+    return len(Element.objects.filter(type="INDIVIDUAL", zone__in=zone.subzones))
 
 def get_amount_pipe(zone):
-    return len(Element.objects.filter(type="PIPE"))
+    return len(Element.objects.filter(type="PIPE", zone__in=zone.subzones))
 
 def get_amount_consumer(zone):
-    return len(Consumer.objects.all())
+    res = 0
+    for consumer in Consumer.objects.all():
+        if consumer.water_outlet.zone.name in zone.subzones:
+            res += 1
+    return res
 
 def get_amount_indiv_consummer(zone):
     result = 0
     for consumer in Consumer.objects.all():
-        result += consumer.household_size
+        if consumer.water_outlet.zone.name in zone.subzones:
+            result += consumer.household_size
     return result

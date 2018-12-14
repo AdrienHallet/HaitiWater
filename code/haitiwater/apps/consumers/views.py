@@ -11,13 +11,14 @@ def index(request):
         'project_name': PROJECT_NAME,
         'zone_name': 'Nom de la zone',  # Todo Backend
         'current_period': 'Septembre',  # Todo Backend (month of current computed paid info)
-        'water_outlets': get_outlets()
+        'water_outlets': get_outlets(request.user.profile.zone)
     }
     return HttpResponse(template.render(context, request))
 
-def get_outlets():
+def get_outlets(zone):
     all_outlets = Element.objects.filter(type__in=["KIOSK", "FOUNTAIN", "INDIVIDUAL"])
     result = []
     for elem in all_outlets:
-        result.append((elem.id, elem.name))
+        if elem.zone in zone.subzones:
+            result.append((elem.id, elem.name))
     return result
