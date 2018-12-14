@@ -106,7 +106,7 @@
     "pk": 2,
     "fields": {
       "password": "pbkdf2_sha256$120000$qpBDdRaUMT1Z$+Ibhz8HbyJI0YBHFNN/4ZWPaQ1twg/XPyS3tv++d+/M=",
-      "last_login": "2018-12-13T21:45:17.544Z",
+      "last_login": null,
       "is_superuser": true,
       "username": "admin",
       "first_name": "",
