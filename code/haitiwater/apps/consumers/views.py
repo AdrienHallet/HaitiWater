@@ -19,6 +19,7 @@ def get_outlets(zone):
     all_outlets = Element.objects.filter(type__in=["KIOSK", "FOUNTAIN", "INDIVIDUAL"])
     result = []
     for elem in all_outlets:
-        if elem.zone in zone.subzones:
+        if elem.is_in_subzones(zone):
             result.append((elem.id, elem.name))
+    print(result)
     return result

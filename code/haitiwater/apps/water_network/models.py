@@ -44,6 +44,9 @@ class Zone(models.Model):
     def __str__(self):
         return self.name
 
+    def descript(self):
+        return [self.id, self.name]
+
 
 class Location(models.Model):
 
@@ -68,6 +71,9 @@ class Element(models.Model):
 
     def __str__(self):
         return self.name
+
+    def is_in_subzones(self, zone):
+        return self.zone.name in zone.subzones
 
     def network_descript(self):
         tab = [self.id, ElementType[self.type].value, self.location,

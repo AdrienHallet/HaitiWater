@@ -7,6 +7,8 @@ from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report
 from django.contrib.auth.models import User, Group
+from ..api.get_table import *
+
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 import json
@@ -48,45 +50,27 @@ def table(request):
     json_test = json.loads(export)
     json_test["draw"] = str(int(request.GET.get('draw', "1")) + 1)
     d = parse(request)
+    print(d)
     all = []
     if d["table_name"] == "water_element":
-        all_water_element = Element.objects.all()
-        json_test["recordsTotal"] = len(all_water_element)
-        if d["search"] == "":
-            for elem in all_water_element:
-                cust = Consumer.objects.filter(water_outlet=elem)
-                distributed = Report.objects.filter(water_outlet=elem)
-                quantity = 0
-                for report in distributed:
-                    quantity += report.quantity_distributed
-                tab = elem.network_descript()
-                tab.insert(4, quantity)
-                tab.insert(5, quantity*219.969) #TODO make sure this is correct
-                tab.insert(3, len(cust))
-                all.append(tab)
-        else:
-            for elem in all_water_element:
-                cust = Consumer.objects.filter(water_outlet=elem)
-                tab = elem.network_descript()
-                tab.insert(3, len(cust))
-                for cols in d["searchable"]:
-                    if cols < len(tab) and d["search"].lower() in str(tab[cols]).lower():
-                        all.append(tab)
-                        break
+        all = get_water_elements(request, json_test, d)
 
     elif d["table_name"] == "consumer":
-        all_consumers = Consumer.objects.all()
-        json_test["recordsTotal"] = len(all_consumers)
-        if d["search"] == "":
-            for elem in all_consumers:
-                all.append(elem.descript())
-        else:
-            for elem in all_consumers:
-                for cols in d["searchable"]:
-                    tab = elem.descript()
-                    if cols < len(tab) and d["search"].lower() in str(tab[cols]).lower():
-                        all.append(tab)
-                        break
+        all = get_consumer_elements(request, json_test, d)
+    elif d["table_name"] == "zones":
+        if request.user.profile.zone:
+            json_test["recordsTotal"] = len(request.user.profile.zone.subzones)
+            for z in request.user.profile.zone.subzones:
+                zone = Zone.objects.filter(name=z)
+                if len(zone) == 1:
+                    if d["search"] == "":
+                        all.append(zone[0].descript())
+                    else:
+                        for cols in d["searchable"]:
+                            tab = zone[0].descript()
+                            if cols < len(tab) and d["search"].lower() in str(tab[cols]).lower():
+                                all.append(tab)
+                                break
 
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
                    reverse=d["type_order"] != "asc")

@@ -4,7 +4,8 @@
     "pk": 1,
     "fields": {
       "name": "Haiti",
-      "superzone": null
+      "superzone": null,
+      "subzones":["Haiti"]
     }
   },
   {
