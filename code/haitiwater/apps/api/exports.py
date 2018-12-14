@@ -58,19 +58,9 @@ def table(request):
     elif d["table_name"] == "consumer":
         all = get_consumer_elements(request, json_test, d)
     elif d["table_name"] == "zones":
-        if request.user.profile.zone:
-            json_test["recordsTotal"] = len(request.user.profile.zone.subzones)
-            for z in request.user.profile.zone.subzones:
-                zone = Zone.objects.filter(name=z)
-                if len(zone) == 1:
-                    if d["search"] == "":
-                        all.append(zone[0].descript())
-                    else:
-                        for cols in d["searchable"]:
-                            tab = zone[0].descript()
-                            if cols < len(tab) and d["search"].lower() in str(tab[cols]).lower():
-                                all.append(tab)
-                                break
+        all = get_zone_elements(request, json_test, d)
+    elif d["table_name"] == "managers":
+        all = get_manager_elements(request, json_test, d)
 
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
                    reverse=d["type_order"] != "asc")

@@ -4,7 +4,8 @@ from django.http import HttpResponse
 
 from ..consumers.models import Consumer
 from ..report.models import Report
-from ..water_network.models import Element, ElementType, Zone
+from ..water_network.models import Element, Zone
+from django.contrib.auth.models import User, Group
 
 def get_water_elements(request, json, parsed):
     all = []
@@ -48,4 +49,57 @@ def get_consumer_elements(request, json, parsed):
                     if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
                         all.append(tab)
                         break
+    return all
+
+def get_zone_elements(request, json, parsed):
+    all = []
+    if request.user.profile.zone:
+        json["recordsTotal"] = len(request.user.profile.zone.subzones)
+        for z in request.user.profile.zone.subzones:
+            zone = Zone.objects.filter(name=z)
+            if len(zone) == 1:
+                if parsed["search"] == "":
+                    all.append(zone[0].descript())
+                else:
+                    for cols in parsed["searchable"]:
+                        tab = zone[0].descript()
+                        if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
+                            all.append(tab)
+                            break
+    return all
+
+
+def get_manager_elements(request, json, parsed):
+    all = []
+    if request.user.profile.zone:
+        zone = request.user.profile.zone
+        target = Zone.objects.filter(name=zone.name)[0]
+        all_collab = User.objects.all()
+        for u in all_collab:
+            group = u.groups.values_list('name',flat=True)
+            if "Gestionnaire de zone" in group:
+                if target.name in u.profile.zone.subzones:
+                    tab = [u.id, u.last_name, u.first_name, u.email,
+                           "Gestionnaire de zone", u.profile.zone.name]
+                    if parsed["search"] == "":
+                        all.append(tab)
+                    else:
+                        for cols in parsed["searchable"]:
+                            if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
+                                all.append(tab)
+                                break
+            if "Gestionnaire de fontaine" in group:
+                for elem in u.profile.outlets:
+                    out = Element.objects.filter(id=elem)[0]
+                    if out.is_in_subzones(target):
+                        tab = [u.id, u.last_name, u.first_name, u.email,
+                               "Gestionnaire de fontaine", ""]
+                        if parsed["search"] == "":
+                            all.append(tab)
+                        else:
+                            for cols in parsed["searchable"]:
+                                if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
+                                    all.append(tab)
+                                    break
+
     return all
