@@ -65,6 +65,7 @@
                     <div class="col-sm-9">
                         <select id="select-manager-zone" name="zone" class="form-control">
                             <option value="none">...</option>
+                            {# Content is dynamically generated with a query to back-end #}
                         </select>
                         <label id="select-manager-zone-error" class="error">Champ requis</label>
                     </div>
@@ -73,10 +74,7 @@
                     <label class="col-sm-3 control-label">Fontaine(s) assignée(s)</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="multiselect-manager-outlets" multiple="multiple">
-{#                            {% for water_outlet in water_outlets %}#}
-                                {# Display an option for each available outlet #}
-{#                                <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>#}
-{#                            {% endfor %}#}
+{#                          {# Content is dynamically generated with a query to back-end #}
                         </select>
                         <label id="multiselect-manager-outlets-error" class="error">Champ requis</label>
                     </div>
