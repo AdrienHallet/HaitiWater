@@ -23,6 +23,7 @@ class Consumer(Person):
 
     household_size = models.IntegerField("Taille du ménage")
     water_outlet = models.ForeignKey(Element, verbose_name="Sortie d'eau", related_name="consumers", on_delete=models.CASCADE)
+    #Consumer's zone is infered regarding the water_outlet he uses
 
     def descript(self):
         tab = [self.id, self.last_name, self.first_name, self.get_gender_display(),

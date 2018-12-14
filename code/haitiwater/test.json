@@ -1,0 +1,1 @@
+[{"model": "authentication.profile", "pk": 1, "fields": {"user": 1, "zone": 1}}, {"model": "authentication.profile", "pk": 2, "fields": {"user": 2, "zone": 1}}]

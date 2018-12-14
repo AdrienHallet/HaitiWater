@@ -130,7 +130,9 @@ def add_network_element(request):
     loc = request.POST.get("localization", None)
     state = request.POST.get("state", None).upper()
     string_type = ElementType[type].value
-    e = Element(name=string_type+" "+loc, type=type, status=state, location=loc) #Créer l'élément
+    zone = request.user.profile.zone
+    e = Element(name=string_type+" "+loc, type=type, status=state,
+                location=loc, zone=zone) #Créer l'élément
     e.save()
     return HttpResponse(status=200)
 

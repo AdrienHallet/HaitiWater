@@ -7,7 +7,7 @@
     {% block page_content %}
         <div class="text-center">
             <div class="row">
-
+                {% if user.is_authenticated %}
                 <div class="pricing-table">
 
                     <div class="col-lg-4 col-sm-6">
@@ -19,8 +19,6 @@
                                 <li><b>{{ amount_kiosk }}</b> Kiosques</li>
                                 <li><b>{{ amount_individual }}</b> Prises individuelles</li>
                                 <li><b>{{ amount_pipe }}</b> Conduites</li>
-                                <li>{{ user.is_authenticated }}</li>
-                                <li>{{ user.get_username }}</li>
                             </ul>
                         </div>
                     </div>
@@ -37,5 +35,8 @@
                     </div>
                 </div>
             </div>
+            {% else %}
+                To see this page, please <a href="{% url 'login' %}">login</a>
+            {% endif %}
         </div>
     {% endblock %}
