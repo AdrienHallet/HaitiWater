@@ -16,8 +16,8 @@ def connect(request):
     print("Connection !")
     print(request.POST)
     username = request.POST.get("username", None)
-    password = request.POST.get("password", None)
-    print(username + " " + password)
+    password = request.POST.get("pwd", None)
+    #print(username + " " + password)
     user = authenticate(username=username, password=password)
 
     if user is not None:

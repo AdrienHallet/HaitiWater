@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load compress %}
+{% load group_filter %}
 
 <!doctype html>
 <html class="fixed">
@@ -88,6 +89,7 @@
 				</div>
 
 				<!-- Notification -->
+                {% if user.is_authenticated %}
 				<div class="header-right">
 					<ul class="notifications">
 						<li>
@@ -157,6 +159,7 @@
 							</div>
 						</li>
 					</ul>
+                    {% endif %}
                     <!-- end: Notification list-->
 
 					<span class="separator"></span>
@@ -165,8 +168,9 @@
 					<div id="userbox" class="userbox">
 						<a href="#" data-toggle="dropdown">
 							<div class="profile-info">
-								<span class="name">Utilisateur</span>
-								<span class="role">Rôle</span>
+                                {% if user.is_authenticated %}
+								    <span class="name">{{ user.get_username }}</span>
+								    <span class="role">{{ user|get_group }}</span>
 							</div>
 							<i class="fa custom-caret"></i>
 						</a>
@@ -180,9 +184,12 @@
 								</li>
 								<li>
 {#                                    Todo déconnexion#}
-									<a role="menuitem" tabindex="-1" href="#"><i class="fa fa-power-off"></i>Déconnexion</a>
+									<a role="menuitem" tabindex="-1" href="{% url 'logout' %}"><i class="fa fa-power-off"></i>Déconnexion</a>
 								</li>
 							</ul>
+                            {% else %}
+                                    <span><a href="{% url 'login'%}?next={{request.path}}">Login</a></span>
+                            {% endif %}
 						</div>
 					</div>
 				</div>

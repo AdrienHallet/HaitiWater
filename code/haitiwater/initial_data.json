@@ -100,5 +100,31 @@
         "user": 1,
         "zone": 1
     }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$120000$qpBDdRaUMT1Z$+Ibhz8HbyJI0YBHFNN/4ZWPaQ1twg/XPyS3tv++d+/M=",
+      "last_login": "2018-12-13T21:45:17.544Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "clinedknp@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-12-13T21:43:00.242Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.profile",
+    "pk": 2,
+    "fields": {
+        "user": 2,
+        "zone": 1
+    }
   }
 ]
