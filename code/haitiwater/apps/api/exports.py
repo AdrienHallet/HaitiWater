@@ -6,6 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report
+from django.contrib.auth.models import User, Group
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
 import json
 
 
@@ -104,6 +107,8 @@ def add_element(request):
         return add_consumer_element(request)
     elif element == "zone":
         return add_zone_element(request)
+    elif element == "manager":
+        return add_collaborator_element(request)
     else:
         return HttpResponse(status=500)
 
@@ -178,6 +183,42 @@ def add_zone_element(request):
             return HttpResponse(status=404)
     else:
         return HttpResponse(status=500)
+
+@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+def add_collaborator_element(request):
+    first_name = request.POST.get("firstname", None)
+    last_name = request.POST.get("lastname", None)
+    username = request.POST.get("id", None)
+    password = request.POST.get("password", None)
+    email = request.POST.get("email", None)
+    new_user = User.objects.create_user(username=username, email=email, password=password,
+                                    first_name=first_name, last_name=last_name)
+    type = request.POST.get("type", None)
+    if type == "fountain-manager":
+        water_out = request.POST.get("outlets", None)
+        if len(water_out) > 1:
+            res = Element.objects.filter(id__in=water_out)
+        else:
+            res = Element.objects.filter(id=water_out)
+        if len(res) > 0:
+            for outlet in res:
+                new_user.profile.outlets.append(outlet.id)
+        my_group = Group.objects.get(name='Gestionnaire de fontaine')
+        my_group.user_set.add(new_user)
+    elif type == "zone-manager":
+        zone = request.POST.get("zone", None)
+        res = Zone.objects.filter(id=zone)
+        if len(res) == 1:
+            new_user.profile.zone = res[0]
+        else:
+            return HttpResponse(status=404)
+        my_group = Group.objects.get(name='Gestionnaire de zone')
+        my_group.user_set.add(new_user)
+    else:
+        new_user.delete()
+        return HttpResponse(status=500)
+    new_user.save()
+    return HttpResponse(status=200)
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def remove_element(request):

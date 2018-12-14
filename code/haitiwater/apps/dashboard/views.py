@@ -12,7 +12,7 @@ def index(request):
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
     }
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.profile.zone: #Gestionnaire de zone
         context['zone_name'] = request.user.profile.zone.name
         context['amount_fountain'] = get_amount_fountain(request.user.profile.zone)
         context['amount_kiosk'] = get_amount_kiosk(request.user.profile.zone)
