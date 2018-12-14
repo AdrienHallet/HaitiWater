@@ -54,14 +54,12 @@ def table(request):
     all = []
     if d["table_name"] == "water_element":
         all = get_water_elements(request, json_test, d)
-
     elif d["table_name"] == "consumer":
         all = get_consumer_elements(request, json_test, d)
     elif d["table_name"] == "zones":
         all = get_zone_elements(request, json_test, d)
     elif d["table_name"] == "managers":
         all = get_manager_elements(request, json_test, d)
-
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
                    reverse=d["type_order"] != "asc")
     if d["length_max"] == -1:

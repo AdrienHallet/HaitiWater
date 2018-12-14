@@ -75,10 +75,11 @@ def get_manager_elements(request, json, parsed):
         zone = request.user.profile.zone
         target = Zone.objects.filter(name=zone.name)[0]
         all_collab = User.objects.all()
+        json["recordsTotal"] = len(all_collab) -1 #Remove the admin account
         for u in all_collab:
-            group = u.groups.values_list('name',flat=True)
+            group = u.groups.values_list('name', flat=True)
             if "Gestionnaire de zone" in group:
-                if target.name in u.profile.zone.subzones:
+                if u.profile.zone.name in target.subzones:
                     tab = [u.id, u.last_name, u.first_name, u.email,
                            "Gestionnaire de zone", u.profile.zone.name]
                     if parsed["search"] == "":
