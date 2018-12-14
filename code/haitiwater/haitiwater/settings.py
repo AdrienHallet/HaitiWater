@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from django.utils.deprecation import MiddlewareMixin
 
 # Strings containing build information to pass in context view
 PROJECT_VERSION = 'Alpha 0'
@@ -150,6 +151,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = '/accueil'
+LOGOUT_REDIRECT_URL = '/accueil'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

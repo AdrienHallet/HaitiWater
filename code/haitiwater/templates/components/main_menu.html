@@ -12,6 +12,7 @@
                             <span>Accueil</span>
                         </a>
                     </li>
+                {% if user.is_authenticated %}
 
                 {% if request.path == '/reseau/' %}
                     <li class="nav-active">
@@ -58,6 +59,7 @@
                         </a>
                     </li>
                 <hr class="separator" />
+                {% endif %}
 
                 {% if request.path == '/aide/' %}
                     <li class="nav-active">
