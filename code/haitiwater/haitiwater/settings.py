@@ -43,6 +43,8 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
     '127.0.0.1',
     'haitiwater-1.herokuapp.com',
+    'haitiwater.sipr.ucl.ac.be',
+    '.ngrok.io',
 ]
 
 
