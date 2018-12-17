@@ -17,3 +17,7 @@ function showModal(id){
         }
     }).magnificPopup('open');
 }
+
+$(document).ready(function() {
+    drawTicketTable();
+});

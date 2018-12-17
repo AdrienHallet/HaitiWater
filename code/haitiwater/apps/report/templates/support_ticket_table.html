@@ -1,9 +1,12 @@
 {% load static %}
 
 <script src="{% static "supportTicketTableHandler.js" %}"></script>
+<script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
+
 <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
-<div id="datatable-ajax_wrapper" class="dataTables_wrapper no-footer">
-    <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-ajax" aria-describedby="datatable-ajax_info">
+<div id="datatable-ticket_wrapper" class="dataTables_wrapper no-footer">
+    <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-ticket" aria-describedby="datatable-ticket_info">
         <thead>
             <tr>
                 <th># Ticket</th>
