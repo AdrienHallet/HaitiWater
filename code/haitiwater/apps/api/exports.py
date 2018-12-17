@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
-from ..report.models import Report
+from ..report.models import Report, Ticket
 from django.contrib.auth.models import User, Group
 from ..api.get_table import *
 
@@ -76,6 +76,7 @@ def table(request):
 def add_element(request):
     print(request.POST)
     element = request.POST.get("table", None)
+    print(element)
     if element == "water_element":
         return add_network_element(request)
     elif element == "consumer":
@@ -85,6 +86,8 @@ def add_element(request):
     elif element == "manager":
         return add_collaborator_element(request)
     else:
+        #Temporary adding the ticket
+        return add_ticket_element(request)
         return error_500
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
@@ -193,6 +196,25 @@ def add_collaborator_element(request):
         new_user.delete()
         return error_500
     new_user.save()
+    return success_200
+
+@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+def add_ticket_element(request):
+    id = request.POST.get("id", -1)
+    outlets = []
+    if type(id) is int:
+        outlet = Element.objects.filter(id=id)
+    if len(outlets) < 1:
+        return error_500
+    else:
+        outlet = outlets[0]
+        typeR = request.POST.get("type", None)
+        comment = request.POST.get("comment", None)
+        urgency = request.POST.get('urgency', None)
+        image = request.POST.get("image", None)
+        ticket = Ticket(water_outlet=outlet, type=typeR, comment=comment,
+                        urgency=urgency, image=image)
+        ticket.save()
     return success_200
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug

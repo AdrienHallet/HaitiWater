@@ -21,3 +21,16 @@ class Report(models.Model):
     quantity_distributed = models.IntegerField("Quantité distribuée")
     price = models.IntegerField("Prix au mètre cube")
     recette = models.IntegerField("Recettes du mois")
+
+
+class Ticket(models.Model):
+    water_outlet = models.ForeignKey(Element, verbose_name="Sortie d'eau concernée",
+                                     related_name="tickets_open", on_delete=models.CASCADE)
+    comment = models.CharField("Commentaire", max_length=500, null=True)
+    urgency = models.CharField("Niveau d'urgence", max_length=10, choices=[("low", "Bas"),
+                                                             ("middle", "Moyen"),
+                                                             ("high", "Haut")])
+    type = models.CharField("Type de panne", max_length=10, choices=[("mechanical", "Mécanique"),
+                                                                           ("quality", "Qualité"),
+                                                                           ("other", "Autre")])
+    image = models.BinaryField("Image", null=True)
