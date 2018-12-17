@@ -20,4 +20,8 @@ function showModal(id){
 
 $(document).ready(function() {
     drawTicketTable();
+
+    $('#input-picture').on('change', function(){
+        readURL(this);
+    });
 });
