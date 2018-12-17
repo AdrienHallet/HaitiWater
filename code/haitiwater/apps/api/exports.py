@@ -13,6 +13,9 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 import json
 
+error_500 = HttpResponse(False, status=500)
+error_404 = HttpResponse(False, status=404)
+success_200 = HttpResponse(status=200)
 
 def graph(request):
     export_format = request.GET.get('type', None)
@@ -82,7 +85,7 @@ def add_element(request):
     elif element == "manager":
         return add_collaborator_element(request)
     else:
-        return HttpResponse(status=500)
+        return error_500
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def add_consumer_element(request):
@@ -97,12 +100,12 @@ def add_consumer_element(request):
     if len(outlet) > 0:
         outlet = outlet[0]
     else:
-        return HttpResponse(status=404) #Outlet not found, can't create
+        return error_404 #Outlet not found, can't create
     new_c = Consumer(last_name=last_name, first_name=first_name,
                           gender=gender, location=address, phone_number=phone,
                           email="", household_size=sub, water_outlet=outlet)
     new_c.save()
-    return HttpResponse(status=200)
+    return success_200
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def add_network_element(request):
@@ -114,7 +117,7 @@ def add_network_element(request):
     e = Element(name=string_type+" "+loc, type=type, status=state,
                 location=loc, zone=zone) #Créer l'élément
     e.save()
-    return HttpResponse(status=200)
+    return success_200
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def add_report_element(request):
@@ -122,7 +125,7 @@ def add_report_element(request):
     for index, elem in enumerate(values["selectedOutlets"]):
         outlets = Element.objects.filter(id=elem)
         if len(outlets) < 1:
-            return HttpResponse(status=500)
+            return error_500
         else:
             outlet = outlets[0]
         active = values["isActive"]
@@ -135,7 +138,7 @@ def add_report_element(request):
                              quantity_distributed=meters_distr, price=value_meter,
                              month=month, year=year, recette=recette)
         report_line.save()
-    return HttpResponse(status=200)
+    return success_200
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def add_zone_element(request):
@@ -150,11 +153,11 @@ def add_zone_element(request):
                     z.subzones.append(name)
                     z.save()
             to_add.save()
-            return HttpResponse(status=200)
+            return success_200
         else:
-            return HttpResponse(status=404)
+            return error_404
     else:
-        return HttpResponse(status=500)
+        return error_500
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def add_collaborator_element(request):
@@ -183,14 +186,14 @@ def add_collaborator_element(request):
         if len(res) == 1:
             new_user.profile.zone = res[0]
         else:
-            return HttpResponse(status=404)
+            return error_404
         my_group = Group.objects.get(name='Gestionnaire de zone')
         my_group.user_set.add(new_user)
     else:
         new_user.delete()
-        return HttpResponse(status=500)
+        return error_500
     new_user.save()
-    return HttpResponse(status=200)
+    return success_200
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def remove_element(request):
@@ -204,7 +207,7 @@ def remove_element(request):
         id = request.POST.get("id", None)
         Consumer.objects.filter(id=id).delete()
         return HttpResponse({"draw": request.POST.get("draw", 0)+1}, status=200)
-    return HttpResponse(status=500)
+    return error_500
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def edit_element(request):
@@ -214,27 +217,27 @@ def edit_element(request):
     elif element == "consumer":
         return edit_consummer(request)
     else:
-        return HttpResponse(status=500)
+        return error_500
 
 
 def edit_water_element(request):
     id = request.POST.get("id", None)
     elems = Element.objects.filter(id=id)
     if len(elems) < 0:
-        return HttpResponse(status=404)
+        return error_404
     elem = elems[0]
     elem.type = request.POST.get("type", None).upper()
     elem.location = request.POST.get("localization", None)
     elem.status = request.POST.get("state", None).upper()
     elem.save()
-    return HttpResponse(status=200)
+    return success_200
 
 
 def edit_consummer(request):
     id = request.POST.get("id", None)
     consummers = Consumer.objects.filter(id=id)
     if len(consummers) < 0:
-        return HttpResponse(status=404)
+        return error_404
     consummer = consummers[0]
     consummer.first_name = request.POST.get("firstname", None)
     consummer.last_name = request.POST.get("lastname", None)
@@ -247,10 +250,10 @@ def edit_consummer(request):
     if len(outlet) > 0:
         outlet = outlet[0]
     else:
-        return HttpResponse(status=404)  # Outlet not found, can't create
+        return error_404  # Outlet not found, can't create
     consummer.water_outlet = outlet
     consummer.save()
-    return HttpResponse(status=200)
+    return success_200
 
 
 def parse(request):
