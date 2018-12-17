@@ -7,11 +7,21 @@
             <h2 id="modal-title-add" class="panel-title">Signaler un problème</h2>
         </header>
         <div class="panel-body">
-            <div id="form-error" class="alert alert-danger hidden">
+            <div id="form-ticket-error" class="alert alert-danger hidden">
                 <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
-                <div id="form-error-msg"></div>
+                <div id="form-ticket-error-msg"></div>
             </div>
-            <form id="form-signal-problem" class="form-horizontal mb-lg">
+            <form id="form-add-ticket" class="form-horizontal mb-lg">
+                <div id="form-ticket-error" class="alert alert-danger hidden">
+                    <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
+                    <div id="form-ticket-error-msg"></div>
+                </div>
+                <div id="form-id-component" class="form-group mt-lg hidden">
+                    <label class="col-sm-3 control-label">Identifiant</label>
+                    <div class="col-sm-9">
+                        <input id="input-id" name="input-id" class="form-control" disabled>
+                    </div>
+                </div>
                 <div class="form-group mt-lg">
                     <label class="col-sm-3 control-label">Type de problème</label>
                     <div class="col-sm-9">
@@ -40,13 +50,14 @@
                     <label class="col-sm-3 control-label">Description</label>
                     <div class="col-sm-9">
                         <textarea id="input-comment" name="comment" class="form-control"></textarea>
-                        <label id="select-comment-error" class="error">Champ requis</label>
+                        <label id="input-comment-error" class="error">Champ requis</label>
                     </div>
                 </div>
                 <div class="form-group mt-lg">
                     <label class="col-sm-3 control-label">(Optionnel) Photographie</label>
                     <div class="col-sm-9">
-                        <input type="file" name="pic" accept="image/*">
+                        <input id="input-picture" type="file" name="pic" accept="image/*">
+                        <img id="preview" src="#"/>
                     </div>
                 </div>
             </form>
@@ -54,7 +65,7 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <button id="modal-submit-add" onclick="" class="btn btn-primary modal-confirm">
+                    <button id="modal-submit-add" onclick="sendTicket()" class="btn btn-primary modal-confirm">
                         Envoyer
                     </button>
                     <button onclick="dismissModal()" class="btn btn-default modal-dismiss">
