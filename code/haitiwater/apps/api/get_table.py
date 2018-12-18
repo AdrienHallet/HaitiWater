@@ -123,14 +123,17 @@ def get_ticket_elements(request, json, parsed):
                             all.append(tab)
                             break
     else:
-        for elem in Ticket.objects.filter(water_outlet_in=request.user.profile.outlets):
-            if parsed["search"] == "":
-                all.append(elem.descript())
-            else:
-                for cols in parsed["searchable"]:
-                    tab = elem.descript()
-                    if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                        all.append(tab)
-                        break
-    json["recordsTotal"] = len(all)
+        tot = 0
+        for elem in Ticket.objects.all():
+            if str(elem.water_outlet.id) in request.user.profile.outlets:
+                tot += 1
+                if parsed["search"] == "":
+                    all.append(elem.descript())
+                else:
+                    for cols in parsed["searchable"]:
+                        tab = elem.descript()
+                        if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
+                            all.append(tab)
+                            break
+    json["recordsTotal"] = tot
     return all
