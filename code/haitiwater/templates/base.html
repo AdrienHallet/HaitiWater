@@ -89,8 +89,8 @@
 				</div>
 
 				<!-- Notification -->
-                {% if user.is_authenticated %}
 				<div class="header-right">
+					{% if user.is_authenticated %}
 					<ul class="notifications">
 						<li>
                             <!-- Ticket Notification -->
@@ -158,8 +158,8 @@
 								</div>
 							</div>
 						</li>
+						{% endif %}
 					</ul>
-                    {% endif %}
                     <!-- end: Notification list-->
 
 					<span class="separator"></span>
@@ -188,7 +188,7 @@
 								</li>
 							</ul>
                             {% else %}
-                                    <span><a href="{% url 'login'%}?next={{request.path}}">Login</a></span>
+                                    <span><a href="{% url 'login'%}?next={{request.path}}">Se connecter</a></span>
                             {% endif %}
 						</div>
 					</div>
