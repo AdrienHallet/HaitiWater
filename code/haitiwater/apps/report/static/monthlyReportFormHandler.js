@@ -503,7 +503,3 @@ function setupConfirmation(){
 function dismissModal() {
     $.magnificPopup.close();
 }
-
-function serializeWizardAsJSON(){
-
-}

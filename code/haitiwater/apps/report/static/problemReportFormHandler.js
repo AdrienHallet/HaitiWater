@@ -4,6 +4,7 @@ function validateForm() {
     let id = form["input-id"].value;
     let type = form["select-type"].value;
     let urgency = form["select-urgency"].value;
+    let idOutet = form["select-outlet"].value;
     let comment = form["input-comment"].value;
     try{
         let reader = new FileReader();
@@ -19,6 +20,7 @@ function validateForm() {
       '#select-type' : value => value.trim() !== 'none',
       '#select-urgency' : value => value !== 'none',
       '#input-comment' : value => value.trim() !== '',
+      '#select-outlet' : value => value.trim() !== 'none',
     };
 
     const invalidFields = Object.entries(fieldsToValidate)
@@ -55,11 +57,12 @@ function readURL(input) {
     }
 }
 
-function buildRequest(id, type, urgency, comment, picture){
+function buildRequest(id, type, urgency, idOutlet, comment, picture){
     let request = "table=ticket";
     request += "&id=" + id;
     request += "&type=" + type;
     request += "&urgency=" + urgency;
+    request += "&id_outlet" + idOutlet;
     request += "&comment=" + comment;
     request += "&picture=" + picture;
 
@@ -102,6 +105,7 @@ function dismissModal() {
     form["input-id"].value = "";
     form["input-type"].value = "none";
     form["select-urgency"].value = "none";
+    form["select-outlet"].value = "none";
     form["input-comment"].value = "";
     form["input-picture"].value = "";
 }
@@ -116,6 +120,7 @@ function sendTicket() {
     formData.append("id", form["input-id"].value);
     formData.append("type", form["select-type"].value);
     formData.append("urgency", form["select-urgency"].value);
+    formData.append("id_outlet", form["select-outlet"].value);
     formData.append("comment", form["input-comment"].value);
     formData.append("picture", form["input-picture"].files[0]);
 
