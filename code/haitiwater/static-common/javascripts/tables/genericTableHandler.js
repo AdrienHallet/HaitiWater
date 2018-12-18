@@ -130,7 +130,7 @@ function postNewRow(table){
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
-        if(xhttp.readyState !== 4) {
+        if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
                 document.getElementById("form-" + table + "-error").className = "alert alert-danger";
                 document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
@@ -164,7 +164,7 @@ function postEditRow(table){
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
-        if(xhttp.readyState !== 4) {
+        if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
                 if (xhttp.responseText) {
                     console.log("POST error on new element");
