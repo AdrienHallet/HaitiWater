@@ -112,6 +112,7 @@ function sendTicket() {
     let form = document.forms["form-add-ticket"];
 
     var formData = new FormData();
+    formData.append("table", "ticket");
     formData.append("id", form["input-id"].value);
     formData.append("type", form["select-type"].value);
     formData.append("urgency", form["select-urgency"].value);
