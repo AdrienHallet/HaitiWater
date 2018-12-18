@@ -50,13 +50,6 @@ function buildRequest(id, type, localization, state){
     return request;
 }
 
-/**
- * Hide the error message in the form
- */
-function hideFormErrorMsg(){
-    document.getElementById("form-error").className = "alert alert-danger hidden";
-}
-
 function setupModalAdd(){
     //Show add components
     $('#modal-title-add').removeClass("hidden");

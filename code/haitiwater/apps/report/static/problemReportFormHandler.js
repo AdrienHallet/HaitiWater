@@ -49,7 +49,7 @@ function readURL(input) {
         reader.onload = function (e) {
           $('#preview')
             .attr('src', e.target.result)
-            .height(200);
+            .width(200);
         };
         reader.readAsDataURL(input.files[0]);
     }

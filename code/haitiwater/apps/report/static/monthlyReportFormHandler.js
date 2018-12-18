@@ -8,8 +8,6 @@ $(document).ready(function() {
 	let wizardReport = $('#wizardMonthlyReport');
 	let wizardForm = $('#wizardMonthlyReport form');
 
-	hideFormErrorMsg();
-
     // Enable hours and days logging (step 1)
 	let checkboxActiveService = $('#checkbox-active-service');
 	checkboxActiveService.on('change', function(){
@@ -191,7 +189,7 @@ $(document).ready(function() {
 /**
  * Hide all the error messages in the form
  */
-function hideFormErrorMsg(){
+function hideErrorsMsgs(){
     let buttons = $(".error");
     buttons.each(function(index){
     	$(this).addClass('hidden');
@@ -223,7 +221,7 @@ function validate(step){
  * Validate data entry for Wizard step 1 - General state
  */
 function validateStepOne(){
-    hideFormErrorMsg();
+    hideErrorsMsgs();
     let isValid = true;
 
     // Selected outlets

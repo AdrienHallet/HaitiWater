@@ -9,6 +9,7 @@ window.onload = function() {
     for(i; i < len; i++) {
         buttons[i].className += " hidden";
     }
+    console.log("Generic table handler loaded");
 };
 
 function editElement(data){
@@ -68,6 +69,11 @@ function getActionButtonsHTML(modalName){
     return '<div class="center"><a href="#'+ modalName + '" class="modal-with-form edit-row fa fa-pen"></a>' +
             '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
             '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
+}
+
+function hideFormErrorMsg(table){
+    console.log("hiding message");
+    $('#form-' + table + '-error').addClass('hidden');
 }
 
 /**
