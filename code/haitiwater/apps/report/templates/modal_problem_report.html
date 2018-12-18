@@ -8,14 +8,10 @@
         </header>
         <div class="panel-body">
             <div id="form-ticket-error" class="alert alert-danger hidden">
-                <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
+                <button type="button" class="close" onclick="hideFormErrorMsg('ticket')" aria-hidden="true">×</button>
                 <div id="form-ticket-error-msg"></div>
             </div>
             <form id="form-add-ticket" class="form-horizontal mb-lg">
-                <div id="form-ticket-error" class="alert alert-danger hidden">
-                    <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
-                    <div id="form-ticket-error-msg"></div>
-                </div>
                 <div id="form-id-component" class="form-group mt-lg hidden">
                     <label class="col-sm-3 control-label">Identifiant</label>
                     <div class="col-sm-9">
@@ -44,6 +40,19 @@
                             <option value="high">Haut</option>
                         </select>
                         <label id="select-urgency-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Elément concerné</label>
+                    <div class="col-sm-9">
+                        <select id="select-outlet" name="outlet" class="form-control">
+                            <option value="none">...</option>
+                            {% for water_outlet in water_outlets %}
+                                {# Display an option for each available outlet #}
+                                <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        <label id="select-outlet-error" class="error">Champ requis</label>
                     </div>
                 </div>
                 <div class="form-group mt-lg">

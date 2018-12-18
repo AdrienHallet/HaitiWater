@@ -36,13 +36,6 @@ function buildZoneRequest(id, name){
     return request;
 }
 
-/**
- * Hide the error message in the form
- */
-function hideFormErrorMsg(){
-    document.getElementById("form-zone-error").className = "alert alert-danger hidden";
-}
-
 function setupModalZoneAdd(){
     //Show add components
     $('#modal-zone-title-add').removeClass("hidden");

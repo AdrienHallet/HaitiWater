@@ -161,13 +161,6 @@ function buildManagerRequest(id, lastName, firstName, email, password, type, zon
     return request;
 }
 
-/**
- * Hide the error message in the form
- */
-function hideFormErrorMsg(){
-    document.getElementById("form-error").className = "alert alert-danger hidden";
-}
-
 function setupModalManagerAdd(){
     //Show add components
     $('#modal-manager-title-add').removeClass("hidden");
