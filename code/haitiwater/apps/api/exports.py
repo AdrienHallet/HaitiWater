@@ -200,10 +200,8 @@ def add_collaborator_element(request):
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def add_ticket_element(request):
-    id = request.POST.get("id", -1)
-    outlets = []
-    if type(id) is int:
-        outlets = Element.objects.filter(id=id)
+    id = request.POST.get("id_outlet", None)
+    outlets = Element.objects.filter(id=id)
     if len(outlets) < 1:
         return error_500
     else:
