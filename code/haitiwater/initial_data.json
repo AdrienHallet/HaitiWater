@@ -1,0 +1,131 @@
+[
+  {
+    "model": "water_network.Zone",
+    "pk": 1,
+    "fields": {
+      "name": "Haiti",
+      "superzone": null,
+      "subzones":["Haiti"]
+    }
+  },
+  {
+      "model":"auth.permission",
+      "pk":49,
+      "fields":{
+         "name":"Peut voir l'\u00e9lement du r\u00e9seau",
+         "content_type":9,
+         "codename":"can_see_element"
+      }
+   },
+  {
+      "model":"auth.permission",
+      "pk":50,
+      "fields":{
+         "name":"Peut \u00e9diter l'\u00e9lement du r\u00e9seau",
+         "content_type":9,
+         "codename":"can_edit_element"
+      }
+   },
+   {
+      "model":"auth.permission",
+      "pk":51,
+      "fields":{
+         "name":"Peut voir les consommateurs de la zone",
+         "content_type":10,
+         "codename":"can_see_consumer"
+      }
+   },
+   {
+      "model":"auth.permission",
+      "pk":52,
+      "fields":{
+         "name":"Peut \u00e9diter les consommateurs de la zone",
+         "content_type":10,
+         "codename":"can_edit_element"
+      }
+   },
+   {
+      "model":"auth.group",
+      "pk":1,
+      "fields":{
+         "name":"Gestionnaire de zone",
+         "permissions":[49, 50, 51, 52]
+      }
+   },
+   {
+      "model":"auth.group",
+      "pk":2,
+      "fields":{
+         "name":"Gestionnaire de fontaine",
+         "permissions":[49, 51]
+      }
+   },
+   {
+      "model":"auth.group",
+      "pk":3,
+      "fields":{
+         "name":"Technicien",
+         "permissions":[51]
+      }
+   },
+  {
+    "model": "auth.group",
+    "pk": 4,
+    "fields": {
+      "name": "Consommateur",
+      "permissions": [51]
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$120000$qodUEk20o8Hn$SlX/7IUgg1ic4hW11u8AkuHnnPHIFWCruG32mgI3nO0=",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "Protos",
+      "first_name": "Protos",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-12-07T15:13:17.857Z",
+      "groups": [1],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.profile",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "zone": 1
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$120000$qpBDdRaUMT1Z$+Ibhz8HbyJI0YBHFNN/4ZWPaQ1twg/XPyS3tv++d+/M=",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "clinedknp@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-12-13T21:43:00.242Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.profile",
+    "pk": 2,
+    "fields": {
+        "user": 2,
+        "zone": 1
+    }
+  }
+]

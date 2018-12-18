@@ -68,7 +68,11 @@ function authUser(){
                 console.log("POST error on connection");
             }
         } else {
-            window.localStorage.setItem("token", xhttp.response)
+            window.localStorage.setItem("token", JSON.parse(xhttp.response).token);
+            window.localStorage.setItem("group", JSON.parse(xhttp.response).group);
+            window.localStorage.setItem("zone", JSON.parse(xhttp.response).zone_name);
+            window.localStorage.setItem("zoneId", JSON.parse(xhttp.response).zone_id);
+            window.localStorage.setItem("userName", JSON.parse(xhttp.response).user_name);
             window.location.replace(baseURL+"/accueil/")
         }
     };
