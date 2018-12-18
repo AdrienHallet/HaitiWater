@@ -85,9 +85,9 @@ def add_element(request):
         return add_zone_element(request)
     elif element == "manager":
         return add_collaborator_element(request)
-    else:
-        #Temporary adding the ticket
+    elif element == "ticket":
         return add_ticket_element(request)
+    else:
         return error_500
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
@@ -203,7 +203,7 @@ def add_ticket_element(request):
     id = request.POST.get("id", -1)
     outlets = []
     if type(id) is int:
-        outlet = Element.objects.filter(id=id)
+        outlets = Element.objects.filter(id=id)
     if len(outlets) < 1:
         return error_500
     else:
@@ -211,7 +211,7 @@ def add_ticket_element(request):
         typeR = request.POST.get("type", None)
         comment = request.POST.get("comment", None)
         urgency = request.POST.get('urgency', None)
-        image = request.POST.get("image", None)
+        image = request.FILES.get("picture", None)
         ticket = Ticket(water_outlet=outlet, type=typeR, comment=comment,
                         urgency=urgency, image=image)
         ticket.save()

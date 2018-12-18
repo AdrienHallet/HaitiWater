@@ -33,4 +33,4 @@ class Ticket(models.Model):
     type = models.CharField("Type de panne", max_length=10, choices=[("mechanical", "Mécanique"),
                                                                            ("quality", "Qualité"),
                                                                            ("other", "Autre")])
-    image = models.BinaryField("Image", null=True)
+    image = models.ImageField("Image", null=True) #This saves the image to server. We'll see if it stays
