@@ -138,7 +138,7 @@ def add_report_element(request):
         value_meter = values["details"][index]["perCubic"]
         month = values["month"]
         year = 2018 #TODO : Temporary
-        recette = values["fountainBill"] #Temporary, TODO : discuss with front
+        recette = values["details"][index]["bill"]
         report_line = Report(water_outlet=outlet, was_active=active,
                              quantity_distributed=meters_distr, price=value_meter,
                              month=month, year=year, recette=recette)
@@ -229,6 +229,10 @@ def remove_element(request):
         id = request.POST.get("id", None)
         Consumer.objects.filter(id=id).delete()
         return HttpResponse({"draw": request.POST.get("draw", 0)+1}, status=200)
+    elif element == "managers":
+        id = request.POST.get("id", None)
+        User.objects.filter(id=id).delete()
+        return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     return error_500
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug

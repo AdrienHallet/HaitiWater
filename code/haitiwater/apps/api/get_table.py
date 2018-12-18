@@ -11,27 +11,30 @@ from django.contrib.auth.models import User, Group
 def get_water_elements(request, json, parsed):
     all = []
     zone = request.user.profile.zone
+    outlets = request.user.profile.outlets
     if zone:
         target = Zone.objects.filter(name=zone.name)[0]
         all_water_element = [elem for elem in Element.objects.all() if elem.is_in_subzones(target)]
-        json["recordsTotal"] = len(all_water_element)
-        for elem in all_water_element:
-            cust = Consumer.objects.filter(water_outlet=elem)
-            distributed = Report.objects.filter(water_outlet=elem)
-            quantity = 0
-            for report in distributed:
-                quantity += report.quantity_distributed
-            tab = elem.network_descript()
-            tab.insert(4, quantity)
-            tab.insert(5, quantity * 219.969)  # TODO make sure this is correct
-            tab.insert(3, len(cust))
-            if parsed["search"] == "":
-                all.append(tab)
-            else:
-                for cols in parsed["searchable"]:
-                    if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                        all.append(tab)
-                        break
+    else:
+        all_water_element = [elem for elem in Element.objects.all() if str(elem.id) in outlets]
+    json["recordsTotal"] = len(all_water_element)
+    for elem in all_water_element:
+        cust = Consumer.objects.filter(water_outlet=elem)
+        distributed = Report.objects.filter(water_outlet=elem)
+        quantity = 0
+        for report in distributed:
+            quantity += report.quantity_distributed
+        tab = elem.network_descript()
+        tab.insert(4, quantity)
+        tab.insert(5, quantity * 219.969)  # TODO make sure this is correct
+        tab.insert(3, len(cust))
+        if parsed["search"] == "":
+            all.append(tab)
+        else:
+            for cols in parsed["searchable"]:
+                if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
+                   all.append(tab)
+                   break
     return all
 
 
@@ -76,13 +79,15 @@ def get_manager_elements(request, json, parsed):
     all = []
     if request.user.profile.zone:
         zone = request.user.profile.zone
-        target = Zone.objects.filter(name=zone.name)[0]
+        target = Zone.objects.filter(name=zone.name)
+        if len(target) == 1:
+            target = target[0]
         all_collab = User.objects.all()
         json["recordsTotal"] = len(all_collab) -1 #Remove the admin account
         for u in all_collab:
             group = u.groups.values_list('name', flat=True)
             if "Gestionnaire de zone" in group:
-                if u.profile.zone.name in target.subzones:
+                if type(target) is Zone and u.profile.zone.name in target.subzones:
                     tab = [u.id, u.last_name, u.first_name, u.email,
                            "Gestionnaire de zone", u.profile.zone.name]
                     if parsed["search"] == "":
@@ -94,8 +99,10 @@ def get_manager_elements(request, json, parsed):
                                 break
             if "Gestionnaire de fontaine" in group:
                 for elem in u.profile.outlets:
-                    out = Element.objects.filter(id=elem)[0]
-                    if out.is_in_subzones(target):
+                    out = Element.objects.filter(id=elem)
+                    if len(out) == 1:
+                        out = out[0]
+                    if type(out) is Element and out.is_in_subzones(target):
                         tab = [u.id, u.last_name, u.first_name, u.email,
                                "Gestionnaire de fontaine", ""]
                         if parsed["search"] == "":
