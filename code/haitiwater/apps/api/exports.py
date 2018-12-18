@@ -63,6 +63,8 @@ def table(request):
         all = get_zone_elements(request, json_test, d)
     elif d["table_name"] == "managers":
         all = get_manager_elements(request, json_test, d)
+    elif d["table_name"] == "ticket":
+        all = get_ticket_elements(request, json_test, d)
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
                    reverse=d["type_order"] != "asc")
     if d["length_max"] == -1:

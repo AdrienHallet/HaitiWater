@@ -3,9 +3,10 @@ import json
 from django.http import HttpResponse
 
 from ..consumers.models import Consumer
-from ..report.models import Report
+from ..report.models import Report, Ticket
 from ..water_network.models import Element, Zone
 from django.contrib.auth.models import User, Group
+
 
 def get_water_elements(request, json, parsed):
     all = []
@@ -33,6 +34,7 @@ def get_water_elements(request, json, parsed):
                         break
     return all
 
+
 def get_consumer_elements(request, json, parsed):
     all = []
     zone = request.user.profile.zone
@@ -50,6 +52,7 @@ def get_consumer_elements(request, json, parsed):
                         all.append(tab)
                         break
     return all
+
 
 def get_zone_elements(request, json, parsed):
     all = []
@@ -103,4 +106,31 @@ def get_manager_elements(request, json, parsed):
                                     all.append(tab)
                                     break
 
+    return all
+
+
+def get_ticket_elements(request, json, parsed):
+    all = []
+    if request.user.profile.zone:
+        for elem in Ticket.objects.all():
+            if elem.water_outlet.zone.name in request.user.profile.zone.subzones:
+                if parsed["search"] == "":
+                    all.append(elem.descript())
+                else:
+                    for cols in parsed["searchable"]:
+                        tab = elem.descript()
+                        if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
+                            all.append(tab)
+                            break
+    else:
+        for elem in Ticket.objects.filter(water_outlet_in=request.user.profile.outlets):
+            if parsed["search"] == "":
+                all.append(elem.descript())
+            else:
+                for cols in parsed["searchable"]:
+                    tab = elem.descript()
+                    if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
+                        all.append(tab)
+                        break
+    json["recordsTotal"] = len(all)
     return all

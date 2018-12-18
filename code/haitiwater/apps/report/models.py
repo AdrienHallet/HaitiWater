@@ -34,3 +34,6 @@ class Ticket(models.Model):
                                                                            ("quality", "Qualité"),
                                                                            ("other", "Autre")])
     image = models.ImageField("Image", null=True) #This saves the image to server. We'll see if it stays
+
+    def descript(self):
+        return [self.id, "", self.urgency, self.water_outlet.name, self.type, self.comment, ""]
