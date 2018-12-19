@@ -8,13 +8,14 @@ from haitiwater.settings import PROJECT_VERSION, PROJECT_NAME
 
 def index(request):
     template = loader.get_template('water_network.html')
+    quantity = get_quantity();
     context = {
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
         'zone_name': "Nom de la zone",  # Todo Backend
         'consumers': get_consumers(),
-        'water_outlets' : get_outlets(),
-        'distributed' : get_quantity()
+        'water_outlets' : len(get_outlets()),
+        'distributed' : [quantity, quantity*264.17] #m3, gals
     }
     return HttpResponse(template.render(context, request))
 
