@@ -245,6 +245,26 @@ def remove_element(request):
         id = request.POST.get("id", None)
         User.objects.filter(id=id).delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
+    elif element == "ticket":
+        id = request.POST.get("id", None)
+        Ticket.objects.filter(id=id).delete()
+        return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
+    elif element == "zone":
+        id = request.POST.get("id", None)
+        to_delete = Zone.objects.filter(id=id)
+        if len(to_delete.subzones) > 0:
+            return error_500
+        if len(Element.objects.filter(zone=id)) > 0:
+            return error_500
+        for u in User.objects.all():
+            if u.profile.zone == to_delete:
+                return error_500
+        for z in Zone.objects.all():
+            if str(id) in z.subzones:
+                z.subzones.remove(str(id))
+                z.save()
+        to_delete.delete()
+        return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     return error_500
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
