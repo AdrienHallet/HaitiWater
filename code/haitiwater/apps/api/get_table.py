@@ -91,7 +91,7 @@ def get_manager_elements(request, json, parsed):
             group = u.groups.values_list('name', flat=True)
             if "Gestionnaire de zone" in group:
                 if type(target) is Zone and u.profile.zone.name in target.subzones:
-                    tab = [u.id, u.last_name, u.first_name, u.email,
+                    tab = [u.username, u.last_name, u.first_name, u.email,
                            "Gestionnaire de zone", u.profile.zone.name]
                     if parsed["search"] == "":
                         all.append(tab)
@@ -106,7 +106,7 @@ def get_manager_elements(request, json, parsed):
                     if len(out) == 1:
                         out = out[0]
                     if type(out) is Element and out.is_in_subzones(target):
-                        tab = [u.id, u.last_name, u.first_name, u.email,
+                        tab = [u.username, u.last_name, u.first_name, u.email,
                                "Gestionnaire de fontaine", ""]
                         if parsed["search"] == "":
                             all.append(tab)
