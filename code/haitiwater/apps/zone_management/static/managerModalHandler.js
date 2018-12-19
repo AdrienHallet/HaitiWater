@@ -174,7 +174,21 @@ function setupModalManagerAdd(){
 }
 
 function setupModalManagerEdit(data){
-    //Todo
+    //Show add components
+    $('#modal-manager-title-add').addClass("hidden");
+    $('#modal-manager-submit-add').addClass("hidden");
+
+    //Hide edit components
+    $('#modal-manager-title-edit').removeClass("hidden");
+    $('#modal-manager-submit-edit').removeClass("hidden");
+
+    $('#input-manager-id').val(data[0].innerText);
+    $('#input-manager-last-name').val(data[1].innerText);
+    $('#input-manager-first-name').val(data[2].innerText);
+    $('#input-manager-email').val(data[3].innerText);
+    $('#select-manager-type').val(data[4].innerText);
+
+    showManagerModal();
 }
 
 function showManagerModal(){

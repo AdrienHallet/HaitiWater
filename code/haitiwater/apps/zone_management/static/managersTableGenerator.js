@@ -23,7 +23,7 @@ function drawManagersTable(){
     } );
     $('#datatable-managers tbody').on( 'click', '.edit-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
-        editElement(data);
+        setupModalManagerEdit(data);
     } );
 
     prettifyHeader('managers');

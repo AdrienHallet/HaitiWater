@@ -122,6 +122,7 @@ function postNewRow(table){
     console.log(request);
     if(!request){
         // Form is not valid (missing/wrong fields)
+        console.log("invalid form");
         return false;
     }
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
@@ -153,7 +154,7 @@ function postNewRow(table){
  * Send a post request to server and handle it
  */
 function postEditRow(table){
-    let request = validateForm();
+    let request = getRequest(table);
     if(!request){
         // Form is not valid (missing/wrong fields)
         return false;
@@ -168,11 +169,11 @@ function postEditRow(table){
             if (xhttp.status !== 200) {
                 if (xhttp.responseText) {
                     console.log("POST error on new element");
-                    document.getElementById("form-error").className = "alert alert-danger";
-                    document.getElementById("form-error-msg").innerHTML = xhttp.responseText;
+                    document.getElementById("form-" + table + "-error").className = "alert alert-danger";
+                    document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.responseText;
                 }
             } else {
-                document.getElementById("form-error").className = "alert alert-danger hidden"; // hide old msg
+                document.getElementById("form-" + table + "-error").className = "alert alert-danger hidden"; // hide old msg
                 dismissModal();
                 new PNotify({
                     title: 'Succès!',

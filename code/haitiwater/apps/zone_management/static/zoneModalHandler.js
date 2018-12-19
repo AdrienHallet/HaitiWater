@@ -15,6 +15,7 @@ function validateZoneForm() {
     }
 
     if(missing){
+        console.log("missing zone element");
         return false
     } else {
         return buildZoneRequest(id, name);
@@ -50,7 +51,20 @@ function setupModalZoneAdd(){
 }
 
 function setupModalZoneEdit(data){
-    //Todo
+    //Hide add components
+    $('#modal-zone-title-add').addClass("hidden");
+    $('#modal-zone-submit-add').addClass("hidden");
+
+    //Show edit components
+    $('#modal-zone-title-edit').removeClass("hidden");
+    $('#modal-zone-submit-edit').removeClass("hidden");
+    $('#form-zone-id-component').removeClass("hidden");
+
+    //Fill with existing data
+    $('#input-zone-id').val(data[0].innerText);
+    $('#input-zone-name').val(data[1].innerText);
+
+    showZoneModal();
 }
 
 function showZoneModal(){
