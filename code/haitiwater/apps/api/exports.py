@@ -223,7 +223,19 @@ def remove_element(request):
     element = request.POST.get("table", None)
     if element == "water_element":
         id = request.POST.get("id", None)
+        consumers = Consumer.objects.filter(water_outlet=id)
+        if len(consumers) > 0: #Can't suppress outlets with consummers
+            return error_500
         Element.objects.filter(id=id).delete()
+        tickets = Ticket.objects.filter(water_outlet=id)
+        for t in tickets:
+            t.delete()
+        users = User.objects.filter()
+        for u in users:
+            if len(u.profile.outlets) > 0: #Gestionnaire de fontaine
+                if str(id) in u.profile.outlets:
+                    u.profile.outlets.remove(str(id))
+                    u.save()
         return HttpResponse(status=200)
     elif element == "consumer":
         id = request.POST.get("id", None)

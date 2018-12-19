@@ -27,7 +27,10 @@ def get_water_elements(request, json, parsed):
         tab = elem.network_descript()
         tab.insert(4, quantity)
         tab.insert(5, quantity * 219.969)  # TODO make sure this is correct
-        tab.insert(3, len(cust))
+        total_consumers = 0
+        for c in cust:
+            total_consumers += c.household_size
+        tab.insert(3, total_consumers)
         if parsed["search"] == "":
             all.append(tab)
         else:
@@ -142,5 +145,5 @@ def get_ticket_elements(request, json, parsed):
                         if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
                             all.append(tab)
                             break
-    json["recordsTotal"] = tot
+        json["recordsTotal"] = tot
     return all
