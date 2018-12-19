@@ -124,8 +124,7 @@
     "model": "authentication.profile",
     "pk": 2,
     "fields": {
-        "user": 2,
-        "zone": 1
+        "user": 2
     }
   }
 ]

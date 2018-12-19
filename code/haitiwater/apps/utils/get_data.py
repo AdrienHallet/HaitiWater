@@ -56,15 +56,12 @@ def get_outlets(request):
                     result.append((elem.id, elem.name))
         return result
     else:
-        print("getting outlets")
         all_outlets = Element.objects.all()
         result = []
-        print(all_outlets)
         for elem in all_outlets:
-            print(elem)
             if elem.type in ["KIOSK", "FOUNTAIN", "INDIVIDUAL"] and str(elem.id) in outlets:
-                print(elem)
                 reports = Report.objects.filter(water_outlet=elem.id)  # TODO add filter by month
                 if len(reports) == 0:
                     result.append((elem.id, elem.name))
+        print(result)
         return result

@@ -27,7 +27,10 @@ def get_water_elements(request, json, parsed):
         tab = elem.network_descript()
         tab.insert(4, quantity)
         tab.insert(5, quantity * 219.969)  # TODO make sure this is correct
-        tab.insert(3, len(cust))
+        total_consumers = 0
+        for c in cust:
+            total_consumers += c.household_size
+        tab.insert(3, total_consumers)
         if parsed["search"] == "":
             all.append(tab)
         else:
@@ -88,7 +91,7 @@ def get_manager_elements(request, json, parsed):
             group = u.groups.values_list('name', flat=True)
             if "Gestionnaire de zone" in group:
                 if type(target) is Zone and u.profile.zone.name in target.subzones:
-                    tab = [u.id, u.last_name, u.first_name, u.email,
+                    tab = [u.username, u.last_name, u.first_name, u.email,
                            "Gestionnaire de zone", u.profile.zone.name]
                     if parsed["search"] == "":
                         all.append(tab)
@@ -103,7 +106,7 @@ def get_manager_elements(request, json, parsed):
                     if len(out) == 1:
                         out = out[0]
                     if type(out) is Element and out.is_in_subzones(target):
-                        tab = [u.id, u.last_name, u.first_name, u.email,
+                        tab = [u.username, u.last_name, u.first_name, u.email,
                                "Gestionnaire de fontaine", ""]
                         if parsed["search"] == "":
                             all.append(tab)
@@ -142,5 +145,5 @@ def get_ticket_elements(request, json, parsed):
                         if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
                             all.append(tab)
                             break
-    json["recordsTotal"] = tot
+        json["recordsTotal"] = tot
     return all
