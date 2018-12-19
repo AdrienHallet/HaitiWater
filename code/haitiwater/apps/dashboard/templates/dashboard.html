@@ -39,7 +39,7 @@
             {% elif user.is_authenticated and user|has_group:"Gestionnaire de fontaine"%}
                 Page d'acceuil du gestionnaire de fontaine
             {% else %}
-                To see this page, please <a href="{% url 'login' %}">login</a>
+                <h3>Contenu réservé, veuillez <a href="{% url 'login' %}">vous connecter</a></h3>
             {% endif %}
         </div>
     {% endblock %}
