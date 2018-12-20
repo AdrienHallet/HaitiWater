@@ -274,8 +274,13 @@ def edit_element(request):
         return edit_water_element(request)
     elif element == "consumer":
         return edit_consummer(request)
+    elif element == "zone":
+        return edit_zone(request)
+    elif element == "manager":
+        return edit_manager(request)
     else:
-        return error_500
+        return HttpResponse("Impossible d'éditer la table "+element+
+                            ", elle n'est pas reconnue", status=500)
 
 
 def edit_water_element(request):
@@ -311,6 +316,37 @@ def edit_consummer(request):
         return error_404  # Outlet not found, can't create
     consummer.water_outlet = outlet
     consummer.save()
+    return success_200
+
+
+def edit_zone(request):
+    id = request.POST.get("id", None)
+    zone = Zone.objects.filter(id=id)
+    if len(zone) < 0:
+        return error_404
+    zone = zone[0]
+    old_name = zone.name
+    zone.name = request.POST.get("name", None)
+    zone.subzones.remove(old_name)
+    zone.subzones.append(zone.name)
+    for z in Zone.objects.all():
+        if old_name in z.subzones:
+            z.subzones.remove(old_name)
+            z.subzones.append(zone.name)
+            z.save()
+    zone.save()
+    return success_200
+
+
+def edit_manager(request):
+    id = request.POST.get("id", None)
+    user = User.objects.filter(username=id)
+    if len(user) == 1:
+        user = user[0]
+        #Todo modify
+    else:
+        return HttpResponse("Utilisateur introuvable dans la base de donnée",
+                          status=404)
     return success_200
 
 
