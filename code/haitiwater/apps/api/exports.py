@@ -243,7 +243,7 @@ def remove_element(request):
         return HttpResponse({"draw": request.POST.get("draw", 0)+1}, status=200)
     elif element == "managers":
         id = request.POST.get("id", None)
-        User.objects.filter(id=id).delete()
+        User.objects.filter(username=id).delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "ticket":
         id = request.POST.get("id", None)
@@ -343,7 +343,37 @@ def edit_manager(request):
     user = User.objects.filter(username=id)
     if len(user) == 1:
         user = user[0]
-        #Todo modify
+        type = request.POST.get("type", None)
+        if type == "fountain-manager":
+            water_out = request.POST.get("outlets", None)
+            if len(water_out) > 1:
+                res = Element.objects.filter(id__in=water_out)
+            else:
+                res = Element.objects.filter(id=water_out)
+            if len(res) > 0:
+                for outlet in res:
+                    user.profile.outlets = []
+                    user.profile.outlets.append(outlet.id)
+            my_group = Group.objects.get(name='Gestionnaire de fontaine')
+            my_group.user_set.add(user)
+            if user.profile.zone: #If user had a zone, switch it
+                g = Group.objects.get(name='Gestionnaire de zone')
+                g.user_set.remove(user)
+            user.save()
+        elif type == "zone-manager":
+            zone = request.POST.get("zone", None)
+            res = Zone.objects.filter(id=zone)
+            if len(res) == 1:
+                user.profile.zone = res[0]
+            else:
+                return HttpResponse("Impossible d'assigner cette zone", status=404)
+            my_group = Group.objects.get(name='Gestionnaire de zone')
+            my_group.user_set.add(user)
+            if len(user.profile.outlets) > 0: #If user had outlets
+                g = Group.objects.get(name='Gestionnaire de fontaine')
+                g.user_set.remove(user)
+                user.profile.outlets = []
+            user.save()
     else:
         return HttpResponse("Utilisateur introuvable dans la base de donnée",
                           status=404)
