@@ -8,14 +8,29 @@ from ..water_network.models import Element, Zone
 from django.contrib.auth.models import User, Group
 
 
+def add_with_search(parsed, values):
+    result = []
+    if parsed["search"] == "":
+        result.append(values)
+    else:
+        for cols in parsed["searchable"]:
+            if cols < len(values) and parsed["search"].lower() in str(values[cols]).lower():
+                result.append(values)
+                break
+    return result
+
+
 def get_water_elements(request, json, parsed):
-    all = []
     zone = request.user.profile.zone
     outlets = request.user.profile.outlets
-    if zone:
-        target = Zone.objects.filter(name=zone.name)[0]
+    if zone: #If there is a zone, we have a zone manager
+        target = Zone.objects.filter(name=zone.name)
+        if len(target) == 1:
+            target = target[0]
+        else:
+            return False
         all_water_element = [elem for elem in Element.objects.all() if elem.is_in_subzones(target)]
-    else:
+    else: #We have a fountain manager
         all_water_element = [elem for elem in Element.objects.all() if str(elem.id) in outlets]
     json["recordsTotal"] = len(all_water_element)
     for elem in all_water_element:
@@ -31,21 +46,18 @@ def get_water_elements(request, json, parsed):
         for c in cust:
             total_consumers += c.household_size
         tab.insert(3, total_consumers)
-        if parsed["search"] == "":
-            all.append(tab)
-        else:
-            for cols in parsed["searchable"]:
-                if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                   all.append(tab)
-                   break
-    return all
+    return add_with_search(parsed, tab)
 
 
 def get_consumer_elements(request, json, parsed):
-    all = []
     zone = request.user.profile.zone
-    if zone:
-        target = Zone.objects.filter(name=zone.name)[0]
+    all = []
+    if zone: #Zone manager
+        target = Zone.objects.filter(name=zone.name)
+        if len(target) == 1:
+            target = target[0]
+        else:
+            return False
         all_consumers = [elem for elem in Consumer.objects.all() if elem.water_outlet.is_in_subzones(target)]
         json["recordsTotal"] = len(all_consumers)
         for elem in all_consumers:
@@ -62,7 +74,7 @@ def get_consumer_elements(request, json, parsed):
 
 def get_zone_elements(request, json, parsed):
     all = []
-    if request.user.profile.zone:
+    if request.user.profile.zone: #Zone manager
         json["recordsTotal"] = len(request.user.profile.zone.subzones)
         for z in request.user.profile.zone.subzones:
             zone = Zone.objects.filter(name=z)
@@ -80,11 +92,13 @@ def get_zone_elements(request, json, parsed):
 
 def get_manager_elements(request, json, parsed):
     all = []
-    if request.user.profile.zone:
+    if request.user.profile.zone:#Zone manager
         zone = request.user.profile.zone
         target = Zone.objects.filter(name=zone.name)
         if len(target) == 1:
             target = target[0]
+        else:
+            return False
         all_collab = User.objects.all()
         json["recordsTotal"] = len(all_collab) -1 #Remove the admin account
         for u in all_collab:
@@ -121,7 +135,7 @@ def get_manager_elements(request, json, parsed):
 
 def get_ticket_elements(request, json, parsed):
     all = []
-    if request.user.profile.zone:
+    if request.user.profile.zone: #Zone manager
         for elem in Ticket.objects.all():
             if elem.water_outlet.zone.name in request.user.profile.zone.subzones:
                 if parsed["search"] == "":
@@ -132,7 +146,7 @@ def get_ticket_elements(request, json, parsed):
                         if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
                             all.append(tab)
                             break
-    else:
+    else: #Fountain manager
         tot = 0
         for elem in Ticket.objects.all():
             if str(elem.water_outlet.id) in request.user.profile.outlets:
