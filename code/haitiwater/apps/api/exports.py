@@ -103,7 +103,8 @@ def remove_element(request):
         id = request.POST.get("id", None)
         consumers = Consumer.objects.filter(water_outlet=id)
         if len(consumers) > 0: #Can't suppress outlets with consummers
-            return error_500
+            return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à" +
+                                "des consommateurs", status=500)
         Element.objects.filter(id=id).delete()
         tickets = Ticket.objects.filter(water_outlet=id)
         for t in tickets:
@@ -114,7 +115,7 @@ def remove_element(request):
                 if str(id) in u.profile.outlets:
                     u.profile.outlets.remove(str(id))
                     u.save()
-        return HttpResponse(status=200)
+        return success_200
     elif element == "consumer":
         id = request.POST.get("id", None)
         Consumer.objects.filter(id=id).delete()
@@ -131,12 +132,15 @@ def remove_element(request):
         id = request.POST.get("id", None)
         to_delete = Zone.objects.filter(id=id)
         if len(to_delete.subzones) > 0:
-            return error_500
+            return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
+                                "d'autres zones", status=500)
         if len(Element.objects.filter(zone=id)) > 0:
-            return error_500
+            return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
+                                "des élements du réseau", status=500)
         for u in User.objects.all():
             if u.profile.zone == to_delete:
-                return error_500
+                return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle est encore attribuée à" +
+                                "un gestionnaire de zone", status=500)
         for z in Zone.objects.all():
             if str(id) in z.subzones:
                 z.subzones.remove(str(id))
@@ -151,7 +155,7 @@ def edit_element(request):
     if element == "water_element":
         return edit_water_element(request)
     elif element == "consumer":
-        return edit_consummer(request)
+        return edit_consumer(request)
     elif element == "zone":
         return edit_zone(request)
     elif element == "manager":
@@ -159,7 +163,6 @@ def edit_element(request):
     else:
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)
-
 
 def parse(request):
     test1 = re.compile('order\[\d*\]\[column\]')
