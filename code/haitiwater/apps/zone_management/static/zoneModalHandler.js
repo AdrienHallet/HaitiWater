@@ -88,8 +88,9 @@ function showZoneModal(){
 }
 
 /**
- * Hide the modal
+ * Hide the modal and clear the fields
  */
-function dismissModal() {
+function dismissZoneModal() {
     $.magnificPopup.close();
+    $('form').find('input').val('');
 }

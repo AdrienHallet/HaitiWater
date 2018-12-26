@@ -49,7 +49,7 @@ function getManagerDatatableConfiguration(dataURL){
         "processing": true,
         "serverSide": true,
         "responsive": false,
-        "autoWidth": false,
+        "autoWidth": true,
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,

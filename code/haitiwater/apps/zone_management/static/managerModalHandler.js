@@ -170,7 +170,17 @@ function setupModalManagerAdd(){
     $('#modal-manager-title-edit').addClass("hidden");
     $('#modal-manager-submit-edit').addClass("hidden");
 
+    //Enable personal information modification
+    disableModalElements(false);
+
     showManagerModal();
+}
+
+function disableModalElements(bool){
+    $('#input-manager-id').prop('disabled', bool);
+    $('#input-manager-first-name').prop('disabled', bool);
+    $('#input-manager-last-name').prop('disabled', bool);
+    $('#input-manager-email').prop('disabled', bool);
 }
 
 function setupModalManagerEdit(data){
@@ -182,6 +192,10 @@ function setupModalManagerEdit(data){
     $('#modal-manager-title-edit').removeClass("hidden");
     $('#modal-manager-submit-edit').removeClass("hidden");
 
+    //Disable the modification of personal information
+    disableModalElements(true);
+
+    //Setup elements
     $('#input-manager-id').val(data[0].innerText);
     $('#input-manager-last-name').val(data[1].innerText);
     $('#input-manager-first-name').val(data[2].innerText);
@@ -212,8 +226,9 @@ function showManagerModal(){
 }
 
 /**
- * Hide the modal
+ * Hide the modal and empty the values
  */
-function dismissModal() {
+function dismissManagerModal() {
     $.magnificPopup.close();
+    $('form').find('input').val('');
 }
