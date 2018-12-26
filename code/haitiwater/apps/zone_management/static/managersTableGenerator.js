@@ -1,11 +1,11 @@
-function drawManagersTable(){
+function drawManagerTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let dataURL = baseURL + "/api/table/?name=managers";
+    let dataURL = baseURL + "/api/table/?name=manager";
     console.log("Request data from: " + dataURL);
-    $('#datatable-managers').DataTable(getManagersDatatableConfiguration(dataURL));
+    $('#datatable-manager').DataTable(getManagerDatatableConfiguration(dataURL));
 
-    let table = $('#datatable-managers').DataTable();
-    $('#datatable-managers tbody').on( 'click', 'tr', function () {
+    let table = $('#datatable-manager').DataTable();
+    $('#datatable-manager tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
@@ -15,29 +15,21 @@ function drawManagersTable(){
         }
     });
 
-    $('#datatable-managers tbody').on( 'click', '.remove-row', function () {
+    $('#datatable-manager tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
-            removeElement("managers", data[0].innerText);
+            removeElement("manager", data[0].innerText);
         } else {}
     } );
-    $('#datatable-managers tbody').on( 'click', '.edit-row', function () {
+    $('#datatable-manager tbody').on( 'click', '.edit-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         setupModalManagerEdit(data);
     } );
 
-    prettifyHeader('managers');
-}
-/**
- * Add placeholder and CSS class in the search field
- */
-function prettifyManagersHeader(){
-    $('#datatable-managers_filter').find('input').addClass("form-control");
-    $('#datatable-managers_filter').find('input').attr("placeholder", "Recherche");
-    $('#datatable-managers_filter').css("min-width", "300px");
+    prettifyHeader('manager');
 }
 
-function getManagersDatatableConfiguration(dataURL){
+function getManagerDatatableConfiguration(dataURL){
     let config = {
         lengthMenu: [
             [ 10, 25, 50, -1 ],
@@ -85,7 +77,7 @@ function getManagersDatatableConfiguration(dataURL){
         "initComplete": function(settings, json){
             // Removes the last column (both header and body) if we cannot edit the table
             if(!(json.hasOwnProperty('editable') && json['editable'])){
-                $('#datatable-managers').find('tr:last-child th:last-child, td:last-child').remove();
+                $('#datatable-manager').find('tr:last-child th:last-child, td:last-child').remove();
             }
         }
     };

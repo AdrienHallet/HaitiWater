@@ -59,9 +59,9 @@ def table(request):
         all = get_water_elements(request, json_test, d)
     elif d["table_name"] == "consumer":
         all = get_consumer_elements(request, json_test, d)
-    elif d["table_name"] == "zones":
+    elif d["table_name"] == "zone":
         all = get_zone_elements(request, json_test, d)
-    elif d["table_name"] == "managers":
+    elif d["table_name"] == "manager":
         all = get_manager_elements(request, json_test, d)
     elif d["table_name"] == "ticket":
         all = get_ticket_elements(request, json_test, d)
@@ -241,7 +241,7 @@ def remove_element(request):
         id = request.POST.get("id", None)
         Consumer.objects.filter(id=id).delete()
         return HttpResponse({"draw": request.POST.get("draw", 0)+1}, status=200)
-    elif element == "managers":
+    elif element == "manager":
         id = request.POST.get("id", None)
         User.objects.filter(id=id).delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
