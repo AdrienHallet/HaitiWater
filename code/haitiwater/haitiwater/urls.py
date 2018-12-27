@@ -17,10 +17,11 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('apps.authentication.urls')),
+    url(r'^$', RedirectView.as_view(url='login/'), name='login_redirect'),
     path('accueil/', include('apps.dashboard.urls')),
     path('reseau/', include('apps.water_network.urls')),
     path('consommateurs/', include('apps.consumers.urls')),

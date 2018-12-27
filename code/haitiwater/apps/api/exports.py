@@ -8,6 +8,8 @@ from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
 from django.contrib.auth.models import User, Group
 from ..api.get_table import *
+from ..api.add_table import *
+from ..api.edit_table import *
 
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
@@ -16,6 +18,7 @@ import json
 error_500 = HttpResponse(False, status=500)
 error_404 = HttpResponse(False, status=404)
 success_200 = HttpResponse(status=200)
+
 
 def graph(request):
     export_format = request.GET.get('type', None)
@@ -65,6 +68,8 @@ def table(request):
         all = get_manager_elements(request, json_test, d)
     elif d["table_name"] == "ticket":
         all = get_ticket_elements(request, json_test, d)
+    if all is False: #There was a problem when retrieving the data
+        return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
                    reverse=d["type_order"] != "asc")
     if d["length_max"] == -1:
@@ -76,9 +81,7 @@ def table(request):
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def add_element(request):
-    print(request.POST)
     element = request.POST.get("table", None)
-    print(element)
     if element == "water_element":
         return add_network_element(request)
     elif element == "consumer":
@@ -90,132 +93,7 @@ def add_element(request):
     elif element == "ticket":
         return add_ticket_element(request)
     else:
-        return error_500
-
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
-def add_consumer_element(request):
-    first_name = request.POST.get("firstname", None)
-    last_name = request.POST.get("lastname", None)
-    gender = request.POST.get("gender", None)
-    address = request.POST.get("address", None)
-    sub = request.POST.get("subconsumer", None)
-    phone = request.POST.get("phone", None)
-    outlet_id = request.POST.get("mainOutlet", None)
-    outlet = Element.objects.filter(id=outlet_id)
-    if len(outlet) > 0:
-        outlet = outlet[0]
-    else:
-        return error_404 #Outlet not found, can't create
-    new_c = Consumer(last_name=last_name, first_name=first_name,
-                          gender=gender, location=address, phone_number=phone,
-                          email="", household_size=sub, water_outlet=outlet)
-    new_c.save()
-    return success_200
-
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
-def add_network_element(request):
-    type = request.POST.get("type", None).upper()
-    loc = request.POST.get("localization", None)
-    state = request.POST.get("state", None).upper()
-    string_type = ElementType[type].value
-    zone = request.user.profile.zone
-    e = Element(name=string_type+" "+loc, type=type, status=state,
-                location=loc, zone=zone) #Créer l'élément
-    e.save()
-    return success_200
-
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
-def add_report_element(request):
-    values = json.loads(request.body.decode("utf-8"))
-    for index, elem in enumerate(values["selectedOutlets"]):
-        outlets = Element.objects.filter(id=elem)
-        if len(outlets) < 1:
-            return error_500
-        else:
-            outlet = outlets[0]
-        active = values["isActive"]
-        meters_distr = values["details"][index]["cubic"]
-        value_meter = values["details"][index]["perCubic"]
-        month = values["month"]
-        year = 2018 #TODO : Temporary
-        recette = values["details"][index]["bill"]
-        report_line = Report(water_outlet=outlet, was_active=active,
-                             quantity_distributed=meters_distr, price=value_meter,
-                             month=month, year=year, recette=recette)
-        report_line.save()
-    return success_200
-
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
-def add_zone_element(request):
-    name = request.POST.get("name", None)
-    if request.user:
-        result = Zone.objects.filter(name=request.user.profile.zone)
-        if len(result) == 1:
-            super = result[0]
-            to_add = Zone(name=name, superzone=super, subzones=[name])
-            for z in Zone.objects.all():
-                if z.name == super.name: #If the zone is the superZone
-                    z.subzones.append(name)
-                    z.save()
-            to_add.save()
-            return success_200
-        else:
-            return error_404
-    else:
-        return error_500
-
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
-def add_collaborator_element(request):
-    first_name = request.POST.get("firstname", None)
-    last_name = request.POST.get("lastname", None)
-    username = request.POST.get("id", None)
-    password = request.POST.get("password", None)
-    email = request.POST.get("email", None)
-    new_user = User.objects.create_user(username=username, email=email, password=password,
-                                    first_name=first_name, last_name=last_name)
-    type = request.POST.get("type", None)
-    if type == "fountain-manager":
-        water_out = request.POST.get("outlets", None)
-        if len(water_out) > 1:
-            res = Element.objects.filter(id__in=water_out)
-        else:
-            res = Element.objects.filter(id=water_out)
-        if len(res) > 0:
-            for outlet in res:
-                new_user.profile.outlets.append(outlet.id)
-        my_group = Group.objects.get(name='Gestionnaire de fontaine')
-        my_group.user_set.add(new_user)
-    elif type == "zone-manager":
-        zone = request.POST.get("zone", None)
-        res = Zone.objects.filter(id=zone)
-        if len(res) == 1:
-            new_user.profile.zone = res[0]
-        else:
-            return error_404
-        my_group = Group.objects.get(name='Gestionnaire de zone')
-        my_group.user_set.add(new_user)
-    else:
-        new_user.delete()
-        return error_500
-    new_user.save()
-    return success_200
-
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
-def add_ticket_element(request):
-    id = request.POST.get("id_outlet", None)
-    outlets = Element.objects.filter(id=id)
-    if len(outlets) < 1:
-        return error_500
-    else:
-        outlet = outlets[0]
-        typeR = request.POST.get("type", None)
-        comment = request.POST.get("comment", None)
-        urgency = request.POST.get('urgency', None)
-        image = request.FILES.get("picture", None)
-        ticket = Ticket(water_outlet=outlet, type=typeR, comment=comment,
-                        urgency=urgency, image=image)
-        ticket.save()
-    return success_200
+        return HttpResponse("Impossible d'ajouter l'élément "+element, status=500)
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def remove_element(request):
@@ -225,7 +103,8 @@ def remove_element(request):
         id = request.POST.get("id", None)
         consumers = Consumer.objects.filter(water_outlet=id)
         if len(consumers) > 0: #Can't suppress outlets with consummers
-            return error_500
+            return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à" +
+                                "des consommateurs", status=500)
         Element.objects.filter(id=id).delete()
         tickets = Ticket.objects.filter(water_outlet=id)
         for t in tickets:
@@ -236,7 +115,7 @@ def remove_element(request):
                 if str(id) in u.profile.outlets:
                     u.profile.outlets.remove(str(id))
                     u.save()
-        return HttpResponse(status=200)
+        return success_200
     elif element == "consumer":
         id = request.POST.get("id", None)
         Consumer.objects.filter(id=id).delete()
@@ -252,13 +131,21 @@ def remove_element(request):
     elif element == "zone":
         id = request.POST.get("id", None)
         to_delete = Zone.objects.filter(id=id)
+        if len(to_delete) == 1:
+            to_delete = to_delete[1]
+        else:
+            return HttpResponse("Impossible de trouver la zone que vous essayez de supprimer."+
+                                " Essayez de recharger la page.", status=404)
         if len(to_delete.subzones) > 0:
-            return error_500
+            return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
+                                "d'autres zones", status=500)
         if len(Element.objects.filter(zone=id)) > 0:
-            return error_500
+            return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
+                                "des élements du réseau", status=500)
         for u in User.objects.all():
             if u.profile.zone == to_delete:
-                return error_500
+                return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle est encore attribuée à" +
+                                "un gestionnaire de zone", status=500)
         for z in Zone.objects.all():
             if str(id) in z.subzones:
                 z.subzones.remove(str(id))
@@ -273,7 +160,7 @@ def edit_element(request):
     if element == "water_element":
         return edit_water_element(request)
     elif element == "consumer":
-        return edit_consummer(request)
+        return edit_consumer(request)
     elif element == "zone":
         return edit_zone(request)
     elif element == "manager":
@@ -281,103 +168,6 @@ def edit_element(request):
     else:
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)
-
-
-def edit_water_element(request):
-    id = request.POST.get("id", None)
-    elems = Element.objects.filter(id=id)
-    if len(elems) < 0:
-        return error_404
-    elem = elems[0]
-    elem.type = request.POST.get("type", None).upper()
-    elem.location = request.POST.get("localization", None)
-    elem.status = request.POST.get("state", None).upper()
-    elem.save()
-    return success_200
-
-
-def edit_consummer(request):
-    id = request.POST.get("id", None)
-    consummers = Consumer.objects.filter(id=id)
-    if len(consummers) < 0:
-        return error_404
-    consummer = consummers[0]
-    consummer.first_name = request.POST.get("firstname", None)
-    consummer.last_name = request.POST.get("lastname", None)
-    consummer.gender = request.POST.get("gender", None)
-    consummer.location = request.POST.get("address", None)
-    consummer.household_size = request.POST.get("subconsumer", None)
-    consummer.phone = request.POST.get("phone", None)
-    outlet_id = request.POST.get("mainOutlet", None)
-    outlet = Element.objects.filter(id=outlet_id)
-    if len(outlet) > 0:
-        outlet = outlet[0]
-    else:
-        return error_404  # Outlet not found, can't create
-    consummer.water_outlet = outlet
-    consummer.save()
-    return success_200
-
-
-def edit_zone(request):
-    id = request.POST.get("id", None)
-    zone = Zone.objects.filter(id=id)
-    if len(zone) < 0:
-        return error_404
-    zone = zone[0]
-    old_name = zone.name
-    zone.name = request.POST.get("name", None)
-    zone.subzones.remove(old_name)
-    zone.subzones.append(zone.name)
-    for z in Zone.objects.all():
-        if old_name in z.subzones:
-            z.subzones.remove(old_name)
-            z.subzones.append(zone.name)
-            z.save()
-    zone.save()
-    return success_200
-
-
-def edit_manager(request):
-    id = request.POST.get("id", None)
-    user = User.objects.filter(username=id)
-    if len(user) == 1:
-        user = user[0]
-        type = request.POST.get("type", None)
-        if type == "fountain-manager":
-            water_out = request.POST.get("outlets", None)
-            if len(water_out) > 1:
-                res = Element.objects.filter(id__in=water_out)
-            else:
-                res = Element.objects.filter(id=water_out)
-            if len(res) > 0:
-                for outlet in res:
-                    user.profile.outlets = []
-                    user.profile.outlets.append(outlet.id)
-            my_group = Group.objects.get(name='Gestionnaire de fontaine')
-            my_group.user_set.add(user)
-            if user.profile.zone: #If user had a zone, switch it
-                g = Group.objects.get(name='Gestionnaire de zone')
-                g.user_set.remove(user)
-            user.save()
-        elif type == "zone-manager":
-            zone = request.POST.get("zone", None)
-            res = Zone.objects.filter(id=zone)
-            if len(res) == 1:
-                user.profile.zone = res[0]
-            else:
-                return HttpResponse("Impossible d'assigner cette zone", status=404)
-            my_group = Group.objects.get(name='Gestionnaire de zone')
-            my_group.user_set.add(user)
-            if len(user.profile.outlets) > 0: #If user had outlets
-                g = Group.objects.get(name='Gestionnaire de fontaine')
-                g.user_set.remove(user)
-                user.profile.outlets = []
-            user.save()
-    else:
-        return HttpResponse("Utilisateur introuvable dans la base de donnée",
-                          status=404)
-    return success_200
 
 
 def parse(request):
