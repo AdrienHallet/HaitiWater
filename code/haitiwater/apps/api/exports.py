@@ -128,7 +128,7 @@ def remove_element(request):
         id = request.POST.get("id", None)
         Ticket.objects.filter(id=id).delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
-    elif element == "zones":
+    elif element == "zone":
         id = request.POST.get("id", None)
         to_delete = Zone.objects.filter(id=id)
         if len(to_delete) == 1:
