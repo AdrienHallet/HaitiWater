@@ -128,15 +128,15 @@ def remove_element(request):
         id = request.POST.get("id", None)
         Ticket.objects.filter(id=id).delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
-    elif element == "zone":
+    elif element == "zones":
         id = request.POST.get("id", None)
         to_delete = Zone.objects.filter(id=id)
         if len(to_delete) == 1:
-            to_delete = to_delete[1]
+            to_delete = to_delete[0]
         else:
             return HttpResponse("Impossible de trouver la zone que vous essayez de supprimer."+
                                 " Essayez de recharger la page.", status=404)
-        if len(to_delete.subzones) > 0:
+        if len(to_delete.subzones) > 1:
             return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
                                 "d'autres zones", status=500)
         if len(Element.objects.filter(zone=id)) > 0:
