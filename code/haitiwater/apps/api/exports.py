@@ -131,6 +131,11 @@ def remove_element(request):
     elif element == "zone":
         id = request.POST.get("id", None)
         to_delete = Zone.objects.filter(id=id)
+        if len(to_delete) == 1:
+            to_delete = to_delete[1]
+        else:
+            return HttpResponse("Impossible de trouver la zone que vous essayez de supprimer."+
+                                " Essayez de recharger la page.", status=404)
         if len(to_delete.subzones) > 0:
             return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
                                 "d'autres zones", status=500)
@@ -163,6 +168,7 @@ def edit_element(request):
     else:
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)
+
 
 def parse(request):
     test1 = re.compile('order\[\d*\]\[column\]')
