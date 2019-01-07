@@ -12,6 +12,7 @@ def index(request):
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
         'current_period': 'Septembre',  # Todo Backend
-        'water_outlets': get_outlets(request)
+        'water_outlets_ticket': get_outlets(request),  # Todo < elements that we can send a ticket for
+        'water_outlets_report': get_outlets(request)  # Todo < elements that we can send a report for
     }
     return HttpResponse(template.render(context, request))

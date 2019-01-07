@@ -47,7 +47,7 @@
                     <div class="col-sm-9">
                         <select id="select-outlet" name="outlet" class="form-control">
                             <option value="none">...</option>
-                            {% for water_outlet in water_outlets %}
+                            {% for water_outlet in water_outlets_ticket %}
                                 {# Display an option for each available outlet #}
                                 <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>
                             {% endfor %}
