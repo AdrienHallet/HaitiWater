@@ -10,7 +10,7 @@ from django.contrib.auth.models import User, Group
 
 def add_with_search(parsed, values):
     result = []
-    if parsed["search"] == "":
+    if parsed["search"] == "" and len(values) > 0:
         result.append(values)
     else:
         for cols in parsed["searchable"]:
@@ -23,6 +23,7 @@ def add_with_search(parsed, values):
 def get_water_elements(request, json, parsed):
     zone = request.user.profile.zone
     outlets = request.user.profile.outlets
+    tab = []
     if zone: #If there is a zone, we have a zone manager
         target = Zone.objects.filter(name=zone.name)
         if len(target) == 1:

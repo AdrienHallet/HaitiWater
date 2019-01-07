@@ -18,9 +18,9 @@ class Report(models.Model):
                                                              ("December", "Décembre")], null=False)
     year = models.IntegerField("Année")
     was_active = models.BooleanField("A été active")
-    quantity_distributed = models.IntegerField("Quantité distribuée")
-    price = models.IntegerField("Prix au mètre cube")
-    recette = models.IntegerField("Recettes du mois")
+    quantity_distributed = models.FloatField("Quantité distribuée")
+    price = models.FloatField("Prix au mètre cube")
+    recette = models.FloatField("Recettes du mois")
 
 
 class Ticket(models.Model):
