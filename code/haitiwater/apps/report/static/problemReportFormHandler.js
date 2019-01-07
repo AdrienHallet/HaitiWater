@@ -140,7 +140,7 @@ function sendTicket() {
                text: 'Ticket ajouté avec succès',
                type: 'success'
            });
-           drawDataTable(table);
+           drawDataTable("ticket");
        },
        error: function(jqXHR, textStatus, errorMessage) {
            document.getElementById("form-ticket-error").className = "alert alert-danger";
