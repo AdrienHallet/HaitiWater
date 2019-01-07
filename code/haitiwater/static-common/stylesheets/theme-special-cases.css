@@ -68,3 +68,7 @@
 .fas {
     cursor: pointer;
 }
+
+.selected {
+     font-weight: bold;
+}

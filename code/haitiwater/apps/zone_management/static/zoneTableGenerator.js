@@ -8,10 +8,12 @@ function drawZoneTable(){
     $('#datatable-zone tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
+            filterManagerFromZone(table);
         }
         else {
             table.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
+            filterManagerFromZone(table);
         }
     });
 
@@ -26,6 +28,23 @@ function drawZoneTable(){
         setupModalZoneEdit(data);
     } );
     prettifyHeader('zone');
+}
+
+/**
+ * Automatically fill the field on the manager table from the selected zone
+ *
+ * @param zoneTable the table zone datatable object
+ */
+function filterManagerFromZone(zoneTable){
+    let data = zoneTable.row('tr.selected').data();
+
+    if  (data == null){ // If nothing selected
+        $('#datatable-manager').DataTable().search("").draw();
+        return;
+    }
+
+    let zoneName = data[1];
+    $('#datatable-manager').DataTable().search(zoneName).draw();
 }
 
 function getZoneTableConfiguration(dataURL){
