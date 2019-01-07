@@ -51,17 +51,22 @@ def get_outlets(request):
         result = []
         for elem in all_outlets:
             if elem.type in ["KIOSK", "FOUNTAIN", "INDIVIDUAL"] and elem.zone.name in zone.subzones:
-                reports = Report.objects.filter(water_outlet=elem.id) #TODO add filter by month
-                if len(reports) == 0:
-                    result.append((elem.id, elem.name))
+                result.append((elem.id, elem.name))
         return result
     else:
         all_outlets = Element.objects.all()
         result = []
         for elem in all_outlets:
             if elem.type in ["KIOSK", "FOUNTAIN", "INDIVIDUAL"] and str(elem.id) in outlets:
-                reports = Report.objects.filter(water_outlet=elem.id)  # TODO add filter by month
-                if len(reports) == 0:
-                    result.append((elem.id, elem.name))
-        print(result)
+                result.append((elem.id, elem.name))
         return result
+
+
+def get_outlets_report(request):
+    all_outlets = get_outlets(request)
+    result = []
+    for elem in all_outlets:
+        reports = Report.objects.filter(water_outlet=elem.id) #TODO add filter by month
+        if len(reports) == 0:
+            result.append((elem.id, elem.name))
+    return result
