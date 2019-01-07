@@ -1,6 +1,14 @@
 from ..water_network.models import Element
 from ..consumers.models import Consumer
 from ..report.models import Report
+import datetime
+
+
+def get_current_month():
+    today = datetime.date.today()
+    months = ['zero', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+              'November', 'December']
+    return months[today.month].upper()
 
 
 def get_amount(type, zone):
@@ -66,7 +74,7 @@ def get_outlets_report(request):
     all_outlets = get_outlets(request)
     result = []
     for elem in all_outlets:
-        reports = Report.objects.filter(water_outlet=elem.id) #TODO add filter by month
+        reports = Report.objects.filter(water_outlet=elem[0], month=get_current_month())
         if len(reports) == 0:
-            result.append((elem.id, elem.name))
+            result.append(elem)
     return result

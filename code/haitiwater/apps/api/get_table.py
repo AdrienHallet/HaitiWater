@@ -1,5 +1,6 @@
 import json
 
+from decimal import Decimal, ROUND_HALF_UP
 from django.http import HttpResponse
 
 from ..consumers.models import Consumer
@@ -41,8 +42,8 @@ def get_water_elements(request, json, parsed):
         for report in distributed:
             quantity += report.quantity_distributed
         tab = elem.network_descript()
-        tab.insert(4, quantity)
-        tab.insert(5, quantity * 219.969)  # TODO make sure this is correct
+        tab.insert(4, round(quantity, 2))
+        tab.insert(5, round(quantity * 219.969, 2))  # TODO make sure this is correct
         total_consumers = 0
         for c in cust:
             total_consumers += c.household_size
