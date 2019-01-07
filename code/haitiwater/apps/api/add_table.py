@@ -134,9 +134,9 @@ def add_ticket_element(request):
         return HttpResponse("Impossible de trouver la sortie d'eau correspondante au ticket", status=404)
     else:
         outlet = outlets[0]
-        typeR = request.POST.get("type", None)
+        typeR = request.POST.get("type", None).upper()
         comment = request.POST.get("comment", None)
-        urgency = request.POST.get('urgency', None)
+        urgency = request.POST.get('urgency', None).upper()
         image = request.FILES.get("picture", None)
         ticket = Ticket(water_outlet=outlet, type=typeR, comment=comment,
                         urgency=urgency, image=image)
