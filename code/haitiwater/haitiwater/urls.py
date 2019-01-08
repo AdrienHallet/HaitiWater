@@ -29,6 +29,7 @@ urlpatterns = [
     path('gestion/', include('apps.zone_management.urls')),
     path('api/', include('apps.api.urls')),
     path('user/', include('apps.authentication.urls')),
+    path('profil/', include('apps.authentication.urls')),
 
 ]
 

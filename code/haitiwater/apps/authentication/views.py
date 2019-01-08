@@ -11,3 +11,12 @@ def index(request):
         'project_name': PROJECT_NAME,
     }
     return HttpResponse(template.render(context, request))
+
+
+def profile(request):
+    template = loader.get_template('profile.html')
+    context = {
+        'project_version': PROJECT_VERSION,
+        'project_name': PROJECT_NAME,
+    }
+    return HttpResponse(template.render(context, request))

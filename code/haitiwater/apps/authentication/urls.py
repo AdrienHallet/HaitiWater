@@ -4,6 +4,7 @@ from . import views
 from . import exports
 
 urlpatterns = [
-    path('', views.index, name='auth'),
     path('connect/', exports.connect, name='auth'),
+    path('editer/', views.profile, name='profile'),
+    path('', views.index, name='auth'),
 ]
