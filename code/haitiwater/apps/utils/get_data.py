@@ -21,6 +21,13 @@ def get_current_month():
     return months[today.month].upper()
 
 
+def get_current_month_fr():
+    today = datetime.date.today()
+    months = ['zero', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre',
+              'novembre', 'décembre']
+    return months[today.month]
+
+
 def get_amount(type, zone):
     result = 0
     for elem in Element.objects.filter(type=type):
