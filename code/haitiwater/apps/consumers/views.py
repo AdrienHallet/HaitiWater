@@ -11,6 +11,8 @@ def index(request):
         'project_name': PROJECT_NAME,
         'zone_name': get_zone(request),
         'current_period': get_current_month(),
-        'water_outlets': get_outlets(request)
+        'consumer_groups': 42,  # Todo Backend, only registered consumers
+        'consumer_individuals': 42,  # Todo backend, total of registered consumers and their dependant persons
+        'unpaid_bills': 42,  # Todo, but for later as we can't mark a payment yet
     }
     return HttpResponse(template.render(context, request))
