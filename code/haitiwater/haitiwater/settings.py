@@ -154,6 +154,14 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = '/accueil'
 LOGOUT_REDIRECT_URL = '/accueil'
 
+# Free email stuff
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_HOST_USER='haitiwatermails@gmail.com'
+EMAIL_HOST_PASSWORD='haitiwater2019'
+EMAIL_USE_TLS=True
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
