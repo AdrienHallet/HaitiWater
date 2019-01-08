@@ -12,7 +12,7 @@
 
 {% block page_content %}
 
-    {% if user.is_authenticated and user|has_group:"Gestionnaire de zone"%}
+    {% if user.is_authenticated %}
 
     <div class="row">
         <div class="col-md-6">
