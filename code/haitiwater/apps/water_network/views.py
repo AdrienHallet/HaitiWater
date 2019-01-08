@@ -15,7 +15,7 @@ def index(request):
         'zone_name': get_zone(request),
         'consumers': get_total_consumers(request),
         'water_outlets': len(get_outlets(request)),
-        'current_period': get_current_month(),
+        'current_period': get_current_month_fr(),
         'distributed': get_quantity_distributed(request)
     }
     return HttpResponse(template.render(context, request))
