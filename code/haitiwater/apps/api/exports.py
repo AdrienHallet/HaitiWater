@@ -10,6 +10,7 @@ from django.contrib.auth.models import User, Group
 from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
+from ..utils.get_data import is_user_fountain
 
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
@@ -59,12 +60,18 @@ def table(request):
     print(d)
     all = []
     if d["table_name"] == "water_element":
+        if is_user_fountain(request):
+            json_test["editable"] = False
         all = get_water_elements(request, json_test, d)
     elif d["table_name"] == "consumer":
         all = get_consumer_elements(request, json_test, d)
     elif d["table_name"] == "zone":
+        if is_user_fountain(request):
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
         all = get_zone_elements(request, json_test, d)
     elif d["table_name"] == "manager":
+        if is_user_fountain(request):
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
         all = get_manager_elements(request, json_test, d)
     elif d["table_name"] == "ticket":
         all = get_ticket_elements(request, json_test, d)
@@ -77,6 +84,7 @@ def table(request):
     else:
         json_test["data"] = final[d["start"]:d["start"]+d["length_max"]]
     json_test["recordsFiltered"] = len(final)
+    print(json.dumps(json_test))
     return HttpResponse(json.dumps(json_test))
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug

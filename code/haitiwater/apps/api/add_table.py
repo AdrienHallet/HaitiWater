@@ -2,6 +2,7 @@ import re
 from django.http import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
 
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
@@ -93,13 +94,16 @@ def add_collaborator_element(request):
     first_name = request.POST.get("firstname", None)
     last_name = request.POST.get("lastname", None)
     username = request.POST.get("id", None)
-    password = request.POST.get("password", None)
+    password = User.objects.make_random_password() #New random password
     email = request.POST.get("email", None)
     new_user = User.objects.create_user(username=username, email=email, password=password,
                                     first_name=first_name, last_name=last_name)
     type = request.POST.get("type", None)
     if type == "fountain-manager":
         water_out = request.POST.get("outlets", None)
+        print(water_out)
+        if len(water_out) < 1:
+            return HttpResponse("Vous n'avez pas choisi de fontaine a attribuer !", status=500)
         if len(water_out) > 1:
             res = Element.objects.filter(id__in=water_out)
         else:
@@ -123,6 +127,15 @@ def add_collaborator_element(request):
     else:
         new_user.delete()
         return HttpResponse("Impossible d'ajouter l'utilisateur", status=500)
+    send_mail(
+        'Bienvenue sur haitiwater !',
+        'Bienvenue sur haitiwater. Voici votre mot de passe autogénéré : ' + password +
+        '\nVeuillez vous connecter pour le modifier.\nPour rappel, ' +
+        'votre identifiant est : ' + username,
+        '',
+        [email],
+        fail_silently=False,
+    )
     new_user.save()
     return success_200
 

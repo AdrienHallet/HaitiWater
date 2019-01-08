@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from ..water_network.models import Element
+from ..utils.get_data import get_zone, get_outlets, get_current_month
 from haitiwater.settings import PROJECT_VERSION, PROJECT_NAME
 
 
@@ -9,17 +9,8 @@ def index(request):
     context = {
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
-        'zone_name': 'Nom de la zone',  # Todo Backend
-        'current_period': 'Septembre',  # Todo Backend (month of current computed paid info)
-        'water_outlets': get_outlets(request.user.profile.zone)
+        'zone_name': get_zone(request),
+        'current_period': get_current_month(),
+        'water_outlets': get_outlets(request)
     }
     return HttpResponse(template.render(context, request))
-
-def get_outlets(zone):
-    all_outlets = Element.objects.filter(type__in=["KIOSK", "FOUNTAIN", "INDIVIDUAL"])
-    result = []
-    for elem in all_outlets:
-        if elem.is_in_subzones(zone):
-            result.append((elem.id, elem.name))
-    print(result)
-    return result
