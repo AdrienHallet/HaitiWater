@@ -11,7 +11,7 @@
                 {% if user.is_authenticated and user|has_group:"Gestionnaire de zone"%}
                 <div class="pricing-table">
 
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-6 col-sm-6">
                         <div class="plan">
                             <h3>Le réseau de votre zone<span><a class="fa fa-tint"></a></span></h3>
                             <a class="btn btn-lg btn-default" href="/reseau/">{{ zone_name }}</a>
@@ -24,7 +24,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-6 col-sm-6">
                         <div class="plan">
                             <h3>Vos consommateurs<span><a class="fa fa-users"></a></span></h3>
                             <a class="btn btn-lg btn-default" href="/consommateurs/">{{ zone_name }}</a>

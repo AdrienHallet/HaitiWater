@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load django_tables2 %}
 {% load compress %}
+{% load group_filter %}
 
 {% block page_name %}
     <link href="{% static "water_network.css" %}">
@@ -10,6 +11,8 @@
 {% endblock %}
 
 {% block page_content %}
+
+    {% if user.is_authenticated and user|has_group:"Gestionnaire de zone"%}
 
     <div class="row">
         <div class="col-md-6">
@@ -89,4 +92,7 @@
 
 
     {% include 'water_element_modal.html' %}
+    {% else %}
+        <h3>Contenu réservé, veuillez <a href="{% url 'login' %}">vous connecter</a></h3>
+    {% endif %}
 {% endblock %}
