@@ -10,6 +10,7 @@ from django.contrib.auth.models import User, Group
 from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
+from ..utils.get_data import is_user_fountain
 
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
@@ -18,16 +19,6 @@ import json
 error_500 = HttpResponse(False, status=500)
 error_404 = HttpResponse(False, status=404)
 success_200 = HttpResponse(status=200)
-
-
-def is_user_fountain(request):
-    groups = request.user.groups.values_list('name', flat=True)
-    return "Gestionnaire de fontaine" in groups
-
-
-def is_user_zone(request):
-    groups = request.user.groups.values_list('name', flat=True)
-    return "Gestionnaire de zone" in groups
 
 
 def graph(request):

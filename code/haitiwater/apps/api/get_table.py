@@ -43,7 +43,7 @@ def get_water_elements(request, json, parsed):
             quantity += report.quantity_distributed
         tab = elem.network_descript()
         tab.insert(4, round(quantity, 2))
-        tab.insert(5, round(quantity * 219.969, 2))  # TODO make sure this is correct
+        tab.insert(5, round(quantity * 264.17, 2))  # TODO make sure this is correct
         total_consumers = 0
         for c in cust:
             total_consumers += c.household_size

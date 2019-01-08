@@ -4,6 +4,16 @@ from ..report.models import Report
 import datetime
 
 
+def is_user_fountain(request):
+    groups = request.user.groups.values_list('name', flat=True)
+    return "Gestionnaire de fontaine" in groups
+
+
+def is_user_zone(request):
+    groups = request.user.groups.values_list('name', flat=True)
+    return "Gestionnaire de zone" in groups
+
+
 def get_current_month():
     today = datetime.date.today()
     months = ['zero', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
@@ -43,6 +53,18 @@ def get_amount_consumer(zone):
     return res
 
 
+def get_total_consumers(request): #TODO refactor
+    if is_user_zone(request):
+        zone = request.user.profile.zone
+    elif is_user_fountain(request):
+        zone = get_higher_zone(request.user.profile.outlets)
+    result = 0
+    for consumer in Consumer.objects.all():
+        if consumer.water_outlet.zone.name in zone.subzones:
+            result += consumer.household_size
+    return result
+
+
 def get_amount_indiv_consummer(zone):
     result = 0
     for consumer in Consumer.objects.all():
@@ -78,3 +100,36 @@ def get_outlets_report(request):
         if len(reports) == 0:
             result.append(elem)
     return result
+
+
+def get_quantity_distributed(request):
+    outlets = get_outlets(request)
+    total = 0
+    for outlet in outlets:
+        report = Report.objects.filter(water_outlet=outlet[0], month=get_current_month())
+        if len(report) == 1:
+            report = report[0]
+            total += report.quantity_distributed
+    return [total, total*264.17] #m3, gals
+
+
+
+def get_zone(request):
+    if is_user_zone(request):
+        return request.user.profile.zone.name
+    else:
+        zone = get_higher_zone(request.user.profile.outlets)
+        return zone.name
+
+
+def get_higher_zone(outlets):
+    zone = ""
+    for elem in outlets:
+        out = Element.objects.filter(id=elem)
+        if len(out) == 1:
+            out = out[0]
+            if zone == "": #First zone found
+                zone = out.zone
+            elif out.zone.name not in zone.subzones and zone.name in out.zone.subzones: #New zone is higher
+                zone = out.zone
+    return zone
