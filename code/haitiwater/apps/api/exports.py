@@ -20,6 +20,16 @@ error_404 = HttpResponse(False, status=404)
 success_200 = HttpResponse(status=200)
 
 
+def is_user_fountain(request):
+    groups = request.user.groups.values_list('name', flat=True)
+    return "Gestionnaire de fontaine" in groups
+
+
+def is_user_zone(request):
+    groups = request.user.groups.values_list('name', flat=True)
+    return "Gestionnaire de zone" in groups
+
+
 def graph(request):
     export_format = request.GET.get('type', None)
     if export_format == "consumer_gender_pie":
@@ -59,12 +69,18 @@ def table(request):
     print(d)
     all = []
     if d["table_name"] == "water_element":
+        if is_user_fountain(request):
+            json_test["editable"] = False
         all = get_water_elements(request, json_test, d)
     elif d["table_name"] == "consumer":
         all = get_consumer_elements(request, json_test, d)
     elif d["table_name"] == "zone":
+        if is_user_fountain(request):
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
         all = get_zone_elements(request, json_test, d)
     elif d["table_name"] == "manager":
+        if is_user_fountain(request):
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
         all = get_manager_elements(request, json_test, d)
     elif d["table_name"] == "ticket":
         all = get_ticket_elements(request, json_test, d)
@@ -77,6 +93,7 @@ def table(request):
     else:
         json_test["data"] = final[d["start"]:d["start"]+d["length_max"]]
     json_test["recordsFiltered"] = len(final)
+    print(json.dumps(json_test))
     return HttpResponse(json.dumps(json_test))
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug

@@ -1,3 +1,4 @@
+{% load group_filter %}
 <div class="nano">
     <div class="nano-content">
         <nav id="menu" class="nav-main" role="navigation">
@@ -25,6 +26,7 @@
                             <span>Réseau</span>
                         </a>
                     </li>
+                {% if user|get_group == 'Gestionnaire de zone' %}
                 {% if request.path == '/gestion/' %}
                     <li class="nav-active">
                 {% else %}
@@ -36,6 +38,7 @@
                             <span>Gestion de zone</span>
                         </a>
                     </li>
+                {% endif %}
                 {% if request.path == '/rapport/' %}
                     <li class="nav-active">
                 {% else %}

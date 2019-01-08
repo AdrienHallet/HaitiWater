@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load group_filter %}
 
 {% block page_name %}
     <script src="{% static "zoneManagement.js"%}"></script>
@@ -9,7 +10,7 @@
 {% endblock %}
 
 {% block page_content %}
-
+    {% if user.is_authenticated and user|get_group == 'Gestionnaire de zone' %}
     <div class="row">
         <div class="col-md-4">
             <section class="panel">
@@ -67,5 +68,9 @@
     {% include "manager_modal.html" %}
 
     {% include "water_element_modal.html" %}
+    {% else %}
+        Vous n'êtes pas connecté en tant que gestionnaire de zone, cette page ne vous est pas accessible <br>
+        <a href="{% url 'login' %}">Connectez-vous</a>
+    {% endif %}
 
 {% endblock %}
