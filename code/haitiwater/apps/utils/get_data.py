@@ -60,6 +60,18 @@ def get_amount_consumer(zone):
     return res
 
 
+def get_registered_consumers(request): #TODO refactor
+    if is_user_zone(request):
+        zone = request.user.profile.zone
+    elif is_user_fountain(request):
+        zone = get_higher_zone(request.user.profile.outlets)
+    result = 0
+    for consumer in Consumer.objects.all():
+        if consumer.water_outlet.zone.name in zone.subzones:
+            result += 1
+    return result
+
+
 def get_total_consumers(request): #TODO refactor
     if is_user_zone(request):
         zone = request.user.profile.zone
