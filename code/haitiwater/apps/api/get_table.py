@@ -12,7 +12,8 @@ from django.contrib.auth.models import User, Group
 def add_with_search(parsed, values):
     result = []
     if parsed["search"] == "" and len(values) > 0:
-        result.append(values)
+        for elem in values:
+            result.append(elem)
     else:
         for cols in parsed["searchable"]:
             if cols < len(values) and parsed["search"].lower() in str(values[cols]).lower():
@@ -24,7 +25,6 @@ def add_with_search(parsed, values):
 def get_water_elements(request, json, parsed):
     zone = request.user.profile.zone
     outlets = request.user.profile.outlets
-    tab = []
     if zone: #If there is a zone, we have a zone manager
         target = Zone.objects.filter(name=zone.name)
         if len(target) == 1:
@@ -35,6 +35,7 @@ def get_water_elements(request, json, parsed):
     else: #We have a fountain manager
         all_water_element = [elem for elem in Element.objects.all() if str(elem.id) in outlets]
     json["recordsTotal"] = len(all_water_element)
+    all = []
     for elem in all_water_element:
         cust = Consumer.objects.filter(water_outlet=elem)
         distributed = Report.objects.filter(water_outlet=elem)
@@ -48,7 +49,8 @@ def get_water_elements(request, json, parsed):
         for c in cust:
             total_consumers += c.household_size
         tab.insert(3, total_consumers)
-    return add_with_search(parsed, tab)
+        all.append(tab)
+    return add_with_search(parsed, all)
 
 
 def get_consumer_elements(request, json, parsed):
