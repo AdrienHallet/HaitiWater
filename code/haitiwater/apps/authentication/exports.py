@@ -11,6 +11,13 @@ from django.contrib.contenttypes.models import ContentType
 from ..authentication.models import Profile
 from ..water_network.models import Zone
 
+
+def edit(request):
+    print(request.POST)
+
+    return HttpResponse(status=200)
+
+
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def connect(request):
     print("Connection !")
