@@ -22,13 +22,12 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', RedirectView.as_view(url='login/'), name='login_redirect'),
-    path('accueil/', include('apps.dashboard.urls')),
+    url(r'^accueil/$', include('apps.dashboard.urls')),
     path('reseau/', include('apps.water_network.urls')),
     path('consommateurs/', include('apps.consumers.urls')),
     path('rapport/', include('apps.report.urls')),
     path('gestion/', include('apps.zone_management.urls')),
     path('api/', include('apps.api.urls')),
-    path('user/', include('apps.authentication.urls')),
     path('profil/', include('apps.authentication.urls')),
 
 ]
@@ -38,5 +37,6 @@ urlpatterns += [
     url(r'^login/$', auth_views.LoginView.as_view(template_name='authentication.html'),
         name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(),  name='logout'),
+    url(r'^login/recuperer-mot-de-passe/$', auth_views.PasswordResetView.as_view(), name="reset"),
     url(r'^admin/', admin.site.urls),
 ]

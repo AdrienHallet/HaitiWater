@@ -10,6 +10,21 @@ from django.contrib.auth.models import Group
 from django.contrib.contenttypes.models import ContentType
 from ..authentication.models import Profile
 from ..water_network.models import Zone
+from .views import conf_change
+
+
+def edit(request):
+    print(request.POST)
+    last_name = request.POST.get("last-name", None)
+    first_name = request.POST.get("first-name", None)
+    email = request.POST.get("email", None)
+    request.user.last_name = last_name
+    request.user.first_name = first_name
+    request.user.email = email
+    request.user.save()
+
+    return conf_change(request)
+
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def connect(request):

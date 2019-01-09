@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_name %}
+    <script src="{% static "profileHandler.js"%}"></script>
+    Profil de {{ user.get_username }}
+{% endblock %}
+
+{% block page_content %}
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                </div>
+                <h2 class="panel-title">Informations bien modifiées</h2>
+            </header>
+            <div class="panel-body">
+                    Vos informations ont bien été changées. Retourner à <a href="{% url 'dashboard' %}">l'accueil</a> ?
+            </div>
+        </section>
+    </div>
+{% endblock %}
