@@ -18,5 +18,9 @@ def profile(request):
     context = {
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
+        'last_name': '',  # Todo backend
+        'first_name': '',  # Todo backend
+        'email': ''  # Todo backend
+
     }
     return HttpResponse(template.render(context, request))
