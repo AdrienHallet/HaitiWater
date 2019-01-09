@@ -44,6 +44,18 @@ def graph(request):
                 json_val['jsonarray'][1]['data'] += 1 #One more man
             else:
                 json_val['jsonarray'][2]['data'] += 1 #One more other
+    if export_format == "average_monthly_volume_per_zone":
+        # Todo backend : fill "label" with list of zones and "data" with their average output volume in cubic meters.
+        # Note that they obviously have to be in the same order
+        # Note that the conversion and use of galleons is done in front-end
+        # For the formula, I think it would be better to differentiate zones with no data and zones with volume = 0. So
+        # that "new" zones aren't left behind for lack of data.
+        export = """{
+                       "jsonarray": [{
+                          "label": ["Nom zone 1", "Nome zone 2"], 
+                          "data": [10, 20]
+                       }]}"""
+        json_val = json.loads(export)
     return HttpResponse(json.dumps(json_val))
 
 
