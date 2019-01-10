@@ -1,5 +1,19 @@
 const GALLONS_PER_CUBIC = 264.17205235815;
 
+$(document).ready(function() {
+    // Keep the same graph selected across refresh
+    if (localStorage.graphTitle) {
+        $('#graphTitle').val(localStorage.graphTitle);
+        refresh();
+    }
+});
+
+// Update the graph selection value
+$('#graphTitle').on('change', function(){
+    let currentVal = $(this).val();
+    localStorage.setItem('graphTitle', currentVal );
+});
+
 // Call refresh when loading so that the first graph in the list is displayed
 refresh();
 
@@ -17,7 +31,9 @@ function refresh() {
         case 'averageMonthlyVolumePerZone':
             monthlyVolumePerZone();
             break;
-        default:
+        case 'none':
+            break; // empty case
+        default: // error case
             console.log("Undefined graph type: " + document.getElementById('graphTitle').value)
     }
 }
