@@ -66,6 +66,15 @@ function requestAvailableWaterElements(){
     xhr.send();
 }
 
+/**
+ * Check the validity of an email
+ * @param email the email to test
+ * @returns {*|boolean} true if email is a valid email address
+ */
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 
 /**
  * Validate (check if valid) the form.
@@ -79,7 +88,6 @@ function validateManagerForm() {
     let lastName = form["input-manager-last-name"].value;
     let firstName = form["input-manager-first-name"].value;
     let email = form["input-manager-email"].value;
-    let password = form["input-manager-password"].value;
     let type = form["select-manager-type"].value;
     let zone = form["select-manager-zone"].value;
 
@@ -92,8 +100,7 @@ function validateManagerForm() {
       '#input-manager-last-name' : value => value.trim() !== '',
       '#input-manager-first-name' : value => value.trim() !== '',
       '#input-manager-id' : value => value.trim() !== '',
-      '#input-manager-email' : value => value.trim() !== '', //Todo check if email
-      '#input-manager-password' : value => value.trim() !== '', //Todo modify
+      '#input-manager-email' : value => validateEmail(value),
       '#select-manager-type' : value => value.trim() !== 'none',
     };
 
@@ -139,7 +146,6 @@ function validateManagerForm() {
             lastName,
             firstName,
             email,
-            password,
             type,
             zone,
             outlets);
@@ -147,13 +153,12 @@ function validateManagerForm() {
 
 }
 
-function buildManagerRequest(id, lastName, firstName, email, password, type, zone, outlets){
+function buildManagerRequest(id, lastName, firstName, email, type, zone, outlets){
     let request = "table=manager";
     request += "&id=" + id;
     request += "&lastname=" + lastName;
     request += "&firstname=" + firstName;
     request += "&email=" + email;
-    request += "&password=" + password;
     request += "&type=" + type;
     request += "&zone=" + zone;
     request += "&outlets=" + outlets;
