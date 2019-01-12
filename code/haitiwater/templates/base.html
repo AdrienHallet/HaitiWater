@@ -90,77 +90,77 @@
 
 				<!-- Notification -->
 				<div class="header-right">
-					{% if user.is_authenticated %}
-					<ul class="notifications">
-						<li>
-                            <!-- Ticket Notification -->
-							<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
-								<i class="fa fa-envelope"></i>
-								<span class="badge">1</span> {# Todo Notification counter badge #}
-							</a>
-							<div class="dropdown-menu notification-menu">
-								<div class="notification-title">
-									<span class="pull-right label label-default">1</span> {# Todo ticket counter simple #}
-									Tickets
-								</div>
-
-                                <!-- Ticket list-->
+{#					{% if user.is_authenticated %}#}
+{#					<ul class="notifications">#}
+{#						<li>#}
+{#                            <!-- Ticket Notification -->#}
+{#							<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">#}
+{#								<i class="fa fa-envelope"></i>#}
+{#								<span class="badge">1</span> {# Todo Notification counter badge #}
+{#							</a>#}
+{#							<div class="dropdown-menu notification-menu">#}
+{#								<div class="notification-title">#}
+{#									<span class="pull-right label label-default">1</span> {# Todo ticket counter simple #}
+{#									Tickets#}
+{#								</div>#}
+{##}
+{#                                <!-- Ticket list-->#}
 {#                                Todo get active tickets from current user#}
-								<div class="content">
-									<ul>
-										<li>
-											<a href="#" class="clearfix">
-												<span class="title">Utilisateur</span>
-												<span class="message truncate">Contenu du message</span>
-											</a>
-										</li>
-									</ul>
-
-									<hr />
-
-									<div class="text-right">
+{#								<div class="content">#}
+{#									<ul>#}
+{#										<li>#}
+{#											<a href="#" class="clearfix">#}
+{#												<span class="title">Utilisateur</span>#}
+{#												<span class="message truncate">Contenu du message</span>#}
+{#											</a>#}
+{#										</li>#}
+{#									</ul>#}
+{##}
+{#									<hr />#}
+{##}
+{#									<div class="text-right">#}
 {#                                        Todo link to tickets#}
-										<a href="/rapport/" class="view-more">Tous les tickets</a>
-									</div>
-								</div>
-							</div>
-						</li>
-                        <!-- Classic notifications -->
-						<li>
-							<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
-								<i class="fa fa-bell"></i>
-								<span class="badge">1</span> {# Todo counter badge #}
-							</a>
-							<div class="dropdown-menu notification-menu">
-								<div class="notification-title">
-									<span class="pull-right label label-default">1</span>
-									Notifications
-								</div>
-
-                                <!-- Notification list-->
-								<div class="content">
-									<ul>
-										<li>
-											<a href="#" class="clearfix">
-												<div class="image">
-												</div>
-												<span class="title">Titre notification</span>
-												<span class="message">Message notification</span>
-											</a>
-										</li>
-									</ul>
-
-									<hr />
-
-									<div class="text-right">
-										<a href="#" class="view-more">Toutes les notifications</a>
-									</div>
-								</div>
-							</div>
-						</li>
-						{% endif %}
-					</ul>
-                    <!-- end: Notification list-->
+{#										<a href="/rapport/" class="view-more">Tous les tickets</a>#}
+{#									</div>#}
+{#								</div>#}
+{#							</div>#}
+{#						</li>#}
+{#                        <!-- Classic notifications -->#}
+{#						<li>#}
+{#							<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">#}
+{#								<i class="fa fa-bell"></i>#}
+{#								<span class="badge">1</span> {# Todo counter badge #}
+{#							</a>#}
+{#							<div class="dropdown-menu notification-menu">#}
+{#								<div class="notification-title">#}
+{#									<span class="pull-right label label-default">1</span>#}
+{#									Notifications#}
+{#								</div>#}
+{##}
+{#                                <!-- Notification list-->#}
+{#								<div class="content">#}
+{#									<ul>#}
+{#										<li>#}
+{#											<a href="#" class="clearfix">#}
+{#												<div class="image">#}
+{#												</div>#}
+{#												<span class="title">Titre notification</span>#}
+{#												<span class="message">Message notification</span>#}
+{#											</a>#}
+{#										</li>#}
+{#									</ul>#}
+{##}
+{#									<hr />#}
+{##}
+{#									<div class="text-right">#}
+{#										<a href="#" class="view-more">Toutes les notifications</a>#}
+{#									</div>#}
+{#								</div>#}
+{#							</div>#}
+{#						</li>#}
+{#						{% endif %}#}
+{#					</ul>#}
+{#                    <!-- end: Notification list-->#}
 
 					<span class="separator"></span>
 
