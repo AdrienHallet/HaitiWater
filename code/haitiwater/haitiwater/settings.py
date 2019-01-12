@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'apps.api',
     'apps.consumers',
     'apps.report',
+    'apps.offline',
     'compressor',
     'django_tables2',
     'bootstrap3',
@@ -127,7 +128,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'haitiwater',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
     }

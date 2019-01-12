@@ -28,5 +28,7 @@ urlpatterns = [
     path('gestion/', include('apps.zone_management.urls')),
     path('api/', include('apps.api.urls')),
     path('user/', include('apps.authentication.urls')),
-    url(r'^sw.js', (TemplateView.as_view(template_name="sw.js", content_type='application/javascript', )), name='sw.js')
+    path('offline/', include('apps.offline.urls')),
+    url(r'^sw.js', TemplateView.as_view(template_name="sw.js", content_type='application/javascript'), name='sw.js')
 ]
+# https://stackoverflow.com/questions/38696595/django-and-service-workers-serve-sw-js-at-applications-root-url
