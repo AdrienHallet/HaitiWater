@@ -46,12 +46,28 @@
 						<h2 class="title text-uppercase text-bold m-none"><i class="fa fa-user mr-xs"></i> Connexion</h2>
 					</div>
 					<div class="panel-body">
-						<form id="form-connect-user">
+						<form method="post">
                             {% csrf_token %}
-							<div class="form-group mb-lg">
+							{% if form.errors %}
+							    {% for field in form %}
+							        {% for error in field.errors %}
+							            <div class="alert alert-danger">
+							                <strong>{{ error|escape }}</strong>
+							            </div>
+							        {% endfor %}
+							    {% endfor %}
+							    {% for error in form.non_field_errors %}
+							        <div class="alert alert-danger">
+							            <strong>{{ error|escape }}</strong>
+							        </div>
+							    {% endfor %}
+							{% endif %}
+							<ul class="errorlist nonfield">
+							</ul>
+							<div class="form-group form-connect-user mb-lg">
 								<label>Utilisateur</label>
 								<div class="input-group input-group-icon">
-									<input id="username" name="username" type="text" class="form-control input-lg" />
+									<input id="id_username" name="username" type="text" class="form-control input-lg" required=""/>
 									<span class="input-group-addon">
 										<span class="icon icon-lg">
 											<i class="fa fa-user"></i>
@@ -63,10 +79,10 @@
 							<div class="form-group mb-lg">
 								<div class="clearfix">
 									<label class="pull-left">Mot de passe</label>
-{#									<a href="recuperer-mot-de-passe" class="pull-right">Mot de passe oublié?</a>#}
+									<a href="recuperer-mot-de-passe" class="pull-right" tabindex="-1">Mot de passe oublié?</a>
 								</div>
 								<div class="input-group input-group-icon">
-									<input id="pwd" name="pwd" type="password" class="form-control input-lg" />
+									<input id="id_password" name="password" type="password" class="form-control input-lg" required=""/>
 									<span class="input-group-addon">
 										<span class="icon icon-lg">
 											<i class="fa fa-lock"></i>
@@ -83,12 +99,11 @@
 {#									</div>#}
 								</div>
 								<div class="col-sm-4 text-right">
-									<button type="button" onclick="authUser()" class="btn btn-primary hidden-xs">Connexion</button>
-                                    <button type="button" onclick="authUser()" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Connexion</button>
+									<button type="submit" class="btn btn-primary hidden-xs">Connexion</button>
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Connexion</button>
                                 </div>
 							</div>
-
-{#							<p class="text-center">Pas encore de compte ? <a href="enregistrement">Enregistrez-vous !</a>#}
+							<!-- <p class="text-center">Pas encore de compte ? <a href="enregistrement">Enregistrez-vous !</a> -->
 						</form>
 					</div>
 				</div>

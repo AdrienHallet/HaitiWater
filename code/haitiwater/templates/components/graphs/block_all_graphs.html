@@ -7,13 +7,17 @@
             <a href="#" class="fa fa-caret-down"></a>
         </div>
             <select class="title-selection" id="graphTitle" size="1" onchange="refresh()">
+                <option value="none">...</option>
                 <option value="consumerGenderPie">Répartition des consommateurs par genre</option>
-                <option value="json2">Graphe 2</option>
+                <option value="averageMonthlyVolumePerZone">Volume mensuel moyen distribué par zone</option>
             </select>
     </header>
     <div class="panel-body">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
         <script src="{% static 'javascripts/ui-elements/graph.js' %}"></script>
-        <canvas id="canvas"></canvas>
+        <div id="graph-div">
+            {# Programatically filled #}
+            <canvas id="graph-canvas"></canvas>
+        </div>
     </div>
 </section>

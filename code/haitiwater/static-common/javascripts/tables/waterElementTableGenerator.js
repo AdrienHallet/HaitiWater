@@ -90,8 +90,8 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             // Removes the last column (both header and body) if we cannot edit or if required by withAction argument
             console.log(json['editable']);
             if(!withActions || !(json.hasOwnProperty('editable') && json['editable'])){
-                $("#datatable-water_element th:last-child, #datatable-ajax td:last-child").addClass("hidden");
-                $("#datatable-water_element_wrapper tr:last-child th:last-child").addClass("hidden");
+                $('#datatable-water_element').DataTable().column(-1).visible(false);
+
             }
         }
     };

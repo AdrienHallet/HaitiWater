@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load group_filter %}
 
 {% block page_name %}
     <script src="{% static "zoneManagement.js"%}"></script>
@@ -9,7 +10,7 @@
 {% endblock %}
 
 {% block page_content %}
-
+    {% if user.is_authenticated and user|get_group == 'Gestionnaire de zone' %}
     <div class="row">
         <div class="col-md-4">
             <section class="panel">
@@ -17,7 +18,7 @@
                     <!-- Table block control actions -->
                     <div class="panel-actions form-inline">
                         <a href="#modalZone" onclick="setupModalZoneAdd()" class="modal-with-form fa fa-plus" id="plus-zone"></a>
-                        <a id="zones-options" class="fas fa-cog"></a>
+                        <a id="zone-options" class="fas fa-cog"></a>
                         <a href="#" class="fa fa-caret-down"></a>
                     </div>
                     <h2 class="panel-title">Zones</h2>
@@ -33,8 +34,8 @@
                     <!-- Table block control actions -->
                     <div class="panel-actions form-inline">
                         <a href="#modalManager" onclick="setupModalManagerAdd()" class="modal-with-form fa fa-plus" id="plus-manager"></a>
-                        <a id="print-managers" class="fa fa-print"></a>
-                        <a id="managers-options" class="fas fa-cog"></a>
+                        <a id="print-manager" class="fa fa-print"></a>
+                        <a id="manager-options" class="fas fa-cog"></a>
                         <a href="#" class="fa fa-caret-down"></a>
                     </div>
                     <h2 class="panel-title">Gestionnaires et Techniciens</h2>
@@ -67,5 +68,9 @@
     {% include "manager_modal.html" %}
 
     {% include "water_element_modal.html" %}
+    {% else %}
+        Vous n'êtes pas connecté en tant que gestionnaire de zone, cette page ne vous est pas accessible <br>
+        <a href="{% url 'login' %}">Connectez-vous</a>
+    {% endif %}
 
 {% endblock %}

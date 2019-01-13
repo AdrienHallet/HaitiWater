@@ -32,7 +32,7 @@
                         <div class="widget-summary-col">
                             <div class="summary">
                                 <h4 class="title">Nous avons</h4>
-                                <div class="info">25 000 foyers consommant de l'eau</div>
+                                <div class="info">{{ consumer_groups }} foyers consommant de l'eau</div>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                         <div class="widget-summary-col">
                             <div class="summary">
                                 <h4 class="title">Nous avons</h4>
-                                <div class="info">50 000 consommateurs individuels</div>
+                                <div class="info">{{ consumer_individuals }} consommateurs individuels</div>
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                         <div class="widget-summary-col">
                             <div class="summary">
                                 <h4 class="title">Pour la période en cours ({{ current_period }})</h4>
-                                <div class="info">500 foyers n'ont pas payé</div>
+                                <div class="info">{{ unpaid_bills }} foyers n'ont pas payé</div>
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                         <label class="col-sm-3 control-label">Téléphone</label>
                         <div class="col-sm-9">
                             <input id="input-phone" name="input-phone" type="number" class="form-control">
-                            <label id="input-phone-error" class="error">Format invalide</label>
+                            <label id="input-phone-error" class="error">Format invalide (8 chiffres requis, ou laissez vide)</label>
                         </div>
                     </div>
                     <div class="form-group mt-lg">

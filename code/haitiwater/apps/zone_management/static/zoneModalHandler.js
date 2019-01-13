@@ -15,6 +15,7 @@ function validateZoneForm() {
     }
 
     if(missing){
+        console.log("missing zone element");
         return false
     } else {
         return buildZoneRequest(id, name);
@@ -36,13 +37,6 @@ function buildZoneRequest(id, name){
     return request;
 }
 
-/**
- * Hide the error message in the form
- */
-function hideFormErrorMsg(){
-    document.getElementById("form-zone-error").className = "alert alert-danger hidden";
-}
-
 function setupModalZoneAdd(){
     //Show add components
     $('#modal-zone-title-add').removeClass("hidden");
@@ -57,7 +51,20 @@ function setupModalZoneAdd(){
 }
 
 function setupModalZoneEdit(data){
-    //Todo
+    //Hide add components
+    $('#modal-zone-title-add').addClass("hidden");
+    $('#modal-zone-submit-add').addClass("hidden");
+
+    //Show edit components
+    $('#modal-zone-title-edit').removeClass("hidden");
+    $('#modal-zone-submit-edit').removeClass("hidden");
+    $('#form-zone-id-component').removeClass("hidden");
+
+    //Fill with existing data
+    $('#input-zone-id').val(data[0].innerText);
+    $('#input-zone-name').val(data[1].innerText);
+
+    showZoneModal();
 }
 
 function showZoneModal(){
@@ -81,8 +88,9 @@ function showZoneModal(){
 }
 
 /**
- * Hide the modal
+ * Hide the modal and clear the fields
  */
-function dismissModal() {
+function dismissZoneModal() {
     $.magnificPopup.close();
+    $('form').find('input').val('');
 }

@@ -44,7 +44,7 @@
                             <label class="col-sm-3 control-label" for="wizardMonthlyReport-username">Points d'eau</label>
                             <div class="col-sm-9">
                                 <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-multiselect-toggle-all="true" id="multiselect-outlets">
-                                    {% for water_outlet in water_outlets %}
+                                    {% for water_outlet in water_outlets_report %}
                                         {# Display an option for each available outlet #}
                                         <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>
                                     {% endfor %}
@@ -86,55 +86,7 @@
 
                     <!-- Panel 3 - Billing -->
                     <div id="wizardMonthlyReport-billing" class="tab-pane">
-                        <div class="form-group">
-                            <div class="col-xs-4"></div>
-                            <div class="col-xs-4">
-                                <h5>Réelles (HTG)</h5>
-                            </div>
-                            <div class="col-xs-4">
-                                <h5>Calculées (HTG)</h5>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">Des fontaines</label>
-                            <div class="col-xs-4">
-                                <input id="input-fountain-billing" name="fountain-billing" class="form-control" style="max-width:150px" type="number">
-                                <label id="input-fountain-billing-error" class="error">Champ requis</label>
-                            </div>
-                            <div class="col-xs-4">
-                                <input id="input-fountain-suggested" name="fountain-suggested" class="form-control" style="max-width:150px" readonly="readonly" type="number">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">Des kiosques</label>
-                            <div class="col-xs-4">
-                                <input id="input-kiosk-billing" name="kiosk-billing" class="form-control" style="max-width:150px" type="number">
-                                <label id="input-kiosk-billing-error" class="error">Champ requis</label>
-                            </div>
-                            <div class="col-xs-4">
-                                <input id="input-kiosk-suggested" name="kiosk-suggested" class="form-control" style="max-width:150px" readonly="readonly" type="number">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">Des prises individuelles</label>
-                            <div class="col-xs-4">
-                                <input id="input-individual-billing" name="individual-billing" class="form-control" style="max-width:150px" type="number">
-                                <label id="input-individual-billing-error" class="error">Champ requis</label>
-                            </div>
-                            <div class="col-xs-4">
-                                <input id="input-individual-suggested" name="individual-suggested" class="form-control" style="max-width:150px" readonly="readonly" type="number">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">Total</label>
-                            <div class="col-xs-4">
-                                <input id="input-total-billing" name="total-billing" class="form-control" style="max-width:150px" readonly="readonly" type="number">
-                                <label id="input-total-billing-error" class="error">Champ requis</label>
-                            </div>
-                            <div class="col-xs-4">
-                                <input id="input-total-suggested" name="total-suggested" class="form-control" style="max-width:150px" readonly="readonly" type="number">
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <!-- Panel 4 - Confirmation -->

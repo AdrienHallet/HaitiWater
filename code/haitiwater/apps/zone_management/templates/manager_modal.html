@@ -10,7 +10,7 @@
         </header>
         <div class="panel-body">
             <div id="form-manager-error" class="alert alert-danger hidden">
-                <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
+                <button type="button" class="close" onclick="hideFormErrorMsg('manager')" aria-hidden="true">×</button>
                 <div id="form-manager-error-msg"></div>
             </div>
             <form id="form-add-manager" class="form-horizontal mb-lg">
@@ -43,11 +43,8 @@
                     </div>
                 </div>
                 <div class="form-group mt-lg">
-                    <label class="col-sm-3 control-label">(temporaire) Mot de passe</label>
-                    <div class="col-sm-9">
-                        <input id="input-manager-password" name="password" class="form-control">
-                        <label id="input-manager-password-error" class="error">Mot de passe requis</label>
-                    </div>
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9">Un mot de passe aléatoire sera envoyé par courriel à la création de cet utilisateur.</div>
                 </div>
                 <div class="form-group mt-lg">
                     <label class="col-sm-3 control-label">Fonction</label>
@@ -65,6 +62,7 @@
                     <div class="col-sm-9">
                         <select id="select-manager-zone" name="zone" class="form-control">
                             <option value="none">...</option>
+                            {# Content is dynamically generated with a query to back-end #}
                         </select>
                         <label id="select-manager-zone-error" class="error">Champ requis</label>
                     </div>
@@ -73,10 +71,7 @@
                     <label class="col-sm-3 control-label">Fontaine(s) assignée(s)</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="multiselect-manager-outlets" multiple="multiple">
-                            {% for water_outlet in water_outlets %}
-                                {# Display an option for each available outlet #}
-                                <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>
-                            {% endfor %}
+{#                          {# Content is dynamically generated with a query to back-end #}
                         </select>
                         <label id="multiselect-manager-outlets-error" class="error">Champ requis</label>
                     </div>
@@ -86,13 +81,13 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <button id="modal-submit-add" onclick="postNewRow('managers')" class="btn btn-primary modal-confirm">
+                    <button id="modal-manager-submit-add" onclick="postNewRow('manager')" class="btn btn-primary modal-confirm">
                         Ajouter
                     </button>
-                    <button id="modal-submit-edit" onclick="postEditRow('managers')" class="btn btn-primary modal-confirm hidden">
+                    <button id="modal-manager-submit-edit" onclick="postEditRow('manager')" class="btn btn-primary modal-confirm hidden">
                         Modifier
                     </button>
-                    <button onclick="dismissModal()" class="btn btn-default modal-dismiss">
+                    <button onclick="dismissManagerModal()" class="btn btn-default modal-dismiss">
                         Annuler
                     </button>
                 </div>

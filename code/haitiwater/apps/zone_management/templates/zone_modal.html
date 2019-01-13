@@ -10,7 +10,7 @@
         </header>
         <div class="panel-body">
             <div id="form-zone-error" class="alert alert-danger hidden">
-                <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
+                <button type="button" class="close" onclick="hideFormErrorMsg('zone')" aria-hidden="true">×</button>
                 <div id="form-zone-error-msg"></div>
             </div>
             <form id="form-add-zone" class="form-horizontal mb-lg">
@@ -32,13 +32,13 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <button id="modal-submit-add" onclick="postNewRow('zone')" class="btn btn-primary modal-confirm">
+                    <button id="modal-zone-submit-add" onclick="postNewRow('zone')" class="btn btn-primary modal-confirm">
                         Ajouter
                     </button>
-                    <button id="modal-submit-edit" onclick="postEditRow('zone')" class="btn btn-primary modal-confirm hidden">
+                    <button id="modal-zone-submit-edit" onclick="postEditRow('zone')" class="btn btn-primary modal-confirm hidden">
                         Modifier
                     </button>
-                    <button onclick="dismissModal()" class="btn btn-default modal-dismiss">
+                    <button onclick="dismissZoneModal()" class="btn btn-default modal-dismiss">
                         Annuler
                     </button>
                 </div>

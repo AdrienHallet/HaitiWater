@@ -8,8 +8,6 @@ $(document).ready(function() {
 	let wizardReport = $('#wizardMonthlyReport');
 	let wizardForm = $('#wizardMonthlyReport form');
 
-	hideFormErrorMsg();
-
     // Enable hours and days logging (step 1)
 	let checkboxActiveService = $('#checkbox-active-service');
 	checkboxActiveService.on('change', function(){
@@ -191,7 +189,7 @@ $(document).ready(function() {
 /**
  * Hide all the error messages in the form
  */
-function hideFormErrorMsg(){
+function hideErrorsMsgs(){
     let buttons = $(".error");
     buttons.each(function(index){
     	$(this).addClass('hidden');
@@ -204,8 +202,11 @@ function validate(step){
         	setupStepTwo();
             return validateStepOne();
         case 2:
-        	setupStepThree();
-            return validateStepTwo();
+        	if (validateStepTwo()){
+             	setupStepThree();
+				return true;
+			}
+			return false;
 		case 3:
 			setupConfirmation();
 			return validateStepThree();
@@ -220,7 +221,7 @@ function validate(step){
  * Validate data entry for Wizard step 1 - General state
  */
 function validateStepOne(){
-    hideFormErrorMsg();
+    hideErrorsMsgs();
     let isValid = true;
 
     // Selected outlets
@@ -270,6 +271,7 @@ function validateStepTwo(){
     individualReports.each(function(index){
       	let cubicValue = $(this).find('.cubic input').val();
       	let gallonValue = $(this).find('.gallon input').val();
+		let outletID = $(this).attr('id').replace('volume-', '');
 
 		if ((cubicValue < 0 || cubicValue === '') || (gallonValue < 0 || gallonValue ==='')){
 			isValid = false;
@@ -284,8 +286,10 @@ function validateStepTwo(){
 			$(this).find('label.cost.error').removeClass('hidden');
 		}
 
+		console.log('pushing detail');
 		monthlyReport.details.push(
 			{
+				id: outletID,
 				cubic: cubicValue,
 				perCubic: perCubicValue,
 			}
@@ -301,26 +305,23 @@ function validateStepTwo(){
 function validateStepThree(){
 	let valid = true;
 
-	let fountainBilling = $('#input-fountain-billing');
-	let kioskBilling = $('#input-kiosk-billing');
-	let individualBilling = $('#input-individual-billing');
-
-	if (fountainBilling.val() < 0 || fountainBilling.val() === ""){
-		$('#input-fountain-billing-error').removeClass('hidden');
-		valid = false;
-	}
-	if (kioskBilling.val() < 0 || kioskBilling.val() === ""){
-		$('#input-kiosk-billing-error').removeClass('hidden');
-		valid = false;
-	}
-	if (individualBilling.val() < 0 || individualBilling.val() === ""){
-		$('#input-individual-billing-error').removeClass('hidden');
-		valid = false;
-	}
-
-	this.monthlyReport.fountainBill = fountainBilling.val();
-	this.monthlyReport.kioskBill = kioskBilling.val();
-	this.monthlyReport.individualBill = individualBilling.val();
+	let billValues = $('#wizardMonthlyReport-billing');
+	billValues.find('.error').addClass('hidden');
+	billValues.find('.bill').each(function(e){
+		let id = $(this).attr('id').replace('bill-','');
+		let value = $(this).find('.real-bill').val()
+		console.log("value : " + value);
+		console.log("id : " + id);
+		if (value < 0 || value === ''){
+			$(this).find('.error').removeClass('hidden');
+			valid = false;
+		} else{
+			let obj = monthlyReport.details[e];
+			if(obj.id != id)
+				throw new Exception('Something really bad happened');
+			obj.bill = value;
+		}
+	});
 
 	return valid;
 }
@@ -373,15 +374,16 @@ function setupStepTwo(){
 			let name = this.text; // Displayed name
 			let id = this.value; // ID of the fountain to send back to server
 
-			let sectionHeader = '<section class="panel water-outlet" id="'+ id +'">' +
+			let sectionHeader = '<section class="panel water-outlet volume" id="volume-'+ id +'">' +
 									'<header class="panel-heading">' +
 										'<h2 class="panel-title">' + name + '</h2>' +
 									'</header>';
 			detailsWindow.append(sectionHeader + panelBody);
+			detailsWindow.append('</section>');
 		});
 	} else {
 		detailsWindow.html("<div class=\"well info text-center\">" +
-			"Vous n'avez aucun détail à entrer puisque le service n'a pas été en activité.<br>" +
+			"Vous n'avez aucun détail de volume à entrer puisque le service n'a pas été en activité.<br>" +
 			"Si vous avez des détails à entrer, cochez la case de service à l'étape 1.<br>" +
 			"Si c'est correct, passez à l'étape suivante.</div>");
 	}
@@ -422,34 +424,56 @@ function setupStepTwo(){
  * inside the suggestion field for the billing step
  */
 function setupStepThree(){
-	let totalFountain = 0;
-	let totalKiosk = 0;
-	let totalIndividual = 0;
+	// Panel body containing the data
+	let panelBody = '' +
+		'<div class="panel-body">' +
+			'<div class="row">' +
+				'<div class="col-sm-6">' +
+					'<h5>Réelles (HTG)</h5>' +
+					'<input class="real-bill form-control" type="number"></input>' +
+					'<label class="billing error hidden">Valeur incorrecte</label>' +
+				'</div>' +
+				'<div class="col-sm-6">' +
+					'<h5>Calculées (HTG)</h5>' +
+					'<input class="computed-bill form-control" type="number" readonly="readonly"></input>'
+				'</div>' +
+			'</div>' +
+		'</div>';
 
-	// Compute the totals
-	$('.water-outlet').each(function(i){
+	// For each selected outlet, setup the data section
+	let selectedOutlets = $('#multiselect-outlets option:selected');
+	let billingWindow = $('#wizardMonthlyReport-billing');
+	billingWindow.empty(); // Flush old content
 
-		let name = $('.panel-title', this)[0].innerText.toLowerCase();
-		let volume = $('.cubic input', this).val();
-		let cost = $('.per-cubic input', this).val();
-		let value = volume * cost;
+	let checkboxActiveService = $('#checkbox-active-service');
+	if (checkboxActiveService.is(':checked')){
+		// Service was active, ask user to input details
+		selectedOutlets.each(function(){
+			let name = this.text; // Displayed name
+			let id = this.value; // ID of the fountain to send back to server
 
-		// This only works if the name contains the type. Rework if that changes
-		if (name.includes('fontaine'))
-			totalFountain += value;
-		else if (name.includes('kiosque'))
-			totalKiosk += value;
-		else if (name.includes('prise'))
-			totalIndividual += value;
-		else
-			console.error("La sortie d'eau ne rentre dans aucune catégorie (fontaine, kiosque, prise individuelle");
-	});
+			let sectionHeader = '<section class="panel water-outlet bill" id="bill-'+ id +'">' +
+									'<header class="panel-heading">' +
+										'<h2 class="panel-title"> Recettes : ' + name + '</h2>' +
+									'</header>';
+			billingWindow.append(sectionHeader + panelBody);
+			billingWindow.append('</section>');
+		});
+		console.log(monthlyReport);
+		let details = monthlyReport.details;
+		for(var i = 0; i < details.length; i++){
+			let id = details[i].id;
+			let perCubic = details[i].perCubic;
+			let cubic = details[i].cubic;
 
-	// Put the totals in the fields
-	$('#input-fountain-suggested').val(totalFountain);
-	$('#input-kiosk-suggested').val(totalKiosk);
-	$('#input-individual-suggested').val(totalIndividual);
-	$('#input-total-suggested').val(totalFountain + totalKiosk + totalIndividual);
+			$('#bill-'+id).find('.computed-bill').val(cubic*perCubic);
+		}
+	} else {
+		billingWindow.html("<div class=\"well info text-center\">" +
+			"Vous n'avez aucun détail de recette à entrer puisque le service n'a pas été en activité.<br>" +
+			"Si vous avez des détails à entrer, cochez la case de service à l'étape 1.<br>" +
+			"Si c'est correct, passez à l'étape suivante.</div>");
+	}
 }
 
 /**
@@ -478,8 +502,4 @@ function setupConfirmation(){
  */
 function dismissModal() {
     $.magnificPopup.close();
-}
-
-function serializeWizardAsJSON(){
-
 }

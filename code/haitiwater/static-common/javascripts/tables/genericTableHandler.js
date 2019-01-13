@@ -9,6 +9,7 @@ window.onload = function() {
     for(i; i < len; i++) {
         buttons[i].className += " hidden";
     }
+    console.log("Generic table handler loaded");
 };
 
 function editElement(data){
@@ -70,6 +71,11 @@ function getActionButtonsHTML(modalName){
             '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
 }
 
+function hideFormErrorMsg(table){
+    console.log("hiding message");
+    $('#form-' + table + '-error').addClass('hidden');
+}
+
 /**
  * Add placeholder and CSS class in the search field
  */
@@ -116,6 +122,7 @@ function postNewRow(table){
     console.log(request);
     if(!request){
         // Form is not valid (missing/wrong fields)
+        console.log("invalid form");
         return false;
     }
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
@@ -124,7 +131,7 @@ function postNewRow(table){
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
-        if(xhttp.readyState !== 4) {
+        if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
                 document.getElementById("form-" + table + "-error").className = "alert alert-danger";
                 document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
@@ -147,7 +154,7 @@ function postNewRow(table){
  * Send a post request to server and handle it
  */
 function postEditRow(table){
-    let request = validateForm();
+    let request = getRequest(table);
     if(!request){
         // Form is not valid (missing/wrong fields)
         return false;
@@ -158,15 +165,15 @@ function postEditRow(table){
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function() {
-        if(xhttp.readyState !== 4) {
+        if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
                 if (xhttp.responseText) {
                     console.log("POST error on new element");
-                    document.getElementById("form-error").className = "alert alert-danger";
-                    document.getElementById("form-error-msg").innerHTML = xhttp.responseText;
+                    document.getElementById("form-" + table + "-error").className = "alert alert-danger";
+                    document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.responseText;
                 }
             } else {
-                document.getElementById("form-error").className = "alert alert-danger hidden"; // hide old msg
+                document.getElementById("form-" + table + "-error").className = "alert alert-danger hidden"; // hide old msg
                 dismissModal();
                 new PNotify({
                     title: 'Succès!',

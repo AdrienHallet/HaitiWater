@@ -1,5 +1,8 @@
 from django.http import HttpResponse
 from django.template import loader
+from ..water_network.models import Element
+from ..report.models import Report
+from ..utils.get_data import *
 from haitiwater.settings import PROJECT_VERSION, PROJECT_NAME
 
 
@@ -8,10 +11,8 @@ def index(request):
     context = {
         'project_version': PROJECT_VERSION,
         'project_name': PROJECT_NAME,
-        'current_period': 'Septembre',  # Todo Backend
-        'water_outlets': [(1, 'Fontaine Bidule'), (2, 'Kiosque Machin'), (3, 'Prise Truc')]
-        # Todo Backend. Liste de fontaines sous forme de [ID, Nom] (vu qu'on a pas de champ "nom", on peut utiliser la concaténation type + emplacement)
-        # Notez que l'ID est ce que je vais renvoyer via l'API pour le rapport mensuel, donc envoyez l'ID de l'élément, pas simplement l'ID local
-        # Il ne faut envoyer que les éléments qui n'ont PAS encore reçu de rapport mensuel. Ainsi le gestionnaire peut envoyer des rapports un par un ou tout d'un coup.
+        'current_period': get_current_month(),
+        'water_outlets_ticket': get_outlets(request),
+        'water_outlets_report': get_outlets_report(request)
     }
     return HttpResponse(template.render(context, request))

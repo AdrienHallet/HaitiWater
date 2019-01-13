@@ -1,35 +1,53 @@
 function drawZoneTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let dataURL = baseURL + "/api/table/?name=zones";
+    let dataURL = baseURL + "/api/table/?name=zone";
     console.log("Request data from: " + dataURL);
-    $('#datatable-zones').DataTable(getDatatableConfiguration(dataURL));
+    $('#datatable-zone').DataTable(getZoneTableConfiguration(dataURL));
 
-    let table = $('#datatable-zones').DataTable();
-    $('#datatable-zones tbody').on( 'click', 'tr', function () {
+    let table = $('#datatable-zone').DataTable();
+    $('#datatable-zone tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
+            filterManagerFromZone(table);
         }
         else {
             table.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
+            filterManagerFromZone(table);
         }
     });
 
-    $('#datatable-zones tbody').on( 'click', '.remove-row', function () {
+    $('#datatable-zone tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
-            removeElement("zones", data[0].innerText);
+            removeElement("zone", data[0].innerText);
         } else {}
     } );
-    $('#datatable-zones tbody').on( 'click', '.edit-row', function () {
+    $('#datatable-zone tbody').on( 'click', '.edit-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
-        editElement(data);
+        setupModalZoneEdit(data);
     } );
-
-    prettifyHeader('zones');
+    prettifyHeader('zone');
 }
 
-function getDatatableConfiguration(dataURL){
+/**
+ * Automatically fill the field on the manager table from the selected zone
+ *
+ * @param zoneTable the table zone datatable object
+ */
+function filterManagerFromZone(zoneTable){
+    let data = zoneTable.row('tr.selected').data();
+
+    if  (data == null){ // If nothing selected
+        $('#datatable-manager').DataTable().search("").draw();
+        return;
+    }
+
+    let zoneName = data[1];
+    $('#datatable-manager').DataTable().search(zoneName).draw();
+}
+
+function getZoneTableConfiguration(dataURL){
     let config = {
         lengthMenu: [
             [ 10, 25, 50, -1 ],
@@ -49,7 +67,7 @@ function getDatatableConfiguration(dataURL){
         "processing": true,
         "serverSide": true,
         "responsive": false,
-        "autoWidth": false,
+        "autoWidth": true,
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
@@ -77,7 +95,7 @@ function getDatatableConfiguration(dataURL){
         "initComplete": function(settings, json){
             // Removes the last column (both header and body) if we cannot edit the table
             if(!(json.hasOwnProperty('editable') && json['editable'])){
-                $('#datatable-zones').find('tr:last-child th:last-child, td:last-child').remove();
+                $('#datatable-zone').find('tr:last-child th:last-child, td:last-child').remove();
             }
         }
     };

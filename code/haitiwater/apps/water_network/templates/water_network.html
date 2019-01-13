@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load django_tables2 %}
 {% load compress %}
+{% load group_filter %}
 
 {% block page_name %}
     <link href="{% static "water_network.css" %}">
@@ -10,6 +11,8 @@
 {% endblock %}
 
 {% block page_content %}
+
+    {% if user.is_authenticated %}
 
     <div class="row">
         <div class="col-md-6">
@@ -34,7 +37,7 @@
                         <div class="widget-summary-col">
                             <div class="summary">
                                 <h4 class="title">Nous avons</h4>
-                                <div class="info">6700 consommateurs</div>
+                                <div class="info">{{consumers}} consommateurs</div>
                             </div>
                         </div>
                     </div>
@@ -48,7 +51,7 @@
                         <div class="widget-summary-col">
                             <div class="summary">
                                 <h4 class="title">Le réseau compte</h4>
-                                <div class="info">42 points d'eau</div>
+                                <div class="info">{{water_outlets}} points d'eau</div>
                             </div>
                         </div>
                     </div>
@@ -61,8 +64,8 @@
                         </div>
                         <div class="widget-summary-col">
                             <div class="summary">
-                                <h4 class="title">En Septembre, nous avons distribué</h4>
-                                <div class="info">1337 m³ (353198 gals) d'eau</div>
+                                <h4 class="title">En {{ current_period }}, nous avons distribué</h4>
+                                <div class="info">{{distributed.0}} m³ ({{distributed.1}} gals) d'eau</div>
                             </div>
                         </div>
                     </div>
@@ -89,4 +92,7 @@
 
 
     {% include 'water_element_modal.html' %}
+    {% else %}
+        <h3>Contenu réservé, veuillez <a href="{% url 'login' %}">vous connecter</a></h3>
+    {% endif %}
 {% endblock %}
