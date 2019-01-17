@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block page_name %}
+    <script src="{% static "report.js" %}"></script>
     Page hors-connexion
 {% endblock %}
 
@@ -13,8 +14,11 @@
             <p class="panel-subtitle">Il semble que vous n'avez pas de connexion internet.</p>
         </header>
         <div class="panel-body">
-            <p>Cette page vous permettra de compléter votre rapport mensuel.</p>
+            <p>Cette page vous permettra de compléter votre <a id="show-monthly-report-modal" class="modal-with-form" role="button" href="#modalMonthlyReport" onclick="showModal('#show-monthly-report-modal')">rapport mensuel</a>.</p>
         </div>
     </section>
+
+    <!-- Modal form to report the monthly values -->
+    {% include "modal_monthly_report.html" %}
 
 {% endblock %}
