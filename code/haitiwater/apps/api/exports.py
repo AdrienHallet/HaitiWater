@@ -11,6 +11,7 @@ from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
 from ..utils.get_data import is_user_fountain
+from ..log.models import Transaction
 
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
@@ -138,7 +139,11 @@ def remove_element(request):
         return success_200
     elif element == "consumer":
         id = request.POST.get("id", None)
-        Consumer.objects.filter(id=id).delete()
+        transaction = Transaction(user=request.user)
+        transaction.save()
+        to_delete = Consumer.objects.filter(id=id)[0]
+        to_delete.log_delete(transaction)
+        to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0)+1}, status=200)
     elif element == "manager":
         id = request.POST.get("id", None)

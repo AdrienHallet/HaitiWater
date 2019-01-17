@@ -3,6 +3,7 @@ from django.http import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
 
+from ..log.models import Transaction
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
@@ -30,6 +31,7 @@ def edit_consumer(request):
     if len(consumers) < 1:
         return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=404)
     consumer = consumers[0]
+    old = consumers[0].infos()
     consumer.first_name = request.POST.get("firstname", None)
     consumer.last_name = request.POST.get("lastname", None)
     consumer.gender = request.POST.get("gender", None)
@@ -43,6 +45,10 @@ def edit_consumer(request):
     else:
         return HttpResponse("Impossibe de trouver cet élément du réseau", status=404)  # Outlet not found, can't edit
     consumer.water_outlet = outlet
+    transaction = Transaction(user=request.user)
+    transaction.save()
+    print("Allo ?")
+    consumer.log_edit(old, transaction)
     consumer.save()
     return success_200
 

@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 
+from ..log.models import Transaction
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
@@ -34,6 +35,9 @@ def add_consumer_element(request):
     new_c = Consumer(last_name=last_name, first_name=first_name,
                           gender=gender, location=address, phone_number=phone,
                           email="", household_size=sub, water_outlet=outlet) #Creation
+    transaction = Transaction(user=request.user)
+    transaction.save()
+    new_c.log_add(transaction)
     new_c.save()
     return success_200
 
