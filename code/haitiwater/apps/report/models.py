@@ -60,4 +60,4 @@ class Ticket(models.Model):
     def descript(self):
         return [self.id, "", UrgencyType[self.urgency].value,
                 self.water_outlet.name, BreakType[self.type].value,
-                self.comment, ""]
+                self.comment, StatusType[self.status].value]
