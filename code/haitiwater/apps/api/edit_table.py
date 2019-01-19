@@ -69,6 +69,27 @@ def edit_zone(request):
     return success_200
 
 
+def edit_ticket(request):
+    id = request.POST.get("id", None)
+    ticket = Ticket.objects.filter(id=id)
+    if len(ticket) < 1:
+        return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=404)
+    ticket = ticket[0]
+    id_outlet = request.POST.get("id_outlet", None)
+    outlet = Element.objects.filter(id=id_outlet)
+    if len(outlet) != 1:
+        return HttpResponse("Impossible de trouver l'élément du réseau associé", status=404)
+    outlet = outlet[0]
+    ticket.water_outlet = outlet
+    ticket.urgency = request.POST.get("urgency", None).upper()
+    ticket.type = request.POST.get("type", None).upper()
+    ticket.comment = request.POST.get("comment", None)
+    ticket.status = request.POST.get("state", None).upper()
+    ticket.image = request.FILES.get("picture", None)
+    ticket.save()
+    return success_200
+
+
 def edit_manager(request):
     id = request.POST.get("id", None)
     user = User.objects.filter(username=id)

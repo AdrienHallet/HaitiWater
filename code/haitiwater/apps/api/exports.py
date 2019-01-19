@@ -213,6 +213,10 @@ def edit_element(request):
         return edit_consumer(request)
     elif element == "zone":
         return edit_zone(request)
+    elif element == "ticket":
+        print("Edit ticket !")
+        print(request.POST)
+        return edit_ticket(request)
     elif element == "manager":
         return edit_manager(request)
     else:

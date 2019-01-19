@@ -6,6 +6,7 @@ function validateForm() {
     let urgency = form["select-urgency"].value;
     let idOutet = form["select-outlet"].value;
     let comment = form["input-comment"].value;
+    let state = form["select-state"].value;
     try{
         let reader = new FileReader();
         let picture = reader.readAsText(form["input-picture"].files[0]);
@@ -57,13 +58,14 @@ function readURL(input) {
     }
 }
 
-function buildRequest(id, type, urgency, idOutlet, comment, picture){
+function buildRequest(id, type, urgency, idOutlet, comment, state, picture){
     let request = "table=ticket";
     request += "&id=" + id;
     request += "&type=" + type;
     request += "&urgency=" + urgency;
     request += "&id_outlet" + idOutlet;
     request += "&comment=" + comment;
+    request += "&state=" + state;
     request += "&picture=" + picture;
 
     return request;
@@ -79,10 +81,16 @@ function setupTicketModalAdd(){
     $('#modal-submit-edit').addClass("hidden");
     $('#form-id-component').addClass("hidden");
 
+    //Authorize element modification
+    $('#select-outlet').removeAttr('disabled');
+
+    //Hide useless state selector (always unresolved when ticket opened)
+    $('#select-state-group').addClass('hidden');
+
     showModal('#show-ticket-modal');
 }
 
-function setupTicketModalEdit(data){
+function setupModalEdit(data){
     //Show add components
     $('#modal-title-add').addClass("hidden");
     $('#modal-submit-add').addClass("hidden");
@@ -92,25 +100,73 @@ function setupTicketModalEdit(data){
     $('#modal-submit-edit').removeClass("hidden");
     $('#form-id-component').removeClass("hidden");
 
+    //Do not authorize element modification
+    $('#select-outlet').prop('disabled', 'disabled');
+
+    //Show state modificator to mark problem as resolved
+    $('#select-state-group').removeClass('hidden');
+
     showModal('#show-ticket-modal');
+
+    console.log(data);
+
+    let form = document.forms["form-add-ticket"];
+
+    form["input-id"].value= data[0].innerText;
+
+    //Set value for problem type
+    let typeOption = $("#select-type option").filter(function() {
+        if (this.text.trim() === data[4].innerText.trim()) {
+            return this;
+        }
+    });
+    form['select-type'].value = typeOption[0].value;
+
+    //Set value for problem urgency
+    let urgencyOption = $("#select-urgency option").filter(function() {
+        if (this.text.trim() === data[2].innerText.trim()) {
+            return this;
+        }
+    });
+    form['select-urgency'].value = urgencyOption[0].value;
+
+    //Set value for problem outlet
+    let outletOption = $("#select-outlet option").filter(function() {
+        if (this.text.trim() === data[3].innerText.trim()) {
+            return this;
+        }
+    });
+    form['select-outlet'].value = outletOption[0].value;
+
+    form["input-comment"].value = data[5].innerText;
+
+    //Set value for problem outlet
+    let stateOption = $("#select-state option").filter(function() {
+        if (this.text.trim() === data[6].innerText.trim()) {
+            return this;
+        }
+    });
+    form['select-state'].value = stateOption[0].value;
+
 }
 
 /**
  * Hide the modal and reset the fields
  */
-function dismissModal() {
+function dismissTicketModal() {
     $.magnificPopup.close();
     let form = document.forms["form-add-ticket"];
 
     form["input-id"].value = "";
-    form["input-type"].value = "none";
+    form["select-type"].value = "none";
     form["select-urgency"].value = "none";
     form["select-outlet"].value = "none";
     form["input-comment"].value = "";
     form["input-picture"].value = "";
+    form["select-state"].value = "unresolved";
 }
 
-function sendTicket() {
+function sendTicket(addOrEdit) {
     if (!validateForm())
         return;
     let form = document.forms["form-add-ticket"];
@@ -122,10 +178,11 @@ function sendTicket() {
     formData.append("urgency", form["select-urgency"].value);
     formData.append("id_outlet", form["select-outlet"].value);
     formData.append("comment", form["input-comment"].value);
+    formData.append("state", form["select-state"].value);
     formData.append("picture", form["input-picture"].files[0]);
 
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/add/";
+    let postURL = baseURL + "/api/" + addOrEdit + "/";
     $.ajax({
        url: postURL,
        type: "POST",
@@ -137,7 +194,7 @@ function sendTicket() {
            dismissModal();
            new PNotify({
                title: 'Succès!',
-               text: 'Ticket ajouté avec succès',
+               text: "Opération effectuée",
                type: 'success'
            });
            drawDataTable("ticket");

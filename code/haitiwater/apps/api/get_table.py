@@ -140,16 +140,20 @@ def get_manager_elements(request, json, parsed):
 def get_ticket_elements(request, json, parsed):
     all = []
     if request.user.profile.zone: #Zone manager
+        tot = 0
         for elem in Ticket.objects.all():
             if elem.water_outlet.zone.name in request.user.profile.zone.subzones:
                 if parsed["search"] == "":
                     all.append(elem.descript())
+                    tot += 1
                 else:
                     for cols in parsed["searchable"]:
                         tab = elem.descript()
                         if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
                             all.append(tab)
+                            tot += 1
                             break
+        json["recordsTotal"] = tot
     else: #Fountain manager
         tot = 0
         for elem in Ticket.objects.all():
