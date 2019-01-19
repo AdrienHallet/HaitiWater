@@ -22,12 +22,9 @@ class Profile(models.Model):
         result["role"] = self.user.groups
         for field in Profile._meta.get_fields():
             result[field.name] = self.__getattribute__(field.name)
-        print("Infos")
-        print(result)
         return result
 
     def log_add(self, transaction):
-        print(self.infos())
         add("User", self.infos(), transaction)
 
     def log_delete(self, transaction):
@@ -35,6 +32,23 @@ class Profile(models.Model):
 
     def log_edit(self, old, transaction):
         edit("User", self.infos(), old, transaction)
+
+    def get_subordinates(self):
+        sub = []
+        all_users = User.objects.all()
+        for user in all_users:
+            if user.profile.zone != None: #Zone manager
+                if user.profile.zone.name in self.zone.subzones \
+                        and user != self.user:
+                    sub.append(user)
+            elif len(user.profile.outlets) > 0: #Fountain manager
+                add = True
+                for outlet in user.profile.outlets:
+                    if outlet.zone.name not in self.zone.subzones:
+                        add = False
+                if add:
+                    sub.append(user)
+        return sub
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

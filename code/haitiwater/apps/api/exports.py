@@ -1,20 +1,10 @@
 import re
-from django.http import HttpResponse
 
-from django.views.decorators.csrf import csrf_exempt
-
-from ..water_network.models import Element, ElementType, Zone
-from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
-from django.contrib.auth.models import User, Group
-from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
 from ..utils.get_data import is_user_fountain
-from ..log.models import Transaction
+from ..log.models import Transaction, Log
 
-from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
 import json
 
 error_500 = HttpResponse(False, status=500)
@@ -222,6 +212,26 @@ def edit_element(request):
     else:
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)
+
+
+def get_logs(request):
+    print("LOGS")
+    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates())
+    all_logs = []
+    for t in transactions:
+        logs = Log.objects.filter(transaction=t)
+        all_logs.append(logs)
+    for number, elem in enumerate(all_logs):
+        print("Changed by : "+str(transactions[number].user))
+        print("Table : "+elem[0].table_name)
+        print("Action : "+elem[0].action)
+        #Make changes for all types of actions
+        for indiv in elem:
+            if(indiv.new_value):
+                print("Column : "+indiv.column_name)
+                print("Value : "+indiv.new_value)
+    #Remove transactions and logs when accepted/discarded
+    return success_200
 
 
 def log_element(element, request):
