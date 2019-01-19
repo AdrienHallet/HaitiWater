@@ -45,4 +45,4 @@ class Consumer(Person):
         delete("Consumer", self.infos(), transaction)
 
     def log_edit(self, old, transaction):
-        edit("Conumer", self.infos(), old, transaction)
+        edit("Consumer", self.infos(), old, transaction)

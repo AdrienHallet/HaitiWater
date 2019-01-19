@@ -1,12 +1,8 @@
-import re
 from django.http import HttpResponse
 
-from django.views.decorators.csrf import csrf_exempt
-
-from ..log.models import Transaction
-from ..water_network.models import Element, ElementType, Zone
+from ..water_network.models import Element, Zone
 from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
+from ..log.models import Transaction
 from django.contrib.auth.models import User, Group
 
 
@@ -18,9 +14,11 @@ def edit_water_element(request):
     if len(elems) < 1:
         return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=404)
     elem = elems[0]
+    old = elem.infos()
     elem.type = request.POST.get("type", None).upper()
     elem.location = request.POST.get("localization", None)
     elem.status = request.POST.get("state", None).upper()
+    log_element(elem, old, request)
     elem.save()
     return success_200
 
@@ -45,10 +43,7 @@ def edit_consumer(request):
     else:
         return HttpResponse("Impossibe de trouver cet élément du réseau", status=404)  # Outlet not found, can't edit
     consumer.water_outlet = outlet
-    transaction = Transaction(user=request.user)
-    transaction.save()
-    print("Allo ?")
-    consumer.log_edit(old, transaction)
+    log_element(consumer, old, request)
     consumer.save()
     return success_200
 
@@ -59,6 +54,7 @@ def edit_zone(request):
     if len(zone) < 1:
         return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=404)
     zone = zone[0]
+    old = zone.infos()
     old_name = zone.name
     zone.name = request.POST.get("name", None)
     zone.subzones.remove(old_name)
@@ -68,6 +64,7 @@ def edit_zone(request):
             z.subzones.remove(old_name)
             z.subzones.append(zone.name)
             z.save()
+    log_element(zone, old, request)
     zone.save()
     return success_200
 
@@ -77,6 +74,7 @@ def edit_manager(request):
     user = User.objects.filter(username=id)
     if len(user) == 1:
         user = user[0]
+        old = user.profile.infos()
         type = request.POST.get("type", None)
         if type == "fountain-manager":
             water_out = request.POST.get("outlets", None)
@@ -93,6 +91,7 @@ def edit_manager(request):
             if user.profile.zone: #If user had a zone, switch it
                 g = Group.objects.get(name='Gestionnaire de zone')
                 g.user_set.remove(user)
+            log_element(user.profile, old, request)
             user.save()
         elif type == "zone-manager":
             zone = request.POST.get("zone", None)
@@ -107,8 +106,16 @@ def edit_manager(request):
                 g = Group.objects.get(name='Gestionnaire de fontaine')
                 g.user_set.remove(user)
                 user.profile.outlets = []
+            log_element(user.profile, old, request)
             user.save()
     else:
         return HttpResponse("Utilisateur introuvable dans la base de donnée",
                           status=404)
     return success_200
+
+
+def log_element(element, old, request):
+    transaction = Transaction(user=request.user)
+    transaction.save()
+    element.log_edit(old, transaction)
+
