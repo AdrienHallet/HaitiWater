@@ -2,6 +2,8 @@ var monthlyReport = {
 	// Complete on validation
 };
 
+const CUBICMETER_GALLON_RATIO = 264.172;
+
 
 $(document).ready(function() {
 
@@ -40,6 +42,7 @@ $(document).ready(function() {
 	*	Wizard Controller
 	*/
 	let $wizardMonthlyReportfinish = wizardReport.find('ul.pager li.finish');
+	let $wizardMonthlyReportSave = wizardReport.find('ul.pager li.save');
 
 	$wizardMonthlyReportfinish.on('click', function( ev ) {
 		ev.preventDefault();
@@ -67,6 +70,7 @@ $(document).ready(function() {
 							text: 'Le rapport mensuel a été envoyé !',
 							type: 'success'
 						});
+						localStorage.removeItem("monthlyReport");
 						dismissModal();
 					}
 				}
@@ -79,6 +83,21 @@ $(document).ready(function() {
 		}
 	});
 
+	$wizardMonthlyReportSave.on('click', function ( ev ) {
+		ev.preventDefault();
+		const validated = validate();
+		if (validated) {
+			console.log(JSON.stringify(monthlyReport));
+			localStorage.setItem('monthlyReport', JSON.stringify(monthlyReport));
+			dismissModal();
+		} else {
+			return false;
+		}
+    });
+
+	let savedData = JSON.parse(localStorage.getItem('monthlyReport'));
+	setupStepOne(savedData);
+
 	wizardReport.bootstrapWizard({
 		tabClass: 'wizard-steps',
 		nextSelector: 'ul.pager li.next',
@@ -86,7 +105,7 @@ $(document).ready(function() {
 		firstSelector: null,
 		lastSelector: null,
 		onNext: function( tab, navigation, index, newindex ) {
-			var validated = validate(index);
+			var validated = validate(index, savedData);
 			if( !validated ) {
 				return false; // Do not switch tab if form is not valid
 			}
@@ -97,6 +116,7 @@ $(document).ready(function() {
 		onTabChange: function( tab, navigation, index, newindex ) {
 			var $total = navigation.find('li').size() - 1;
 			$wizardMonthlyReportfinish[ newindex !== $total ? 'addClass' : 'removeClass' ]( 'hidden' );
+			$wizardMonthlyReportSave[ newindex !== $total ? 'addClass' : 'removeClass' ]( 'hidden' );
 			wizardReport.find(this.nextSelector)[ newindex === $total ? 'addClass' : 'removeClass' ]( 'hidden' );
 		},
 		onTabShow: function( tab, navigation, index ) {
@@ -196,14 +216,14 @@ function hideErrorsMsgs(){
 	});
 }
 
-function validate(step){
+function validate(step, savedData){
     switch(step){
         case 1:
-        	setupStepTwo();
+        	setupStepTwo(savedData);
             return validateStepOne();
         case 2:
         	if (validateStepTwo()){
-             	setupStepThree();
+             	setupStepThree(savedData);
 				return true;
 			}
 			return false;
@@ -249,7 +269,11 @@ function validateStepOne(){
 			$('#input-hours-error').removeClass('hidden');
 			isValid = false;
 		}
-		this.monthlyReport.isActive = true; // Save in report
+
+		// Save in report
+		this.monthlyReport.isActive = true;
+		this.monthlyReport.inputDays = inputDays.val();
+		this.monthlyReport.inputHours = inputHours.val();
 	} else {
 	    this.monthlyReport.isActive = false; // Save in report
 	}
@@ -327,40 +351,79 @@ function validateStepThree(){
 }
 
 /**
+ * complete form values depending on the saved data
+ */
+function setupStepOne(savedData){
+	if (savedData) {
+		if (savedData.selectedOutlets) {
+			savedData.selectedOutlets.forEach(function (value) {
+				$("#multiselect-outlets option[value='" + value + "']").prop("selected", true);
+			});
+		}
+
+		if (savedData.isActive) {
+			$('#checkbox-active-service').prop("checked", true);
+			$('#input-days').removeAttr("disabled");
+			$('#input-hours').removeAttr("disabled");
+		}
+
+		if (savedData.inputDays) {
+			$('#input-days').val(savedData.inputDays)
+		}
+
+		if (savedData.inputHours) {
+			$('#input-hours').val(savedData.inputHours)
+		}
+	}
+}
+
+/**
  * Dynamically set the content of step 2 according to selected water outlets in step 1
  */
-function setupStepTwo(){
-
+function setupStepTwo(savedData){
 	// Panel body containing the data
-	let panelBody = '' +
-		'<div class="panel-body">' +
-			'<div class="row">' +
-				'<div class="col-sm-6">' +
-					'<h5>Volume d\'eau distribué</h5>' +
-					'<div class="row">' +
-						'<div class="col-sm-6 cubic">' +
-							'<input class="form-control" type="number">' +
+	function createPanelBody(outlet) {
+		let data;
+		if (savedData) {
+			savedData.details.forEach(function (detail) {
+				if (detail.id == outlet)
+					data = detail;
+			});
+		}
+		return '' +
+			'<div class="panel-body">' +
+				'<div class="row">' +
+					'<div class="col-sm-6">' +
+						'<h5>Volume d\'eau distribué</h5>' +
+						'<div class="row">' +
+							'<div class="col-sm-6 cubic">' +
+								'<input class="form-control" type="number"'
+									+ (data ? 'value="' + data.cubic + '"' : '') + '">' +
+							'</div>' +
+							'<div class="col-sm-6 gallon">' +
+								'<input class="form-control" type="number"'
+									+ (data ? 'value="' + data.cubic * CUBICMETER_GALLON_RATIO + '"' : '') + '">' +
+							'</div>' +
 						'</div>' +
-						'<div class="col-sm-6 gallon">\n' +
-							'<input class="form-control" type="number">' +
-						'</div>' +
+						'<label class="volume error">Valeurs de volume incorrectes</label>' +
 					'</div>' +
-					'<label class="volume error">Valeurs de volume incorrectes</label>' +
-				'</div>' +
-				'<div class="col-sm-6">' +
-					'<h5>Coût au volume (HTG)</h5>' +
-					'<div class="row">' +
-						'<div class="col-sm-6 per-cubic">' +
-							'<input class="form-control" type="number">' +
+					'<div class="col-sm-6">' +
+						'<h5>Coût au volume (HTG)</h5>' +
+						'<div class="row">' +
+							'<div class="col-sm-6 per-cubic">' +
+								'<input class="form-control" type="number"'
+									+ (data ? 'value="' + data.perCubic + '"' : '') + '">' +
+							'</div>' +
+							'<div class="col-sm-6 per-gallon">' +
+								'<input class="form-control" type="number"'
+									+ (data ? 'value="' + data.perCubic / CUBICMETER_GALLON_RATIO + '"' : '') + '">' +
+							'</div>' +
 						'</div>' +
-						'<div class="col-sm-6 per-gallon">' +
-							'<input class="form-control" type="number">' +
-						'</div>' +
+						'<label class="cost error">Valeurs de coût incorrectes</label>' +
 					'</div>' +
-					'<label class="cost error">Valeurs de coût incorrectes</label>' +
 				'</div>' +
-			'</div>' +
-		'</div>';
+			'</div>';
+	}
 
 	// For each selected outlet, setup the data section
 	let selectedOutlets = $('#multiselect-outlets option:selected');
@@ -370,7 +433,7 @@ function setupStepTwo(){
 	let checkboxActiveService = $('#checkbox-active-service');
 	if (checkboxActiveService.is(':checked')){
 		// Service was active, ask user to input details
-		selectedOutlets.each(function(){
+		selectedOutlets.each(function(index){
 			let name = this.text; // Displayed name
 			let id = this.value; // ID of the fountain to send back to server
 
@@ -378,7 +441,7 @@ function setupStepTwo(){
 									'<header class="panel-heading">' +
 										'<h2 class="panel-title">' + name + '</h2>' +
 									'</header>';
-			detailsWindow.append(sectionHeader + panelBody);
+			detailsWindow.append(sectionHeader + createPanelBody(selectedOutlets[index].value));
 			detailsWindow.append('</section>');
 		});
 	} else {
@@ -392,8 +455,6 @@ function setupStepTwo(){
      * Listener to convert cubic to gallons and vice-versa
      */
     $('.water-outlet').each(function(i){
-        const CUBICMETER_GALLON_RATIO = 264.172;
-
         let cubic = $('.cubic input', this);
         let gallon = $('.gallon input', this);
 
@@ -423,22 +484,33 @@ function setupStepTwo(){
  * Get the volumes distributed by the water network, multiply them by the cost and put the computed total
  * inside the suggestion field for the billing step
  */
-function setupStepThree(){
+function setupStepThree(savedData){
 	// Panel body containing the data
-	let panelBody = '' +
-		'<div class="panel-body">' +
-			'<div class="row">' +
-				'<div class="col-sm-6">' +
-					'<h5>Réelles (HTG)</h5>' +
-					'<input class="real-bill form-control" type="number"></input>' +
-					'<label class="billing error hidden">Valeur incorrecte</label>' +
+	function createPanelBody(outlet) {
+		let data;
+		if (savedData) {
+			savedData.details.forEach(function (detail) {
+				if (detail.id == outlet)
+					data = detail;
+			});
+		}
+		return '' +
+			'<div class="panel-body">' +
+				'<div class="row">' +
+					'<div class="col-sm-6">' +
+						'<h5>Réelles (HTG)</h5>' +
+						'<input class="real-bill form-control" type="number" '
+							+ (data ? 'value="' + data.bill + '"' : '') + '">' +
+						'<label class="billing error hidden">Valeur incorrecte</label>' +
+					'</div>' +
+					'<div class="col-sm-6">' +
+						'<h5>Calculées (HTG)</h5>' +
+						'<input class="computed-bill form-control" type="number" readonly="readonly">' +
+					'</div>' +
 				'</div>' +
-				'<div class="col-sm-6">' +
-					'<h5>Calculées (HTG)</h5>' +
-					'<input class="computed-bill form-control" type="number" readonly="readonly"></input>'
-				'</div>' +
-			'</div>' +
-		'</div>';
+			'</div>';
+	}
+
 
 	// For each selected outlet, setup the data section
 	let selectedOutlets = $('#multiselect-outlets option:selected');
@@ -448,7 +520,7 @@ function setupStepThree(){
 	let checkboxActiveService = $('#checkbox-active-service');
 	if (checkboxActiveService.is(':checked')){
 		// Service was active, ask user to input details
-		selectedOutlets.each(function(){
+		selectedOutlets.each(function(index){
 			let name = this.text; // Displayed name
 			let id = this.value; // ID of the fountain to send back to server
 
@@ -456,7 +528,7 @@ function setupStepThree(){
 									'<header class="panel-heading">' +
 										'<h2 class="panel-title"> Recettes : ' + name + '</h2>' +
 									'</header>';
-			billingWindow.append(sectionHeader + panelBody);
+			billingWindow.append(sectionHeader + createPanelBody(selectedOutlets[index].value));
 			billingWindow.append('</section>');
 		});
 		console.log(monthlyReport);
