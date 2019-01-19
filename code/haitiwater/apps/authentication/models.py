@@ -33,6 +33,9 @@ class Profile(models.Model):
     def log_delete(self, transaction):
         delete("User", self.infos(), transaction)
 
+    def log_edit(self, old, transaction):
+        edit("User", self.infos(), old, transaction)
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     raw = kwargs.get('raw', False)

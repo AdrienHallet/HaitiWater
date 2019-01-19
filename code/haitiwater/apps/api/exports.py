@@ -118,7 +118,6 @@ def add_element(request):
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def remove_element(request):
-    print(request.POST)
     element = request.POST.get("table", None)
     if element == "water_element":
         id = request.POST.get("id", None)
@@ -126,32 +125,53 @@ def remove_element(request):
         if len(consumers) > 0: #Can't suppress outlets with consummers
             return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à" +
                                 "des consommateurs", status=500)
-        Element.objects.filter(id=id).delete()
+        elem_delete = Element.objects.filter(id=id)
+        if len(elem_delete) != 1:
+            return HttpResponse("Impossible de supprimer cet élément", status=500)
+        elem_delete = elem_delete[0]
+        transaction = Transaction(user=request.user)
+        transaction.save()
+        elem_delete.log_delete(transaction)
+        elem_delete.delete()
         tickets = Ticket.objects.filter(water_outlet=id)
         for t in tickets:
+            t.log_delete(transaction)
             t.delete()
         users = User.objects.filter()
         for u in users:
             if len(u.profile.outlets) > 0: #Gestionnaire de fontaine
                 if str(id) in u.profile.outlets:
+                    old = u.profile.infos()
                     u.profile.outlets.remove(str(id))
                     u.save()
+                    u.profile.log_edit(old, transaction)
         return success_200
     elif element == "consumer":
         id = request.POST.get("id", None)
-        transaction = Transaction(user=request.user)
-        transaction.save()
-        to_delete = Consumer.objects.filter(id=id)[0]
-        to_delete.log_delete(transaction)
+        to_delete = Consumer.objects.filter(id=id)
+        if len(to_delete) != 1:
+            return HttpResponse("Impossible de supprimer cet élément", status=500)
+        to_delete = to_delete[0]
+        log_element(to_delete, request)
         to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0)+1}, status=200)
     elif element == "manager":
         id = request.POST.get("id", None)
-        User.objects.filter(username=id).delete()
+        to_delete = User.objects.filter(username=id)
+        if len(to_delete) != 1:
+            return HttpResponse("Impossible de supprimer cet élément", status=500)
+        to_delete = to_delete[0]
+        log_element(to_delete.profile, request)
+        to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "ticket":
         id = request.POST.get("id", None)
-        Ticket.objects.filter(id=id).delete()
+        to_delete = Ticket.objects.filter(id=id)
+        if len(to_delete) != 1:
+            return HttpResponse("Impossible de supprimer cet élément", status=500)
+        to_delete = to_delete[0]
+        log_element(to_delete, request)
+        to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "zone":
         id = request.POST.get("id", None)
@@ -171,10 +191,15 @@ def remove_element(request):
             if u.profile.zone == to_delete:
                 return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle est encore attribuée à" +
                                 "un gestionnaire de zone", status=500)
+        transaction = Transaction(user=request.user)
+        transaction.save()
         for z in Zone.objects.all():
             if str(id) in z.subzones:
+                old = z.infos()
                 z.subzones.remove(str(id))
                 z.save()
+                z.log_edit(old, transaction)
+        to_delete.log_delete(transaction)
         to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     return error_500
@@ -193,6 +218,12 @@ def edit_element(request):
     else:
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)
+
+
+def log_element(element, request):
+    transaction = Transaction(user=request.user)
+    transaction.save()
+    element.log_delete(transaction)
 
 
 def parse(request):
