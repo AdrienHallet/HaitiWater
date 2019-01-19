@@ -1,0 +1,101 @@
+{% load static %}
+
+<!-- Modal form to add/edit network element -->
+<div id="modalProblemReport" class="modal-block modal-block-primary mfp-hide">
+    <section class="panel">
+        <header class="panel-heading">
+            <h2 id="modal-title-add" class="panel-title">Signaler un problème</h2>
+            <h2 id="modal-title-edit" class="panel-title">Editer un problème</h2>
+        </header>
+        <div class="panel-body">
+            <div id="form-ticket-error" class="alert alert-danger hidden">
+                <button type="button" class="close" onclick="hideFormErrorMsg('ticket')" aria-hidden="true">×</button>
+                <div id="form-ticket-error-msg"></div>
+            </div>
+            <form id="form-add-ticket" class="form-horizontal mb-lg">
+                <div id="form-id-component" class="form-group mt-lg hidden">
+                    <label class="col-sm-3 control-label">Identifiant</label>
+                    <div class="col-sm-9">
+                        <input id="input-id" name="input-id" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Type de problème</label>
+                    <div class="col-sm-9">
+                        <select id="select-type" name="type" class="form-control">
+                            <option value="none">...</option>
+                            <option value="mechanical">Mécanique</option>
+                            <option value="quality">Qualité</option>
+                            <option value="other">Autre</option>
+                        </select>
+                        <label id="select-type-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Niveau d'urgence</label>
+                    <div class="col-sm-9">
+                        <select id="select-urgency" name="urgency" class="form-control">
+                            <option value="none">...</option>
+                            <option value="low">Bas</option>
+                            <option value="medium">Moyen</option>
+                            <option value="high">Haut</option>
+                        </select>
+                        <label id="select-urgency-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Elément concerné</label>
+                    <div class="col-sm-9">
+                        <select id="select-outlet" name="outlet" class="form-control">
+                            <option value="none">...</option>
+                            {% for water_outlet in water_outlets_ticket %}
+                                {# Display an option for each available outlet #}
+                                <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        <label id="select-outlet-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Description</label>
+                    <div class="col-sm-9">
+                        <textarea id="input-comment" name="comment" class="form-control"></textarea>
+                        <label id="input-comment-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div id="select-state-group" class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Statut</label>
+                    <div class="col-sm-9">
+                        <select id="select-state" name="outlet" class="form-control">
+                            <option value="unresolved">Non-résolu</option>
+                            <option value="resolved">Résolu</option>
+                        </select>
+                        <label id="select-state-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">(Optionnel) Photographie</label>
+                    <div class="col-sm-9">
+                        <input id="input-picture" type="file" name="pic" accept="image/*">
+                        <img id="preview" src="#"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <footer class="panel-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button id="modal-submit-add" onclick="sendTicket('add')" class="btn btn-primary modal-confirm">
+                        Envoyer
+                    </button>
+                    <button id="modal-submit-edit" onclick="sendTicket('edit')" class="btn btn-primary modal-confirm">
+                        Modifier
+                    </button>
+                    <button onclick="dismissTicketModal()" class="btn btn-default modal-dismiss">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>

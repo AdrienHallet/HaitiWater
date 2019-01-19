@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load django_tables2 %}
+{% load compress %}
+{% load group_filter %}
+
+{% block page_name %}
+    <link href="{% static "water_network.css" %}">
+    <script src="{% static "waterNetwork.js" %}"></script>
+    Réseau de distribution
+{% endblock %}
+
+{% block page_content %}
+
+    {% if user.is_authenticated %}
+
+    <div class="row">
+        <div class="col-md-6">
+            {% include "components/graphs/block_all_graphs.html" %}
+        </div>
+        <div class="col-md-6">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions form-inline">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">{{ zone_name }}</h2>
+                </header>
+                <div class="panel-body">
+                    <!-- Network users count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">Nous avons</h4>
+                                <div class="info">{{consumers}} consommateurs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Network outlets count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-tint"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">Le réseau compte</h4>
+                                <div class="info">{{water_outlets}} points d'eau</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Network outputted water count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-water"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">En {{ current_period }}, nous avons distribué</h4>
+                                <div class="info">{{distributed.0}} m³ ({{distributed.1}} gals) d'eau</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <section class="panel">
+        <header class="panel-heading">
+            <!-- Table block control actions -->
+            <div class="panel-actions form-inline">
+                <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus"></a>
+                <a id="print-water_element" class="fa fa-print"></a>
+                <a id="water_element-options" class="fas fa-cog"></a>
+                <a href="#" class="fa fa-caret-down"></a>
+            </div>
+            <h2 class="panel-title">Éléments du réseau</h2>
+        </header>
+        <div class="panel-body">
+            {% include "water_element_table.html" %}
+        </div>
+    </section>
+
+
+    {% include 'water_element_modal.html' %}
+    {% else %}
+        <h3>Contenu réservé, veuillez <a href="{% url 'login' %}">vous connecter</a></h3>
+    {% endif %}
+{% endblock %}

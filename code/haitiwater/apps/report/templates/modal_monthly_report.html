@@ -1,0 +1,120 @@
+{% load static %}
+
+<script src="{% static "vendor/bootstrap-wizard/jquery.bootstrap.wizard.js" %}"></script>
+<script src="{% static "monthlyReportFormHandler.js" %}"></script>
+<script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
+
+<div id="modalMonthlyReport" class="modal-block modal-block-lg mfp-hide">
+    <section class="panel form-wizard" id="wizardMonthlyReport">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <button onclick="dismissModal()" class="btn">Annuler</button>
+            </div>
+
+            <h2 class="panel-title">Rapport mensuel : {{ current_period }}</h2>
+        </header>
+        <div class="panel-body">
+            <div class="wizard-progress wizard-progress-lg">
+                <div class="steps-progress">
+                    <div class="progress-indicator" style="width: 0%;"></div>
+                </div>
+                <ul class="wizard-steps">
+                    <li class="active">
+                        <a href="#wizardMonthlyReport-state" data-toggle="tab"><span>1</span>État général</a>
+                    </li>
+                    <li>
+                        <a href="#wizardMonthlyReport-details" data-toggle="tab"><span>2</span>Détails</a>
+                    </li>
+                    <li>
+                        <a href="#wizardMonthlyReport-billing" data-toggle="tab"><span>3</span>Recettes</a>
+                    </li>
+                    <li>
+                        <a href="#wizardMonthlyReport-confirm" data-toggle="tab"><span>4</span>Confirmation</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- The Wizard form contents -->
+            <form id="form-monthly-report" name="monthly-report" class="form-horizontal" novalidate="novalidate">
+                <div class="tab-content">
+
+                    <!--- Panel 1 : General State-->
+                    <div id="wizardMonthlyReport-state" class="tab-pane active">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="wizardMonthlyReport-username">Points d'eau</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-multiselect-toggle-all="true" id="multiselect-outlets">
+                                    {% for water_outlet in water_outlets_report %}
+                                        {# Display an option for each available outlet #}
+                                        <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button id="multiselect-outlets-toggle" class="btn btn-primary">Tout sélectionner</button>
+                                <label id="input-multiselect-error" class="error">Au moins un point d'eau est requis</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Activité</label>
+                            <div class="col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="checkbox-active-service" name="active-service" type="checkbox" value="">
+                                        Le service de distribution a été (au moins partiellement) actif.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Heures par jour</label>
+                            <div class="col-sm-9">
+                                <input id="input-hours" disabled name="input-hours" class="form-control" style="max-width:100px" type="number" min="0" max="24">
+                                <label id="input-hours-error" class="error">Champ requis entre 1 et 24</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Jours par mois</label>
+                            <div class="col-sm-9">
+                                <input id="input-days" disabled name="input-days" class="form-control" style="max-width:100px" type="number" min="0" max="31">
+                                <label id="input-days-error" class="error">Champ requis entre 1 et 31</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="wizardMonthlyReport-details" class="tab-pane">
+                        {# Content Initialized in monthlyReportFormHandler.js > function setupStepTwo() #}
+                    </div>
+
+                    <!-- Panel 3 - Billing -->
+                    <div id="wizardMonthlyReport-billing" class="tab-pane">
+                        
+                    </div>
+
+                    <!-- Panel 4 - Confirmation -->
+                    <div id="wizardMonthlyReport-confirm" class="tab-pane">
+                        <!-- Content generated dynamically by form handler -->
+                        <div id="confirmation-generated-content"></div>
+
+                        <!-- Error report, filled by server if needed -->
+                        <div id="monthly-report-error" class="alert alert-danger hidden">
+                            <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
+                            <div id="monthly-report-error-msg"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+            <ul class="pager">
+                <li class="previous disabled">
+                    <a><i class="fa fa-angle-left"></i> Précédent</a>
+                </li>
+                <li class="finish hidden pull-right">
+                    <a>Terminer</a>
+                </li>
+                <li class="next">
+                    <a>Suivant <i class="fa fa-angle-right"></i></a>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>

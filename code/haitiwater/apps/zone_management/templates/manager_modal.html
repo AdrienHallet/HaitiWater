@@ -1,0 +1,97 @@
+{% load static %}
+
+<!-- Modal form to add/edit manager -->
+<script src="{% static "managerModalHandler.js"%}"></script>
+<div id="modalManager" class="modal-block modal-block-primary mfp-hide">
+    <section class="panel">
+        <header class="panel-heading">
+            <h2 id="modal-manager-title-add" class="panel-title hidden">Ajouter un gestionnaire ou technicien</h2>
+            <h2 id="modal-manager-title-edit" class="panel-title hidden">Modifier un gestionnaire ou technicien</h2>
+        </header>
+        <div class="panel-body">
+            <div id="form-manager-error" class="alert alert-danger hidden">
+                <button type="button" class="close" onclick="hideFormErrorMsg('manager')" aria-hidden="true">×</button>
+                <div id="form-manager-error-msg"></div>
+            </div>
+            <form id="form-add-manager" class="form-horizontal mb-lg">
+                <div id="form-manager-id-component" class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Identifiant</label>
+                    <div class="col-sm-9">
+                        <input id="input-manager-id" name="input-id" class="form-control">
+                        <label id="input-manager-id-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Nom</label>
+                    <div class="col-sm-9">
+                        <input id="input-manager-last-name" name="lastname" class="form-control">
+                        <label id="input-manager-last-name-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Prénom</label>
+                    <div class="col-sm-9">
+                        <input id="input-manager-first-name" name="firstname" class="form-control">
+                        <label id="input-manager-first-name-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Courriel</label>
+                    <div class="col-sm-9">
+                        <input id="input-manager-email" name="email" class="form-control" type="email">
+                        <label id="input-manager-email-error" class="error">Adresse courriel valide requise</label>
+                    </div>
+                </div>
+                <div class="form-group mt-lg">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9">Un mot de passe aléatoire sera envoyé par courriel à la création de cet utilisateur.</div>
+                </div>
+                <div class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Fonction</label>
+                    <div class="col-sm-9">
+                        <select id="select-manager-type" name="type" class="form-control">
+                            <option value="none">...</option>
+                            <option value="fountain-manager">Gestionnaire de fontaine(s)</option>
+                            <option value="zone-manager">Gestionnaire de zone</option>
+                        </select>
+                        <label id="select-manager-type-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div id="form-group-select-zone" class="form-group mt-lg hidden">
+                    <label class="col-sm-3 control-label">Zone assignée</label>
+                    <div class="col-sm-9">
+                        <select id="select-manager-zone" name="zone" class="form-control">
+                            <option value="none">...</option>
+                            {# Content is dynamically generated with a query to back-end #}
+                        </select>
+                        <label id="select-manager-zone-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <div id="form-group-multiselect-outlets" class="form-group mt-lg hidden">
+                    <label class="col-sm-3 control-label">Fontaine(s) assignée(s)</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="multiselect-manager-outlets" multiple="multiple">
+{#                          {# Content is dynamically generated with a query to back-end #}
+                        </select>
+                        <label id="multiselect-manager-outlets-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <footer class="panel-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button id="modal-manager-submit-add" onclick="postNewRow('manager')" class="btn btn-primary modal-confirm">
+                        Ajouter
+                    </button>
+                    <button id="modal-manager-submit-edit" onclick="postEditRow('manager')" class="btn btn-primary modal-confirm hidden">
+                        Modifier
+                    </button>
+                    <button onclick="dismissManagerModal()" class="btn btn-default modal-dismiss">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load django_tables2 %}
+{% load compress %}
+
+{% block page_name %}
+    Consommateurs
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row">
+        <div class="col-md-6">
+            {% include "components/graphs/block_all_graphs.html" %}
+        </div>
+        <div class="col-md-6">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions form-inline">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">{{ zone_name }}</h2>
+                </header>
+                <div class="panel-body">
+                    <!-- Network users count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-home"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">Nous avons</h4>
+                                <div class="info">{{ consumer_groups }} foyers consommant de l'eau</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Network outlets count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">Nous avons</h4>
+                                <div class="info">{{ consumer_individuals }} consommateurs individuels</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Network outputted water count -->
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon-sm bg-primary">
+                                <i class="fa fa-money-bill"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">Pour la période en cours ({{ current_period }})</h4>
+                                <div class="info">{{ unpaid_bills }} foyers n'ont pas payé</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <section class="panel">
+        <header class="panel-heading">
+            <!-- Table block control actions -->
+            <div class="panel-actions form-inline">
+                <a id="call-consumer-modal" href="#modal-consumer" onclick="setupModalAdd()" class="modal-with-form fa fa-plus"></a>
+                <a id="print-consumer" href="#" class="fa fa-print"></a>
+                <a id="consumer-options" class="fas fa-cog"></a>
+                <a href="#" class="fa fa-caret-down"></a>
+            </div>
+            <h2 class="panel-title">Consommateurs</h2>
+        </header>
+        <div class="panel-body">
+            {% include "consumer_table.html" %}
+        </div>
+    </section>
+
+    <!-- Modal form to add/edit network element -->
+    <script src="{% static "consumerFormHandler.js"%}"></script>
+    <div id="modal-consumer" class="modal-block modal-block-primary mfp-hide">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 id="modal-title-add" class="panel-title hidden">Ajouter un Consommateur</h2>
+                <h2 id="modal-title-edit" class="panel-title hidden">Modifier un Consommateur</h2>
+            </header>
+            <div class="panel-body">
+                <div id="form-consumer-error" class="alert alert-danger hidden">
+                    <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
+                    <div id="form-consumer-error-msg"></div>
+                </div>
+                <form id="form-add-consumer" class="form-horizontal mb-lg">
+                    <div id="form-id-component" class="form-group mt-lg hidden">
+                        <label class="col-sm-3 control-label">Identifiant</label>
+                        <div class="col-sm-9">
+                            <input id="input-id" name="input-id" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">Nom</label>
+                        <div class="col-sm-9">
+                            <input id="input-last-name" name="input-last-name" class="form-control" required>
+                            <label id="input-last-name-error" class="error">Champ requis</label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">Prénom</label>
+                        <div class="col-sm-9">
+                            <input id="input-first-name" name="input-first-name" class="form-control">
+                            <label id="input-first-name-error" class="error">Champ requis</label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">Genre</label>
+                        <div class="col-sm-9">
+                            <select id="select-gender" name="gender" class="form-control">
+                                <option value="none">...</option>
+                                <option value="M">Homme</option>
+                                <option value="F">Femme</option>
+                                <option value="O">Autre</option>
+                            </select>
+                            <label id="select-gender-error" class="error">Champ requis</label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">Adresse</label>
+                        <div class="col-sm-9">
+                            <input id="input-address" name="input-address" class="form-control">
+                            <label id="input-address-error" class="error">Champ requis</label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">Téléphone</label>
+                        <div class="col-sm-9">
+                            <input id="input-phone" name="input-phone" type="number" class="form-control">
+                            <label id="input-phone-error" class="error">Format invalide (8 chiffres requis, ou laissez vide)</label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">Consommateurs à charge</label>
+                        <div class="col-sm-9">
+                            <input id="input-sub-consumers" name="sub-consumers" type="number" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-3 control-label">Sortie d'eau principale</label>
+                        <div class="col-sm-9">
+                            <select id="select-main-outlet" name="main-outlet" class="form-control">
+                                <option value="none">...</option>
+                                {% for water_outlet in water_outlets %}
+                                    <option value="{{ water_outlet.0 }}">{{ water_outlet.1 }}</option>
+                                {% endfor %}
+                            </select>
+                            <label id="select-main-outlet-error" class="error">Champ requis</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <footer class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button id="modal-submit-add" onclick="postNewRow('consumer')" class="btn btn-primary modal-confirm">
+                            Ajouter
+                        </button>
+                        <button id="modal-submit-edit" onclick="postEditRow('consumer')" class="btn btn-primary modal-confirm hidden">
+                            Modifier
+                        </button>
+                        <button onclick="dismissModal()" class="btn btn-default modal-dismiss">
+                            Annuler
+                        </button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </div>
+{% endblock %}
