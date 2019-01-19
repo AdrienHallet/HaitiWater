@@ -3,10 +3,12 @@ from django.http import HttpResponse
 from ..water_network.models import Element, Zone
 from ..consumers.models import Consumer
 from ..log.models import Transaction
+from ..report.models import Ticket
 from django.contrib.auth.models import User, Group
 
 
 success_200 = HttpResponse(status=200)
+
 
 def edit_water_element(request):
     id = request.POST.get("id", None)
@@ -75,6 +77,7 @@ def edit_ticket(request):
     if len(ticket) < 1:
         return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=404)
     ticket = ticket[0]
+    old = ticket.infos()
     id_outlet = request.POST.get("id_outlet", None)
     outlet = Element.objects.filter(id=id_outlet)
     if len(outlet) != 1:
@@ -86,6 +89,7 @@ def edit_ticket(request):
     ticket.comment = request.POST.get("comment", None)
     ticket.status = request.POST.get("state", None).upper()
     ticket.image = request.FILES.get("picture", None)
+    log_element(ticket, old, request)
     ticket.save()
     return success_200
 
