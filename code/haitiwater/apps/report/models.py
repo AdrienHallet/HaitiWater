@@ -15,6 +15,12 @@ class BreakType(Enum):
     OTHER = "Autre"
 
 
+class StatusType(Enum):
+    UNRESOLVED = "Non résolu"
+    RESOLVED = "Résolu"
+    CURRENT = "En cours de résolution"
+
+
 class Month(Enum):
     January = "Janvier"
     February = "Février"
@@ -48,6 +54,8 @@ class Ticket(models.Model):
     urgency = models.CharField("Niveau d'urgence", max_length=10, choices=[(i.name, i.value) for i in UrgencyType])
     type = models.CharField("Type de panne", max_length=10, choices=[(i.name, i.value) for i in BreakType])
     image = models.ImageField("Image", null=True) #This saves the image to server. We'll see if it stays
+    status = models.CharField("Etat de résolution", max_length=10, choices=[(i.name, i.value) for i in StatusType],
+                              default="UNRESOLVED")
 
     def descript(self):
         return [self.id, "", UrgencyType[self.urgency].value,
