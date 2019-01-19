@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 from enum import Enum
 from django.contrib.postgres.fields import ArrayField
+from ..utils.common_models import *
 
 #########
 # Enums #
@@ -47,6 +48,21 @@ class Zone(models.Model):
     def descript(self):
         return [self.id, self.name]
 
+    def infos(self):
+        result = {}
+        for field in Zone._meta.get_fields():
+            result[field.name] = self.__getattribute__(field.name)
+        return result
+
+    def log_add(self, transaction):
+        add("Zone", self.infos(), transaction)
+
+    def log_delete(self, transaction):
+        delete("Zone", self.infos(), transaction)
+
+    def log_edit(self, old, transaction):
+        edit("Zone", self.infos(), old, transaction)
+
 
 class Location(models.Model):
 
@@ -79,3 +95,18 @@ class Element(models.Model):
         tab = [self.id, ElementType[self.type].value, self.location,
                ElementStatus[self.status].value]
         return tab
+
+    def infos(self):
+        result = {}
+        for field in Element._meta.get_fields():
+            result[field.name] = self.__getattribute__(field.name)
+        return result
+
+    def log_add(self, transaction):
+        add("WaterElement", self.infos(), transaction)
+
+    def log_delete(self, transaction):
+        delete("WaterElement", self.infos(), transaction)
+
+    def log_edit(self, old, transaction):
+        edit("WaterElement", self.infos(), old, transaction)

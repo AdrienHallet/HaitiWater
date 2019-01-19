@@ -1,5 +1,6 @@
 from django.contrib.gis.db import models
 from ..water_network.models import Element
+from ..utils.common_models import *
 from enum import Enum
 
 
@@ -40,6 +41,21 @@ class Report(models.Model):
     price = models.FloatField("Prix au mètre cube")
     recette = models.FloatField("Recettes du mois")
 
+    def infos(self):
+        result = {}
+        for field in Report._meta.get_fields():
+            result[field.name] = self.__getattribute__(field.name)
+        return result
+
+    def log_add(self, transaction):
+        add("Report", self.infos(), transaction)
+
+    def log_delete(self, transaction):
+        delete("Report", self.infos(), transaction)
+
+    def log_edit(self, old, transaction):
+        edit("Report", self.infos(), old, transaction)
+
 
 class Ticket(models.Model):
     water_outlet = models.ForeignKey(Element, verbose_name="Sortie d'eau concernée",
@@ -53,3 +69,18 @@ class Ticket(models.Model):
         return [self.id, "", UrgencyType[self.urgency].value,
                 self.water_outlet.name, BreakType[self.type].value,
                 self.comment, ""]
+
+    def infos(self):
+        result = {}
+        for field in Ticket._meta.get_fields():
+            result[field.name] = self.__getattribute__(field.name)
+        return result
+
+    def log_add(self, transaction):
+        add("Ticket", self.infos(), transaction)
+
+    def log_delete(self, transaction):
+        delete("Ticket", self.infos(), transaction)
+
+    def log_edit(self, old, transaction):
+        edit("Ticket", self.infos(), old, transaction)

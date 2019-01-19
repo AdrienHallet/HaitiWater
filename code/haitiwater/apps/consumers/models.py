@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 from ..water_network.models import Location, Element, ElementType
 from ..log.utils import *
+from ..utils.common_models import *
 
 
 class Person(models.Model):
@@ -38,19 +39,10 @@ class Consumer(Person):
         return result
 
     def log_add(self, transaction):
-        for field in Consumer._meta.get_fields():
-            log_add("Consumer", field.name, self.__getattribute__(field.name), transaction)
+        add("Consumer", self.infos(), transaction)
 
     def log_delete(self, transaction):
-        for field in Consumer._meta.get_fields():
-            log_delete("Consumer", field.name, self.__getattribute__(field.name), transaction)
+        delete("Consumer", self.infos(), transaction)
 
     def log_edit(self, old, transaction):
-        print("log edit")
-        print(self)
-        print(old)
-        for field, value in self.infos().items():
-            if str(value) != str(old[field]):
-                print(value)
-                print(old[field])
-                log_edit("Consumer", field, old[field], value, transaction)
+        edit("Conumer", self.infos(), old, transaction)

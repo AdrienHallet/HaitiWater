@@ -1,18 +1,10 @@
-import re
-from django.http import HttpResponse
-
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 
 from ..log.models import Transaction
-from ..water_network.models import Element, ElementType, Zone
-from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
-from django.contrib.auth.models import User, Group
+from ..water_network.models import ElementType
 from ..api.get_table import *
 
-from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
 import json
 
 success_200 = HttpResponse(status=200)
@@ -35,9 +27,7 @@ def add_consumer_element(request):
     new_c = Consumer(last_name=last_name, first_name=first_name,
                           gender=gender, location=address, phone_number=phone,
                           email="", household_size=sub, water_outlet=outlet) #Creation
-    transaction = Transaction(user=request.user)
-    transaction.save()
-    new_c.log_add(transaction)
+    log_element(new_c, request)
     new_c.save()
     return success_200
 
@@ -50,6 +40,7 @@ def add_network_element(request):
     zone = request.user.profile.zone
     e = Element(name=string_type+" "+loc, type=type, status=state,
                 location=loc, zone=zone) #Creation
+    log_element(e, request)
     e.save()
     return success_200
 
@@ -71,6 +62,7 @@ def add_report_element(request):
         report_line = Report(water_outlet=outlet, was_active=active,
                              quantity_distributed=meters_distr, price=value_meter,
                              month=month, year=year, recette=recette)
+        log_element(report_line, request)
         report_line.save()
     return success_200
 
@@ -86,6 +78,7 @@ def add_zone_element(request):
                 if z.name == super.name: #If the zone is the superZone
                     z.subzones.append(name)
                     z.save()
+            log_element(to_add, request)
             to_add.save()
             return success_200
         else:
@@ -141,6 +134,7 @@ def add_collaborator_element(request):
         fail_silently=False,
     )
     new_user.save()
+    log_element(new_user.profile, request)
     return success_200
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
@@ -157,5 +151,12 @@ def add_ticket_element(request):
         image = request.FILES.get("picture", None)
         ticket = Ticket(water_outlet=outlet, type=typeR, comment=comment,
                         urgency=urgency, image=image)
+        log_element(ticket, request)
         ticket.save()
     return success_200
+
+
+def log_element(elem, request):
+    transaction = Transaction(user=request.user)
+    transaction.save()
+    elem.log_add(transaction)
