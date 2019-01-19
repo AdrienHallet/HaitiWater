@@ -5,6 +5,7 @@
     <section class="panel">
         <header class="panel-heading">
             <h2 id="modal-title-add" class="panel-title">Signaler un problème</h2>
+            <h2 id="modal-title-edit" class="panel-title">Editer un problème</h2>
         </header>
         <div class="panel-body">
             <div id="form-ticket-error" class="alert alert-danger hidden">
@@ -62,6 +63,16 @@
                         <label id="input-comment-error" class="error">Champ requis</label>
                     </div>
                 </div>
+                <div id="select-state-group" class="form-group mt-lg">
+                    <label class="col-sm-3 control-label">Statut</label>
+                    <div class="col-sm-9">
+                        <select id="select-state" name="outlet" class="form-control">
+                            <option value="unresolved">Non-résolu</option>
+                            <option value="resolved">Résolu</option>
+                        </select>
+                        <label id="select-state-error" class="error">Champ requis</label>
+                    </div>
+                </div>
                 <div class="form-group mt-lg">
                     <label class="col-sm-3 control-label">(Optionnel) Photographie</label>
                     <div class="col-sm-9">
@@ -74,10 +85,13 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <button id="modal-submit-add" onclick="sendTicket()" class="btn btn-primary modal-confirm">
+                    <button id="modal-submit-add" onclick="sendTicket('add')" class="btn btn-primary modal-confirm">
                         Envoyer
                     </button>
-                    <button onclick="dismissModal()" class="btn btn-default modal-dismiss">
+                    <button id="modal-submit-edit" onclick="sendTicket('edit')" class="btn btn-primary modal-confirm">
+                        Modifier
+                    </button>
+                    <button onclick="dismissTicketModal()" class="btn btn-default modal-dismiss">
                         Annuler
                     </button>
                 </div>
