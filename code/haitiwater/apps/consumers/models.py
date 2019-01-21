@@ -34,8 +34,12 @@ class Consumer(Person):
 
     def infos(self):
         result = {}
+        print("infos")
         for field in Consumer._meta.get_fields():
-            result[field.name] = self.__getattribute__(field.name)
+            if field.name == "water_outlet":
+                result[field.name] = self.water_outlet.id
+            else:
+                result[field.name] = self.__getattribute__(field.name)
         return result
 
     def log_add(self, transaction):

@@ -81,7 +81,10 @@ class Ticket(models.Model):
     def infos(self):
         result = {}
         for field in Ticket._meta.get_fields():
-            result[field.name] = self.__getattribute__(field.name)
+            if field.name == "water_outlet":
+                result[field.name] = self.water_outlet.id
+            else:
+                result[field.name] = self.__getattribute__(field.name)
         return result
 
     def log_add(self, transaction):

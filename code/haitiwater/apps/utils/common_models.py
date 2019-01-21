@@ -12,6 +12,13 @@ def delete(name, infos, transaction):
 
 
 def edit(name, infos, old, transaction):
+    edited = False
+    id = -1
     for field, value in infos.items():
         if str(value) != str(old[field]):
             log_edit(name, field, str(old[field]), str(value), transaction)
+            edited = True
+        if field == "id":
+            id = str(value)
+    if edited:
+        log_edit(name, "id", id, id, transaction)

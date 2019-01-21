@@ -28,7 +28,6 @@ def add_consumer_element(request):
                           gender=gender, location=address, phone_number=phone,
                           email="", household_size=sub, water_outlet=outlet) #Creation
     log_element(new_c, request)
-    new_c.save()
     return success_200
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
@@ -41,7 +40,6 @@ def add_network_element(request):
     e = Element(name=string_type+" "+loc, type=type, status=state,
                 location=loc, zone=zone) #Creation
     log_element(e, request)
-    e.save()
     return success_200
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
@@ -63,7 +61,6 @@ def add_report_element(request):
                              quantity_distributed=meters_distr, price=value_meter,
                              month=month, year=year, recette=recette)
         log_element(report_line, request)
-        report_line.save()
     return success_200
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
@@ -74,12 +71,16 @@ def add_zone_element(request):
         if len(result) == 1:
             super = result[0]
             to_add = Zone(name=name, superzone=super, subzones=[name])
-            for z in Zone.objects.all():
-                if z.name == super.name: #If the zone is the superZone
-                    z.subzones.append(name)
-                    z.save()
+            up = True
+            while up:
+                super.subzones.append(name)
+                super.save()
+                super = super.superzone
+                if super == None:
+                    up = False
+
+
             log_element(to_add, request)
-            to_add.save()
             return success_200
         else:
             return HttpResponse("Impossible de trouver la zone gérée pas l'utilisateur", status=404)
@@ -133,7 +134,6 @@ def add_collaborator_element(request):
         [email],
         fail_silently=False,
     )
-    new_user.save()
     log_element(new_user.profile, request)
     return success_200
 
@@ -152,11 +152,11 @@ def add_ticket_element(request):
         ticket = Ticket(water_outlet=outlet, type=typeR, comment=comment,
                         urgency=urgency, image=image)
         log_element(ticket, request)
-        ticket.save()
     return success_200
 
 
 def log_element(elem, request):
     transaction = Transaction(user=request.user)
     transaction.save()
+    elem.save()
     elem.log_add(transaction)

@@ -57,6 +57,7 @@ def table(request):
                       "editable": true,
                       "data": []
                     }"""
+    get_logs(request)
     json_test = json.loads(export)
     json_test["draw"] = str(int(request.GET.get('draw', "1")) + 1)
     d = parse(request)
@@ -204,8 +205,6 @@ def edit_element(request):
     elif element == "zone":
         return edit_zone(request)
     elif element == "ticket":
-        print("Edit ticket !")
-        print(request.POST)
         return edit_ticket(request)
     elif element == "manager":
         return edit_manager(request)
@@ -230,9 +229,166 @@ def get_logs(request):
             if(indiv.new_value):
                 print("Column : "+indiv.column_name)
                 print("Value : "+indiv.new_value)
+        roll_back(t)
     #Remove transactions and logs when accepted/discarded
     return success_200
 
+def roll_back(transaction):
+    logs = Log.objects.filter(transaction=transaction)
+    if logs[0].action == "EDIT": #Edit case
+        elements = get_elem_logged(logs)
+        tables = []
+        print(elements)
+        for log in logs:
+            if log.column_name == "id":
+                tables.append(log.table_name)
+        for number, table in enumerate(tables):
+            roll_back_item(elements[number], {log.column_name: log.old_value
+                       for log in logs
+                       if log.table_name == table and log.column_name != "id"})
+    elif logs[0].action == "ADD": #Add case
+        elements = get_elem_logged(logs)
+        for elem in elements:
+            elem.delete()
+        for log in logs:
+            log.delete()
+        transaction.delete()
+    elif logs[0].action == "DELETE": #Delete case
+        re_add_item(logs)
+        for log in logs:
+            log.delete()
+        transaction.delete()
+
+def roll_back_item(item, values):
+    for field, value in values.items():
+        item.__setattr__(field, value)
+    item.save()
+
+
+def re_add_item(logs):
+    tables = []
+    for log in logs:
+        if log.column_name == "id":
+            tables.append(log.table_name)
+    for table in tables:
+        restore_item({log.column_name: log.old_value
+                       for log in logs
+                       if log.table_name == table and log.column_name != "id"},
+                      table)
+
+def restore_item(dict, table):
+    if table == "Consumer":
+        outlet = Element.objects.filter(id=dict["water_outlet"])
+        if len(outlet) != 1:
+            return HttpResponse("Impossible de restaurer cet élément", status=500)
+        outlet = outlet[0]
+        restored = Consumer(last_name=dict["last_name"], first_name=dict["first_name"],
+                          gender=dict["gender"], location=dict["location"], phone_number=dict["phone_number"],
+                          email="", household_size=dict["household_size"], water_outlet=outlet)
+        restored.save()
+    elif table == "Ticket":
+        outlet = Element.objects.filter(id=dict["water_outlet"])
+        if len(outlet) != 1:
+            return HttpResponse("Impossible de restaurer cet élément", status=500)
+        outlet = outlet[0]
+        restored = Ticket(water_outlet=outlet, type=dict["type"],
+                          comment=dict["comment"], urgency=dict["urgency"], image=None)
+        restored.save()
+    elif table == "WaterElement":
+        zone = Zone.objects.filter(id=dict["zone"])
+        if len(zone) != 1:
+            return HttpResponse("Impossible de restaurer cet élément", status=500)
+        zone = zone[0]
+        restored = Element(name=dict["name"], type=dict["type"],
+                           status=dict["status"], location=dict["location"],
+                           zone=zone)
+        restored.save()
+    elif table == "Zone":
+        super_zone = Zone.objects.filter(id=dict["superzone"])
+        if len(super_zone) != 1:
+            return HttpResponse("Impossible de restaurer cet élément", status=500)
+        super_zone = super_zone[0]
+        restored = Zone(name=dict["name"], superzone=super_zone, subzones=[dict["name"]])
+        up = True
+        while up:
+            super_zone.subzones.append(dict["name"])
+            super_zone.save()
+            super_zone = super_zone.superzone
+            if super_zone == None:
+                up = False
+        restored.save()
+    elif table == "Report":
+        pass
+    elif table == "User":
+        password = User.objects.make_random_password()  # New random password
+        user = User.objects.create_user(username=dict["identifiant"],
+                                        email=dict["email"],
+                                        password=password,
+                                        first_name=dict["first_name"],
+                                        last_name=dict["last_name"])
+
+        if dict["role"] == "Gestionnaire de fontaine":
+            water_out = dict["outlets"]
+            if len(water_out) < 1:
+                return HttpResponse("Vous n'avez pas choisi de fontaine a attribuer !", status=500)
+            if len(water_out) > 1:
+                res = Element.objects.filter(id__in=water_out)
+            else:
+                res = Element.objects.filter(id=water_out)
+            if len(res) > 0:
+                for outlet in res:
+                    user.profile.outlets.append(outlet.id)
+            else:
+                return HttpResponse("Impossible d'attribuer cette fontaine au gestionnaire", status=404)
+            my_group = Group.objects.get(name='Gestionnaire de fontaine')
+            my_group.user_set.add(user)
+        elif dict["role"] == "Gestionnaire de zone":
+            zone = dict["zone"]
+            res = Zone.objects.filter(id=zone)
+            if len(res) == 1:
+                user.profile.zone = res[0]
+            else:
+                return HttpResponse("Impossible d'attribuer cette zone au gestionnaire", status=404)
+            my_group = Group.objects.get(name='Gestionnaire de zone')
+            my_group.user_set.add(user)
+        else:
+            user.delete()
+            return HttpResponse("Impossible d'ajouter l'utilisateur", status=500)
+        send_mail(
+            'Changement de mot de passe.',
+            'Votre compte haitiwater a été modifié, vous devez donc en changer le mot de passe.'+
+            '\nVoici votre nouveau mot de passe autogénéré : ' + password +
+            '\nVeuillez vous connecter pour le modifier.\nPour rappel, ' +
+            'votre identifiant est : ' + dict["identifiant"],
+            '',
+            [dict["email"]],
+            fail_silently=False,
+        )
+
+def get_elem_logged(logs):
+    ids = []
+    tables = []
+    for elem in logs:
+        if elem.column_name =="id":
+            ids.append(elem.new_value)
+            tables.append(elem.table_name)
+    elems = []
+    for number, table in enumerate(tables):
+        elem = None
+        if table == "Consumer":
+            elem = Consumer.objects.filter(id=ids[number])[0]
+        elif table == "Ticket":
+            elem = Ticket.objects.filter(id=ids[number])[0]
+        elif table == "WaterElement":
+            elem = Element.objects.filter(id=ids[number])[0]
+        elif table == "Zone":
+            elem = Zone.objects.filter(id=ids[number])[0]
+        elif table == "Report":
+            elem = Report.objects.filter(id=ids[number])[0]
+        elif table == "User":
+            elem = User.objects.filter(id=ids[number])[0]
+        elems.append(elem)
+    return elems
 
 def log_element(element, request):
     transaction = Transaction(user=request.user)

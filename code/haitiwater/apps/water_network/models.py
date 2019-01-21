@@ -51,7 +51,10 @@ class Zone(models.Model):
     def infos(self):
         result = {}
         for field in Zone._meta.get_fields():
-            result[field.name] = self.__getattribute__(field.name)
+            if field.name == "superzone":
+                result[field.name] = self.superzone.id
+            else:
+                result[field.name] = self.__getattribute__(field.name)
         return result
 
     def log_add(self, transaction):
@@ -99,7 +102,10 @@ class Element(models.Model):
     def infos(self):
         result = {}
         for field in Element._meta.get_fields():
-            result[field.name] = self.__getattribute__(field.name)
+            if field.name == "zone":
+                result[field.name] = self.zone.id
+            else:
+                result[field.name] = self.__getattribute__(field.name)
         return result
 
     def log_add(self, transaction):

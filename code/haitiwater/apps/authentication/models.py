@@ -19,9 +19,12 @@ class Profile(models.Model):
         result["first_name"] = self.user.first_name
         result["last_name"] = self.user.last_name
         result["email"] = self.user.email
-        result["role"] = self.user.groups
+        result["role"] = self.user.groups.values_list('name',flat=True)[0]
+        print(result["role"])
         for field in Profile._meta.get_fields():
             result[field.name] = self.__getattribute__(field.name)
+            if field.name == "zone":
+                result[field.name] = self.zone.id
         return result
 
     def log_add(self, transaction):
