@@ -87,6 +87,8 @@ def table(request):
         all = get_manager_elements(request, json_test, d)
     elif d["table_name"] == "ticket":
         all = get_ticket_elements(request, json_test, d)
+    else:
+        return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
     if all is False: #There was a problem when retrieving the data
         return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
@@ -184,7 +186,6 @@ def edit_element(request):
     elif element == "zone":
         return edit_zone(request)
     elif element == "ticket":
-        print("Edit ticket !")
         print(request.POST)
         return edit_ticket(request)
     elif element == "manager":
