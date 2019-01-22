@@ -238,7 +238,6 @@ def roll_back(transaction):
     if logs[0].action == "EDIT": #Edit case
         elements = get_elem_logged(logs)
         tables = []
-        print(elements)
         for log in logs:
             if log.column_name == "id":
                 tables.append(log.table_name)
@@ -246,6 +245,10 @@ def roll_back(transaction):
             roll_back_item(elements[number], {log.column_name: log.old_value
                        for log in logs
                        if log.table_name == table and log.column_name != "id"})
+
+        for log in logs:
+            log.delete()
+        transaction.delete()
     elif logs[0].action == "ADD": #Add case
         elements = get_elem_logged(logs)
         for elem in elements:
