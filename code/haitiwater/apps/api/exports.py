@@ -125,7 +125,7 @@ def remove_element(request):
         id = request.POST.get("id", None)
         consumers = Consumer.objects.filter(water_outlet=id)
         if len(consumers) > 0: #Can't suppress outlets with consummers
-            return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à" +
+            return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à " +
                                 "des consommateurs", status=500)
         Element.objects.filter(id=id).delete()
         tickets = Ticket.objects.filter(water_outlet=id)
