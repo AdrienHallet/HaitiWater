@@ -3,6 +3,11 @@
 
 {% block page_name %}
     <script src="{% static "report.js" %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('span.username').html(localStorage.getItem("username"));
+        });
+    </script>
     Page hors-connexion
 {% endblock %}
 
@@ -14,7 +19,26 @@
             <p class="panel-subtitle">Il semble que vous n'avez pas de connexion internet.</p>
         </header>
         <div class="panel-body">
-            <p>Cette page vous permettra de compléter votre <a id="show-monthly-report-modal" class="modal-with-form" role="button" href="#modalMonthlyReport" onclick="showModal('#show-monthly-report-modal')">rapport mensuel</a>.</p>
+            <p>Vous étiez connecté précédemment en tant que : <span class="username"></span></p>
+            <p>
+                Cette page vous permettra de compléter votre
+                <a id="show-monthly-report-modal" class="modal-with-form" role="button" href="#modalMonthlyReport" onclick="showModal('#show-monthly-report-modal')">
+                    rapport mensuel
+                </a>.
+            </p>
+            <p>
+                Hors connexion, il n'est pas possible d'envoyer de rapport.
+                Cependant vous pouvez déjà le compléter et sauvegarder les données.
+                Lorsque la connexion sera revenue, vous trouverez le rapport pré-rempli dans le formulaire d'envoi.
+                Vous pourrez alors l'envoyer, ou bien modifier d'abord les données.
+            </p>
+            <p>
+                Attention, il est possible que la liste des fontaines disponibles pour remplir le rapport soit dépassée.
+                <ul>
+                    <li>S'il manque une fontaine, vous devrez attendre le retour de la connexion pour compléter le rapport.</li>
+                    <li>Si un fontaine ne devrait pas être disponible, les données que vous avez complétés pour cette fontaine ne seront juste pas considérées.</li>
+                </ul>
+            </p>
         </div>
     </section>
 

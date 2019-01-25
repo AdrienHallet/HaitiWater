@@ -115,7 +115,8 @@ $(document).ready(function() {
 		},
 		onTabChange: function( tab, navigation, index, newindex ) {
 			var $total = navigation.find('li').size() - 1;
-			$wizardMonthlyReportfinish[ newindex !== $total ? 'addClass' : 'removeClass' ]( 'hidden' );
+			$wizardMonthlyReportfinish[ location.pathname === '/offline/' || newindex !== $total ?
+				'addClass' : 'removeClass' ]( 'hidden' );
 			$wizardMonthlyReportSave[ newindex !== $total ? 'addClass' : 'removeClass' ]( 'hidden' );
 			wizardReport.find(this.nextSelector)[ newindex === $total ? 'addClass' : 'removeClass' ]( 'hidden' );
 		},
@@ -319,7 +320,6 @@ function validateStepTwo(){
 			}
 		)
     });
-    console.log(this.monthlyReport);
     return isValid;
 }
 
@@ -354,6 +354,17 @@ function validateStepThree(){
  * complete form values depending on the saved data
  */
 function setupStepOne(savedData){
+	const outlets = JSON.parse(localStorage.getItem("outlets"));
+
+	if (location.pathname === '/offline/') {
+		$("#multiselect-outlets").html();
+		for (let i = 0; i < outlets.length; i++) {
+			const outlet = outlets[i];
+			const option = "<option value='" + outlet[0] + "'>" + outlet[1] + "</option>";
+			$("#multiselect-outlets").append(option);
+		}
+	}
+
 	if (savedData) {
 		if (savedData.selectedOutlets) {
 			savedData.selectedOutlets.forEach(function (value) {
@@ -565,7 +576,9 @@ function setupConfirmation(){
 			"<ul>" +
 			selectionAsHTMLList +
 			"</ul>"+
-			"Cette opération est irréversible, cliquez sur \"Terminer\" pour confirmer l'envoi." +
+			"Cette opération est irréversible, cliquez sur \"Terminer\" pour confirmer l'envoi. <br>" +
+			"Cliquez sur \"Sauvegarder\" pour sauvegarder les informations sans les envoyer. " +
+			"Vous pourrez encore les modifier en revenant sur ce formulaire." +
 			"</div>");
 }
 
