@@ -45,7 +45,7 @@ function removeElement(table, id){
                 console.log("POST error on remove element");
                 new PNotify({
                     title: 'Échec!',
-                    text: "L'élement n'a pas pu être supprimé",
+                    text: xhttp.responseText,
                     type: 'error'
                 });
             } else {

@@ -14,12 +14,12 @@ class LoginAfterPasswordChangeView(PasswordChangeView):
     def success_url(self):
         return reverse_lazy('login')
 
-login_after_password_change = login_required(LoginAfterPasswordChangeView.as_view(template_name='password.html'))
+login_after_password_change = login_required(LoginAfterPasswordChangeView.as_view(template_name='profile.html'))
 
 urlpatterns = [
-    url(r'^editer/changer-mot-de-passe/$', login_after_password_change,
+    url(r'^editer/$', login_after_password_change,
         name="change"),
-    path('editer/', views.profile, name='profile'),
+    #path('editer/', views.profile, name='profile'),
     path('editer/infos/', exports.edit, name='profile'),
     path('', views.index, name='auth'),
 ]

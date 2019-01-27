@@ -79,6 +79,8 @@ def table(request):
         all = get_manager_elements(request, json_test, d)
     elif d["table_name"] == "ticket":
         all = get_ticket_elements(request, json_test, d)
+    else:
+        return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
     if all is False: #There was a problem when retrieving the data
         return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
     final = sorted(all, key=lambda x: x[d["column_ordered"]],
@@ -114,7 +116,7 @@ def remove_element(request):
         id = request.POST.get("id", None)
         consumers = Consumer.objects.filter(water_outlet=id)
         if len(consumers) > 0: #Can't suppress outlets with consummers
-            return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à" +
+            return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à " +
                                 "des consommateurs", status=500)
         elem_delete = Element.objects.filter(id=id)
         if len(elem_delete) != 1:
