@@ -1,12 +1,9 @@
-import json
-
-from decimal import Decimal, ROUND_HALF_UP
-from django.http import HttpResponse
 
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
 from ..water_network.models import Element, Zone
-from django.contrib.auth.models import User, Group
+from ..log.models import Transaction, Log
+from django.contrib.auth.models import User
 
 
 def add_with_search(parsed, values):
@@ -168,4 +165,27 @@ def get_ticket_elements(request, json, parsed):
                             all.append(tab)
                             break
         json["recordsTotal"] = tot
+    return all
+
+
+def get_logs_elements(request, json, parsed):
+    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates())
+    all = []
+    tot = 0
+    for t in transactions:
+        logs = Log.objects.filter(transaction=t)
+        item = {"id": t.id, "time": str(t.timestamp.date()),
+                "type": logs[0].action, "user": t.user.username,
+                "summary": logs[0].table_name, "details": "TODO"}
+        if parsed["search"] == "":
+            all.append(item)
+            tot += 1
+        else:
+            for cols in parsed["searchable"]:
+                if cols < len(item) and parsed["search"].lower() in item.keys() \
+                        or parsed["search"].lower() in item.values():
+                    all.append(item)
+                    tot += 1
+                    break
+    json["recordsTotal"] = tot
     return all

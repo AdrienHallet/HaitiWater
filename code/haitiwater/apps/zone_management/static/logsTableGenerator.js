@@ -69,7 +69,7 @@ function getLogsTableConfiguration(dataURL){
                 "defaultContent": getLogsActionButtonsHTML()
             }
         ],
-        "order": [[1, 'asc']]
+        "order": [[1, 'asc']],
         "searching": false,
         "sortable": true,
         "processing": true,

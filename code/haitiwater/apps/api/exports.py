@@ -57,7 +57,6 @@ def table(request):
                       "editable": true,
                       "data": []
                     }"""
-    get_logs(request)
     json_test = json.loads(export)
     json_test["draw"] = str(int(request.GET.get('draw', "1")) + 1)
     d = parse(request)
@@ -79,11 +78,17 @@ def table(request):
         all = get_manager_elements(request, json_test, d)
     elif d["table_name"] == "ticket":
         all = get_ticket_elements(request, json_test, d)
+    elif d["table_name"] == "logs":
+        all = get_logs_elements(request, json_test, d)
     else:
         return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
     if all is False: #There was a problem when retrieving the data
         return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
-    final = sorted(all, key=lambda x: x[d["column_ordered"]],
+    if d["table_name"] == "logs":
+        final = sorted(all,
+                       reverse=d["type_order"] != "asc")
+    else:
+        final =sorted(all, key=lambda x: x[d["column_ordered"]],
                    reverse=d["type_order"] != "asc")
     if d["length_max"] == -1:
         json_test["data"] = final
@@ -213,27 +218,6 @@ def edit_element(request):
     else:
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)
-
-
-def get_logs(request):
-    print("LOGS")
-    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates())
-    all_logs = []
-    for t in transactions:
-        logs = Log.objects.filter(transaction=t)
-        all_logs.append(logs)
-    for number, elem in enumerate(all_logs):
-        print("Changed by : "+str(transactions[number].user))
-        print("Table : "+elem[0].table_name)
-        print("Action : "+elem[0].action)
-        #Make changes for all types of actions
-        for indiv in elem:
-            if(indiv.new_value):
-                print("Column : "+indiv.column_name)
-                print("Value : "+indiv.new_value)
-        roll_back(t)
-    #Remove transactions and logs when accepted/discarded
-    return success_200
 
 def roll_back(transaction):
     logs = Log.objects.filter(transaction=transaction)
