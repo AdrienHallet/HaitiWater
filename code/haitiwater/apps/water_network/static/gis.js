@@ -8,8 +8,7 @@ function waterGISInit(map, options) {
     map.setView(MAP_CENTER, 8);
 
     var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            osmAttrib = '',
-            osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib }),
+            osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: '' }),
             drawnItems = L.featureGroup().addTo(map);
 
     // Enable drawing
