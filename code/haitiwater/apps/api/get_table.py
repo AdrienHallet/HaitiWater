@@ -175,7 +175,7 @@ def get_logs_elements(request, json, parsed):
     for t in transactions:
         logs = Log.objects.filter(transaction=t)
         item = {"id": t.id, "time": str(t.timestamp.date()),
-                "type": logs[0].action, "user": t.user.username,
+                "type": logs[0].get_action(), "user": t.user.username,
                 "summary": logs[0].table_name, "details": "TODO"}
         if parsed["search"] == "":
             all.append(item)

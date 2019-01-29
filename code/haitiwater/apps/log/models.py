@@ -27,3 +27,6 @@ class Log(models.Model):
     new_value = models.CharField("Nouvelle valeur", max_length=200, null=True)
     transaction = models.ForeignKey(Transaction, verbose_name="Ensemble de modifications",
                                     related_name="transaction", null=False, on_delete=models.CASCADE)
+
+    def get_action(self):
+        return ActionType[self.action].value
