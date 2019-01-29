@@ -1,15 +1,24 @@
 from django.conf.urls import url
-from django.urls import path
+from django.contrib.auth.decorators import login_required
+from django.urls import path, reverse_lazy
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import PasswordChangeView
 from . import forms
 from . import views
 from . import exports
 
+
+# views.py
+class LoginAfterPasswordChangeView(PasswordChangeView):
+    @property
+    def success_url(self):
+        return reverse_lazy('login')
+
+login_after_password_change = login_required(LoginAfterPasswordChangeView.as_view(template_name='password.html'))
+
 urlpatterns = [
-    url(r'^editer/changer-mot-de-passe/$', auth_views.PasswordChangeView.as_view(template_name='password.html'),
+    url(r'^editer/changer-mot-de-passe/$', login_after_password_change,
         name="change"),
-    url(r'^editer/changer-mot-de-passe/fait/$', auth_views.PasswordChangeDoneView.as_view(
-        template_name='password_changed.html'), name="changedone"),
     path('editer/', views.profile, name='profile'),
     path('editer/infos/', exports.edit, name='profile'),
     path('', views.index, name='auth'),
