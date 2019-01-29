@@ -101,13 +101,13 @@ def add_collaborator_element(request):
     type = request.POST.get("type", None)
     if type == "fountain-manager":
         water_out = request.POST.get("outlets", None)
-        print(water_out)
+        water_out = water_out.split(',')
         if len(water_out) < 1:
             return HttpResponse("Vous n'avez pas choisi de fontaine a attribuer !", status=500)
-        if len(water_out) > 1:
+        elif len(water_out) > 1:
             res = Element.objects.filter(id__in=water_out)
         else:
-            res = Element.objects.filter(id=water_out)
+            res = Element.objects.filter(id=water_out[0])
         if len(res) > 0:
             for outlet in res:
                 new_user.profile.outlets.append(outlet.id)
