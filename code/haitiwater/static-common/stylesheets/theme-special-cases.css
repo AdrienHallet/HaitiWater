@@ -1,3 +1,8 @@
+/* Leaflet CSS */
+.leaflet-container{
+    height: 500px;
+}
+
 /* Force center whatever happens */
 .all-center {
      vertical-align: middle !important;

@@ -29,7 +29,7 @@ COMPRESS_JS_FILTERS = [
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
 PROJECT_DIR = os.getcwd()
-APPS_DIR = os.path.join(PROJECT_DIR, 'apps/')
+APPS_DIR = os.path.join(PROJECT_DIR, 'apps')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -73,8 +73,16 @@ INSTALLED_APPS = [
     'django_tables2',
     'bootstrap3',
     'widget_tweaks',
-    'chartjs'
+    'chartjs',
+    'leaflet'
 ]
+
+# Leaflet configuration
+LEAFLET_CONFIG = {
+    'ATTRIBUTION_PREFIX': '',
+    'SCALE': 'both',
+    'RESET_VIEW': False,
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -129,7 +137,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'haitiwater',
         'HOST': 'localhost',
-        'PORT': '5433',
+        'PORT': '5432',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
     }
@@ -183,12 +191,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(os.getcwd(), 'static/')
+STATIC_ROOT = os.path.join(os.getcwd(), 'static')
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
-    os.path.join(os.getcwd(), 'static-common/'),
+    os.path.join(os.getcwd(), 'static-common'),
 ]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [

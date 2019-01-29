@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load leaflet_tags %}
+
+{% block page_name %}
+    {% leaflet_css %}
+    {% leaflet_js %}
+    <link rel="stylesheet" href="{% static "vendor/leaflet/draw.css" %}">
+    <script src="{% static "vendor/leaflet/draw.js" %}"></script>
+    <script src="{% static "gis.js" %}"></script>
+    Vue géographique
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-9">
+            {% leaflet_map "water-network-map" callback="waterGISInit" %}
+        </div>
+        <div class="col-md-3">
+            <button onClick="drawTest();">Test</button>
+        </div>
+    </div>
+    <di
+{% endblock %}
