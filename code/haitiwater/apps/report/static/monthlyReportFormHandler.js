@@ -577,7 +577,7 @@ function setupConfirmation(){
 			selectionAsHTMLList +
 			"</ul>"+
 			"Cette opération est irréversible, cliquez sur \"Terminer\" pour confirmer l'envoi. <br>" +
-			"Cliquez sur \"Sauvegarder\" pour sauvegarder les informations sans les envoyer. " +
+			"Cliquez sur \"Sauvegarder\" pour sauvegarder les informations sans les envoyer. <br>" +
 			"Vous pourrez encore les modifier en revenant sur ce formulaire." +
 			"</div>");
 }
