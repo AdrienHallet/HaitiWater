@@ -171,7 +171,7 @@
 					<div id="userbox" class="userbox">
 						<a href="#" data-toggle="dropdown">
 							<div class="profile-info">
-                                {% if user.is_authenticated %}
+                                {% if request.path != '/offline/' and user.is_authenticated %}
 								    <span class="name">{{ user.get_username }}</span>
 								    <span class="role">{{ user|get_group }}</span>
 							</div>
