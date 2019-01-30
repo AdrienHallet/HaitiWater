@@ -17,7 +17,7 @@ function drawLogTable(){
     $('#datatable-logs').DataTable(getLogsTableConfiguration(dataURL));
     let table = $('#datatable-logs').DataTable();
 
-    $('#datatable-logs tbody').on( 'click', 'tr', function () {
+    $('#datatable-logs tbody').on( 'click', 'tr td:not(:last-child)', function () {
         var tr = $(this);
         var row = table.row( tr );
 
@@ -35,15 +35,44 @@ function drawLogTable(){
 
     $('#datatable-logs tbody').on( 'click', '.revert-modification', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
-        if (confirm("Voulez-vous annuler: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
-            revertModification("water_element", data[0].innerText);
-        } else {}
+        revertModification(data[0].innerText);
     } );
-    $('#datatable-water_element tbody').on( 'click', '.accept-modification', function () {
+    $('#datatable-logs tbody').on( 'click', '.accept-modification', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
-        acceptModification(data);
+        acceptModification(data[0].innerText);
     } );
-    prettifyHeader('logs');
+    //prettifyHeader('logs');
+}
+
+function revertModification(elementID){
+    let url = '../../api/log?action=revert&id=' + elementID;
+    requestHandler(url);
+}
+
+function acceptModification(elementID){
+    let url = '../../api/log?action=accept&id=' + elementID;
+    requestHandler(url);
+}
+
+function requestHandler(url){
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+            drawLogTable();
+        }
+        else if (this.readyState == 4){
+            console.log(this);
+            new PNotify({
+                title: 'Échec!',
+                text: "Opération impossible: " + this.statusText,
+                type: 'error'
+            });
+        }
+    }
+
+    xhttp.open('POST', url, true);
+    xhttp.send();
 }
 
 function getLogsTableConfiguration(dataURL){
