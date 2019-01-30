@@ -129,7 +129,7 @@ def get_quantity_distributed(request):
         if len(report) == 1:
             report = report[0]
             total += report.quantity_distributed
-    return [total, total*264.17] #m3, gals
+    return [total, round(total*264.17, 3)] #m3, gals
 
 
 

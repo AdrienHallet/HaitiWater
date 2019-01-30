@@ -413,7 +413,7 @@ function setupStepTwo(savedData){
 							'</div>' +
 							'<div class="col-sm-6 gallon">' +
 								'<input class="form-control" type="number"'
-									+ (data ? 'value="' + data.cubic * CUBICMETER_GALLON_RATIO + '"' : '') + '">' +
+									+ (data ? 'value="' + (data.cubic * CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '') + '">' +
 							'</div>' +
 						'</div>' +
 						'<label class="volume error">Valeurs de volume incorrectes</label>' +
@@ -427,7 +427,7 @@ function setupStepTwo(savedData){
 							'</div>' +
 							'<div class="col-sm-6 per-gallon">' +
 								'<input class="form-control" type="number"'
-									+ (data ? 'value="' + data.perCubic / CUBICMETER_GALLON_RATIO + '"' : '') + '">' +
+									+ (data ? 'value="' + (data.perCubic / CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '') + '">' +
 							'</div>' +
 						'</div>' +
 						'<label class="cost error">Valeurs de coût incorrectes</label>' +
@@ -470,22 +470,22 @@ function setupStepTwo(savedData){
         let gallon = $('.gallon input', this);
 
         cubic.on('input', function(){
-            gallon.val(cubic.val() * CUBICMETER_GALLON_RATIO);
+            gallon.val((cubic.val() * CUBICMETER_GALLON_RATIO).toFixed(3));
         });
 
         gallon.on('input', function(){
-            cubic.val(gallon.val() / CUBICMETER_GALLON_RATIO);
+            cubic.val((gallon.val() / CUBICMETER_GALLON_RATIO).toFixed(3));
         });
 
         let perCubic = $('.per-cubic input', this);
         let perGallon = $('.per-gallon input', this);
 
         perCubic.on('input', function(){
-            perGallon.val(perCubic.val() / CUBICMETER_GALLON_RATIO);
+            perGallon.val((perCubic.val() / CUBICMETER_GALLON_RATIO).toFixed(3));
         });
 
         perGallon.on('input', function(){
-            perCubic.val(perGallon.val() * CUBICMETER_GALLON_RATIO);
+            perCubic.val((perGallon.val() * CUBICMETER_GALLON_RATIO).toFixed(3));
         });
     });
 
