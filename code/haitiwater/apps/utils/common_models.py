@@ -18,7 +18,7 @@ def edit(name, infos, old, transaction):
         if str(value) != str(old[field]):
             log_edit(name, field, str(old[field]), str(value), transaction)
             edited = True
-        if field == "id":
+        if field == "ID":
             id = str(value)
     if edited:
-        log_edit(name, "id", id, id, transaction)
+        log_edit(name, "ID", id, id, transaction)

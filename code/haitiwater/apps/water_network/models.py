@@ -1,6 +1,8 @@
 from django.contrib.gis.db import models
 from enum import Enum
 from django.contrib.postgres.fields import ArrayField
+from django.db.models import ManyToOneRel
+
 from ..utils.common_models import *
 
 #########
@@ -102,10 +104,11 @@ class Element(models.Model):
     def infos(self):
         result = {}
         for field in Element._meta.get_fields():
-            if field.name == "zone":
-                result[field.name] = self.zone.id
-            else:
-                result[field.name] = self.__getattribute__(field.name)
+            if type(field) != ManyToOneRel:
+                if field.name == "zone":
+                    result[field.verbose_name] = self.zone.id
+                else:
+                    result[field.verbose_name] = self.__getattribute__(field.name)
         return result
 
     def log_add(self, transaction):
