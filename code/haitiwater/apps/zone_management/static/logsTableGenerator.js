@@ -7,7 +7,7 @@ $(document).ready(function() {
 //Formatting function for row details
 function format ( d ) {
     // d is the original data object for the row
-    return 'Détails : ' + d.details;
+    return d.details;
 }
 
 function drawLogTable(){
@@ -17,7 +17,7 @@ function drawLogTable(){
     $('#datatable-logs').DataTable(getLogsTableConfiguration(dataURL));
     let table = $('#datatable-logs').DataTable();
 
-    $('#datatable-water_element tbody').on( 'click', 'tr', function () {
+    $('#datatable-logs tbody').on( 'click', 'tr', function () {
         var tr = $(this);
         var row = table.row( tr );
 
