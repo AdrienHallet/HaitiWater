@@ -85,9 +85,12 @@ def table(request):
     if all is False: #There was a problem when retrieving the data
         return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
     if d["table_name"] == "logs":
-        keys = list(all[0].keys())
-        final = sorted(all, key=lambda x: x[keys[d["column_ordered"]]],
+        if len(all) > 1:
+            keys = list(all[0].keys())
+            final = sorted(all, key=lambda x: x[keys[d["column_ordered"]]],
                        reverse=d["type_order"] != "asc")
+        else:
+            final = all
     else:
         final = sorted(all, key=lambda x: x[d["column_ordered"]],
                        reverse=d["type_order"] != "asc")
