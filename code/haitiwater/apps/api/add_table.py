@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
+from django.contrib.auth.models import Group
 
 from ..log.models import Transaction
 from ..water_network.models import ElementType
