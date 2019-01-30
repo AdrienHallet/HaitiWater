@@ -8,6 +8,8 @@ from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
+from ..water_network.models import ElementType
 from ..api.get_table import *
 
 from django.contrib.auth import authenticate
@@ -78,10 +80,13 @@ def add_zone_element(request):
         if len(result) == 1:
             super = result[0]
             to_add = Zone(name=name, superzone=super, subzones=[name])
-            for z in Zone.objects.all():
-                if z.name == super.name: #If the zone is the superZone
-                    z.subzones.append(name)
-                    z.save()
+            up = True
+            while up:
+                super.subzones.append(name)
+                super.save()
+                super = super.superzone
+                if super == None:
+                    up = False
             to_add.save()
             return success_200
         else:
