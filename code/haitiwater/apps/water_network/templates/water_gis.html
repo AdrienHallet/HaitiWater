@@ -9,7 +9,6 @@
     <script src="{% static "vendor/leaflet/draw.js" %}"></script>
     <script src="{% static "gis.js" %}"></script>
     <link href="{% static "water_network.css" %}">
-    <script src="{% static "waterNetwork.js" %}"></script>
     Vue géographique
 {% endblock %}
 
@@ -31,7 +30,61 @@
                 </div>
 
                 <div id="details" class="col-md-3 collapse">
-                    <button onClick="drawTest();">Test</button>
+                    <div class="text-center">
+                       <div class="btn-group">
+                          <button id="button-draw" type="button" class="btn btn-small" title="Placer sur la carte" disabled>
+                              <i class="fas fa-map-marker-alt"></i>
+                          </button>
+                          <button type="button-edit" class="btn btn-small" title="Editer la position" disabled>
+                              <i class="fas fa-pen"></i>
+                          </button>
+                          <button type="button-remove" class="btn btn-small" title="Supprimer le marqueur" disabled>
+                              <i class="fas fa-trash"></i>
+                          </button>
+                       </div>
+                       <br>
+                       <div id="error-detail-table" class="alert alert-danger hidden"></div>
+                       <table id="detail-table" class="table table-condensed mb-none">
+							<tbody>
+                                <tr>
+									<td class="text-left">Identifiant</td>
+									<td class="text-left" id="element-details-id"></td>
+								</tr>
+                                <tr>
+									<td class="text-left">Type</td>
+									<td class="text-left" id="element-details-type"></td>
+								</tr>
+                                <tr>
+									<td class="text-left">Emplacement</td>
+									<td class="text-left" id="element-details-localization"></td>
+								</tr>
+                                <tr>
+									<td class="text-left">Gestionnaire</td>
+									<td class="text-left" id="element-details-manager"></td>
+								</tr>
+                                <tr>
+									<td class="text-left">Utilisateurs</td>
+									<td class="text-left" id="element-details-users"></td>
+								</tr>
+                                <tr>
+									<td class="text-left">État</td>
+									<td class="text-left" id="element-details-state"></td>
+								</tr>
+                                <tr>
+									<td class="text-left">Volume mois dernier</td>
+									<td class="text-left" id="element-details-current-month-cubic"></td>
+								</tr>
+                                <tr>
+									<td class="text-left">Volume mensuel moyen</td>
+									<td class="text-left" id="element-details-average-month-cubic"></td>
+								</tr>
+                                <tr>
+									<td class="text-left">Volume total</td>
+									<td class="text-left" id="element-details-total-cubic"></td>
+								</tr>
+							</tbody>
+						</table>
+                    </div>
                 </div>
             </div>
         </div>

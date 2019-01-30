@@ -1,5 +1,20 @@
 let MAP_CENTER = new L.latLng(18.579916, -72.294903); // Port-au-Prince airport
-let gisMap = 'undefined'
+let gisMap = 'undefined';
+let waterElementTable = 'undefined';
+let detailTable = 'undefined';
+let errorDetailTable = 'undefined';
+
+$(document).ready(function() {
+    drawWaterElementTable(false, true);
+    waterElementTable = $("#datatable-water_element").DataTable()
+    detailTable = $("#detail-table");
+    errorDetailTable = $('#error-detail-table')
+
+    $('#datatable-water_element tbody').on( 'click', 'tr', function () {
+        let data = waterElementTable.row(this).data();
+        setupWaterElementDetails(data[0]);
+    });
+});
 
 // Callback from django-leaflet on map initialization
 function waterGISInit(map, options) {
@@ -93,4 +108,61 @@ function toggleDrawer(){
         controlContainer.removeClass('fa-arrow-left');
     }
     $('#details').collapse('toggle');
+}
+
+function setupWaterElementDetails(elementID){
+    let response = requestWaterElementDetails(elementID);
+    if (!response){
+        detailTable.addClass('hidden');
+        errorDetailTable.removeClass('hidden');
+        return;
+    }
+    detailTable.removeClass('hidden');
+    errorDetailTable.addClass('hidden');
+
+    console.log('Successfuly retrieved JSON: ' + response);
+
+    $("#element-details-id").html(response.id);
+    $("#element-details-type").html(response.type);
+    $("#element-details-localization").html(response.localization);
+    $("#element-details-manager").html(response.manager);
+    $("#element-details-users").html(response.users);
+    $("#element-details-state").html(response.state);
+    $("#element-details-current-month-cubic").html(response.currentMonthCubic);
+    $("#element-details-average-month-cubic").html(response.averageMonthCubic);
+    $("#element-details-total-cubic").html(response.totalCubic);
+
+    readyMapDrawButtons('fountain', false)
+
+}
+
+function readyMapDrawButtons(type, hasPosition){
+    let drawButton = $('#button-draw');
+    let editButton = $('#button-edit');
+    let removebutton = $('#button-remove');
+    if(hasPosition){
+        //Enable edit or delete
+        $('')
+    }
+}
+
+function requestWaterElementDetails(elementID){
+    let requestURL = "../api/details?table=water_element&id="+elementID;
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+            return JSON.parse(this.responseText);
+        }
+        else if (this.readyState == 4){
+            console.log(this);
+            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText
+            errorDetailTable.html(msg);
+            return this;
+        }
+    }
+
+    xhttp.open('GET', requestURL, true);
+    xhttp.send();
+
 }
