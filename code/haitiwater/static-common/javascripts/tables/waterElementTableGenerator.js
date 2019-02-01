@@ -1,6 +1,12 @@
+function setWaterDataTableURL(month){
+    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    let dataURL = baseURL + "/api/table/?name=water_element&month=" + month;
+    $('#datatable-water_element').DataTable().ajax.url(dataURL).load();
+}
+
 function drawWaterElementTable(withManagers, withActions){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let dataURL = baseURL + "/api/table/?name=water_element";
+    let dataURL = baseURL + "/api/table/?name=water_element&month=none";
     console.log("Request data from: " + dataURL);
     $('#datatable-water_element').DataTable(getWaterDatatableConfiguration(dataURL, withManagers, withActions));
 
@@ -42,7 +48,14 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
                     columns: [0,1,2,3,4,5,6,7],
                 },
             },
-            'pageLength'
+            {
+                text: 'Volume total',
+                attr:{
+                    id: 'water-element-month-selector',
+                }
+            },
+            'pageLength',
+
         ],
         "sortable": true,
         "processing": true,
@@ -96,4 +109,41 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
         }
     };
     return config;
+}
+
+$(document).ready(function() {
+    attachMonthSelectorHandler();
+});
+
+function attachMonthSelectorHandler(){
+    let button = $('#water-element-month-selector');
+    button.datepicker({
+        format: "mm-yyyy",
+        startView: "months",
+        minViewMode: "months",
+    });
+    button.on('changeDate', function (e) {
+        console.log("click");
+        let month = e.format();
+        if (month.length < 1) {
+            // Month de-selected
+            month = 'none';
+            button.innerText = 'Volume total';
+        }
+        else {
+            button.innerText = formatButton(month);
+        }
+        setWaterDataTableURL(month);
+    });
+    button.datepicker('show');
+}
+
+function formatButton(monthYear){
+    const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+      "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+    ];
+    let params = monthYear.split("-");
+    let yearInt = params[1];
+    let monthInt = parseInt(params[0]) - 1;
+    return monthNames[monthInt]+ " " + yearInt;
 }
