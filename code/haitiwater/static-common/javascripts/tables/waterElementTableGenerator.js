@@ -128,10 +128,11 @@ function attachMonthSelectorHandler(){
         if (month.length < 1) {
             // Month de-selected
             month = 'none';
-            button.innerText = 'Volume total';
+            console.log(button);
+            button[0].innerText = 'Volume total';
         }
         else {
-            button.innerText = formatButton(month);
+            button[0].innerText = formatButton(month);
         }
         setWaterDataTableURL(month);
     });
