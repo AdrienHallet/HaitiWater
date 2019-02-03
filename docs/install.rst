@@ -2,6 +2,10 @@
 Installation
 ============
 
+Les systèmes d'exploitation suivants ont été testés fonctionnels :
+  * Windows 7, 10
+  * Ubuntu 16.04, 18.04
+
 Prérequis
 ---------
 Python 3.x
@@ -115,6 +119,10 @@ En vous positionnant au chemin (dernier laissé précédemment) ``../HaitiWater/
   
     $ python3 manage.py makemigrations
     $ python3 manage.py migrate
+    
+  * Importer des données d'exemple (optionnel) ::
+  
+    $ python3 manage.py loaddata initial_data.json
     
   * Lancer le serveur ::
   
