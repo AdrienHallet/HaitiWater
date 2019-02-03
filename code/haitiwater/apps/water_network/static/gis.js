@@ -4,6 +4,8 @@ let waterElementTable = 'undefined';
 let detailTable = 'undefined';
 let errorDetailTable = 'undefined';
 
+let pointLayer = 'undefined';
+
 $(document).ready(function() {
     drawWaterElementTable(false, true);
     waterElementTable = $("#datatable-water_element").DataTable()
@@ -23,8 +25,10 @@ function waterGISInit(map, options) {
     map.setView(MAP_CENTER, 8);
 
     var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: '' }),
-            drawnItems = L.featureGroup().addTo(map);
+        osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: '' }),
+        waterElementPoint = L.featureGroup().addTo(map);
+
+    pointLayer = waterElementPoint;
 
     // Enable drawing
     L.control.layers({
@@ -32,10 +36,10 @@ function waterGISInit(map, options) {
         "Google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
             attribution: 'Google'
         })
-    }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(map);
+    }, { "Points d'eau": waterElementPoint }, { position: 'topleft', collapsed: false }).addTo(map);
     map.addControl(new L.Control.Draw({
         edit: {
-            featureGroup: drawnItems,
+            featureGroup: waterElementPoint,
             poly: {
                 allowIntersection: false
             }
@@ -48,12 +52,6 @@ function waterGISInit(map, options) {
         }
     }));
     map.addControl(new drawerControl());
-
-    map.on(L.Draw.Event.CREATED, function (event) {
-        var layer = event.layer;
-        console.log(layer.toGeoJSON());
-        drawnItems.addLayer(layer);
-    });
 
     // Hide toolbar as we trigger draw per table item
     $(".leaflet-draw-toolbar").attr('hidden', true)
@@ -77,14 +75,6 @@ var drawerControl = L.Control.extend({
     }
 
 });
-
-function drawTest(){
-    console.log("starting");
-    let map = getMap();
-
-    let polygon = new L.Draw.Polygon(map);
-    polygon.enable();
-}
 
 function getMap(){
     return gisMap;
@@ -115,6 +105,7 @@ function setupWaterElementDetails(elementID){
     if (!response){
         detailTable.addClass('hidden');
         errorDetailTable.removeClass('hidden');
+        readyMapDrawButtons('pipe', false) // Fake, used for testing
         return;
     }
     detailTable.removeClass('hidden');
@@ -132,18 +123,59 @@ function setupWaterElementDetails(elementID){
     $("#element-details-average-month-cubic").html(response.averageMonthCubic);
     $("#element-details-total-cubic").html(response.totalCubic);
 
-    readyMapDrawButtons('fountain', false)
-
+    readyMapDrawButtons(response.type, response.localization);
 }
 
 function readyMapDrawButtons(type, hasPosition){
+    console.log('prepping buttons');
     let drawButton = $('#button-draw');
     let editButton = $('#button-edit');
     let removebutton = $('#button-remove');
-    if(hasPosition){
-        //Enable edit or delete
-        $('')
+
+    //You can only create non-existing positions, or edit/delete existing ones
+    drawButton.prop('disabled', hasPosition);
+    editButton.prop('disabled', !hasPosition);
+    removebutton.prop('disabled', !hasPosition);
+
+    //Attach the handlers
+    if(!hasPosition){
+        console.log("attaching draw event");
+        //Creating a position
+        drawButton.on('click', {type:type}, drawHandler);
     }
+}
+
+function drawHandler( e ){
+    let type = e.data.type;
+    let map = getMap();
+    let isPoint = (type == 'fountain' || type == 'kiosk' || type == 'individual');
+    let isPolyline = (type == 'pipe');
+    if( isPoint ){
+        let pointDrawer = new L.Draw.Marker(map);
+        pointDrawer.enable();
+        map.on(L.Draw.Event.CREATED,saveDraw);
+    }
+    else if ( isPolyline ){
+        let polyLineDrawer = new L.Draw.Polyline(map);
+        polyLineDrawer.enable();
+        map.on(L.Draw.Event.CREATED, saveDraw);
+    }
+    else {
+        console.log("Implement further options if required");
+        // A polygon for zones would be a good example
+    }
+}
+
+function saveDraw(event){
+    let map = getMap();
+    var layer = event.layer;
+    console.log(layer.toGeoJSON());
+    pointLayer.addLayer(layer);
+
+    //Destroy handlers
+    map.off(L.Draw.Event.CREATED, saveDraw);
+    let drawButton = $('#button-draw');
+    drawButton.off('click', drawHandler)
 }
 
 function requestWaterElementDetails(elementID){
