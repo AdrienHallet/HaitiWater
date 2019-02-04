@@ -236,9 +236,7 @@ function saveDraw(event){
 }
 
 function sendDrawToServer(geoJSON){
-    let coordinates = JSON.stringify(geoJSON.geometry.coordinates);
-    let requestURL = "../api/gis?id=" + currentElementID + "&coordinates=" + coordinates;
-    console.log('save request : ' +requestURL);
+    let requestURL = "../api/gis?id=" + currentElementID;
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
@@ -254,7 +252,8 @@ function sendDrawToServer(geoJSON){
     }
 
     xhttp.open('POST', requestURL, true);
-    xhttp.send();
+    xhttp.setRequestHeader('Content-Type', 'application/json')
+    xhttp.send(JSON.stringify(geoJSON));
 }
 
 function requestWaterElementDetails(elementID){
