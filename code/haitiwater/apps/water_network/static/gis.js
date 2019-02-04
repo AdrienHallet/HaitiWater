@@ -16,10 +16,11 @@ $(document).ready(function() {
         let data = waterElementTable.row(this).data();
         setupWaterElementDetails(data[0]);
     });
+
+    waterGISInit(L.map('map-water-network'));
 });
 
-// Callback from django-leaflet on map initialization
-function waterGISInit(map, options) {
+function waterGISInit(map) {
     gisMap = map
     // Set map center to haiti
     map.setView(MAP_CENTER, 8);

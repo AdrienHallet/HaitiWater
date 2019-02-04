@@ -3,10 +3,11 @@
 {% load leaflet_tags %}
 
 {% block page_name %}
-    {% leaflet_css %}
-    {% leaflet_js %}
-    <link rel="stylesheet" href="{% static "vendor/leaflet/draw.css" %}">
-    <script src="{% static "vendor/leaflet/draw.js" %}"></script>
+    <script src="{% static "vendor/leaflet/leaflet.js" %}"></script>
+    <script src="{% static "vendor/leaflet/leaflet.draw.js" %}"></script>
+    <link rel="stylesheet" href="{% static "vendor/leaflet/leaflet.css" %}">
+    <link rel="stylesheet" href="{% static "vendor/leaflet/leaflet.draw.css" %}">
+
     <script src="{% static "gis.js" %}"></script>
     <link href="{% static "water_network.css" %}">
     Vue géographique
@@ -26,7 +27,7 @@
         <div class="panel-body">
             <div class="row">
                 <div id="map-container" class="col-md-12">
-                    {% leaflet_map "water-network-map" callback="waterGISInit" %}
+                    <div style="height: 180px;" id="map-water-network"></div>
                 </div>
 
                 <div id="details" class="col-md-3 collapse">
