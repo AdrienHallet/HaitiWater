@@ -1,8 +1,13 @@
 let MAP_CENTER = new L.latLng(18.579916, -72.294903); // Port-au-Prince airport
+
 let gisMap = 'undefined';
 let waterElementTable = 'undefined';
 let detailTable = 'undefined';
 let errorDetailTable = 'undefined';
+
+let currentElementType = 'undefined';
+let currentElementAddress = 'undefined';
+let currentElementID = 'undefined';
 
 let pointLayer = 'undefined';
 
@@ -17,8 +22,46 @@ $(document).ready(function() {
         setupWaterElementDetails(data[0]);
     });
 
-    waterGISInit(L.map('map-water-network'));
+    waterGISInit(
+        L.map('map-water-network',
+        {
+            zoomControl: false //Set as fale to instantiate custom zoom control
+        })
+    );
+
+    waterGISPopulate();
 });
+
+function waterGISPopulate(){
+    let elementPosition = requestElementPosition();
+    if( !elementPosition ){
+        // Request failed
+        return; //Maybe hide map, or use cached data, update as needed
+    }
+    //Todo populate map from DB
+}
+
+function requestElementPosition(){
+    let requestURL = "../api/gis?marker=all";
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+            return JSON.parse(this.responseText);
+        }
+        else if (this.readyState == 4){
+            console.log(this);
+            new PNotify({
+                title: 'Erreur',
+                text: 'Les positions ne peuvent être téléchargées',
+                type: 'error'
+            });
+            return false;
+        }
+    }
+    xhttp.open('GET', requestURL, true);
+    xhttp.send();
+}
 
 function waterGISInit(map) {
     gisMap = map
@@ -27,20 +70,24 @@ function waterGISInit(map) {
 
     var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: '' }),
-        waterElementPoint = L.featureGroup().addTo(map);
+        waterElement = L.featureGroup().addTo(map);
 
-    pointLayer = waterElementPoint;
-
+    pointLayer = waterElement;
+    L.control.zoom({
+        position:'topleft',
+        zoomInTitle:'Agrandir',
+        zoomOutTitle:'Réduire',
+    }).addTo(map);
     // Enable drawing
     L.control.layers({
         'OSM': osm.addTo(map),
         "Google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
             attribution: 'Google'
         })
-    }, { "Points d'eau": waterElementPoint }, { position: 'topleft', collapsed: false }).addTo(map);
+    }, { "Réseau": waterElement }, { position: 'topleft', collapsed: false }).addTo(map);
     map.addControl(new L.Control.Draw({
         edit: {
-            featureGroup: waterElementPoint,
+            featureGroup: waterElement,
             poly: {
                 allowIntersection: false
             }
@@ -124,6 +171,10 @@ function setupWaterElementDetails(elementID){
     $("#element-details-average-month-cubic").html(response.averageMonthCubic);
     $("#element-details-total-cubic").html(response.totalCubic);
 
+    currentElementID = response.id;
+    currentElementType = response.type;
+    currentElementAddress = response.localization;
+
     readyMapDrawButtons(response.type, response.localization);
 }
 
@@ -170,13 +221,40 @@ function drawHandler( e ){
 function saveDraw(event){
     let map = getMap();
     var layer = event.layer;
+    layer.bindTooltip('my tooltip', {
+        sticky:true
+    });
     console.log(layer.toGeoJSON());
     pointLayer.addLayer(layer);
+
+    sendDrawToServer(layer.toGeoJSON());
 
     //Destroy handlers
     map.off(L.Draw.Event.CREATED, saveDraw);
     let drawButton = $('#button-draw');
     drawButton.off('click', drawHandler)
+}
+
+function sendDrawToServer(geoJSON){
+    let coordinates = JSON.stringify(geoJSON.geometry.coordinates);
+    let requestURL = "../api/gis?id=" + currentElementID + "&coordinates=" + coordinates;
+    console.log('save request : ' +requestURL);
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+            return JSON.parse(this.responseText);
+        }
+        else if (this.readyState == 4){
+            console.log(this);
+            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText
+            errorDetailTable.html(msg);
+            return this;
+        }
+    }
+
+    xhttp.open('POST', requestURL, true);
+    xhttp.send();
 }
 
 function requestWaterElementDetails(elementID){
