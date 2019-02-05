@@ -39,6 +39,10 @@ function waterGISPopulate(){
         return; //Maybe hide map, or use cached data, update as needed
     }
     //Todo populate map from DB
+    // 1. Get array
+    // 2. Draw elements on map
+    // 3. Set tooltip on hover
+    // 4. Set link on click 
 }
 
 function requestElementPosition(){
@@ -221,8 +225,12 @@ function drawHandler( e ){
 function saveDraw(event){
     let map = getMap();
     var layer = event.layer;
-    layer.bindTooltip('my tooltip', {
+    layer.bindTooltip('my tooltip', { // Todo change for format tooltip
         sticky:true
+    });
+    layer.waterID = 'customID'
+    layer.on('click', function(e){
+        console.log(this); // Todo link to details request and table focus
     });
     console.log(layer.toGeoJSON());
     pointLayer.addLayer(layer);
