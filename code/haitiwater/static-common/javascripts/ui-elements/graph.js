@@ -36,6 +36,7 @@ function refresh() {
         default: // error case
             console.log("Undefined graph type: " + document.getElementById('graphTitle').value)
     }
+    $('#graph-canvas').width('100%').height('300');
 }
 
 /**
