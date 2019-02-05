@@ -73,16 +73,8 @@ INSTALLED_APPS = [
     'django_tables2',
     'bootstrap3',
     'widget_tweaks',
-    'chartjs',
-    'leaflet'
+    'chartjs'
 ]
-
-# Leaflet configuration
-LEAFLET_CONFIG = {
-    'ATTRIBUTION_PREFIX': '',
-    'SCALE': 'both',
-    'RESET_VIEW': False,
-}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
