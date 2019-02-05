@@ -136,7 +136,6 @@ function attachMonthSelectorHandler(){
         }
         setWaterDataTableURL(month);
     });
-    button.datepicker('show');
 }
 
 function formatButton(monthYear){
