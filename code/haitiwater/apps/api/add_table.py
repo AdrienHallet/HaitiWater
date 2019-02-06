@@ -1,7 +1,6 @@
 import re
 from django.http import HttpResponse
 
-from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 
 from ..water_network.models import Element, ElementType, Zone
@@ -18,7 +17,7 @@ import json
 
 success_200 = HttpResponse(status=200)
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_consumer_element(request):
     first_name = request.POST.get("firstname", None)
     last_name = request.POST.get("lastname", None)
@@ -39,7 +38,7 @@ def add_consumer_element(request):
     new_c.save()
     return success_200
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_network_element(request):
     type = request.POST.get("type", None).upper()
     loc = request.POST.get("localization", None)
@@ -51,7 +50,7 @@ def add_network_element(request):
     e.save()
     return success_200
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_report_element(request):
     values = json.loads(request.body.decode("utf-8"))
     for index, elem in enumerate(values["selectedOutlets"]):
@@ -72,7 +71,7 @@ def add_report_element(request):
         report_line.save()
     return success_200
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_zone_element(request):
     name = request.POST.get("name", None)
     if request.user and request.user.profile.zone: #If user is connected and zone manager
@@ -94,7 +93,7 @@ def add_zone_element(request):
     else:
         return HttpResponse("Impossible d'ajouter la zone. Etes-vous sûr d'être connecté ?", status=500)
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_collaborator_element(request):
     first_name = request.POST.get("firstname", None)
     last_name = request.POST.get("lastname", None)
@@ -144,7 +143,7 @@ def add_collaborator_element(request):
     new_user.save()
     return success_200
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_ticket_element(request):
     id = request.POST.get("id_outlet", None)
     outlets = Element.objects.filter(id=id)
