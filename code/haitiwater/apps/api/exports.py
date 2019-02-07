@@ -78,6 +78,16 @@ def get_details_network(request):
     print(infos)
     return HttpResponse(json.dumps(infos))
 
+@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+def gis_infos(request):
+    if request.GET:
+        print("Getting infos")
+    elif request.POST:
+        print("Posting infos")
+        print(request.POST)
+        print(request.body)
+    return HttpResponse(status=200)
+
 
 def table(request):
     # Todo backend https://datatables.net/manual/server-side
