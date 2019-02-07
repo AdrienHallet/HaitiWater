@@ -42,7 +42,7 @@ function waterGISPopulate(){
     // 1. Get array
     // 2. Draw elements on map
     // 3. Set tooltip on hover
-    // 4. Set link on click 
+    // 4. Set link on click
 }
 
 function requestElementPosition(){
@@ -244,7 +244,7 @@ function saveDraw(event){
 }
 
 function sendDrawToServer(geoJSON){
-    let requestURL = "../api/gis?id=" + currentElementID;
+    let requestURL = "../api/gis/?id=" + currentElementID;
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
