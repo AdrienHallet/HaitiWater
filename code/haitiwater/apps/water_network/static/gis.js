@@ -19,7 +19,7 @@ $(document).ready(function() {
 
     $('#datatable-water_element tbody').on( 'click', 'tr', function () {
         let data = waterElementTable.row(this).data();
-        setupWaterElementDetails(data[0]);
+        requestWaterElementDetails(data[0]);
     });
 
     waterGISInit(
@@ -152,8 +152,7 @@ function toggleDrawer(){
     $('#details').collapse('toggle');
 }
 
-function setupWaterElementDetails(elementID){
-    let response = requestWaterElementDetails(elementID);
+function setupWaterElementDetails(response){
     if (!response){
         detailTable.addClass('hidden');
         errorDetailTable.removeClass('hidden');
@@ -180,6 +179,27 @@ function setupWaterElementDetails(elementID){
     currentElementAddress = response.localization;
 
     readyMapDrawButtons(response.type, response.localization);
+}
+
+function requestWaterElementDetails(elementID){
+    let requestURL = "../api/details?table=water_element&id="+elementID;
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+            setupWaterElementDetails(JSON.parse(this.response));
+        }
+        else if (this.readyState == 4){
+            console.log(this);
+            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText
+            errorDetailTable.html(msg);
+            return setupWaterElementDetails(false);
+        }
+    }
+
+    xhttp.open('GET', requestURL, true);
+    xhttp.send();
+
 }
 
 function readyMapDrawButtons(type, hasPosition){
@@ -262,25 +282,4 @@ function sendDrawToServer(geoJSON){
     xhttp.open('POST', requestURL, true);
     xhttp.setRequestHeader('Content-Type', 'application/json')
     xhttp.send(JSON.stringify(geoJSON));
-}
-
-function requestWaterElementDetails(elementID){
-    let requestURL = "../api/details?table=water_element&id="+elementID;
-    let xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200) {
-            return JSON.parse(this.responseText);
-        }
-        else if (this.readyState == 4){
-            console.log(this);
-            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText
-            errorDetailTable.html(msg);
-            return this;
-        }
-    }
-
-    xhttp.open('GET', requestURL, true);
-    xhttp.send();
-
 }
