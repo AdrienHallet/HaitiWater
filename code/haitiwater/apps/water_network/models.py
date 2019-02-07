@@ -105,6 +105,8 @@ class Element(models.Model):
     def get_all_output(self):
         from ..report.models import Report  # Avoid cycle in imports
         reports = Report.objects.filter(water_outlet_id=self.id)
+        if len(reports) == 0:
+            return 0, 0
         total = 0
         for report in reports:
             total += report.quantity_distributed
