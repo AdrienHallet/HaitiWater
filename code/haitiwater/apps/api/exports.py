@@ -59,6 +59,26 @@ def graph(request):
     return HttpResponse(json.dumps(json_val))
 
 
+def get_details_network(request):
+    id_outlet = request.GET.get("id", -1)
+    results = Element.objects.filter(id=id_outlet)
+    if len(results) != 1:
+        return HttpResponse("Impossible de charger cet élément", status=404)
+    outlet = results[0]
+    infos = {"id": id_outlet,
+             "type": outlet.type,
+             "localization": outlet.location,
+             "manager": outlet.get_manager(),
+             "users": outlet.get_consumers(),
+             "state": outlet.status,
+             "currentMonthCubic": outlet.get_current_output(),
+             "averageMonthCubic": outlet.get_all_output()[1],
+             "totalCubic": outlet.get_all_output()[0],
+             "geoJSON": None}
+    print(infos)
+    return HttpResponse(json.dumps(infos))
+
+
 def table(request):
     # Todo backend https://datatables.net/manual/server-side
     # Note that "editable" is a custom field. Setting it to true displays the edit/delete buttons.

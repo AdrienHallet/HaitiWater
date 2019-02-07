@@ -108,7 +108,8 @@ def get_manager_elements(request, json, parsed):
         for u in all_collab:
             group = u.groups.values_list('name', flat=True)
             if "Gestionnaire de zone" in group:
-                if type(target) is Zone and u.profile.zone.name in target.subzones:
+                if type(target) is Zone and u.profile.zone and \
+                                u.profile.zone.name in target.subzones:
                     tab = [u.username, u.last_name, u.first_name, u.email,
                            "Gestionnaire de zone", u.profile.zone.name]
                     if parsed["search"] == "":

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from enum import Enum
 from django.contrib.postgres.fields import ArrayField
@@ -74,6 +75,41 @@ class Element(models.Model):
 
     def is_in_subzones(self, zone):
         return self.zone.name in zone.subzones
+
+    def get_manager(self):
+        managers = User.objects.all()
+        for manager in managers:
+            if str(self.id) in manager.profile.outlets:
+                return manager.username
+
+    def get_consumers(self):
+        from ..consumers.models import Consumer #Avoid cycle in imports
+        consumers = Consumer.objects.filter(water_outlet_id=self.id)
+        total = 0
+        for consumer in consumers:
+            total += consumer.household_size + 1
+        return total
+
+    def get_current_output(self):
+        from ..report.models import Report #Avoid cycle in imports
+        from ..utils.get_data import get_current_month
+        reports = Report.objects.filter(water_outlet_id=self.id,
+                                        month=get_current_month().upper())
+        if len(reports) > 1:
+            return "Erreur dans le calcul de quantité"
+        elif len(reports) == 0:
+            return 0
+        else:
+            return reports[0].quantity_distributed
+
+    def get_all_output(self):
+        from ..report.models import Report  # Avoid cycle in imports
+        reports = Report.objects.filter(water_outlet_id=self.id)
+        total = 0
+        for report in reports:
+            total += report.quantity_distributed
+        return total, total/len(reports)
+
 
     def network_descript(self):
         tab = [self.id, ElementType[self.type].value, self.location,

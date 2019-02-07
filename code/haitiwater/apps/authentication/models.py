@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.contrib.postgres.fields import ArrayField
 from ..water_network.models import Zone
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     zone = models.ForeignKey(Zone, verbose_name="Zone gérée",
