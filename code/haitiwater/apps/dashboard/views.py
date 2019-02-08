@@ -18,6 +18,6 @@ def index(request):
         context['amount_kiosk'] = get_amount_kiosk(request.user.profile.zone)
         context['amount_individual'] = get_amount_individual(request.user.profile.zone)
         context['amount_pipe'] = get_amount_pipe(request.user.profile.zone)
-        context['amount_registered_consumers'] = get_amount_consumer(request.user.profile.zone)
-        context['amount_individual_consumers'] = get_amount_indiv_consummer(request.user.profile.zone)
+        context['amount_registered_consumers'] = get_amount_household(request)
+        context['amount_individual_consumers'] = get_total_consumers(request)
     return HttpResponse(template.render(context, request))
