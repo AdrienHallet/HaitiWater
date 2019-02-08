@@ -1,27 +1,32 @@
 let MAP_CENTER = new L.latLng(18.579916, -72.294903); // Port-au-Prince airport
 
+// Frequently accessed page elements
 let gisMap = 'undefined';
 let waterElementTable = 'undefined';
 let detailTable = 'undefined';
 let errorDetailTable = 'undefined';
+let drawLayer = 'undefined';
 
+// Current element selection shared variables
 let currentElementType = 'undefined';
 let currentElementAddress = 'undefined';
 let currentElementID = 'undefined';
 
-let pointLayer = 'undefined';
 
 $(document).ready(function() {
+    //Setup water tables first
     drawWaterElementTable(false, true);
     waterElementTable = $("#datatable-water_element").DataTable()
     detailTable = $("#detail-table");
     errorDetailTable = $('#error-detail-table')
 
+    //Request details on element click
     $('#datatable-water_element tbody').on( 'click', 'tr', function () {
         let data = waterElementTable.row(this).data();
         requestWaterElementDetails(data[0]);
     });
 
+    //Init Leaflet map
     waterGISInit(
         L.map('map-water-network',
         {
@@ -29,11 +34,15 @@ $(document).ready(function() {
         })
     );
 
+    //Populate map with known elements
     waterGISPopulate();
 });
 
+/**
+ * Populates the Leaflet map with the positions from the server
+ */
 function waterGISPopulate(){
-    let elementPosition = requestElementPosition();
+    let elementPosition = requestAllElementsPosition();
     if( !elementPosition ){
         // Request failed
         return; //Maybe hide map, or use cached data, update as needed
@@ -45,12 +54,17 @@ function waterGISPopulate(){
     // 4. Set link on click
 }
 
-function requestElementPosition(){
+/**
+ * Request all known element positions from the server
+ * @return {[JSONArray]} [The positions as a list of GeoJSON]
+ */
+function requestAllElementsPosition(){
     let requestURL = "../api/gis?marker=all";
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
+            console.log(this);
             return JSON.parse(this.responseText);
         }
         else if (this.readyState == 4){
@@ -67,52 +81,59 @@ function requestElementPosition(){
     xhttp.send();
 }
 
+/**
+ * Initialize the water element GIS map
+ * @param  {[L.map]} map [An instantiated leaflet map]
+ */
 function waterGISInit(map) {
     gisMap = map
     // Set map center to haiti
     map.setView(MAP_CENTER, 8);
 
-    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: '' }),
-        waterElement = L.featureGroup().addTo(map);
-
-    pointLayer = waterElement;
+    // Custom zoom control to allow french language
     L.control.zoom({
         position:'topleft',
         zoomInTitle:'Agrandir',
         zoomOutTitle:'Réduire',
     }).addTo(map);
-    // Enable drawing
-    L.control.layers({
-        'OSM': osm.addTo(map),
-        "Google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
-            attribution: 'Google'
-        })
-    }, { "Réseau": waterElement }, { position: 'topleft', collapsed: false }).addTo(map);
-    map.addControl(new L.Control.Draw({
-        edit: {
-            featureGroup: waterElement,
-            poly: {
-                allowIntersection: false
-            }
-        },
-        draw: {
-            polygon: {
-                allowIntersection: false,
-                showArea: true
-            }
-        }
-    }));
-    map.addControl(new drawerControl());
 
-    // Hide toolbar as we trigger draw per table item
-    $(".leaflet-draw-toolbar").attr('hidden', true)
+    // Open Street maps layer
+    let osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    let osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: 'Open Street Maps' });
+
+    // Google sattelite layer
+    let googleUrl = 'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}';
+    let google = L.tileLayer(googleUrl, {attribution: 'Google'});
+
+    // Draw layer
+    let waterElement = L.featureGroup().addTo(map);
+    drawLayer = waterElement;
+
+    // Setup layers
+    L.control.layers(
+        { // Base layers
+            'Carte': osm.addTo(map), // default layer
+            'Sattelite': google
+        },
+        { // Overlays
+            'Réseau': waterElement
+        },
+        { // Options
+            position: 'topleft',
+            collapsed: false
+        }).addTo(map);
+
+    // Control to collapse details panel
+    map.addControl(new drawerControl());
 }
 
+/**
+ * The drawer control is displayed on the map to expand/retract the details panel
+ * @type {L.Control}
+ */
 var drawerControl = L.Control.extend({
     options: {
         position: 'topright'
-        //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
     },
 
     onAdd: function (map) {
@@ -128,11 +149,9 @@ var drawerControl = L.Control.extend({
 
 });
 
-function getMap(){
-    return gisMap;
-}
-
-// Toggle the "details" drawer
+/**
+ * Toggle the detail drawer
+ */
 function toggleDrawer(){
     let mapContainer = $('#map-container');
     let controlContainer = $('.leaflet-drawer-control')
@@ -152,35 +171,10 @@ function toggleDrawer(){
     $('#details').collapse('toggle');
 }
 
-function setupWaterElementDetails(response){
-    if (!response){
-        detailTable.addClass('hidden');
-        errorDetailTable.removeClass('hidden');
-        readyMapDrawButtons('pipe', false) // Fake, used for testing
-        return;
-    }
-    detailTable.removeClass('hidden');
-    errorDetailTable.addClass('hidden');
-
-    console.log('Successfuly retrieved JSON: ' + response);
-
-    $("#element-details-id").html(response.id);
-    $("#element-details-type").html(response.type);
-    $("#element-details-localization").html(response.localization);
-    $("#element-details-manager").html(response.manager);
-    $("#element-details-users").html(response.users);
-    $("#element-details-state").html(response.state);
-    $("#element-details-current-month-cubic").html(response.currentMonthCubic);
-    $("#element-details-average-month-cubic").html(response.averageMonthCubic);
-    $("#element-details-total-cubic").html(response.totalCubic);
-
-    currentElementID = response.id;
-    currentElementType = response.type;
-    currentElementAddress = response.localization;
-
-    readyMapDrawButtons(response.type, response.localization);
-}
-
+/**
+ * Requests the details of an element to the server
+ * @param  {int} elementID
+ */
 function requestWaterElementDetails(elementID){
     let requestURL = "../api/details?table=water_element&id="+elementID;
     let xhttp = new XMLHttpRequest();
@@ -202,8 +196,46 @@ function requestWaterElementDetails(elementID){
 
 }
 
+/**
+ * Setup the display for the selected element details
+ * @param  {JSON} response The element details
+ */
+function setupWaterElementDetails(response){
+    if (!response){
+        detailTable.addClass('hidden');
+        errorDetailTable.removeClass('hidden');
+        readyMapDrawButtons('pipe', false) // Fake, used for testing todo remove
+        return;
+    }
+    detailTable.removeClass('hidden');
+    errorDetailTable.addClass('hidden');
+
+    console.log('Successfuly retrieved JSON: ' + response);
+
+    $("#element-details-id").html(response.id);
+    $("#element-details-type").html(response.type);
+    $("#element-details-localization").html(response.localization);
+    $("#element-details-manager").html(response.manager);
+    $("#element-details-users").html(response.users);
+    $("#element-details-state").html(response.state);
+    $("#element-details-current-month-cubic").html(response.currentMonthCubic);
+    $("#element-details-average-month-cubic").html(response.averageMonthCubic);
+    $("#element-details-total-cubic").html(response.totalCubic);
+
+    currentElementID = response.id;
+    currentElementType = response.type;
+    currentElementAddress = response.localization;
+
+    let hasLocalization = response.geoJSON !== null;
+    readyMapDrawButtons(response.type, hasLocalization);
+}
+
+/**
+ * Display the buttons accordingly
+ * @param  {string}  type        type of the water element
+ * @param  {Boolean} hasPosition true if the element already is on the map
+ */
 function readyMapDrawButtons(type, hasPosition){
-    console.log('prepping buttons');
     let drawButton = $('#button-draw');
     let editButton = $('#button-edit');
     let removebutton = $('#button-remove');
@@ -215,17 +247,19 @@ function readyMapDrawButtons(type, hasPosition){
 
     //Attach the handlers
     if(!hasPosition){
-        console.log("attaching draw event");
-        //Creating a position
         drawButton.on('click', {type:type}, drawHandler);
     }
 }
 
+/**
+ * Handles a click on the draw button
+ * @param  {Event} e the click event
+ */
 function drawHandler( e ){
-    let type = e.data.type;
-    let map = getMap();
-    let isPoint = (type == 'fountain' || type == 'kiosk' || type == 'individual');
-    let isPolyline = (type == 'pipe');
+    let type = e.data.type.toLowerCase();
+    let map = gisMap;
+    let isPoint = (type == 'fontaine' || type == 'kiosque' || type == 'prise individuelle' || type == 'fountain'); //Todo remove scaffholding after tests
+    let isPolyline = (type == 'conduite');
     if( isPoint ){
         let pointDrawer = new L.Draw.Marker(map);
         pointDrawer.enable();
@@ -242,8 +276,13 @@ function drawHandler( e ){
     }
 }
 
+/**
+ * Save a draw on the layer and send it to server
+ * @param  {L.Draw.CREATED} event
+ */
 function saveDraw(event){
-    let map = getMap();
+    // Save it on the map
+    let map = gisMap;
     var layer = event.layer;
     layer.bindTooltip('my tooltip', { // Todo change for format tooltip
         sticky:true
@@ -252,9 +291,9 @@ function saveDraw(event){
     layer.on('click', function(e){
         console.log(this); // Todo link to details request and table focus
     });
-    console.log(layer.toGeoJSON());
-    pointLayer.addLayer(layer);
+    drawLayer.addLayer(layer);
 
+    // Save it on the server
     sendDrawToServer(layer.toGeoJSON());
 
     //Destroy handlers
@@ -263,13 +302,17 @@ function saveDraw(event){
     drawButton.off('click', drawHandler)
 }
 
+/**
+ * Save a position on the server
+ * @param  {GeoJSON} geoJSON of the object to save
+ */
 function sendDrawToServer(geoJSON){
     let requestURL = "../api/gis/?id=" + currentElementID;
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
-            return JSON.parse(this.responseText);
+            console.log(this);
         }
         else if (this.readyState == 4){
             console.log(this);
