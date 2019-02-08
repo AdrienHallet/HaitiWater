@@ -89,6 +89,11 @@ $(document).ready(function() {
 		if (validated) {
 			console.log(JSON.stringify(monthlyReport));
 			localStorage.setItem('monthlyReport', JSON.stringify(monthlyReport));
+			new PNotify({
+				title: 'Succès!',
+				text: 'Le rapport mensuel a été sauvegardé !',
+				type: 'success'
+			});
 			dismissModal();
 		} else {
 			return false;
