@@ -94,7 +94,7 @@ def gis_infos(request):
             all_loc = Location.objects.all()
             result = {}
             for loc in all_loc:
-                result[loc.elem.name] = loc.json_representation
+                result[loc.elem.id] = [loc.elem.name, loc.json_representation]
         return HttpResponse(json.dumps(result))
 
     elif request.method == "POST":
