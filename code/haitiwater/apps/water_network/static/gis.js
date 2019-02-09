@@ -35,17 +35,26 @@ $(document).ready(function() {
     );
 
     //Populate map with known elements
-    waterGISPopulate();
+    requestAllElementsPosition();
 });
 
 /**
  * Populates the Leaflet map with the positions from the server
  */
-function waterGISPopulate(){
-    let elementPosition = requestAllElementsPosition();
+function waterGISPopulate(elementPosition){
     if( !elementPosition ){
         // Request failed
         return; //Maybe hide map, or use cached data, update as needed
+    }
+    for(let id in elementPosition){
+        let tooltip = elementPosition[id][0];
+        let geoJSON = jQuery.parseJSON(elementPosition[id][1]);
+
+        let drawElement = L.geoJSON(geoJSON).addTo(drawLayer);
+        drawElement.on('click', function(e){
+            $('.selected').removeClass('selected');
+            requestWaterElementDetails(id);
+        });
     }
     //Todo populate map from DB
     // 1. Get array
@@ -53,6 +62,7 @@ function waterGISPopulate(){
     // 3. Set tooltip on hover
     // 4. Set link on click
 }
+
 
 /**
  * Request all known element positions from the server
@@ -64,8 +74,7 @@ function requestAllElementsPosition(){
 
     xhttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this);
-            return JSON.parse(this.responseText);
+            waterGISPopulate(JSON.parse(this.response));
         }
         else if (this.readyState == 4){
             console.log(this);
@@ -74,7 +83,7 @@ function requestAllElementsPosition(){
                 text: 'Les positions ne peuvent être téléchargées',
                 type: 'error'
             });
-            return false;
+            waterGISPopulate(false);
         }
     }
     xhttp.open('GET', requestURL, true);
@@ -86,7 +95,7 @@ function requestAllElementsPosition(){
  * @param  {[L.map]} map [An instantiated leaflet map]
  */
 function waterGISInit(map) {
-    gisMap = map
+    gisMap = map;
     // Set map center to haiti
     map.setView(MAP_CENTER, 8);
 
@@ -143,7 +152,7 @@ var drawerControl = L.Control.extend({
         container.style.height = '25px';
         container.onclick = function(){
             toggleDrawer();
-        }
+        };
         return container;
     }
 
@@ -185,11 +194,11 @@ function requestWaterElementDetails(elementID){
         }
         else if (this.readyState == 4){
             console.log(this);
-            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText
+            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText;
             errorDetailTable.html(msg);
             return setupWaterElementDetails(false);
         }
-    }
+    };
 
     xhttp.open('GET', requestURL, true);
     xhttp.send();
@@ -204,7 +213,6 @@ function setupWaterElementDetails(response){
     if (!response){
         detailTable.addClass('hidden');
         errorDetailTable.removeClass('hidden');
-        readyMapDrawButtons('pipe', false) // Fake, used for testing todo remove
         return;
     }
     detailTable.removeClass('hidden');
@@ -236,19 +244,35 @@ function setupWaterElementDetails(response){
  * @param  {Boolean} hasPosition true if the element already is on the map
  */
 function readyMapDrawButtons(type, hasPosition){
+    resetMapDrawButtons();
     let drawButton = $('#button-draw');
     let editButton = $('#button-edit');
-    let removebutton = $('#button-remove');
+    let removeButton = $('#button-remove');
 
     //You can only create non-existing positions, or edit/delete existing ones
     drawButton.prop('disabled', hasPosition);
-    editButton.prop('disabled', !hasPosition);
-    removebutton.prop('disabled', !hasPosition);
+    editButton.prop('disabled', hasPosition);
+    removeButton.prop('disabled', !hasPosition);
 
     //Attach the handlers
     if(!hasPosition){
         drawButton.on('click', {type:type}, drawHandler);
+        editButton.on('click', {type:type}, editHandler);
+    } else {
+        removeButton.on('click', removeHandler)
     }
+}
+
+function resetMapDrawButtons(){
+    let map = gisMap;
+    let drawButton = $('#button-draw');
+    let editButton = $('#button-edit');
+    let removeButton = $('#button-remove');
+
+    map.off(L.Draw.Event.CREATED, saveDraw);
+    drawButton.off();
+    editButton.off();
+    removeButton.off();
 }
 
 /**
@@ -258,7 +282,7 @@ function readyMapDrawButtons(type, hasPosition){
 function drawHandler( e ){
     let type = e.data.type.toLowerCase();
     let map = gisMap;
-    let isPoint = (type == 'fontaine' || type == 'kiosque' || type == 'prise individuelle' || type == 'fountain'); //Todo remove scaffholding after tests
+    let isPoint = (type == 'fontaine' || type == 'kiosque' || type == 'prise individuelle' );
     let isPolyline = (type == 'conduite');
     if( isPoint ){
         let pointDrawer = new L.Draw.Marker(map);
@@ -287,7 +311,7 @@ function saveDraw(event){
     layer.bindTooltip('my tooltip', { // Todo change for format tooltip
         sticky:true
     });
-    layer.waterID = 'customID'
+    layer.waterID = 'customID';
     layer.on('click', function(e){
         console.log(this); // Todo link to details request and table focus
     });
@@ -295,11 +319,6 @@ function saveDraw(event){
 
     // Save it on the server
     sendDrawToServer(layer.toGeoJSON());
-
-    //Destroy handlers
-    map.off(L.Draw.Event.CREATED, saveDraw);
-    let drawButton = $('#button-draw');
-    drawButton.off('click', drawHandler)
 }
 
 /**
@@ -316,13 +335,36 @@ function sendDrawToServer(geoJSON){
         }
         else if (this.readyState == 4){
             console.log(this);
-            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText
+            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText;
             errorDetailTable.html(msg);
             return this;
         }
     }
 
     xhttp.open('POST', requestURL, true);
-    xhttp.setRequestHeader('Content-Type', 'application/json')
+    xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send(JSON.stringify(geoJSON));
+}
+
+function removeHandler(e){
+    let requestURL = "../api/gis/?action=remove&id=" + currentElementID;
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+            readyMapDrawButtons(currentElementType, false);
+        }
+        else if (this.readyState == 4){
+            console.log(this);
+            new PNotify({
+                title: 'Erreur',
+                text: "L'élément ne peut être supprimé: " + this.statusText,
+                type: 'error'
+            });
+            return this;
+        }
+    };
+
+    xhttp.open('POST', requestURL, true);
+    xhttp.send();
 }
