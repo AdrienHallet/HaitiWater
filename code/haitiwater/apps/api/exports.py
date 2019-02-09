@@ -90,10 +90,13 @@ def gis_infos(request):
     if request.method == "GET":
         print("Getting infos")
         markers = request.GET.get("marker", None) #The fuck
-        if markers == "all":
+        if markers == "all": #TODO : be mindfull of the connected user
             all_loc = Location.objects.all()
+            result = {}
             for loc in all_loc:
-                pass
+                result[loc.elem.name] = loc.json_representation
+        return HttpResponse(json.dumps(result))
+
     elif request.method == "POST":
         print("Posting infos")
         elem_id = request.GET.get("id", -1) #The fuck
@@ -109,7 +112,7 @@ def gis_infos(request):
                        json_representation=request.body.decode('utf-8'),
                        poly=poly)
         loc.save()
-    return HttpResponse(status=200)
+        return HttpResponse(status=200)
 
 
 def table(request):
