@@ -64,6 +64,12 @@ class Element(models.Model):
     def is_in_subzones(self, zone):
         return self.zone.name in zone.subzones
 
+    def get_type(self):
+        return ElementType[self.type].value
+
+    def get_status(self):
+        return ElementStatus[self.status].value
+
     def get_manager(self):
         managers = User.objects.all()
         for manager in managers:
@@ -102,8 +108,8 @@ class Element(models.Model):
 
 
     def network_descript(self):
-        tab = [self.id, ElementType[self.type].value, self.location,
-               ElementStatus[self.status].value]
+        tab = [self.id, self.get_type(), self.location,
+               self.get_status()]
         return tab
 
 class Location(models.Model):

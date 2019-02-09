@@ -72,11 +72,11 @@ def get_details_network(request):
     else:
         location = location[0].json_representation
     infos = {"id": id_outlet,
-             "type": outlet.type,
+             "type": outlet.get_type(),
              "localization": outlet.location,
              "manager": outlet.get_manager(),
              "users": outlet.get_consumers(),
-             "state": outlet.status,
+             "state": outlet.get_status(),
              "currentMonthCubic": outlet.get_current_output(),
              "averageMonthCubic": outlet.get_all_output()[1],
              "totalCubic": outlet.get_all_output()[0],
