@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from enum import Enum
 from django.contrib.postgres.fields import ArrayField
@@ -75,7 +76,18 @@ class Element(models.Model):
     def is_in_subzones(self, zone):
         return self.zone.name in zone.subzones
 
+    def get_managers(self):
+        all_managers = User.objects.all()
+        result = ""
+        for user in all_managers:
+            if user.profile.outlets:
+                if str(self.id) in user.profile.outlets:
+                    result += user.username+", "
+        if result == "":
+            result = "Pas de gestionnaire  "
+        return result[:-2]
+
     def network_descript(self):
         tab = [self.id, ElementType[self.type].value, self.location,
-               ElementStatus[self.status].value]
+               ElementStatus[self.status].value, self.get_managers()]
         return tab
