@@ -326,7 +326,7 @@ function saveDraw(event){
  * @param  {GeoJSON} geoJSON of the object to save
  */
 function sendDrawToServer(geoJSON){
-    let requestURL = "../api/gis/?id=" + currentElementID;
+    let requestURL = "../api/gis/?action=add&id=" + currentElementID;
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
