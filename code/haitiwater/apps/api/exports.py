@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
 
-from ..water_network.models import Element, ElementType, Zone
+from ..water_network.models import Element, ElementType, Zone, Location
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
 from django.contrib.auth.models import User, Group
@@ -11,6 +11,7 @@ from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
 from ..utils.get_data import is_user_fountain
+from django.contrib.gis.geos import GEOSGeometry
 
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
@@ -65,6 +66,11 @@ def get_details_network(request):
     if len(results) != 1:
         return HttpResponse("Impossible de charger cet élément", status=404)
     outlet = results[0]
+    location = Location.objects.filter(elem=id_outlet)
+    if len(location) != 1:
+        location = None
+    else:
+        location = location[0].json_representation
     infos = {"id": id_outlet,
              "type": outlet.type,
              "localization": outlet.location,
@@ -74,18 +80,35 @@ def get_details_network(request):
              "currentMonthCubic": outlet.get_current_output(),
              "averageMonthCubic": outlet.get_all_output()[1],
              "totalCubic": outlet.get_all_output()[0],
-             "geoJSON": None}
+             "geoJSON": location}
     print(infos)
     return HttpResponse(json.dumps(infos))
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def gis_infos(request):
-    if request.GET:
+    print(request)
+    if request.method == "GET":
         print("Getting infos")
-    elif request.POST:
+        markers = request.GET.get("marker", None) #The fuck
+        if markers == "all":
+            all_loc = Location.objects.all()
+            for loc in all_loc:
+                pass
+    elif request.method == "POST":
         print("Posting infos")
-        print(request.POST)
-        print(request.body)
+        elem_id = request.GET.get("id", -1) #The fuck
+        if elem_id == -1:
+            return HttpResponse("Impossible de trouver l'élément demandé", status=404)
+        elem = Element.objects.filter(id=elem_id)
+        if len(elem) != 1:
+            return HttpResponse("Impossible de trouver l'élément demandé", status=404)
+        elem = elem[0]
+        json_value = json.loads(request.body.decode('utf-8'))
+        poly = GEOSGeometry(str(json_value["geometry"]))
+        loc = Location(elem=elem, lat=0, lon=0,
+                       json_representation=request.body.decode('utf-8'),
+                       poly=poly)
+        loc.save()
     return HttpResponse(status=200)
 
 

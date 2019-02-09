@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
+from django.contrib.postgres.fields import JSONField
 from enum import Enum
 from django.contrib.postgres.fields import ArrayField
 
@@ -47,19 +48,6 @@ class Zone(models.Model):
 
     def descript(self):
         return [self.id, self.name]
-
-
-class Location(models.Model):
-
-    zone = models.ForeignKey(Zone, verbose_name="Zone", related_name="locations", on_delete=models.CASCADE)
-    lon = models.FloatField("Longitude")
-    lat = models.FloatField("Latitude")
-    poly = models.MultiPolygonField("Multi-polygone", null=True)
-
-    # Generated : elements
-
-    def __str__(self):
-        return self.zone.name + " : (" + str(self.lon) + ", " + str(self.lat) + ")"
 
 
 class Element(models.Model):
@@ -117,3 +105,17 @@ class Element(models.Model):
         tab = [self.id, ElementType[self.type].value, self.location,
                ElementStatus[self.status].value]
         return tab
+
+class Location(models.Model):
+
+    elem = models.ForeignKey(Element, verbose_name="Elément représenté", related_name="locations", on_delete=models.CASCADE)
+    lon = models.FloatField("Longitude")
+    lat = models.FloatField("Latitude")
+    json_representation = JSONField(verbose_name="GeoJSON", null=True)
+    poly = models.GeometryField("Polygone", null=True)
+
+    # Generated : elements
+
+    def __str__(self):
+        return self.elem.name + " : (" + str(self.lon) + ", " + str(self.lat) + ")"
+
