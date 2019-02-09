@@ -131,7 +131,7 @@ def get_manager_elements(request, json, parsed):
                         out = out[0]
                     if type(out) is Element and out.is_in_subzones(target):
                         tab = [u.username, u.last_name, u.first_name, u.email,
-                               "Gestionnaire de fontaine", ""]
+                               "Gestionnaire de fontaine", u.profile.get_zone()]
                         if parsed["search"] == "":
                             all.append(tab)
                         else:
