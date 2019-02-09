@@ -89,5 +89,5 @@ class Element(models.Model):
 
     def network_descript(self):
         tab = [self.id, ElementType[self.type].value, self.location,
-               ElementStatus[self.status].value, self.get_managers()]
+               ElementStatus[self.status].value, self.get_managers(), self.zone.name]
         return tab
