@@ -99,6 +99,7 @@ def gis_infos(request):
 
     elif request.method == "POST":
         print("Posting infos")
+        print(request.GET)
         elem_id = request.GET.get("id", -1) #The fuck
         if elem_id == -1:
             return HttpResponse("Impossible de trouver l'élément demandé", status=404)
@@ -106,13 +107,21 @@ def gis_infos(request):
         if len(elem) != 1:
             return HttpResponse("Impossible de trouver l'élément demandé", status=404)
         elem = elem[0]
-        json_value = json.loads(request.body.decode('utf-8'))
-        poly = GEOSGeometry(str(json_value["geometry"]))
-        loc = Location(elem=elem, lat=0, lon=0,
+        if request.GET.get("action", None) == "add":
+            json_value = json.loads(request.body.decode('utf-8'))
+            poly = GEOSGeometry(str(json_value["geometry"]))
+            loc = Location(elem=elem, lat=0, lon=0,
                        json_representation=request.body.decode('utf-8'),
                        poly=poly)
-        loc.save()
-        return HttpResponse(status=200)
+            loc.save()
+            return HttpResponse(status=200)
+        elif request.GET.get("action", None) == "remove":
+            loc = Location.objects.filter(elem_id=elem_id)
+            loc.delete() #TODO log
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse("Impossible de traiter cette requête", status=500)
+
 
 
 def table(request):
