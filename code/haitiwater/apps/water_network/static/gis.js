@@ -4,6 +4,7 @@ let MAP_CENTER = new L.latLng(18.579916, -72.294903); // Port-au-Prince airport
 let gisMap = 'undefined';
 let waterElementTable = 'undefined';
 let detailTable = 'undefined';
+let latLongDetail = 'undefined';
 let errorDetailTable = 'undefined';
 let drawLayer = 'undefined';
 
@@ -16,9 +17,10 @@ let currentElementID = 'undefined';
 $(document).ready(function() {
     //Setup water tables first
     drawWaterElementTable(false, true);
-    waterElementTable = $("#datatable-water_element").DataTable()
+    waterElementTable = $("#datatable-water_element").DataTable();
     detailTable = $("#detail-table");
-    errorDetailTable = $('#error-detail-table')
+    errorDetailTable = $('#error-detail-table');
+    latLongDetail = $('#element-details-lat-lon');
 
     //Request details on element click
     $('#datatable-water_element tbody').on( 'click', 'tr', function () {
@@ -33,6 +35,11 @@ $(document).ready(function() {
             zoomControl: false //Set as fale to instantiate custom zoom control
         })
     );
+
+    displayDetailTableError('Sélectionnez un élément du réseau dans la table ou sur la carte.');
+    if(localStorage.getItem('mapDrawer')==='open'){
+        toggleDrawer();
+    }
 
     //Populate map with known elements
     requestAllElementsPosition();
@@ -51,16 +58,14 @@ function waterGISPopulate(elementPosition){
         let geoJSON = jQuery.parseJSON(elementPosition[id][1]);
 
         let drawElement = L.geoJSON(geoJSON).addTo(drawLayer);
+        drawElement.id = id;
+        drawElement.bindTooltip(tooltip, {
+        sticky:true
+    });
         drawElement.on('click', function(e){
-            $('.selected').removeClass('selected');
-            requestWaterElementDetails(id);
+            requestWaterElementDetails(drawElement.id);
         });
     }
-    //Todo populate map from DB
-    // 1. Get array
-    // 2. Draw elements on map
-    // 3. Set tooltip on hover
-    // 4. Set link on click
 }
 
 
@@ -85,7 +90,7 @@ function requestAllElementsPosition(){
             });
             waterGISPopulate(false);
         }
-    }
+    };
     xhttp.open('GET', requestURL, true);
     xhttp.send();
 }
@@ -146,10 +151,10 @@ var drawerControl = L.Control.extend({
     },
 
     onAdd: function (map) {
-        var container = L.DomUtil.create('i', 'leaflet-bar leaflet-control leaflet-drawer-control fas fa-arrow-left');
+        var container = L.DomUtil.create('i', 'leaflet-bar leaflet-control leaflet-drawer-control fas fa-question');
         container.style.backgroundColor = 'white';
-        container.style.width = '25px';
-        container.style.height = '25px';
+        container.style.width = '26px';
+        container.style.height = '26px';
         container.onclick = function(){
             toggleDrawer();
         };
@@ -163,19 +168,22 @@ var drawerControl = L.Control.extend({
  */
 function toggleDrawer(){
     let mapContainer = $('#map-container');
-    let controlContainer = $('.leaflet-drawer-control')
+    let controlContainer = $('.leaflet-drawer-control');
 
     if (mapContainer.hasClass('col-md-9')){
+        localStorage.removeItem('mapDrawer'); // Local storage to retain drawer position
         mapContainer.removeClass('col-md-9');
         mapContainer.addClass('col-md-12');
-        controlContainer.removeClass('fa-arrow-right');
-        controlContainer.addClass('fa-arrow-left');
+        controlContainer.addClass('fa-question');
+        controlContainer.removeClass('fa-times');
     }
     else {
+        localStorage.setItem('mapDrawer','open');
         mapContainer.addClass('col-md-9');
         mapContainer.removeClass('col-md-12');
-        controlContainer.addClass('fa-arrow-right');
-        controlContainer.removeClass('fa-arrow-left');
+        controlContainer.removeClass('fa-question');
+        controlContainer.addClass('fa-times');
+
     }
     $('#details').collapse('toggle');
 }
@@ -190,19 +198,24 @@ function requestWaterElementDetails(elementID){
 
     xhttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
+            $('.selected').removeClass('selected'); //de-select row as to not confuse in case of map selection (element click)
             setupWaterElementDetails(JSON.parse(this.response));
         }
         else if (this.readyState == 4){
             console.log(this);
             let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText;
-            errorDetailTable.html(msg);
-            return setupWaterElementDetails(false);
+            displayDetailTableError(msg);
         }
     };
 
     xhttp.open('GET', requestURL, true);
     xhttp.send();
 
+}
+
+function displayDetailTableError(errorMsg){
+    errorDetailTable.html(errorMsg);
+    return setupWaterElementDetails(false);
 }
 
 /**
@@ -218,8 +231,6 @@ function setupWaterElementDetails(response){
     detailTable.removeClass('hidden');
     errorDetailTable.addClass('hidden');
 
-    console.log('Successfuly retrieved JSON: ' + response);
-
     $("#element-details-id").html(response.id);
     $("#element-details-type").html(response.type);
     $("#element-details-localization").html(response.localization);
@@ -230,11 +241,30 @@ function setupWaterElementDetails(response){
     $("#element-details-average-month-cubic").html(response.averageMonthCubic);
     $("#element-details-total-cubic").html(response.totalCubic);
 
+
     currentElementID = response.id;
     currentElementType = response.type;
     currentElementAddress = response.localization;
 
     let hasLocalization = response.geoJSON !== null;
+
+    let latLongDetail = $("#element-details-lat-lon");
+    if (hasLocalization){
+        let draw = jQuery.parseJSON(response.geoJSON);
+        let latlng;
+        if (!isMarker(response.type)){
+            latLongDetail.html('Pas affichable');
+            latlng = L.latLng(draw.geometry.coordinates[0][1], draw.geometry.coordinates[0][0]);
+        } else {
+            latlng = L.latLng(draw.geometry.coordinates[1], draw.geometry.coordinates[0]);
+            latLongDetail.html(latlng.lng + "," + latlng.lat);
+        }
+        gisMap.flyTo(latlng);
+    } else {
+        latLongDetail.html('N/A');
+    }
+
+
     readyMapDrawButtons(response.type, hasLocalization);
 }
 
@@ -251,13 +281,13 @@ function readyMapDrawButtons(type, hasPosition){
 
     //You can only create non-existing positions, or edit/delete existing ones
     drawButton.prop('disabled', hasPosition);
-    editButton.prop('disabled', hasPosition);
+    editButton.prop('disabled', !isMarker(type) || hasPosition);
     removeButton.prop('disabled', !hasPosition);
 
     //Attach the handlers
     if(!hasPosition){
-        drawButton.on('click', {type:type}, drawHandler);
-        editButton.on('click', {type:type}, editHandler);
+        drawButton.on('click', drawHandler);
+        editButton.on('click', editHandler);
     } else {
         removeButton.on('click', removeHandler)
     }
@@ -280,24 +310,67 @@ function resetMapDrawButtons(){
  * @param  {Event} e the click event
  */
 function drawHandler( e ){
-    let type = e.data.type.toLowerCase();
+    let type = currentElementType;
     let map = gisMap;
-    let isPoint = (type == 'fontaine' || type == 'kiosque' || type == 'prise individuelle' );
-    let isPolyline = (type == 'conduite');
-    if( isPoint ){
-        let pointDrawer = new L.Draw.Marker(map);
-        pointDrawer.enable();
-        map.on(L.Draw.Event.CREATED,saveDraw);
+    let drawer;
+    if( isMarker(type) ){
+        drawer = new L.Draw.Marker(map);
     }
-    else if ( isPolyline ){
-        let polyLineDrawer = new L.Draw.Polyline(map);
-        polyLineDrawer.enable();
-        map.on(L.Draw.Event.CREATED, saveDraw);
+    else if ( isLine(type) ){
+        drawer = new L.Draw.Polyline(map);
     }
     else {
         console.log("Implement further options if required");
         // A polygon for zones would be a good example
     }
+    drawer.enable();
+    map.on(L.Draw.Event.CREATED,saveDraw);
+}
+
+/**
+ * Allow to create a point by its coordinates
+ * @param e button click event
+ */
+function editHandler( e ){
+    let input = prompt('Entrez les coordonnées du point à ajouter: ');
+    if (input == null) return;
+
+    let coords = undefined;
+    try {
+        coords = parseCoordinates(input);
+    }catch(e){
+        alert('Coordonnées invalides');
+        return;
+    }
+
+    if(!isValidCoordinate(coords)){
+        alert('Coordonnées invalides');
+        return;
+    }
+
+    let position = {
+        type: "Feature",
+        properties:{
+            name: currentElementType + " " + currentElementAddress
+        },
+        geometry: {
+            type: "Point",
+            coordinates: [coords.lat, coords.lon]
+        }
+    };
+
+    let marker = L.geoJSON(position).addTo(drawLayer);
+    marker.bindTooltip(currentElementType + " " + currentElementAddress, {
+        sticky:true
+    });
+    marker.on('click', function(e){
+       requestWaterElementDetails(currentElementID)
+    });
+    let draw = marker.toGeoJSON().features[0];
+    let latlng = L.latLng(draw.geometry.coordinates[1], draw.geometry.coordinates[0]);
+    gisMap.flyTo(latlng);
+    sendDrawToServer(draw); //Default type is collection (feature array)
+    readyMapDrawButtons(currentElementType, true);
 }
 
 /**
@@ -306,19 +379,27 @@ function drawHandler( e ){
  */
 function saveDraw(event){
     // Save it on the map
-    let map = gisMap;
-    var layer = event.layer;
-    layer.bindTooltip('my tooltip', { // Todo change for format tooltip
+    let layer = event.layer;
+    layer.bindTooltip(currentElementType + " " + currentElementAddress, {
         sticky:true
     });
-    layer.waterID = 'customID';
+
+    if (!isMarker(currentElementType)){
+        latLongDetail.html('Pas affichable');
+    } else {
+        let coords = layer.toGeoJSON().geometry.coordinates;
+        latLongDetail.html(coords[0] + "," + coords[1]);
+    }
+
+    layer.id = currentElementID;
     layer.on('click', function(e){
-        console.log(this); // Todo link to details request and table focus
+        requestWaterElementDetails(layer.id);
     });
     drawLayer.addLayer(layer);
 
     // Save it on the server
     sendDrawToServer(layer.toGeoJSON());
+    readyMapDrawButtons(currentElementType, true);
 }
 
 /**
@@ -339,7 +420,7 @@ function sendDrawToServer(geoJSON){
             errorDetailTable.html(msg);
             return this;
         }
-    }
+    };
 
     xhttp.open('POST', requestURL, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
@@ -352,6 +433,12 @@ function removeHandler(e){
 
     xhttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
+            drawLayer.eachLayer(function (draw){
+                if (draw.id === currentElementID){
+                    drawLayer.removeLayer(draw);
+                    $('#element-details-lat-lon').html("N/A");
+                }
+            });
             readyMapDrawButtons(currentElementType, false);
         }
         else if (this.readyState == 4){
@@ -367,4 +454,14 @@ function removeHandler(e){
 
     xhttp.open('POST', requestURL, true);
     xhttp.send();
+}
+
+function isMarker(type){
+    let markerElements = ['fontaine', 'kiosque', 'prise individuelle', 'source'];
+    return markerElements.indexOf(type.toLowerCase()) > -1;
+}
+
+function isLine(type){
+    let lineElements = ['conduite'];
+    return lineElements.indexOf(type.toLowerCase()) > -1;
 }

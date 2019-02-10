@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static "vendor/leaflet/leaflet.draw.css" %}">
 
     <script src="{% static "gis.js" %}"></script>
+    <script src="{% static "gisHelper.js" %}"></script>
     <script src="{% static "locale_fr.js" %}"></script>
     <link href="{% static "water_network.css" %}">
     Vue géographique
@@ -33,13 +34,13 @@
                 <div id="details" class="col-md-3 collapse">
                     <div class="text-center">
                        <div class="btn-group">
-                          <button id="button-draw" type="button" class="btn btn-small" title="Placer sur la carte">
+                          <button id="button-draw" type="button" class="btn btn-small" title="Placer sur la carte" disabled>
                               <i class="fas fa-map-marker-alt"></i>
                           </button>
-                          <button id="button-edit" type="button" class="btn btn-small" title="Editer la position">
+                          <button id="button-edit" type="button" class="btn btn-small" title="Entrer les coordonnées" disabled>
                               <i class="fas fa-pen"></i>
                           </button>
-                          <button id="button-remove" type="button" class="btn btn-small" title="Supprimer le marqueur">
+                          <button id="button-remove" type="button" class="btn btn-small" title="Supprimer le marqueur" disabled>
                               <i class="fas fa-trash"></i>
                           </button>
                        </div>
@@ -58,6 +59,10 @@
                                 <tr>
 									<td class="text-left">Emplacement</td>
 									<td class="text-left" id="element-details-localization"></td>
+								</tr>
+                                <tr>
+									<td class="text-left">Coordonnées (lon,lat)</td>
+									<td class="text-left" id="element-details-lat-lon"></td>
 								</tr>
                                 <tr>
 									<td class="text-left">Gestionnaire</td>

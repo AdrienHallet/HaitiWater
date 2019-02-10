@@ -38,7 +38,7 @@ L.drawLocal = {
           },
           marker: {
             tooltip: {
-              start: '- your text-.'
+              start: 'Cliquez pour placer',
             }
           },
           polygon: {
