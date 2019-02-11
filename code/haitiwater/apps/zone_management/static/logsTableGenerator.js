@@ -18,29 +18,31 @@ function drawLogTable(){
     let table = $('#datatable-logs').DataTable();
 
     $('#datatable-logs tbody').on( 'click', 'tr td:not(:last-child)', function () {
-        var tr = $(this);
-        var row = table.row( tr );
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+        console.log(row.data());
 
-        if ( row.child.isShown() ) {
+        if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown');
         }
         else {
             // Open this row
+            console.log(row.data());
             row.child( format(row.data()) ).show();
             tr.addClass('shown');
         }
     });
 
-    $('#datatable-logs tbody').on( 'click', '.revert-modification', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
-        revertModification(data[0].innerText);
-    } );
-    $('#datatable-logs tbody').on( 'click', '.accept-modification', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
-        acceptModification(data[0].innerText);
-    } );
+    // $('#datatable-logs tbody').on( 'click', '.revert-modification', function () {
+    //     let data = $(this).parents('tr')[0].getElementsByTagName('td');
+    //     revertModification(data.id);
+    // } );
+    // $('#datatable-logs tbody').on( 'click', '.accept-modification', function () {
+    //     let data = $(this).parents('tr')[0].getElementsByTagName('td');
+    //     acceptModification(data.id);
+    // } );
     prettifyHeader('logs');
 }
 
