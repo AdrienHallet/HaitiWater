@@ -58,6 +58,9 @@ function acceptModification(elementID){
 
 function requestHandler(url){
     let xhttp = new XMLHttpRequest();
+    xhttp.open('POST', url, true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
 
     xhttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
@@ -72,9 +75,6 @@ function requestHandler(url){
             });
         }
     }
-
-    xhttp.open('POST', url, true);
-    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send();
 }
 
