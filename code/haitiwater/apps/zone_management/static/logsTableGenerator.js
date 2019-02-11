@@ -64,7 +64,7 @@ function requestHandler(url){
 
     xhttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
-            drawLogTable();
+            drawDataTable('logs');
         }
         else if (this.readyState == 4){
             console.log(this);
