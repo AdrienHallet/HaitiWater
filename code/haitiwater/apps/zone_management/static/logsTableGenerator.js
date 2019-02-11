@@ -36,11 +36,11 @@ function drawLogTable(){
     });
 
     $('#datatable-logs tbody').on( 'click', '.revert-modification', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
+        let data = table.row($(this).closest('tr')).data();
         revertModification(data.id);
     } );
     $('#datatable-logs tbody').on( 'click', '.accept-modification', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
+        let data = table.row($(this).closest('tr')).data();
         acceptModification(data.id);
     } );
     prettifyHeader('logs');
