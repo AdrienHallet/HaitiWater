@@ -53,6 +53,7 @@ $(document).ready(function() {
 			let postURL = baseURL + "/api/report/";
 			let xhttp = new XMLHttpRequest();
 			xhttp.open("POST", postURL, true);
+			xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
 			xhttp.setRequestHeader('Content-type', 'application/json');
 			xhttp.onreadystatechange = function() {
 				if(xhttp.readyState === 4) {

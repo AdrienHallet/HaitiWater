@@ -54,7 +54,6 @@ class Location(models.Model):
     zone = models.ForeignKey(Zone, verbose_name="Zone", related_name="locations", on_delete=models.CASCADE)
     lon = models.FloatField("Longitude")
     lat = models.FloatField("Latitude")
-    poly = models.MultiPolygonField("Multi-polygone", null=True)
 
     # Generated : elements
 
