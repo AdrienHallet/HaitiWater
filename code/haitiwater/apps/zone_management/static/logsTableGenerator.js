@@ -125,3 +125,25 @@ function getLogsActionButtonsHTML(){
             '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
             '<a style="cursor:pointer;" class="revert-modification far fa-times-circle"></a></div>'
 }
+
+transactionAction(action, id){
+    let postURL = "../../api/log/?action=" + action + "&id=" + id;
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", postURL, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.onreadystatechange = function() {
+        if(xhttp.readyState === 4) {
+            if (xhttp.status !== 200) {
+                console.log(this);
+                new PNotify({
+                    title: 'Échec!',
+                    text: "L'action n'a pas pu être annulée.",
+                    type: 'error'
+                });
+            } else {
+                drawDataTable('logs');
+            }
+        }
+    };
+    xhttp.send();
+}
