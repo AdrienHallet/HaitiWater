@@ -1,6 +1,6 @@
 \documentclass{eplmastersthesis_FR}
 
-\title{HaitiWater}
+\title{HaïtiWater}
 \subtitle{Développement d'une application web pour gérer la distribution de l'eau en Haïti}
 \author{Céline \textsc{Deknop}}
 \secondauthor{Adrien \textsc{Hallet}}
@@ -14,32 +14,54 @@
 %\readerthree{Firstname \textsc{Lastname}}
 \years{2018-2019}
 
+\usepackage{hyperref}
+
 \begin{document}
 
-	\maketitle
-	\thispagestyle{empty}
-	% To suppress header and footer on the back of the cover page
+	\frontpage
+	\tableofcontents
 
-	Total des pages : entre 49 et 75 d'après nos estimations.
+	\setlength{\parskip}{1.5em plus1em minus1em}
+
+	% Total des pages : entre 49 et 75 d'après nos estimations.
 
 	\chapter*{Abstract}
+	\addcontentsline{toc}{chapter}{Abstract}
 
 		Page : 1
 
 	\chapter{Introduction}
 
-		Pages : 2 à 3
+		% Pages : 2 à 3
 
 		\subsection*{Contexte}
+
+			Ce mémoire se place dans le cadre d'un projet de développement lancé par l'ONG Protos\footnote{\href{https://www.protos.ngo/fr/}{www.protos.ngo}}. Protos est une ONG qui a pour but d'améliorer l'accès à l'eau potable afin d'aider le développement de plusieurs pays du monde. Un des pays dans lesquels Protos est engagé est Haïti.
+
+			Suite à plusieurs problèmes naturels et politiques récents, la situation de l'accès à l'eau potable  est particulièrement compliquée à Haïti. Le séïsme de 2010 a laissé le pays en ruine et a détruit beaucoup d'installations, y compris de distribution d'eau. Le chaos politique qui en a suivi n'a pas aidé à la reconstruction de ces installations et le peuple ne peut toujours pas réellement compter sur le pouvoir politique pour assurer la distribution de l'eau. C'est --- entre autre --- pourquoi l'ONG Protos est active dans le pays.
+			% TODO trop chargé politiquement ?
+
+			Protos a contacté l'UCL afin de réaliser un projet de développement en Haïti. Le but de ce projet est de réaliser un système de gestion pour la distribution de l'eau potable. Ce projet est prévu sur trois ans, une première année pour la conception d'un prototype, une deuxième année pour finaliser le système et une troisième année pour déployer le système sur place. Ce mémoire consiste en la première partie de ce projet.
+
       % Notre mémoire est un mémoire de développement d'une application web utilisée en Haïti.
       % Contactés par l'ONG protos
       % Situation d'haiti problématique (manque de moyens financiers et humains)
 		\subsection*{Problème}
+
+			Dans ce mémoire, nous nous concentrons sur certains problèmes rencontrés par la gestion de l'eau à Haïti. Premièrement, nous essayons d'aider les problèmes d'organisation entre les différents acteurs de la distribution de l'eau. La structure hiérarchique de ces différents acteurs, gouvernementaux ou non, est assez complexe et ils doivent se coordonner.
+
+			Deuxièmement, nous travaillons sur l'amélioration de la communication entre ces différents acteurs. Troisièmement, nous cherchons à améliorer la gestion des données de la distribution de l'eau.
+
       % Le problème que nous, en tant que mémoire, on traite : organisation, communication, gestion des données
 		\subsection*{Motivation}
+
+
+
       % Pourquoi on le fait, car l'ONG a contacté l'UCL, on développe l'application pour que Haiti se développe
       % Nos motivations personnelles ; full stack dev ops
 		\subsection*{Objectif}
+
+			Le but de notre projet est de créer une
       % Leur créer une application qui leur permette :
        % Soit de construire une base applicative sur laquelle ils pourront se développer
        % Soit de se rendre compte de ce qu'une solution logicielle peut leur apporter, et donc de repenser leurs besoins.
@@ -246,6 +268,7 @@
 		Pages : 1 à 2
 
 	\chapter*{Bibliographie}
+	\addcontentsline{toc}{chapter}{Bibliographie}
 
 		Pages : 2 à 3
 
@@ -267,6 +290,7 @@
 
 		Pages : beaucoup
 
+	\setlength{\parskip}{0em}
 	\backcoverpage
 
 \end{document}

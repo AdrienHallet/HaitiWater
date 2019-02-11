@@ -76,8 +76,8 @@
 % Front cover page
 \newcommand{\frontpage}
 {
-  \begin{titlepage}
-  \end{titlepage}
+	\maketitle
+	\thispagestyle{empty}
 }
 
 % Back cover page
