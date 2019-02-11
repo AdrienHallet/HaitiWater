@@ -228,6 +228,27 @@ def edit_element(request):
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)
 
+def compute_logs(request):
+    id_val = request.GET.get("id", -1)
+    action = request.GET.get("action", None)
+    if id_val == -1 or action == None:
+        return HttpResponse("Impossible de valider/annuler ce changement", status=500)
+    transaction = Transaction.objects.filter(id=id_val)
+    if len(transaction) != 1:
+        return HttpResponse("Impossible d'identifier le changement", status=404)
+    transaction = transaction[0]
+    if action == "accept":
+        logs = Log.objects.filter(transaction=transaction)
+        for log in logs:
+            log.delete()
+        transaction.delete()
+        return HttpResponse(status=200)
+    elif action == "revert":
+        roll_back(transaction)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse("Action non reconnue", status=500)
+
 def roll_back(transaction):
     logs = Log.objects.filter(transaction=transaction)
     if logs[0].action == "EDIT": #Edit case
