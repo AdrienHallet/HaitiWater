@@ -34,7 +34,7 @@ function refresh() {
         case 'none':
             break; // empty case
         default: // error case
-            console.log("Undefined graph type: " + document.getElementById('graphTitle').value)
+            console.log("Undefined graph type: " + document.getElementById('graphTitle').value);
     }
 }
 
@@ -72,6 +72,8 @@ function consumerGenderPie() {
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 tooltips: {
                     callbacks: {
                         label: function (tooltipItem, data) {
@@ -129,6 +131,7 @@ function monthlyVolumePerZone() {
                     mode: 'label'
                 },
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         position: "left",

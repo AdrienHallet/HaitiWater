@@ -2,8 +2,12 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.contrib.auth.models import Group
-
 from ..log.models import Transaction
+from ..water_network.models import Element, ElementType, Zone
+from ..consumers.models import Consumer
+from ..report.models import Report, Ticket
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from ..water_network.models import ElementType
 from ..api.get_table import *
 
@@ -11,7 +15,7 @@ import json
 
 success_200 = HttpResponse(status=200)
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_consumer_element(request):
     first_name = request.POST.get("firstname", None)
     last_name = request.POST.get("lastname", None)
@@ -32,7 +36,7 @@ def add_consumer_element(request):
     log_element(new_c, request)
     return success_200
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_network_element(request):
     type = request.POST.get("type", None).upper()
     loc = request.POST.get("localization", None)
@@ -44,7 +48,7 @@ def add_network_element(request):
     log_element(e, request)
     return success_200
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_report_element(request):
     values = json.loads(request.body.decode("utf-8"))
     for index, elem in enumerate(values["selectedOutlets"]):
@@ -65,7 +69,7 @@ def add_report_element(request):
         log_element(report_line, request)
     return success_200
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_zone_element(request):
     name = request.POST.get("name", None)
     if request.user and request.user.profile.zone: #If user is connected and zone manager
@@ -83,13 +87,14 @@ def add_zone_element(request):
 
 
             log_element(to_add, request)
+            to_add.save()
             return success_200
         else:
             return HttpResponse("Impossible de trouver la zone gérée pas l'utilisateur", status=404)
     else:
         return HttpResponse("Impossible d'ajouter la zone. Etes-vous sûr d'être connecté ?", status=500)
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_collaborator_element(request):
     first_name = request.POST.get("firstname", None)
     last_name = request.POST.get("lastname", None)
@@ -101,13 +106,13 @@ def add_collaborator_element(request):
     type = request.POST.get("type", None)
     if type == "fountain-manager":
         water_out = request.POST.get("outlets", None)
-        print(water_out)
+        water_out = water_out.split(',')
         if len(water_out) < 1:
             return HttpResponse("Vous n'avez pas choisi de fontaine a attribuer !", status=500)
-        if len(water_out) > 1:
+        elif len(water_out) > 1:
             res = Element.objects.filter(id__in=water_out)
         else:
-            res = Element.objects.filter(id=water_out)
+            res = Element.objects.filter(id=water_out[0])
         if len(res) > 0:
             for outlet in res:
                 new_user.profile.outlets.append(outlet.id)
@@ -139,7 +144,7 @@ def add_collaborator_element(request):
     log_element(new_user.profile, request)
     return success_200
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_ticket_element(request):
     id = request.POST.get("id_outlet", None)
     outlets = Element.objects.filter(id=id)
@@ -154,6 +159,7 @@ def add_ticket_element(request):
         ticket = Ticket(water_outlet=outlet, type=typeR, comment=comment,
                         urgency=urgency, image=image)
         log_element(ticket, request)
+        ticket.save()
     return success_200
 
 

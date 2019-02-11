@@ -39,6 +39,7 @@ function removeElement(table, id){
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
@@ -130,6 +131,7 @@ function postNewRow(table){
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
@@ -164,6 +166,7 @@ function postEditRow(table){
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
@@ -217,3 +220,20 @@ function getDataTableFrenchTranslation(){
         },
     }
 }
+
+// Get the cookie of given cookie name cookieName
+function getCookie(cookieName)
+{
+    if (document.cookie.length > 0)
+    {
+        cookieStart = document.cookie.indexOf(cookieName + "=");
+        if (cookieStart != -1)
+        {
+            cookieStart = cookieStart + cookieName.length + 1;
+            cookieEnd = document.cookie.indexOf(";", cookieStart);
+            if (cookieEnd == -1) cookieEnd = document.cookie.length;
+            return unescape(document.cookie.substring(cookieStart,cookieEnd));
+        }
+    }
+    return "";
+ }

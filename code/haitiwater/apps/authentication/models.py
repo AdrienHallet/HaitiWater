@@ -22,7 +22,7 @@ class Profile(models.Model):
         result["Role"] = self.user.groups.values_list('name',flat=True)[0]
         for field in Profile._meta.get_fields():
             result[field.verbose_name] = self.__getattribute__(field.name)
-            if field.name == "zone":
+            if field.name == "zone" and self.zone:
                 result[field.verbose_name] = self.zone.id
         return result
 
@@ -54,6 +54,25 @@ class Profile(models.Model):
                 if add:
                     sub.append(user)
         return sub
+
+    def get_zone(self):
+        if self.zone:
+            return self.zone.name
+        else:
+            outlet = Element.objects.filter(id=self.outlets[0])
+            if len(outlet) != 1:
+                return ""
+            outlet = outlet[0]
+            higher_zone =  outlet.zone
+            for elem in self.outlets[1:]:
+                outlet = Element.objects.filter(id=elem)
+                if len(outlet) != 1:
+                    return ""
+                outlet = outlet[0]
+                other_zone = outlet.zone
+                if higher_zone.name in other_zone.subzones and other_zone.name not in higher_zone.subzones:
+                    higher_zone = other_zone
+            return higher_zone.name
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

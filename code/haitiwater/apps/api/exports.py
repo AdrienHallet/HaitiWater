@@ -1,5 +1,10 @@
 import re
 
+from ..water_network.models import Element, ElementType, Zone
+from ..consumers.models import Consumer
+from ..report.models import Report, Ticket
+from django.contrib.auth.models import User, Group
+from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
 from ..utils.get_data import is_user_fountain
@@ -43,7 +48,7 @@ def graph(request):
         # that "new" zones aren't left behind for lack of data.
         export = """{
                        "jsonarray": [{
-                          "label": ["Nom zone 1", "Nome zone 2"], 
+                          "label": ["Nom zone 1", "Nome zone 2"],
                           "data": [10, 20]
                        }]}"""
         json_val = json.loads(export)
@@ -102,7 +107,7 @@ def table(request):
     print(json.dumps(json_test))
     return HttpResponse(json.dumps(json_test))
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def add_element(request):
     element = request.POST.get("table", None)
     if element == "water_element":
@@ -118,7 +123,7 @@ def add_element(request):
     else:
         return HttpResponse("Impossible d'ajouter l'élément "+element, status=500)
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def remove_element(request):
     element = request.POST.get("table", None)
     if element == "water_element":
@@ -206,7 +211,7 @@ def remove_element(request):
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     return error_500
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+
 def edit_element(request):
     element = request.POST.get("table", None)
     if element == "water_element":

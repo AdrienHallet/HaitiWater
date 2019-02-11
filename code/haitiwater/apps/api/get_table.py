@@ -52,6 +52,7 @@ def get_water_elements(request, json, parsed):
 
 def get_consumer_elements(request, json, parsed):
     zone = request.user.profile.zone
+    outlets = request.user.profile.outlets
     all = []
     if zone: #Zone manager
         target = Zone.objects.filter(name=zone.name)
@@ -60,16 +61,21 @@ def get_consumer_elements(request, json, parsed):
         else:
             return False
         all_consumers = [elem for elem in Consumer.objects.all() if elem.water_outlet.is_in_subzones(target)]
-        json["recordsTotal"] = len(all_consumers)
-        for elem in all_consumers:
-            if parsed["search"] == "":
-                all.append(elem.descript())
-            else:
-                for cols in parsed["searchable"]:
-                    tab = elem.descript()
-                    if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                        all.append(tab)
-                        break
+    elif len(outlets) > 0:
+        all_consumers = Consumer.objects.filter(water_outlet_id__in=outlets)
+    else:
+        return all
+
+    json["recordsTotal"] = len(all_consumers)
+    for elem in all_consumers:
+        if parsed["search"] == "":
+            all.append(elem.descript())
+        else:
+            for cols in parsed["searchable"]:
+                tab = elem.descript()
+                if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
+                    all.append(tab)
+                    break
     return all
 
 
@@ -105,7 +111,7 @@ def get_manager_elements(request, json, parsed):
         for u in all_collab:
             group = u.groups.values_list('name', flat=True)
             if "Gestionnaire de zone" in group:
-                if type(target) is Zone and u.profile.zone.name in target.subzones:
+                if type(target) is Zone and u.profile.zone and u.profile.zone.name in target.subzones:
                     tab = [u.username, u.last_name, u.first_name, u.email,
                            "Gestionnaire de zone", u.profile.zone.name]
                     if parsed["search"] == "":
@@ -122,7 +128,7 @@ def get_manager_elements(request, json, parsed):
                         out = out[0]
                     if type(out) is Element and out.is_in_subzones(target):
                         tab = [u.username, u.last_name, u.first_name, u.email,
-                               "Gestionnaire de fontaine", ""]
+                               "Gestionnaire de fontaine", u.profile.get_zone()]
                         if parsed["search"] == "":
                             all.append(tab)
                         else:

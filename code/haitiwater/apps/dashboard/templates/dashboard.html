@@ -2,6 +2,19 @@
 {% load group_filter %}
 
     {% block page_name %}
+        <script type="application/javascript">
+            {% if user.is_authenticated %}
+                const outlets = [];
+                {% for outlet in water_outlets_report %}
+                    outlets.push([{{ outlet.0 }}, "{{ outlet.1 }}"]);
+                {% endfor %}
+                localStorage.setItem("username", "{{ user.get_username }}");
+                localStorage.setItem("outlets", JSON.stringify(outlets));
+            {% else %}
+                localStorage.removeItem("username");
+                localStorage.removeItem("outlets");
+            {% endif %}
+        </script>
         Accueil
     {% endblock %}
 
