@@ -72,6 +72,7 @@ function requestHandler(url){
     }
 
     xhttp.open('POST', url, true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send();
 }
 
