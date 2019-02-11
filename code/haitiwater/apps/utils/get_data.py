@@ -55,9 +55,14 @@ def get_amount_pipe(zone):
 def get_amount_household(request):
     if is_user_zone(request):
         zone = request.user.profile.zone
+        return get_amount_consumer(zone)
     elif is_user_fountain(request):
-        zone = get_higher_zone(request.user.profile.outlets)
-    return get_amount_consumer(zone)
+        total = 0
+        for outlet in request.user.profile.outlets:
+            consumers_outlet = Consumer.objects.filter(water_outlet_id=outlet)
+            total += len(consumers_outlet)
+        return total
+
 
 
 def get_amount_consumer(zone):
@@ -69,14 +74,17 @@ def get_amount_consumer(zone):
 
 
 def get_total_consumers(request):
+    result = 0
     if is_user_zone(request):
         zone = request.user.profile.zone
+        for consumer in Consumer.objects.all():
+            if consumer.water_outlet.zone.name in zone.subzones:
+                result += consumer.household_size + 1
     elif is_user_fountain(request):
-        zone = get_higher_zone(request.user.profile.outlets)
-    result = 0
-    for consumer in Consumer.objects.all():
-        if consumer.water_outlet.zone.name in zone.subzones:
-            result += consumer.household_size + 1
+        for outlet in request.user.profile.outlets:
+            consumers_outlet = Consumer.objects.filter(water_outlet_id=outlet)
+            for consumer in consumers_outlet:
+                result += consumer.household_size+1
     return result
 
 
