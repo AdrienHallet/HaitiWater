@@ -53,6 +53,7 @@ class Ticket(models.Model):
     comment = models.CharField("Commentaire", max_length=500, null=True)
     urgency = models.CharField("Niveau d'urgence", max_length=10, choices=[(i.name, i.value) for i in UrgencyType])
     type = models.CharField("Type de panne", max_length=10, choices=[(i.name, i.value) for i in BreakType])
+    days_active = models.IntegerField("Jours d'activité")
     image = models.ImageField("Image", null=True) #This saves the image to server. We'll see if it stays
     status = models.CharField("Etat de résolution", max_length=10, choices=[(i.name, i.value) for i in StatusType],
                               default="UNRESOLVED")
