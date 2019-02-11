@@ -47,12 +47,12 @@ function drawLogTable(){
 }
 
 function revertModification(elementID){
-    let url = '../../api/log?action=revert&id=' + elementID;
+    let url = '../../api/log/?action=revert&id=' + elementID;
     requestHandler(url);
 }
 
 function acceptModification(elementID){
-    let url = '../../api/log?action=accept&id=' + elementID;
+    let url = '../../api/log/?action=accept&id=' + elementID;
     requestHandler(url);
 }
 
