@@ -1,0 +1,108 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{datetime}
+\usepackage{float}
+\usepackage{eurosym}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi)
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{fullpage} % changes the margin
+\begin{document}
+
+\noindent
+\large\textbf{Validation} \hfill \textbf{HaïtiWater} \\
+\normalsize Deknop Céline \hfill Université catholique de Louvain \\
+Hallet Adrien \hfill \today \\
+Strebelle Sébastien
+
+\section*{Abstract}
+    Ce document établit le protocole et contenu des expériences de validation de l'outil en environnement contrôlé et avec des utilisateurs hors de l'équipe de développement.
+\hrule
+
+\section{Objectifs}
+    Les expériences de validation cherchent à mettre en avant les points forts/faibles de l'interface en utilisant un protocole identique, pour plusieurs participants, visant à normaliser les résultats et tenter de dégager une tendance positive ou négative. Les résultats de l'expérimentation permettront de confirmer ou infirmer des choix techniques, esthétiques et fonctionnels.
+
+\section{Protocole}
+    \subsection*{Résumé}
+        Chaque participant est introduit à l'application de manière générale sans présentation de l'interface. Chaque participant reçoit un numéro. L'expérimentation commence avec un scénario et un type d'interface (mobile ou desktop) défini. L'application est déjà ouverte sur le périphérique utilisé. Le participant doit ensuite compléter un scénario, divisé en plusieurs tâches, dans le temps imparti. Si le participant ne parvient pas à résoudre une tâche, il peut être aidé de manière brève et orale par l'expérimentateur qui notera chaque intervention de sa part. Une fois le scénario accompli, le participant réitère sur d'autres scénarios pour une durée maximale d'une heure trente au total. La dernière demie-heure est réservée à la complétion d'un formulaire en ligne composé de 22 questions utilisant une échelle de Likert~\cite{wikipediaLikertScale} et à une éventuelle discussion avec les participants.
+
+    \subsection*{Présentation}
+        L'objectif de l'application est de fournir un appui logiciel aux gestionnaires du réseau de distribution d'eau potable d'Haïti. On considère qu'il y a deux groupes d'utilisateurs principaux;
+        \begin{itemize}
+            \item Le \emph{gestionnaires de zone} qui coordonne l'activité dans une certaine zone géographique. Il est un responsable administratif.
+            \item Le \emph{gestionnaire de fontaine} qui participe au quotidien à la gestion physique du réseau de distribution. Il est au plus proche contact des consommateurs.
+        \end{itemize}
+        En tant que sujet d'expérimentation, vous allez être présenté à différentes situations qui vont vous demander d'utiliser l'application à divers degrés de responsabilité et à travers plusieurs écrans. \emph{Le participant reçoit un numéro permettant de l'identifier à travers les différents scénarios}.
+
+    \subsection*{Scénarios d'utilisation}
+        L'utilisateur est placé devant l'application, ouverte sur le portail de connexion, et peut lire le scénario qui lui est proposé. Une fois prêt, l'utilisateur démarre la tâche et l'expérimentateur lance le chronomètre. Chaque participant est seul devant l'application ouverte en mode écran complet, écran simulant un smartphone ou smartphone. Le scénario lui est laissé à disposition. L'expérimentateur peut venir en aide au participant de manière brève et sans interagir avec le périphérique. Toute aide apportée sera notée. Une fois le scénario accompli, le temps écoulé est noté par l'expérimentateur. Si le participant ne parvient pas à compléter la tâche dans le temps imparti, l'expérimentateur interrompt l'expérience.
+
+        Après un scénario accompli, le participant peut en commencer un nouveau. Les scénarios sont choisis aléatoirement.
+
+    \subsection*{Questionnaire}
+        Après accomplissement des tâches, le participant complète le questionnaire annexe visant à évaluer sa satisfaction quant à l'utilisation du logiciel et composé des 22 questions ci-après et d'un commentaire libre. Les questions sont regroupées en catégories. Chaque question dispose
+        de quatre choix à sélection unique basés sur une échelle de Likert~\cite{wikipediaLikertScale}; --, -, Neutre, + et ++.
+
+        La section usabilité se base sur la \emph{Software Usability Scale}~\cite{sus, usagov}, traduite et adaptée au contexte de l'application. Les participants doivent répondre sans trop réfléchir aux questions et de manière individuelle. Si un participant ne peut répondre à une question, il doit sélectionner le neutre. Les autres sections se basent sur des gabarits d'évaluation logicielle~\cite{ssi} et expérimentations précédentes~\cite{richardbastin}
+
+
+        \subsubsection*{Fonctionnalités}
+            \begin{description}
+                \item[F1] Je comprends l'utilité des contrôles de l'interface, je sais à quoi m'attendre en utilisant un contrôle (bouton, champ de texte, ...).
+                \item[F2] Je sais où cliquer pour réaliser la tâche demandée.
+                \item[F3] Je comprends l'utilité des tâches demandées dans le contexte de la gestion de l'eau.
+                \item[F4] Je peux réaliser les tâches facilement.
+                \item[F5] Je peux réaliser les tâches rapidement.
+                \item[F6] Je comprends les données qui me sont présentées à l'écran.
+                \item[F7] L'interface de l'application est adaptée aux tâches demandées.
+                \item[F8] Je sais me repérer facilement dans les contrôles et menus de l'application.
+            \end{description}
+
+        \subsection*{Usabilité}
+            \begin{description}
+                \item[U1] Je pense que j'aimerais utiliser l'application fréquemment.
+                \item[U2] Je trouve l'application inutilement complexe.
+                \item[U3] Je trouve l'application facile à utiliser.
+                \item[U4] J'aurais besoin de l'aide d'une personne qualifiée pour utiliser ce système.
+                \item[U5] J'ai trouvé les différentes fonctionnalités du système bien intégrées.
+                \item[U6] J'ai trouvé l'application trop inconsistante.
+                \item[U7] Je pense que la plupart des utilisateurs apprendraient à utiliser l'application rapidement.
+                \item[U8] J'ai trouvé l'application très lourd à utiliser.
+                \item[U9] Je suis confiant en utilisant l'application.
+                \item[U10] J'ai besoin d'apprendre beaucoup de choses avant de pouvoir utiliser l'application.
+            \end{description}
+
+        \subsection*{Esthétique}
+            \begin{description}
+                \item[E1] J'aime les couleurs de l'application.
+                \item[E2] J'aime les images de l'application.
+                \item[E3] L'agencement visuel (position des éléments) de l'application me convient.
+                \item[E4] L'esthétique générale de l'application me satisfait
+            \end{description}
+
+
+    \begin{thebibliography}{9}
+    \bibitem{wikipediaLikertScale}
+        Wikipédia: \'Echelle de Likert, consulté le 08 février 2019,
+        \\\texttt{https://fr.wikipedia.org/wiki/Echelle\_de\_Likert}
+
+    \bibitem{sus}
+        John Brooke, \emph{SUS - A quick and dirty usability scale}, Redhatch Consulting Ltd, Université de Genève, 1995,
+        \\\texttt{https://cui.unige.ch/isi/icle-wiki/\_media/ipm:test-suschapt.pdf}
+
+    \bibitem{ssi}
+        Software Sustainability Institute, ressources consultées le 09 février 2019,
+        \\\texttt{https://www.software.ac.uk/resources/}
+
+    \bibitem{usagov}
+        Usability.gov, ressources et gabarits consultées le 08 février 2019,
+        \\\texttt{https://www.usability.gov/}
+
+    \bibitem{richardbastin}
+        Bastien Richard, \textit{ReflectOn : un outil logiciel de coaching à la rélfexion et l'apprentissage d'employés}, Mémoire de master en sciences informatiques, sous la direction de Kim Mens, Louvain-la-Neuve, Université catholique de Louvain, 2015, 96p.
+
+    \end{thebibliography}
+
+\end{document}
