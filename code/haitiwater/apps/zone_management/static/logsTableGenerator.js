@@ -41,7 +41,7 @@ function drawLogTable(){
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
         acceptModification(data[0].innerText);
     } );
-    //prettifyHeader('logs');
+    prettifyHeader('logs');
 }
 
 function revertModification(elementID){
@@ -72,6 +72,7 @@ function requestHandler(url){
     }
 
     xhttp.open('POST', url, true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send();
 }
 

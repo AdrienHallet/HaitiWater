@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.postgres.fields import ArrayField
-from ..water_network.models import Zone
+from ..water_network.models import Zone, Element
 from ..utils.common_models import *
 
 class Profile(models.Model):
@@ -39,13 +39,16 @@ class Profile(models.Model):
         sub = []
         all_users = User.objects.all()
         for user in all_users:
-            if user.profile.zone != None: #Zone manager
+            if not user.profile:
+                pass
+            elif user.profile.zone != None: #Zone manager
                 if user.profile.zone.name in self.zone.subzones \
                         and user != self.user:
                     sub.append(user)
             elif len(user.profile.outlets) > 0: #Fountain manager
                 add = True
                 for outlet in user.profile.outlets:
+                    outlet = Element.objects.filter(id=outlet)[0]
                     if outlet.zone.name not in self.zone.subzones:
                         add = False
                 if add:
