@@ -7,7 +7,9 @@
 \usepackage{eurosym}
 \usepackage{comment} % enables the use of multi-line comments (\ifx \fi)
 \usepackage{graphicx}
+\usepackage{multicol}
 \usepackage{url}
+\usepackage[clock]{ifsym}
 \usepackage{fullpage} % changes the margin
 \begin{document}
 
@@ -18,7 +20,7 @@ Hallet Adrien \hfill \today \\
 Strebelle Sébastien
 
 \section*{Abstract}
-    Ce document établit le protocole et contenu des expériences de validation de l'outil en environnement contrôlé et avec des utilisateurs hors de l'équipe de développement.
+    Ce document établit le protocole et les questions de l'expérience de validation avec des utilisateurs hors de l'équipe de développement. En fin de document, vous trouvez les scénarios tels que les utilisateurs les verront imprimés lors des essais.
 \hrule
 
 \section{Objectifs}
@@ -83,9 +85,58 @@ Strebelle Sébastien
             \end{description}
 
 \section{Attentes}
-    Avec cette expérimentation, nous cherchons à obtenir des vues externes sur l'application, récoltées de manière rigoureuse afin d'être critiques et objectifs quant aux réalisations logicielles. La phase de validation arrivant avant la phase de documentation finale, nous espérons non seulement récotler des informations sur la qualité de l'application sans documentation, mais aussi sur les points importants de la documentation et sur lesquels il faudra insister. Les objectifs sont donc de déceler les problèmes et d'envisager leurs solutions, dans l'objectif de les mettre en place dans la documentation ou dans le logiciel (selon des critères de temps, efficacité et pertinence)
+    Avec cette expérimentation, nous cherchons à obtenir des vues externes sur l'application et ses fonctionnalités, récoltées de manière rigoureuse afin d'être critiques et objectifs quant aux réalisations logicielles. La phase de validation arrivant avant la phase de documentation finale, nous espérons non seulement récotler des informations sur la qualité de l'application sans documentation, mais aussi sur les points importants de la documentation et sur lesquels il faudra insister. Les objectifs sont donc de déceler les problèmes et d'envisager leurs solutions, dans l'objectif de les mettre en place dans la documentation ou dans le logiciel (selon des critères de temps, efficacité et pertinence).
 
+\newpage
+\section*{Scenario 1}
+    \begin{description}
+        \item[Rôle] Administrateur principal 'Protos'
+        \item[Objectif] Créer une nouvelle zone et y assigner un gestionnaire
+        \item[Contexte] Vous êtes un membre de l’ONG Protos. L’application HaïtiWater est déjà utilisée dans plusieurs départements d’Haïti et le département de l’Artibonite souhaite pouvoir l’utiliser également. En tant que responsable de l’application, vous devez permettre au responsable de la gestion de l’eau en Artibonite de se connecter à l’application et de gérer son réseau. Pour que le réseau de l’artibonite soit indépendant des autres réseaux, vous devez lui créer une zone afin qu’elle puisse se développer.
+    \end{description}
 
+    \subsubsection*{Informations nécessaires}
+        \begin{multicols}{2}
+            Vos informations:
+            \begin{description}
+                \item[Utilisateur] Protos
+                \item[Mot de passe] Protos
+            \end{description}
+            \vfill\null
+            \columnbreak
+
+            Gestionnaire en Artibonite:
+            \begin{description}
+                \item[Nom] Registre
+                \item[Prénom] Jean
+                \item[Courriel] haitiwater.test@gmail.com
+            \end{description}
+        \end{multicols}
+
+    \subsubsection*{Tâches (5 minutes)}
+        \begin{enumerate}
+            \item Connectez-vous à l'application avec votre compte de gestionnaire; Protos.
+            \item L’Artibonite n’existe pas encore dans l'application, vous devez l’ajouter en tant que nouvelle zone. Pour cela, il faut aller dans l’onglet de gestion de zone et créer une nouvelle zone. Vous pouvez choisir son nom.
+            \item Maintenant que l’Artibonite existe en tant que zone, vous devez y assigner un gestionnaire pour que le réseau puisse s’y développer. Ajoutez donc Jean Registre en tant que gestionnaire de cette nouvelle zone afin qu’il puisse se connecter à l’application.
+            \item Quittez l’application en vous déconnectant pour revenir à l’écran d’accueil.
+        \end{enumerate}
+\newpage
+
+\section*{Scenario 2}
+    \begin{description}
+        \item[Rôle]
+        \item[Objectif]
+        \item[Contexte]
+    \end{description}
+
+    \subsubsection*{Informations nécessaires}
+
+    \subsubsection*{Tâches}
+        \begin{enumerate}
+            \item
+        \end{enumerate}
+
+\newpage
 \begin{thebibliography}{9}
 \bibitem{wikipediaLikertScale}
     Wikipédia: \'Echelle de Likert, consulté le 08 février 2019,
