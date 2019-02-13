@@ -457,7 +457,7 @@ function removeHandler(e){
 }
 
 function isMarker(type){
-    let markerElements = ['fontaine', 'kiosque', 'prise individuelle', 'source'];
+    let markerElements = ['fontaine', 'kiosque', 'prise individuelle', 'source', 'réservoir'];
     return markerElements.indexOf(type.toLowerCase()) > -1;
 }
 
