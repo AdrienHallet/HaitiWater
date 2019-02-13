@@ -20,6 +20,7 @@ def edit_water_element(request):
     elem.type = request.POST.get("type", None).upper()
     elem.location = request.POST.get("localization", None)
     elem.status = request.POST.get("state", None).upper()
+    elem.name = elem.get_type()+" "+elem.location
     log_element(elem, old, request)
     elem.save()
     return success_200

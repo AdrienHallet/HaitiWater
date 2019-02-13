@@ -108,8 +108,11 @@ class Element(models.Model):
             result = "Pas de gestionnaire  "
         return result[:-2]
 
+    def get_type(self):
+        return ElementType[self.type].value
+
     def network_descript(self):
-        tab = [self.id, ElementType[self.type].value, self.location,
+        tab = [self.id, self.get_type(), self.location,
                ElementStatus[self.status].value, self.get_managers(), self.zone.name]
         return tab
 

@@ -245,6 +245,7 @@ def compute_logs(request):
         return HttpResponse(status=200)
     elif action == "revert":
         roll_back(transaction)
+        print("reverting !")
         return HttpResponse(status=200)
     else:
         return HttpResponse("Action non reconnue", status=500)
@@ -252,6 +253,7 @@ def compute_logs(request):
 def roll_back(transaction):
     logs = Log.objects.filter(transaction=transaction)
     if logs[0].action == "EDIT": #Edit case
+        print("edit")
         elements = get_elem_logged(logs)
         tables = []
         for log in logs:
@@ -266,6 +268,7 @@ def roll_back(transaction):
             log.delete()
         transaction.delete()
     elif logs[0].action == "ADD": #Add case
+        print("add")
         elements = get_elem_logged(logs)
         for elem in elements:
             elem.delete()
@@ -273,6 +276,7 @@ def roll_back(transaction):
             log.delete()
         transaction.delete()
     elif logs[0].action == "DELETE": #Delete case
+        print("delete")
         re_add_item(logs)
         for log in logs:
             log.delete()
@@ -287,7 +291,7 @@ def roll_back_item(item, values):
 def re_add_item(logs):
     tables = []
     for log in logs:
-        if log.column_name == "id":
+        if log.column_name == "ID":
             tables.append(log.table_name)
     for table in tables:
         restore_item({log.column_name: log.old_value
@@ -296,17 +300,20 @@ def re_add_item(logs):
                       table)
 
 def restore_item(dict, table):
+    print(dict)
+    print(table)
     if table == "Consumer":
-        outlet = Element.objects.filter(id=dict["water_outlet"])
+        print("Restoring consumer")
+        outlet = Element.objects.filter(id=dict["Sortie d'eau"])
         if len(outlet) != 1:
             return HttpResponse("Impossible de restaurer cet élément", status=500)
         outlet = outlet[0]
-        restored = Consumer(last_name=dict["last_name"], first_name=dict["first_name"],
-                          gender=dict["gender"], location=dict["location"], phone_number=dict["phone_number"],
-                          email="", household_size=dict["household_size"], water_outlet=outlet)
+        restored = Consumer(last_name=dict["Nom"], first_name=dict["Prénom"],
+                          gender=dict["Genre"], location=dict["Adresse"], phone_number=dict["Numéro de téléphone"],
+                          email="", household_size=dict["Taille du ménage"], water_outlet=outlet)
         restored.save()
     elif table == "Ticket":
-        outlet = Element.objects.filter(id=dict["water_outlet"])
+        outlet = Element.objects.filter(id=dict["Sortie d'eau"])
         if len(outlet) != 1:
             return HttpResponse("Impossible de restaurer cet élément", status=500)
         outlet = outlet[0]
