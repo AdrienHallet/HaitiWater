@@ -2,6 +2,7 @@ import re
 from django.http import HttpResponse
 
 from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
 
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
@@ -50,10 +51,9 @@ def add_network_element(request):
     e.save()
     return success_200
 
-
+@csrf_exempt
 def add_report_element(request):
     values = json.loads(request.body.decode("utf-8"))
-    print(values)
     for index, elem in enumerate(values["selectedOutlets"]):
         outlets = Element.objects.filter(id=elem)
         if len(outlets) < 1:
@@ -61,6 +61,11 @@ def add_report_element(request):
         else:
             outlet = outlets[0]
         active = values["isActive"]
+        print(active)
+        if not active:
+            report_line = Report(water_outlet=outlet, was_active=active)
+            report_line.save()
+            return success_200
         meters_distr = values["details"][index]["cubic"]
         value_meter = values["details"][index]["perCubic"]
         hour_activity = values["inputHours"]
