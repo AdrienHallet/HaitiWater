@@ -9,7 +9,7 @@
 \usepackage{graphicx}
 \usepackage{multicol}
 \usepackage{url}
-\usepackage[clock]{ifsym}
+\usepackage{textcomp}
 \usepackage{fullpage} % changes the margin
 \begin{document}
 
@@ -88,7 +88,7 @@ Strebelle Sébastien
     Avec cette expérimentation, nous cherchons à obtenir des vues externes sur l'application et ses fonctionnalités, récoltées de manière rigoureuse afin d'être critiques et objectifs quant aux réalisations logicielles. La phase de validation arrivant avant la phase de documentation finale, nous espérons non seulement récotler des informations sur la qualité de l'application sans documentation, mais aussi sur les points importants de la documentation et sur lesquels il faudra insister. Les objectifs sont donc de déceler les problèmes et d'envisager leurs solutions, dans l'objectif de les mettre en place dans la documentation ou dans le logiciel (selon des critères de temps, efficacité et pertinence).
 
 \newpage
-\section*{Scenario 1}
+\section*{Scenario 1 - Gestion}
     \begin{description}
         \item[Rôle] Administrateur principal
         \item[Objectif] Créer une nouvelle zone et y assigner un gestionnaire
@@ -123,7 +123,7 @@ Strebelle Sébastien
         \end{enumerate}
 \newpage
 
-\section*{Scenario 2}
+\section*{Scenario 2 - Utiliser les tables}
     \begin{description}
         \item[Rôle] Gestionnaire de zone
         \item[Objectif] Imprimer la liste des tous les éléments du réseau de la zone 'Ouest' classées par volume de sortie total
@@ -147,36 +147,89 @@ Strebelle Sébastien
 
 \newpage
 
-\section*{Scenario 3}
+\section*{Scenario 3 - Gestionnaire de fontaine}
     \begin{description}
         \item[Rôle] Gestionnaire de fontaine
         \item[Objectif] Ajouter des consommateurs et envoyer un rapport mensuel
-        \item[Prérequis du système] Un gestionnaire de fontaines et trois éléments du réseau qui lui sont associés
-        \item[Contexte] Vous êtes gestionnaire de fontaine. Vous avez la responsabilité de trois points d'eau et d'une communauté d'utilisateurs
+        \item[Prérequis du système] Un gestionnaire de fontaines et ses éléments du réseau: une fontaine, un kiosque et une prise individuelle.
+        \item[Contexte] Vous êtes gestionnaire de fontaine. Vous avez la responsabilité de trois points d'eau et d'une communauté d'utilisateurs. Votre objctif de la journée est d'enregistrer un nouveau consommateur ayant récemment déménagé dans la région, puis d'envoyer votre rapport mensuel.
     \end{description}
 
     \subsubsection*{Informations nécessaires}
+    \begin{multicols}{2}
+        Vos informations:
+        \begin{description}
+            \item[Utilisateur] GestionnaireFontaine
+            \item[Mot de passe] Gestionn4ire
+        \end{description}
+        \vfill\null
+        \columnbreak
 
-    \subsubsection*{Tâches}
+        Le nouveau consommateur est Monsieur Alain Proviste. Il vit seul au 32, Rue du foin, Belleville. Nous n'avons pas son numéro de téléphone et il habite juste à côté de la seule fontaine du village.
+    \end{multicols}
+    Informations mensuelles:
+    \begin{description}
+        \item[Kiosque] 400 gallons de débit total à 10 gourdes le gallon
+        \item[Fontaine] 2 mètres cubes de débit total à 500 gourdes le mètre cube
+        \item[Prise individuelle] un demi mètre cube à 500 gourdes le mètre cube
+    \end{description}
+
+    \subsubsection*{Tâches (7 minutes)}
         \begin{enumerate}
-            \item
+            \item Connectez-vous sur l'application avec votre compte; GestionnaireFontaine
+            \item Ajoutez le nouveau consommateur récemment arrivé
+            \item Envoyez le rapport du mois en cours
+            \item Déconnectez-vous de l'application
         \end{enumerate}
 
 \newpage
 
-\section*{Scenario 4}
+\section*{Scenario 4 - Système d'Informations Géographiques}
     \begin{description}
-        \item[Rôle]
-        \item[Objectif]
-        \item[Prérequis du système] /
-        \item[Contexte]
+        \item[Rôle] Gestionnaire de zone
+        \item[Objectif] Dessiner une partie du réseau sur la carte
+        \item[Prérequis du système] Connecté et sur la page d'accueil. Aucun élément dans le système.
+        \item[Contexte] Vous êtes le gestionnaire d'une zone nouvellement établie. Avant de créer les gestionnaires de fontaine qui vont vous aider dans votre travail, vous souhaitez avoir votre réseau d'encodé dans l'application. Vous allez donc prendre un peu de temps pour ajouter les éléments un par un dans le système et sur la carte.
     \end{description}
 
     \subsubsection*{Informations nécessaires}
+        Votre réseau de distribution de l'eau potable est composé de:
+        \begin{description}
+            \item[Une source] qui pompe l'eau dans le circuit. Elle est située dans le lieu-dit "Cabaret". Nous avons les coordonnées précises; 19\textdegree 33'56.6"N, 72\textdegree 00'32.5"W.
+            \item[Une fontaine] dont nous n'avons pas les coordonnées mais qui se situe en aval de la rivière, sur la route au premier carrefour après la pompe.
+            \item[Une conduite] qui relie les deux
+        \end{description}
 
-    \subsubsection*{Tâches}
+    \subsubsection*{Tâches (7 minutes)}
         \begin{enumerate}
-            \item
+            \item Vous êtes sur la page d'accueil, rendez-vous sur la page de gestion géographique du réseau.
+            \item Pour les trois éléments décrits ci-dessus, vous devez encoder l'élément dans la base de données, puis le placer sur la carte.
+        \end{enumerate}
+
+\newpage
+
+\section*{Scenario 5 - Première connexion et problème}
+    \begin{description}
+        \item[Rôle] Gestionnaire de fontaine
+        \item[Objectif] Se connecter pour la première fois, changer de mot de passe et signaler un problème
+        \item[Prérequis du système] Un utilisateur avec un mot de passe autogénéré et un élément
+        \item[Contexte] Vous êtes un gestionnaire de fontaine nouvellement nommé, félicitations ! Vous venez à l'instant de recevoir un courriel vous donnant vos informations de connexion. Le mot de passe généré est impossible à retenir alors vous allez le modifier. Vous allez également en profiter pour rapporter un problème mineur; votre fontaine produit des sons étranges quand on arrête de pomper.
+    \end{description}
+
+    \subsubsection*{Informations nécessaires}
+    Vos informations:
+    \begin{description}
+        \item[Utilisateur] GestionnaireFontaine
+        \item[Mot de passe] [Donné par l'examinateur]
+    \end{description}
+
+    \subsubsection*{Tâches (5 minutes)}
+        \begin{enumerate}
+            \item Connectez-vous à l'application à l'aide de votre mot de passe autogénéré.
+            \item Modifiez votre mot de passe. Vous adorez le mot de passe "123456".
+            \item On dirait qu'il y a un problème avec votre mot de passe. Trouvez une solution.
+            \item Reconnectez-vous sur l'application avec votre nouveau mot de passe.
+            \item Rapportez le problème décrit dans le contexte afin que votre hiérarchie en soit informée.
         \end{enumerate}
 
 \newpage
