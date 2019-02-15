@@ -68,6 +68,7 @@ function setupModalZoneEdit(data){
 }
 
 function showZoneModal(){
+    $('#form-add-zone').find('input').val('');
     $('#plus-zone').magnificPopup({
         type: 'inline',
         preloader: false,
@@ -92,5 +93,4 @@ function showZoneModal(){
  */
 function dismissZoneModal() {
     $.magnificPopup.close();
-    $('form').find('input').val('');
 }
