@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'apps.consumers',
     'apps.report',
     'apps.offline',
+    'apps.financial',
     'compressor',
     'django_tables2',
     'bootstrap3',
