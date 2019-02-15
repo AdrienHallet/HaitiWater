@@ -257,7 +257,7 @@ function setupWaterElementDetails(response){
             latlng = L.latLng(draw.geometry.coordinates[0][1], draw.geometry.coordinates[0][0]);
         } else {
             latlng = L.latLng(draw.geometry.coordinates[1], draw.geometry.coordinates[0]);
-            latLongDetail.html(latlng.lng + "," + latlng.lat);
+            latLongDetail.html(latlng.lat + "," + latlng.lng);
         }
         gisMap.flyTo(latlng);
     } else {
@@ -332,12 +332,25 @@ function drawHandler( e ){
  * @param e button click event
  */
 function editHandler( e ){
-    let input = prompt('Entrez les coordonnées du point à ajouter: ');
+    let input = prompt('Entrez les coordonnées du point à ajouter:\n'
+                        + 'Formats acceptés:\n'
+                        + 'DMS (e.g.: 50°06\'41.5\"N 4°57\'46.2\"E)\n'
+                        + 'DD (e.g.: 50.111528, 4.962827)'
+
+                );
     if (input == null) return;
+    let inputArray = input.split(',');
 
     let coords = undefined;
     try {
-        coords = parseCoordinates(input);
+        if (inputArray.length < 3){
+            // Bi-coord system (DMS, DD)
+            coords = parseCoordinates(input);
+        } else {
+            // Tri-coord system (UTM)
+            //Todo test
+            parseUTM(inputArray[0], inputArray[1], inputArray[2]);
+        }
     }catch(e){
         alert('Coordonnées invalides');
         return;
@@ -355,7 +368,7 @@ function editHandler( e ){
         },
         geometry: {
             type: "Point",
-            coordinates: [coords.lat, coords.lon]
+            coordinates: [coords.lon, coords.lat]
         }
     };
 
@@ -388,7 +401,7 @@ function saveDraw(event){
         latLongDetail.html('Pas affichable');
     } else {
         let coords = layer.toGeoJSON().geometry.coordinates;
-        latLongDetail.html(coords[0] + "," + coords[1]);
+        latLongDetail.html(coords[1] + "," + coords[0]);
     }
 
     layer.id = currentElementID;

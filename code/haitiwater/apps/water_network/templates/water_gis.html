@@ -4,6 +4,7 @@
 {% block page_name %}
     <script src="{% static "vendor/leaflet/leaflet.js" %}"></script>
     <script src="{% static "vendor/leaflet/leaflet.draw.js" %}"></script>
+    <script src="{% static "vendor/proj4js/proj4-min.js" %}"></script>
     <link rel="stylesheet" href="{% static "vendor/leaflet/leaflet.css" %}">
     <link rel="stylesheet" href="{% static "vendor/leaflet/leaflet.draw.css" %}">
 
@@ -61,7 +62,7 @@
 									<td class="text-left" id="element-details-localization"></td>
 								</tr>
                                 <tr>
-									<td class="text-left">Coordonnées (lon,lat)</td>
+									<td class="text-left">Coordonnées (lat,lon)</td>
 									<td class="text-left" id="element-details-lat-lon"></td>
 								</tr>
                                 <tr>

@@ -105,12 +105,25 @@ function parseCoordinates(input) {
 		apply(match[2], match[3], match[4], cardinality[0], result);
 		apply(match[6], match[7], match[8], cardinality[1], result);
 	} else {
-		throw new Error('Could not parse string: ' + input);
+		console.log(parseUTM);
 	}
 
 	return result;
 }
 // *********************************************
+
+/**
+ * Parse lat, lon from UTM to DD in zone 18
+ * @param  {[type]} lat the latitude in
+ * @param  {[type]} lon [description]
+ * @return {[type]}     [description]
+ */
+function parseUTM(zone, lat, lon){
+    var utm = "+proj=utm +zone="+zone;
+    var wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+	console.log(utm);
+    console.log(proj4(utm,wgs84, [lat, lon]));
+}
 
 /**
  * @param input a dictionary {lat:x, long:y} of coordinates
@@ -123,4 +136,3 @@ function isValidCoordinate(input){
 
     return input.lat >= -180 && input.lat <= 180 && input.lon >= -90 && input.lon <= 90;
 }
-
