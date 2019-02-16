@@ -335,24 +335,25 @@ function editHandler( e ){
     let input = prompt('Entrez les coordonnées du point à ajouter:\n'
                         + 'Formats acceptés:\n'
                         + 'DMS (e.g.: 50°06\'41.5\"N 4°57\'46.2\"E)\n'
-                        + 'DD (e.g.: 50.111528, 4.962827)'
+                        + 'DD (e.g.: 50.111528, 4.962827)\n'
+                        + 'UTM (e.g.: 31:U, 640339.54, 5552875.82)'
 
                 );
     if (input == null) return;
     let inputArray = input.split(',');
 
     let coords = undefined;
+    console.log(inputArray);
     try {
         if (inputArray.length < 3){
             // Bi-coord system (DMS, DD)
             coords = parseCoordinates(input);
         } else {
             // Tri-coord system (UTM)
-            //Todo test
-            parseUTM(inputArray[0], inputArray[1], inputArray[2]);
+            coords = parseUTM(inputArray[0], inputArray[1], inputArray[2]);
         }
     }catch(e){
-        alert('Coordonnées invalides');
+        alert('Coordonnées illisibles: '+e.toString());
         return;
     }
 
