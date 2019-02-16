@@ -245,7 +245,6 @@ def compute_logs(request):
         return HttpResponse(status=200)
     elif action == "revert":
         roll_back(transaction)
-        print("reverting !")
         return HttpResponse(status=200)
     else:
         return HttpResponse("Action non reconnue", status=500)
@@ -253,7 +252,6 @@ def compute_logs(request):
 def roll_back(transaction):
     logs = Log.objects.filter(transaction=transaction)
     if logs[0].action == "EDIT": #Edit case
-        print("edit")
         elements = get_elem_logged(logs)
         tables = []
         for log in logs:
@@ -268,7 +266,6 @@ def roll_back(transaction):
             log.delete()
         transaction.delete()
     elif logs[0].action == "ADD": #Add case
-        print("add")
         elements = get_elem_logged(logs)
         for elem in elements:
             elem.delete()
@@ -276,7 +273,6 @@ def roll_back(transaction):
             log.delete()
         transaction.delete()
     elif logs[0].action == "DELETE": #Delete case
-        print("delete")
         re_add_item(logs)
         for log in logs:
             log.delete()
@@ -300,10 +296,7 @@ def re_add_item(logs):
                       table)
 
 def restore_item(dict, table):
-    print(dict)
-    print(table)
     if table == "Consumer":
-        print("Restoring consumer")
         outlet = Element.objects.filter(id=dict["Sortie d'eau"])
         if len(outlet) != 1:
             return HttpResponse("Impossible de restaurer cet élément", status=500)
@@ -313,31 +306,33 @@ def restore_item(dict, table):
                           email="", household_size=dict["Taille du ménage"], water_outlet=outlet)
         restored.save()
     elif table == "Ticket":
-        outlet = Element.objects.filter(id=dict["Sortie d'eau"])
+        outlet = Element.objects.filter(id=dict["Sortie d'eau concernée"])
         if len(outlet) != 1:
             return HttpResponse("Impossible de restaurer cet élément", status=500)
         outlet = outlet[0]
-        restored = Ticket(water_outlet=outlet, type=dict["type"],
-                          comment=dict["comment"], urgency=dict["urgency"], image=None)
+        restored = Ticket(water_outlet=outlet, type=dict["Type de panne"],
+                          comment=dict["Commentaire"], urgency=dict["Niveau d'urgence"],
+                          status=dict["Etat de résolution"], image=None)
         restored.save()
     elif table == "WaterElement":
-        zone = Zone.objects.filter(id=dict["zone"])
+        zone = Zone.objects.filter(id=dict["Zone de l'élément"])
         if len(zone) != 1:
             return HttpResponse("Impossible de restaurer cet élément", status=500)
         zone = zone[0]
-        restored = Element(name=dict["name"], type=dict["type"],
-                           status=dict["status"], location=dict["location"],
+        restored = Element(name=dict["Nom"], type=dict["Type"],
+                           status=dict["État"], location=dict["Localisation"],
                            zone=zone)
         restored.save()
     elif table == "Zone":
-        super_zone = Zone.objects.filter(id=dict["superzone"])
+        id_zone = dict["Zone mère"].split()[0]
+        super_zone = Zone.objects.filter(id=id_zone)
         if len(super_zone) != 1:
             return HttpResponse("Impossible de restaurer cet élément", status=500)
         super_zone = super_zone[0]
-        restored = Zone(name=dict["name"], superzone=super_zone, subzones=[dict["name"]])
+        restored = Zone(name=dict["Nom"], superzone=super_zone, subzones=[])
         up = True
         while up:
-            super_zone.subzones.append(dict["name"])
+            super_zone.subzones.append(dict["Nom"])
             super_zone.save()
             super_zone = super_zone.superzone
             if super_zone == None:
@@ -347,33 +342,40 @@ def restore_item(dict, table):
         pass
     elif table == "User":
         password = User.objects.make_random_password()  # New random password
-        user = User.objects.create_user(username=dict["identifiant"],
-                                        email=dict["email"],
+        user = User.objects.create_user(username=dict["Identifiant"],
+                                        email=dict["Email"],
                                         password=password,
-                                        first_name=dict["first_name"],
-                                        last_name=dict["last_name"])
+                                        first_name=dict["Prénom"],
+                                        last_name=dict["Nom de famille"])
 
-        if dict["role"] == "Gestionnaire de fontaine":
-            water_out = dict["outlets"]
+        if dict["Role"] == "Gestionnaire de fontaine":
+            import ast
+            water_out = ast.literal_eval(dict["outlets"])
             if len(water_out) < 1:
+                user.delete()
                 return HttpResponse("Vous n'avez pas choisi de fontaine a attribuer !", status=500)
-            if len(water_out) > 1:
+            elif len(water_out) > 1:
                 res = Element.objects.filter(id__in=water_out)
             else:
-                res = Element.objects.filter(id=water_out)
+                res = Element.objects.filter(id=water_out[0])
             if len(res) > 0:
                 for outlet in res:
                     user.profile.outlets.append(outlet.id)
             else:
+                user.delete()
                 return HttpResponse("Impossible d'attribuer cette fontaine au gestionnaire", status=404)
             my_group = Group.objects.get(name='Gestionnaire de fontaine')
             my_group.user_set.add(user)
-        elif dict["role"] == "Gestionnaire de zone":
-            zone = dict["zone"]
+        elif dict["Role"] == "Gestionnaire de zone":
+            zone = dict["Zone gérée"]
+            print("zone")
             res = Zone.objects.filter(id=zone)
+            print(res)
             if len(res) == 1:
                 user.profile.zone = res[0]
+                user.save()
             else:
+                user.delete()
                 return HttpResponse("Impossible d'attribuer cette zone au gestionnaire", status=404)
             my_group = Group.objects.get(name='Gestionnaire de zone')
             my_group.user_set.add(user)
@@ -385,9 +387,9 @@ def restore_item(dict, table):
             'Votre compte haitiwater a été modifié, vous devez donc en changer le mot de passe.'+
             '\nVoici votre nouveau mot de passe autogénéré : ' + password +
             '\nVeuillez vous connecter pour le modifier.\nPour rappel, ' +
-            'votre identifiant est : ' + dict["identifiant"],
+            'votre identifiant est : ' + dict["Identifiant"],
             '',
-            [dict["email"]],
+            [dict["Email"]],
             fail_silently=False,
         )
 

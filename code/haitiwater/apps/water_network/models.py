@@ -52,12 +52,12 @@ class Zone(models.Model):
         return [self.id, self.name]
 
     def infos(self):
-        result = {}
-        for field in Zone._meta.get_fields():
-            if field.name == "superzone":
-                result[field.name] = self.superzone.id
-            else:
-                result[field.name] = self.__getattribute__(field.name)
+        result = {
+            "Zone mère": str(self.superzone.id)+" ("+self.superzone.name+")",
+            "Nom": self.name,
+            "ID": self.id
+        }
+        print(result)
         return result
 
     def log_add(self, transaction):
@@ -75,7 +75,6 @@ class Location(models.Model):
     zone = models.ForeignKey(Zone, verbose_name="Zone", related_name="locations", on_delete=models.CASCADE)
     lon = models.FloatField("Longitude")
     lat = models.FloatField("Latitude")
-    poly = models.MultiPolygonField("Multi-polygone", null=True)
 
     # Generated : elements
 

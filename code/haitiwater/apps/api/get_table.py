@@ -201,14 +201,17 @@ def get_transaction_detail(logs):
     detail = ""
     for indiv in logs:
         if indiv.action == "ADD":
-            if indiv.new_value:
+            if indiv.new_value and indiv.new_value != "[]":
                 detail += indiv.column_name+" : "+indiv.new_value + "<br>"
         elif indiv.action == "DELETE":
-            if indiv.old_value:
+            if indiv.old_value and indiv.old_value != "[]":
                 detail += indiv.column_name+" : "+indiv.old_value + "<br>"
         else:
-            if indiv.old_value and indiv.new_value and indiv.column_name != "ID":
-                detail += indiv.column_name+" : "+indiv.old_value +" -> "+\
+            if indiv.old_value and indiv.new_value:
+                if indiv.column_name == "ID":
+                    detail += "Id : " + indiv.old_value
+                else:
+                    detail += indiv.column_name+" : "+indiv.old_value +" -> "+\
                           indiv.new_value+"<br>"
 
 
