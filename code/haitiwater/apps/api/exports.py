@@ -255,16 +255,16 @@ def roll_back(transaction):
         elements = get_elem_logged(logs)
         tables = []
         for log in logs:
-            if log.column_name == "id":
+            if log.column_name == "ID":
                 tables.append(log.table_name)
         for number, table in enumerate(tables):
             roll_back_item(elements[number], {log.column_name: log.old_value
                        for log in logs
                        if log.table_name == table and log.column_name != "id"})
 
-        for log in logs:
-            log.delete()
-        transaction.delete()
+        #for log in logs:
+        #    log.delete()
+        #transaction.delete()
     elif logs[0].action == "ADD": #Add case
         elements = get_elem_logged(logs)
         for elem in elements:
@@ -278,9 +278,13 @@ def roll_back(transaction):
             log.delete()
         transaction.delete()
 
+
 def roll_back_item(item, values):
-    for field, value in values.items():
-        item.__setattr__(field, value)
+    all_attributes = item._meta.get_fields()
+    for verbose_field, value in values.items():
+        for field in all_attributes:
+            if verbose_field == field.verbose_name and verbose_field != "ID":
+                item.__setattr__(field.name, value)
     item.save()
 
 
@@ -397,7 +401,7 @@ def get_elem_logged(logs):
     ids = []
     tables = []
     for elem in logs:
-        if elem.column_name =="id":
+        if elem.column_name =="ID":
             ids.append(elem.new_value)
             tables.append(elem.table_name)
     elems = []
