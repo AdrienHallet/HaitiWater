@@ -300,24 +300,29 @@ function validateStepTwo(){
     this.monthlyReport.details = [];
 
     individualReports.each(function(index){
-      	let cubicValue = $(this).find('.cubic input').val();
-      	let gallonValue = $(this).find('.gallon input').val();
+		let cubicValue = 'none';
+		let perCubicValue = 'none';
 		let outletID = $(this).attr('id').replace('volume-', '');
 
-		if ((cubicValue < 0 || cubicValue === '') || (gallonValue < 0 || gallonValue ==='')){
-			isValid = false;
-			$(this).find('label.volume.error').removeClass('hidden');
+		// If we have data, use it, otherwise keep none
+		if($(this).find('.element-activity')[0].checked){
+	      	cubicValue = $(this).find('.cubic input').val();
+	      	let gallonValue = $(this).find('.gallon input').val();
+
+			if ((cubicValue < 0 || cubicValue === '') || (gallonValue < 0 || gallonValue ==='')){
+				isValid = false;
+				$(this).find('label.volume.error').removeClass('hidden');
+			}
+
+			perCubicValue = $(this).find('.per-cubic input').val();
+	      	let perGallonValue = $(this).find('.per-gallon input').val();
+
+			if ((perCubicValue < 0 || perCubicValue === '') || (perGallonValue < 0 || perGallonValue ==='')){
+				isValid = false;
+				$(this).find('label.cost.error').removeClass('hidden');
+			}
 		}
 
-		let perCubicValue = $(this).find('.per-cubic input').val();
-      	let perGallonValue = $(this).find('.per-gallon input').val();
-
-		if ((perCubicValue < 0 || perCubicValue === '') || (perGallonValue < 0 || perGallonValue ==='')){
-			isValid = false;
-			$(this).find('label.cost.error').removeClass('hidden');
-		}
-
-		console.log('pushing detail');
 		monthlyReport.details.push(
 			{
 				id: outletID,
@@ -352,7 +357,6 @@ function validateStepThree(){
 			obj.bill = value;
 		}
 	});
-
 	return valid;
 }
 
@@ -409,6 +413,8 @@ function setupStepTwo(savedData){
 		}
 		return '' +
 			'<div class="panel-body">' +
+			  '<div class="checkbox"><label><input type="checkbox" class="element-activity">' +
+			  'Je dispose de données pour cet élément</label></div>' +
 				'<div class="row">' +
 					'<div class="col-sm-6">' +
 						'<h5>Volume d\'eau distribué</h5>' +
@@ -469,9 +475,10 @@ function setupStepTwo(savedData){
 	}
 
 	/**
-     * Listener to convert cubic to gallons and vice-versa
+     * Listener to convert cubic to gallons and vice-versa, and to check if has data
      */
     $('.water-outlet').each(function(i){
+		// Cubic-gallon conversion
         let cubic = $('.cubic input', this);
         let gallon = $('.gallon input', this);
 
@@ -493,8 +500,25 @@ function setupStepTwo(savedData){
         perGallon.on('input', function(){
             perCubic.val((perGallon.val() * CUBICMETER_GALLON_RATIO).toFixed(3));
         });
-    });
 
+		// Has data or not
+		let hasData = $('.element-activity', this);
+		let inputs = [cubic, gallon, perCubic, perGallon];
+		hasData.on('click', function(){
+			if (this.checked){
+				inputs.forEach(function(input){
+					input.prop('disabled', false);
+				})
+			}
+			else {
+				inputs.forEach(function(input){
+					input.prop('disabled', true);
+					input.val('');
+				})
+			}
+		})
+		hasData.prop('checked', true); // Start as checked
+    });
 }
 
 /**
@@ -535,6 +559,7 @@ function setupStepThree(savedData){
 	billingWindow.empty(); // Flush old content
 
 	let checkboxActiveService = $('#checkbox-active-service');
+	console.log($('.water-outlet .bill'));
 	if (checkboxActiveService.is(':checked')){
 		// Service was active, ask user to input details
 		selectedOutlets.each(function(index){
@@ -554,13 +579,24 @@ function setupStepThree(savedData){
 			let id = details[i].id;
 			let perCubic = details[i].perCubic;
 			let cubic = details[i].cubic;
-
-			$('#bill-'+id).find('.computed-bill').val(cubic*perCubic);
+			if (cubic === 'none'){
+				$('#bill-' + id).remove(); // Do not display if no volume data
+			} else {
+				$('#bill-'+id).find('.computed-bill').val(cubic*perCubic);
+			}
 		}
 	} else {
 		billingWindow.html("<div class=\"well info text-center\">" +
 			"Vous n'avez aucun détail de recette à entrer puisque le service n'a pas été en activité.<br>" +
 			"Si vous avez des détails à entrer, cochez la case de service à l'étape 1.<br>" +
+			"Si c'est correct, passez à l'étape suivante.</div>");
+	}
+	// Display text if we have no data for any element
+	if ($('.bill').length < 1){
+		console.log("empty");
+		billingWindow.html("<div class=\"well info text-center\">" +
+			"Vous n'avez aucun détail de recette à entrer puisque aucune donnée de volume n'a été collectée.<br>" +
+			"Si vous avez des volumes à entrer, revenez à l'étape 2.<br>" +
 			"Si c'est correct, passez à l'étape suivante.</div>");
 	}
 }
