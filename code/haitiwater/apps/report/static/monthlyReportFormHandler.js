@@ -63,8 +63,8 @@ $(document).ready(function() {
 							text: "Le rapport mensuel n'a pas pu être envoyé",
 							type: 'error'
 						});
-						$('#monthly-report-error-msg').html(xhttp.responseText);
-						$('#monthly-report-error').removeClass('hidden');
+						$('#form-monthly-report-error-msg').html(xhttp.responseText);
+						$('#form-monthly-report-error').removeClass('hidden');
 					} else {
 						new PNotify({
 							title: 'Succès!',

@@ -5,14 +5,15 @@ function drawZoneTable(){
     $('#datatable-zone').DataTable(getZoneTableConfiguration(dataURL));
 
     let table = $('#datatable-zone').DataTable();
-    $('#datatable-zone tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
+    $('#datatable-zone tbody').on( 'click', 'tr td:not(:last-child)', function () {
+        row = $(this).closest('tr');
+        if ( row.hasClass('selected') ) {
+            row.removeClass('selected');
             filterManagerFromZone(table);
         }
         else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
+            row.removeClass('selected');
+            row.addClass('selected');
             filterManagerFromZone(table);
         }
     });
