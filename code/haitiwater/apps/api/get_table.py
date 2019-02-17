@@ -85,18 +85,22 @@ def get_consumer_elements(request, json, parsed):
 def get_zone_elements(request, json, parsed):
     all = []
     if request.user.profile.zone: #Zone manager
-        json["recordsTotal"] = len(request.user.profile.zone.subzones)
+        total = 0
         for z in request.user.profile.zone.subzones:
             zone = Zone.objects.filter(name=z)
             if len(zone) == 1:
                 if parsed["search"] == "":
+                    total += 1
                     all.append(zone[0].descript())
                 else:
                     for cols in parsed["searchable"]:
                         tab = zone[0].descript()
+                        total += 1
                         if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
                             all.append(tab)
                             break
+
+        json["recordsTotal"] = total
     return all
 
 

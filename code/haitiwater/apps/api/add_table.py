@@ -2,6 +2,7 @@ import re
 from django.http import HttpResponse
 
 from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
 
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
@@ -50,7 +51,7 @@ def add_network_element(request):
     e.save()
     return success_200
 
-
+@csrf_exempt
 def add_report_element(request):
     values = json.loads(request.body.decode("utf-8"))
     for index, elem in enumerate(values["selectedOutlets"]):
@@ -60,14 +61,22 @@ def add_report_element(request):
         else:
             outlet = outlets[0]
         active = values["isActive"]
+        print(active)
+        if not active:
+            report_line = Report(water_outlet=outlet, was_active=active)
+            report_line.save()
+            return success_200
         meters_distr = values["details"][index]["cubic"]
         value_meter = values["details"][index]["perCubic"]
+        hour_activity = values["inputHours"]
+        day_activity = values["inputDays"]
         month = values["month"]
         year = 2018 #TODO : Temporary
         recette = values["details"][index]["bill"]
         report_line = Report(water_outlet=outlet, was_active=active,
                              quantity_distributed=meters_distr, price=value_meter,
-                             month=month, year=year, recette=recette)
+                             month=month, hours_active=hour_activity,
+                             days_active=day_activity, year=year, recette=recette)
         report_line.save()
     return success_200
 
@@ -76,6 +85,9 @@ def add_zone_element(request):
     name = request.POST.get("name", None)
     if request.user and request.user.profile.zone: #If user is connected and zone manager
         result = Zone.objects.filter(name=request.user.profile.zone)
+        test_already_exist = Zone.objects.filter(name=name)
+        if len(test_already_exist) > 0:
+            return HttpResponse("Une zone avec ce nom existe déjà dans l'application, veuillez en choisir un autre", status=500)
         if len(result) == 1:
             super = result[0]
             to_add = Zone(name=name, superzone=super, subzones=[name])
