@@ -183,7 +183,7 @@ def get_logs_elements(request, json, parsed):
         details = get_transaction_detail(logs)
         item = {"id": t.id, "time": str(t.timestamp.date()),
                 "type": logs[0].get_action(), "user": t.user.username,
-                "summary": logs[0].table_name, "details": details}
+                "summary": logs[0].get_table(), "details": details}
         if parsed["search"] == "":
             all.append(item)
             tot += 1

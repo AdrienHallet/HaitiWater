@@ -9,6 +9,16 @@ class ActionType(Enum):
     EDIT = "Modifier"
 
 
+class TableType(Enum):
+    element = "Élément du réseau"
+    zone = "Zone du réseau"
+    consumer = "Consommateur"
+    user = "Utilisateur de l'application"
+    report = "Rapport mensuel"
+    ticket = "Ticket de problème"
+    location = "Point géographique"
+
+
 class Transaction(models.Model):
     user = models.ForeignKey(User, verbose_name="Utilisateur ayant fait la modification",
                              related_name="MadeBy", null=False, on_delete=models.CASCADE)
@@ -16,7 +26,7 @@ class Transaction(models.Model):
 
 
 class Log(models.Model):
-    table_name = models.CharField("Nom de la table", max_length=30)
+    table_name = models.CharField("Nom de la table", choices=[(i.name, i.value) for i in TableType], max_length=30)
     column_name = models.CharField("Nom de la colonne", max_length=30)
     action = models.CharField("Action", max_length=10, choices=[(i.name, i.value) for i in ActionType])
     # States :
@@ -30,3 +40,6 @@ class Log(models.Model):
 
     def get_action(self):
         return ActionType[self.action].value
+
+    def get_table(self):
+        return TableType[self.table_name].value
