@@ -136,7 +136,11 @@ function postNewRow(table){
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
                 document.getElementById("form-" + table + "-error").className = "alert alert-danger";
-                document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
+                if(xhttp.responseText !== ''){
+                    document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.responseText;
+                } else {
+                    document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
+                }
             } else {
                 document.getElementById("form-" + table + "-error").className = "alert alert-danger hidden"; // hide old msg
                 dismissModal();
