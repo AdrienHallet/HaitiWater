@@ -157,22 +157,18 @@ def clean_up(element):
         for log in logs:
             transactions.append(log.transaction)
         all_logs = Log.objects.filter(transaction__in=transactions)
-        print(all_logs)
         to_delete = []
         for log_one in all_logs:
             for log_two in all_logs:
                 if log_one.transaction.id != log_two.transaction.id:
-                    print(log_one.column_name)
-                    print(log_two.column_name)
-                    if log_one.column_name == log_two.column_name:
-                        print(log_one.old_value)
-                        print(log_two.new_value)
                     if log_one.column_name == log_two.column_name and log_one.old_value == log_two.new_value:
-                        print("DELETE")
                         if log_one not in to_delete:
                             to_delete.append(log_one)
                         if log_two not in to_delete:
                             to_delete.append(log_two)
         for elem in to_delete:
             elem.delete()
-
+    for transaction in Transaction.objects.all():
+        logs = Log.objects.filter(transaction=transaction)
+        if len(logs) == 0:
+            transaction.delete()
