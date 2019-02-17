@@ -167,6 +167,7 @@ def add_ticket_element(request):
         comment = request.POST.get("comment", None)
         urgency = request.POST.get('urgency', None).upper()
         image = request.FILES.get("picture", None)
+        print(image)
         ticket = Ticket(water_outlet=outlet, type=typeR, comment=comment,
                         urgency=urgency, image=image)
         ticket.save()

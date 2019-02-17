@@ -99,7 +99,7 @@ def table(request):
     print(json.dumps(json_test))
     return HttpResponse(json.dumps(json_test))
 
-
+@csrf_exempt
 def add_element(request):
     element = request.POST.get("table", None)
     if element == "water_element":
