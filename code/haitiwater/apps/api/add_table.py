@@ -85,6 +85,9 @@ def add_zone_element(request):
     name = request.POST.get("name", None)
     if request.user and request.user.profile.zone: #If user is connected and zone manager
         result = Zone.objects.filter(name=request.user.profile.zone)
+        test_already_exist = Zone.objects.filter(name=name)
+        if len(test_already_exist) > 0:
+            return HttpResponse("Une zone avec ce nom existe déjà dans l'application, veuillez en choisir un autre", status=500)
         if len(result) == 1:
             super = result[0]
             to_add = Zone(name=name, superzone=super, subzones=[name])
