@@ -130,5 +130,5 @@ En vous positionnant au chemin (dernier laissé précédemment) ``../HaitiWater/
   
     $ python3 manage.py runserver
     
-    *Note: sous Windows, si vous obtenez une erreur lors de l'accès au serveur via un navigateur, supprimez les '/' (slash) après 'static' et 'static-common' aux lignes 186 et 191 du fichier settings.py.
+    *Note: sous Windows, si vous obtenez une erreur lors de l'accès au serveur via un navigateur, supprimez les '/' (slash) après 'static' et 'static-common' aux lignes 186 et 191 du fichier settings.py.*
  
