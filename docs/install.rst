@@ -115,6 +115,8 @@ En vous positionnant au chemin (dernier laissé précédemment) ``../HaitiWater/
   
     $ pip install -r requirements.txt
     
+    *Note: sous Windows, il est possible que la dépendance GDAL ne puisse s'installer. Il suffit de la supprimer de la liste et de l'installer manuellement (voir ci-dessus).*
+    
   * Exporter le schéma de la base de données ::
   
     $ python3 manage.py makemigrations
@@ -127,4 +129,6 @@ En vous positionnant au chemin (dernier laissé précédemment) ``../HaitiWater/
   * Lancer le serveur ::
   
     $ python3 manage.py runserver
+    
+    *Note: sous Windows, si vous obtenez une erreur lors de l'accès au serveur via un navigateur, supprimez les '/' (slash) après 'static' et 'static-common' aux lignes 186 et 191 du fichier settings.py.
  
