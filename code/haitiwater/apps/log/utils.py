@@ -2,10 +2,6 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 
 from .models import Log
-from ..water_network.models import Element, Zone
-from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
-from django.contrib.auth.models import User, Group
 
 
 def log_add(table, column, value, transaction):
@@ -98,6 +94,8 @@ def restore_item(dict, table):
 
 
 def restore_consumer(dict):
+    from ..water_network.models import Element
+    from ..consumers.models import Consumer
     outlet = Element.objects.filter(id=dict["Sortie d'eau"])
     if len(outlet) != 1:
         return HttpResponse("Impossible de restaurer cet élément", status=500)
@@ -109,6 +107,8 @@ def restore_consumer(dict):
 
 
 def restore_outlet(dict):
+    from ..water_network.models import Element
+    from ..report.models import Ticket
     outlet = Element.objects.filter(id=dict["Sortie d'eau concernée"])
     if len(outlet) != 1:
         return HttpResponse("Impossible de restaurer cet élément", status=500)
@@ -120,6 +120,7 @@ def restore_outlet(dict):
 
 
 def restore_water_element(dict):
+    from ..water_network.models import Element, Zone
     zone = Zone.objects.filter(id=dict["Zone de l'élément"])
     if len(zone) != 1:
         return HttpResponse("Impossible de restaurer cet élément", status=500)
@@ -131,6 +132,7 @@ def restore_water_element(dict):
 
 
 def restore_zone(dict):
+    from ..water_network.models import Zone
     id_zone = dict["Zone mère"].split()[0]
     super_zone = Zone.objects.filter(id=id_zone)
     if len(super_zone) != 1:
@@ -148,6 +150,8 @@ def restore_zone(dict):
 
 
 def restore_user(dict):
+    from ..water_network.models import Element, Zone
+    from django.contrib.auth.models import User, Group
     password = User.objects.make_random_password()  # New random password
     user = User.objects.create_user(username=dict["Identifiant"],
                                     email=dict["Email"],

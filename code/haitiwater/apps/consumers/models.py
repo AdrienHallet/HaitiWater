@@ -42,10 +42,10 @@ class Consumer(Person):
         return result
 
     def log_add(self, transaction):
-        add("Consumer", self.infos(), transaction)
+        add(self._meta.model_name, self.infos(), transaction)
 
     def log_delete(self, transaction):
-        delete("Consumer", self.infos(), transaction)
+        delete(self._meta.model_name, self.infos(), transaction)
 
     def log_edit(self, old, transaction):
-        edit("Consumer", self.infos(), old, transaction)
+        edit(self._meta.model_name, self.infos(), old, transaction)

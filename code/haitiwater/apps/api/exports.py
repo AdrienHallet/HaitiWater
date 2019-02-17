@@ -122,6 +122,7 @@ def add_element(request):
 
 
 def remove_element(request):
+    print("REMOVE ?")
     element = request.POST.get("table", None)
     if element == "water_element":
         id = request.POST.get("id", None)
@@ -134,12 +135,14 @@ def remove_element(request):
             return HttpResponse("Impossible de supprimer cet élément", status=500)
         elem_delete = elem_delete[0]
         transaction = Transaction(user=request.user)
-        transaction.save()
-        elem_delete.log_delete(transaction)
+        if not is_same(elem_delete):
+            transaction.save()
+            elem_delete.log_delete(transaction)
         elem_delete.delete()
         tickets = Ticket.objects.filter(water_outlet=id)
         for t in tickets:
-            t.log_delete(transaction)
+            if not is_same(t):
+                t.log_delete(transaction)
             t.delete()
         users = User.objects.filter()
         for u in users:
@@ -196,14 +199,15 @@ def remove_element(request):
                 return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle est encore attribuée à" +
                                 "un gestionnaire de zone", status=500)
         transaction = Transaction(user=request.user)
-        transaction.save()
         for z in Zone.objects.all():
             if str(id) in z.subzones:
                 old = z.infos()
                 z.subzones.remove(str(id))
                 z.save()
                 z.log_edit(old, transaction)
-        to_delete.log_delete(transaction)
+        if not is_same(to_delete):
+            to_delete.log_delete(transaction)
+        transaction.save()
         to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     return error_500
@@ -247,9 +251,21 @@ def compute_logs(request):
 
 
 def log_element(element, request):
-    transaction = Transaction(user=request.user)
-    transaction.save()
-    element.log_delete(transaction)
+    if not is_same(element):
+        transaction = Transaction(user=request.user)
+        transaction.save()
+        element.log_delete(transaction)
+
+
+def is_same(element):
+    log = Log.objects.filter(action="ADD", column_name="ID", table_name=element._meta.model_name,
+                             new_value=element.id)
+    if len(log) != 0:  # If we found a log for adding the element removed
+        transaction = log[0].transaction
+        all_logs = Log.objects.filter(transaction=transaction)
+        log_finished(all_logs, transaction)
+        return True
+    return False
 
 
 def parse(request):

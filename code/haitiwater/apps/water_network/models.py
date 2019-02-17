@@ -61,13 +61,13 @@ class Zone(models.Model):
         return result
 
     def log_add(self, transaction):
-        add("Zone", self.infos(), transaction)
+        add(self._meta.model_name, self.infos(), transaction)
 
     def log_delete(self, transaction):
-        delete("Zone", self.infos(), transaction)
+        delete(self._meta.model_name, self.infos(), transaction)
 
     def log_edit(self, old, transaction):
-        edit("Zone", self.infos(), old, transaction)
+        edit(self._meta.model_name, self.infos(), old, transaction)
 
 
 class Location(models.Model):
@@ -126,10 +126,10 @@ class Element(models.Model):
         return result
 
     def log_add(self, transaction):
-        add("WaterElement", self.infos(), transaction)
+        add(self._meta.model_name, self.infos(), transaction)
 
     def log_delete(self, transaction):
-        delete("WaterElement", self.infos(), transaction)
+        delete(self._meta.model_name, self.infos(), transaction)
 
     def log_edit(self, old, transaction):
-        edit("WaterElement", self.infos(), old, transaction)
+        edit(self._meta.model_name, self.infos(), old, transaction)

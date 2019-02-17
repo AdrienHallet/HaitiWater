@@ -54,13 +54,13 @@ class Report(models.Model):
         return result
 
     def log_add(self, transaction):
-        add("Report", self.infos(), transaction)
+        add(self._meta.model_name, self.infos(), transaction)
 
     def log_delete(self, transaction):
-        delete("Report", self.infos(), transaction)
+        delete(self._meta.model_name, self.infos(), transaction)
 
     def log_edit(self, old, transaction):
-        edit("Report", self.infos(), old, transaction)
+        edit(self._meta.model_name, self.infos(), old, transaction)
 
 
 class Ticket(models.Model):
@@ -88,10 +88,10 @@ class Ticket(models.Model):
         return result
 
     def log_add(self, transaction):
-        add("Ticket", self.infos(), transaction)
+        add(self._meta.model_name, self.infos(), transaction)
 
     def log_delete(self, transaction):
-        delete("Ticket", self.infos(), transaction)
+        delete(self._meta.model_name, self.infos(), transaction)
 
     def log_edit(self, old, transaction):
-        edit("Ticket", self.infos(), old, transaction)
+        edit(self._meta.model_name, self.infos(), old, transaction)

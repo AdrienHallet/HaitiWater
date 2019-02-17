@@ -27,13 +27,13 @@ class Profile(models.Model):
         return result
 
     def log_add(self, transaction):
-        add("User", self.infos(), transaction)
+        add(self._meta.model_name, self.infos(), transaction)
 
     def log_delete(self, transaction):
-        delete("User", self.infos(), transaction)
+        delete(self._meta.model_name, self.infos(), transaction)
 
     def log_edit(self, old, transaction):
-        edit("User", self.infos(), old, transaction)
+        edit(self._meta.model_name, self.infos(), old, transaction)
 
     def get_subordinates(self):
         sub = []
