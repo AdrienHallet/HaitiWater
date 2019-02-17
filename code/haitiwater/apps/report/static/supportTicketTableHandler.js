@@ -48,14 +48,10 @@ function getTicketDatatableConfiguration(dataURL){
         "processing": true,
         "serverSide": true,
         "responsive": true,
-        "autoWidth": true,
+        "autoWidth": false,
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
-        fixedColumns:   {
-            leftColumns: 1,
-            rightColumns: 1
-        },
         "columnDefs": [
             {
                 "targets": -1,
