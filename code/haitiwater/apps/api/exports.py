@@ -167,8 +167,8 @@ def remove_element(request):
                 return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle est encore attribuée à" +
                                 "un gestionnaire de zone", status=500)
         for z in Zone.objects.all():
-            if str(id) in z.subzones:
-                z.subzones.remove(str(id))
+            if str(to_delete.name) in z.subzones:
+                z.subzones.remove(str(to_delete.name))
                 z.save()
         to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
