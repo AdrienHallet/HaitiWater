@@ -72,6 +72,7 @@ Veuillez vous référer à la documentation Django pour comprendre la structure 
 static-common - Fichiers statiques généraux
 -------------------------------------------
 ::
+
     Haitiwater/code/haitiwater/apps
     ├── images
     ├── javascripts
@@ -85,8 +86,8 @@ static-common - Fichiers statiques généraux
 
 *La totalité des librairies utilisées par l'application devrait être servie par le serveur et non pas par des CDN externes afin d'optimiser les téléchargements.*
 
-.. [1] https://docs.djangoproject.com/fr/2.1/intro/overview/
-
 templates - Gabarits généraux
 ------------------------------
 Le fichier ``templates`` contient les gabarits Django réutilisés à travers l'application. On y trouve les menus, graphes et le fichier ``base.html`` étendu par tous les modules de l'application.
+
+.. [1] https://docs.djangoproject.com/fr/2.1/intro/overview/
