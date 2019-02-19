@@ -29,8 +29,8 @@ haitiwater - Fichiers Django
   └── wsgi.py
 
 Le dossier ``haitiwater`` contient les fichiers de base de Django, tout particulièrement:
-  * ``settings.py`` : contient les informations de connexion aux services (base de données, serveur mail, serveur hôte, etc)
-  * ``urls.py`` : contient les règles de résolution URL de base. Les pages menant à des modules de l'application sont redirigées vers des fichiers ``urls.py`` propres à chaque module.
+  - ``settings.py`` : contient les informations de connexion aux services (base de données, serveur mail, serveur hôte, etc)
+  - ``urls.py`` : contient les règles de résolution URL de base. Les pages menant à des modules de l'application sont redirigées vers des fichiers ``urls.py`` propres à chaque module.
   
 
 apps - Modules
@@ -69,4 +69,24 @@ Chaque module a une structure de type
 
 Veuillez vous référer à la documentation Django pour comprendre la structure générale des applications [1]_
 
+static-common - Fichiers statiques généraux
+-------------------------------------------
+::
+    Haitiwater/code/haitiwater/apps
+    ├── images
+    ├── javascripts
+    ├── stylesheets
+    └── vendor
+    
+- ``images`` contient les ressources graphiques du serveur (favicon, logo)
+- ``javascripts`` contient les javascripts réutilisés à travers l'application. Les scripts utilisés par une application sont dans le dossier ´´śtatic´´ de l'application (module) correspondante.
+- ``stylesheets`` contient les fichiers CSS
+- ``vendor`` contient les librairies utilisées par l'application en front-end.
+
+*La totalité des librairies utilisées par l'application devrait être servie par le serveur et non pas par des CDN externes afin d'optimiser les téléchargements.*
+
 .. [1] https://docs.djangoproject.com/fr/2.1/intro/overview/
+
+templates - Gabarits généraux
+------------------------------
+Le fichier ``templates`` contient les gabarits Django réutilisés à travers l'application. On y trouve les menus, graphes et le fichier ``base.html`` étendu par tous les modules de l'application.
