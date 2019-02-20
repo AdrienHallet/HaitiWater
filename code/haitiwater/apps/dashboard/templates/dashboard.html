@@ -1,27 +1,31 @@
 {% extends "base.html" %}
 {% load group_filter %}
 
-    {% block page_name %}
-        <script type="application/javascript">
-            {% if user.is_authenticated %}
-                const outlets = [];
-                {% for outlet in water_outlets_report %}
-                    outlets.push([{{ outlet.0 }}, "{{ outlet.1 }}"]);
-                {% endfor %}
-                localStorage.setItem("username", "{{ user.get_username }}");
-                localStorage.setItem("outlets", JSON.stringify(outlets));
-            {% else %}
-                localStorage.removeItem("username");
-                localStorage.removeItem("outlets");
-            {% endif %}
-        </script>
-        Accueil
-    {% endblock %}
+{% block page_import %}
+    <script type="application/javascript">
+        {% if user.is_authenticated %}
+            const outlets = [];
+            {% for outlet in water_outlets_report %}
+                outlets.push([{{ outlet.0 }}, "{{ outlet.1 }}"]);
+            {% endfor %}
+            localStorage.setItem("username", "{{ user.get_username }}");
+            localStorage.setItem("outlets", JSON.stringify(outlets));
+        {% else %}
+            localStorage.removeItem("username");
+            localStorage.removeItem("outlets");
+        {% endif %}
+    </script>
+{% endblock %}
 
-    {% block page_content %}
-        <div class="text-center">
+{% block page_name %}
+    Accueil
+{% endblock %}
+
+{% block page_content %}
+    <div class="text-center">
+        {% if user.is_authenticated and user|has_group:"Gestionnaire de zone"%}
+
             <div class="row">
-                {% if user.is_authenticated and user|has_group:"Gestionnaire de zone"%}
                 <div class="pricing-table">
 
                     <div class="col-lg-6 col-sm-6">
@@ -47,12 +51,18 @@
                             </ul>
                         </div>
                     </div>
+
                 </div>
             </div>
-            {% elif user.is_authenticated and user|has_group:"Gestionnaire de fontaine"%}
-                Page d'acceuil du gestionnaire de fontaine
-            {% else %}
-                <h3>Contenu réservé, veuillez <a href="{% url 'login' %}">vous connecter</a></h3>
-            {% endif %}
-        </div>
-    {% endblock %}
+
+        {% elif user.is_authenticated and user|has_group:"Gestionnaire de fontaine"%}
+
+            Page d'acceuil du gestionnaire de fontaine
+
+        {% else %}
+
+            <h3>Contenu réservé, veuillez <a href="{% url 'login' %}">vous connecter</a></h3>
+
+        {% endif %}
+    </div>
+{% endblock %}
