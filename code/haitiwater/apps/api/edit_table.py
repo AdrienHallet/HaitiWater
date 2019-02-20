@@ -91,7 +91,13 @@ def edit_ticket(request):
     ticket.type = request.POST.get("type", None).upper()
     ticket.comment = request.POST.get("comment", None)
     ticket.status = request.POST.get("state", None).upper()
-    ticket.image = request.FILES.get("picture", None)
+    image = request.FILES.get("picture", None)
+    if image is not None:
+        extension = image.name.split(".")
+        import uuid
+        filename = str(uuid.uuid4())
+        image.name = filename + "." + extension[1]
+        ticket.image = image
     log_element(ticket, old, request)
     ticket.save()
     return success_200
