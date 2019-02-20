@@ -71,18 +71,6 @@ class Zone(models.Model):
         edit(self._meta.model_name, self.infos(), old, transaction)
 
 
-class Location(models.Model):
-
-    zone = models.ForeignKey(Zone, verbose_name="Zone", related_name="locations", on_delete=models.CASCADE)
-    lon = models.FloatField("Longitude")
-    lat = models.FloatField("Latitude")
-
-    # Generated : elements
-
-    def __str__(self):
-        return self.zone.name + " : (" + str(self.lon) + ", " + str(self.lat) + ")"
-
-
 class Element(models.Model):
 
     name = models.CharField("Nom", max_length=50)
@@ -150,7 +138,6 @@ class Element(models.Model):
         if result == "":
             result = "Pas de gestionnaire  "
         return result[:-2]
-        
 
     def network_descript(self):
         tab = [self.id, self.get_type(), self.location,
@@ -176,6 +163,7 @@ class Element(models.Model):
     def log_edit(self, old, transaction):
         edit(self._meta.model_name, self.infos(), old, transaction)
 
+
 class Location(models.Model):
 
     elem = models.ForeignKey(Element, verbose_name="Elément représenté", related_name="locations", on_delete=models.CASCADE)
@@ -185,7 +173,6 @@ class Location(models.Model):
     poly = models.GeometryField("Polygone", null=True)
 
     # Generated : elements
-
     def __str__(self):
         return self.elem.name + " : (" + str(self.lon) + ", " + str(self.lat) + ")"
 
