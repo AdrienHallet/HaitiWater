@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
+from django.contrib.postgres.fields import JSONField
 from enum import Enum
 from django.contrib.postgres.fields import ArrayField
 from django.db.models import ManyToOneRel
@@ -96,6 +97,49 @@ class Element(models.Model):
     def is_in_subzones(self, zone):
         return self.zone.name in zone.subzones
 
+    def get_type(self):
+        return ElementType[self.type].value
+
+    def get_status(self):
+        return ElementStatus[self.status].value
+
+    def get_manager(self):
+        managers = User.objects.all()
+        for manager in managers:
+            if str(self.id) in manager.profile.outlets:
+                return manager.username
+
+    def get_consumers(self):
+        from ..consumers.models import Consumer #Avoid cycle in imports
+        consumers = Consumer.objects.filter(water_outlet_id=self.id)
+        total = 0
+        for consumer in consumers:
+            total += consumer.household_size + 1
+        return total
+
+    def get_current_output(self):
+        from ..report.models import Report #Avoid cycle in imports
+        from ..utils.get_data import get_current_month
+        reports = Report.objects.filter(water_outlet_id=self.id,
+                                        month=get_current_month().upper())
+        if len(reports) > 1:
+            return "Erreur dans le calcul de quantité"
+        elif len(reports) == 0:
+            return 0
+        else:
+            return reports[0].quantity_distributed
+
+    def get_all_output(self):
+        from ..report.models import Report  # Avoid cycle in imports
+        reports = Report.objects.filter(water_outlet_id=self.id)
+        if len(reports) == 0:
+            return 0, 0
+        total = 0
+        for report in reports:
+            total += report.quantity_distributed
+        return total, total/len(reports)
+
+
     def get_managers(self):
         all_managers = User.objects.all()
         result = ""
@@ -106,9 +150,7 @@ class Element(models.Model):
         if result == "":
             result = "Pas de gestionnaire  "
         return result[:-2]
-
-    def get_type(self):
-        return ElementType[self.type].value
+        
 
     def network_descript(self):
         tab = [self.id, self.get_type(), self.location,
@@ -133,3 +175,17 @@ class Element(models.Model):
 
     def log_edit(self, old, transaction):
         edit(self._meta.model_name, self.infos(), old, transaction)
+
+class Location(models.Model):
+
+    elem = models.ForeignKey(Element, verbose_name="Elément représenté", related_name="locations", on_delete=models.CASCADE)
+    lon = models.FloatField("Longitude")
+    lat = models.FloatField("Latitude")
+    json_representation = JSONField(verbose_name="GeoJSON", null=True)
+    poly = models.GeometryField("Polygone", null=True)
+
+    # Generated : elements
+
+    def __str__(self):
+        return self.elem.name + " : (" + str(self.lon) + ", " + str(self.lat) + ")"
+

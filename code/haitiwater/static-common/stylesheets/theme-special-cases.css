@@ -1,3 +1,17 @@
+/* Leaflet CSS */
+.leaflet-container{
+    height: 500px;
+}
+
+.leaflet-drawer-control{
+    display:block;
+    font-size: 20px;
+    background-color:black;
+    color:black;
+    text-align: center;
+    vertical-align: center;
+}
+
 /* Force center whatever happens */
 .all-center {
      vertical-align: middle !important;

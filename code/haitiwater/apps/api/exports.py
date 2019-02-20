@@ -1,9 +1,16 @@
 import re
 
+from django.views.decorators.csrf import csrf_exempt
+
+from ..water_network.models import Element, ElementType, Zone, Location
+from ..consumers.models import Consumer
+from ..report.models import Report, Ticket
+from django.contrib.auth.models import User, Group
 from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
 from ..utils.get_data import is_user_fountain
+from django.contrib.gis.geos import GEOSGeometry
 from ..log.models import Transaction, Log
 from ..log.utils import *
 
@@ -50,6 +57,70 @@ def graph(request):
                        }]}"""
         json_val = json.loads(export)
     return HttpResponse(json.dumps(json_val))
+
+
+def get_details_network(request):
+    id_outlet = request.GET.get("id", -1)
+    results = Element.objects.filter(id=id_outlet)
+    if len(results) != 1:
+        return HttpResponse("Impossible de charger cet élément", status=404)
+    outlet = results[0]
+    location = Location.objects.filter(elem=id_outlet)
+    if len(location) != 1:
+        location = None
+    else:
+        location = location[0].json_representation
+    infos = {"id": id_outlet,
+             "type": outlet.get_type(),
+             "localization": outlet.location,
+             "manager": outlet.get_manager(),
+             "users": outlet.get_consumers(),
+             "state": outlet.get_status(),
+             "currentMonthCubic": outlet.get_current_output(),
+             "averageMonthCubic": outlet.get_all_output()[1],
+             "totalCubic": outlet.get_all_output()[0],
+             "geoJSON": location}
+    print(infos)
+    return HttpResponse(json.dumps(infos))
+
+@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
+def gis_infos(request):
+    print(request)
+    if request.method == "GET":
+        print("Getting infos")
+        markers = request.GET.get("marker", None) #The fuck
+        if markers == "all": #TODO : be mindfull of the connected user
+            all_loc = Location.objects.all()
+            result = {}
+            for loc in all_loc:
+                result[loc.elem.id] = [loc.elem.name, loc.json_representation]
+        return HttpResponse(json.dumps(result))
+
+    elif request.method == "POST":
+        print("Posting infos")
+        print(request.GET)
+        elem_id = request.GET.get("id", -1) #The fuck
+        if elem_id == -1:
+            return HttpResponse("Impossible de trouver l'élément demandé", status=404)
+        elem = Element.objects.filter(id=elem_id)
+        if len(elem) != 1:
+            return HttpResponse("Impossible de trouver l'élément demandé", status=404)
+        elem = elem[0]
+        if request.GET.get("action", None) == "add":
+            json_value = json.loads(request.body.decode('utf-8'))
+            poly = GEOSGeometry(str(json_value["geometry"]))
+            loc = Location(elem=elem, lat=0, lon=0,
+                       json_representation=request.body.decode('utf-8'),
+                       poly=poly)
+            loc.save()
+            return HttpResponse(status=200)
+        elif request.GET.get("action", None) == "remove":
+            loc = Location.objects.filter(elem_id=elem_id)
+            loc.delete() #TODO log
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse("Impossible de traiter cette requête", status=500)
+
 
 
 def table(request):

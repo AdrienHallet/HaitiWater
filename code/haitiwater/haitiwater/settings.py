@@ -29,7 +29,7 @@ COMPRESS_JS_FILTERS = [
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.getcwd()
-APPS_DIR = os.path.join(PROJECT_DIR, 'apps/')
+APPS_DIR = os.path.join(PROJECT_DIR, 'apps')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -186,7 +186,7 @@ STATIC_ROOT = os.path.join(os.getcwd(), 'static/')
 STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
-    os.path.join(os.getcwd(), 'static-common/'),
+    os.path.join(os.getcwd(), 'static-common'),
 ]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [

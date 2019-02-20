@@ -6,6 +6,7 @@ from django.contrib.postgres.fields import ArrayField
 from ..water_network.models import Zone, Element
 from ..utils.common_models import *
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     zone = models.ForeignKey(Zone, verbose_name="Zone gérée",
