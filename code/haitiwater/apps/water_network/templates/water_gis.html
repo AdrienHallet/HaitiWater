@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load group_filter %}
 
 {% block page_name %}
     <script src="{% static "vendor/leaflet/leaflet.js" %}"></script>
@@ -100,7 +101,9 @@
         <header class="panel-heading">
             <!-- Table block control actions -->
             <div class="panel-actions form-inline">
-                <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus"></a>
+                {% if user|has_group:"Gestionnaire de zone" %}
+                    <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus"></a>
+                {% endif %}
                 <a id="print-water_element" class="fa fa-print"></a>
                 <a id="water_element-options" class="fas fa-cog"></a>
                 <a href="#" class="fa fa-caret-down"></a>
