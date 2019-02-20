@@ -24,6 +24,12 @@ class Transaction(models.Model):
                              related_name="MadeBy", null=False, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def is_visible(self):
+        for user in User.objects.all():
+            if self.user in user.profile.get_subordinates():
+                return True
+        return False
+
 
 class Log(models.Model):
     table_name = models.CharField("Nom de la table", choices=[(i.name, i.value) for i in TableType], max_length=30)
