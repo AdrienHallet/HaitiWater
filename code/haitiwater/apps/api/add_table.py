@@ -167,10 +167,11 @@ def add_ticket_element(request):
         comment = request.POST.get("comment", None)
         urgency = request.POST.get('urgency', None).upper()
         image = request.FILES.get("picture", None)
-        extension = image.name.split(".")
-        import uuid
-        filename = str(uuid.uuid4())
-        image.name = filename+"."+extension[1]
+        if image:
+            extension = image.name.split(".")
+            import uuid
+            filename = str(uuid.uuid4())
+            image.name = filename+"."+extension[1]
         ticket = Ticket(water_outlet=outlet, type=typeR, comment=comment,
                         urgency=urgency, image=image)
         log_element(ticket, request)
