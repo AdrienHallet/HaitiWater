@@ -1,10 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block page_import %}
+
+{% endblock %}
+
+
+
 {% block page_name %}
     <script src="{% static "report.js" %}"></script>
+
+    <script src="{% static "vendor/bootstrap-wizard/jquery.bootstrap.wizard.js" %}"></script>
+    <script src="{% static "monthlyReportFormHandler.js" %}"></script>
+    <script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
+
+
     <script src="{% static "problemReportFormHandler.js" %}"></script>
+    <script src="{% static "reportTableHandler.js" %}"></script>
+    <script src="{% static "supportTicketTableHandler.js" %}"></script>
     <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
+    <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
+
+    <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
     Rapports
 {% endblock %}
 

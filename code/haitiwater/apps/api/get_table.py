@@ -1,12 +1,9 @@
-import json
-
-from decimal import Decimal, ROUND_HALF_UP
-from django.http import HttpResponse
 
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
 from ..water_network.models import Element, Zone
-from django.contrib.auth.models import User, Group
+from ..log.models import Transaction, Log
+from django.contrib.auth.models import User
 
 
 def add_with_search(parsed, values):
@@ -179,3 +176,47 @@ def get_ticket_elements(request, json, parsed):
                             break
         json["recordsTotal"] = tot
     return all
+
+
+def get_logs_elements(request, json, parsed):
+    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates())
+    all = []
+    tot = 0
+    for t in transactions:
+        logs = Log.objects.filter(transaction=t)
+        details = get_transaction_detail(logs)
+        item = {"id": t.id, "time": str(t.timestamp.date()),
+                "type": logs[0].get_action(), "user": t.user.username,
+                "summary": logs[0].get_table(), "details": details}
+        if parsed["search"] == "":
+            all.append(item)
+            tot += 1
+        else:
+            for cols in parsed["searchable"]:
+                if cols < len(item) and parsed["search"].lower() in item.keys() \
+                        or parsed["search"].lower() in item.values():
+                    all.append(item)
+                    tot += 1
+                    break
+    json["recordsTotal"] = tot
+    return all
+
+def get_transaction_detail(logs):
+    detail = ""
+    for indiv in logs:
+        if indiv.action == "ADD":
+            if indiv.new_value and indiv.new_value != "[]":
+                detail += indiv.column_name+" : "+indiv.new_value + "<br>"
+        elif indiv.action == "DELETE":
+            if indiv.old_value and indiv.old_value != "[]":
+                detail += indiv.column_name+" : "+indiv.old_value + "<br>"
+        else:
+            if indiv.old_value and indiv.new_value:
+                if indiv.column_name == "ID":
+                    detail += "Id : " + indiv.old_value
+                else:
+                    detail += indiv.column_name+" : "+indiv.old_value +" -> "+\
+                          indiv.new_value+"<br>"
+
+
+    return detail

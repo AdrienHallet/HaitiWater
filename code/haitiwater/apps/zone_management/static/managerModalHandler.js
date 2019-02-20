@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     //Show only relevant form component to the desired user type
-    $('#form-add-manager').find('#select-manager-type').on('click', function(){
+    $('#select-manager-type').on('change', function(){
         $('#form-group-select-zone').addClass('hidden');
         $('#form-group-multiselect-outlets').addClass('hidden');
 

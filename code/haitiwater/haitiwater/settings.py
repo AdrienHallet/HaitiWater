@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'apps.authentication',
     'apps.dashboard',
+    'apps.log',
     'apps.water_network',
     'apps.zone_management',
     'apps.api',
@@ -126,11 +127,15 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'haitiwater',
         'HOST': 'localhost',
-        'PORT': '5433',
+        'PORT': '5432',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
     },
 }
+
+MEDIA_ROOT = 'static-common/images/'
+
+MEDIA_URL = '/images/'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
