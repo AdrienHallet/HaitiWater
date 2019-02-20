@@ -1,17 +1,12 @@
 import re
-from django.http import HttpResponse
 
-from ..water_network.models import Element, ElementType, Zone
-from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
-from django.contrib.auth.models import User, Group
 from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
 from ..utils.get_data import is_user_fountain
+from ..log.models import Transaction, Log
+from ..log.utils import *
 
-from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
 import json
 
 error_500 = HttpResponse(False, status=500)
@@ -85,12 +80,22 @@ def table(request):
         all = get_manager_elements(request, json_test, d)
     elif d["table_name"] == "ticket":
         all = get_ticket_elements(request, json_test, d)
+    elif d["table_name"] == "logs":
+        all = get_logs_elements(request, json_test, d)
     else:
         return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
     if all is False: #There was a problem when retrieving the data
         return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
-    final = sorted(all, key=lambda x: x[d["column_ordered"]],
-                   reverse=d["type_order"] != "asc")
+    if d["table_name"] == "logs":
+        if len(all) > 1:
+            keys = list(all[0].keys())
+            final = sorted(all, key=lambda x: x[keys[d["column_ordered"]]],
+                       reverse=d["type_order"] != "asc")
+        else:
+            final = all
+    else:
+        final = sorted(all, key=lambda x: x[d["column_ordered"]],
+                       reverse=d["type_order"] != "asc")
     if d["length_max"] == -1:
         json_test["data"] = final
     else:
@@ -117,7 +122,7 @@ def add_element(request):
 
 
 def remove_element(request):
-    print(request.POST)
+    print("REMOVE ?")
     element = request.POST.get("table", None)
     if element == "water_element":
         id = request.POST.get("id", None)
@@ -125,28 +130,55 @@ def remove_element(request):
         if len(consumers) > 0: #Can't suppress outlets with consummers
             return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à " +
                                 "des consommateurs", status=500)
-        Element.objects.filter(id=id).delete()
+        elem_delete = Element.objects.filter(id=id)
+        if len(elem_delete) != 1:
+            return HttpResponse("Impossible de supprimer cet élément", status=500)
+        elem_delete = elem_delete[0]
+        transaction = Transaction(user=request.user)
+        if not is_same(elem_delete):
+            transaction.save()
+            elem_delete.log_delete(transaction)
+        elem_delete.delete()
         tickets = Ticket.objects.filter(water_outlet=id)
         for t in tickets:
+            if not is_same(t):
+                t.log_delete(transaction)
             t.delete()
         users = User.objects.filter()
         for u in users:
             if len(u.profile.outlets) > 0: #Gestionnaire de fontaine
                 if str(id) in u.profile.outlets:
+                    old = u.profile.infos()
                     u.profile.outlets.remove(str(id))
                     u.save()
+                    u.profile.log_edit(old, transaction)
         return success_200
     elif element == "consumer":
         id = request.POST.get("id", None)
-        Consumer.objects.filter(id=id).delete()
+        to_delete = Consumer.objects.filter(id=id)
+        if len(to_delete) != 1:
+            return HttpResponse("Impossible de supprimer cet élément", status=500)
+        to_delete = to_delete[0]
+        log_element(to_delete, request)
+        to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0)+1}, status=200)
     elif element == "manager":
         id = request.POST.get("id", None)
-        User.objects.filter(username=id).delete()
+        to_delete = User.objects.filter(username=id)
+        if len(to_delete) != 1:
+            return HttpResponse("Impossible de supprimer cet élément", status=500)
+        to_delete = to_delete[0]
+        log_element(to_delete.profile, request)
+        to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "ticket":
         id = request.POST.get("id", None)
-        Ticket.objects.filter(id=id).delete()
+        to_delete = Ticket.objects.filter(id=id)
+        if len(to_delete) != 1:
+            return HttpResponse("Impossible de supprimer cet élément", status=500)
+        to_delete = to_delete[0]
+        log_element(to_delete, request)
+        to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "zone":
         id = request.POST.get("id", None)
@@ -166,10 +198,16 @@ def remove_element(request):
             if u.profile.zone == to_delete:
                 return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle est encore attribuée à" +
                                 "un gestionnaire de zone", status=500)
+        transaction = Transaction(user=request.user)
         for z in Zone.objects.all():
             if str(to_delete.name) in z.subzones:
+                old = z.infos()
                 z.subzones.remove(str(to_delete.name))
                 z.save()
+                z.log_edit(old, transaction)
+        if not is_same(to_delete):
+            to_delete.log_delete(transaction)
+        transaction.save()
         to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     return error_500
@@ -184,13 +222,50 @@ def edit_element(request):
     elif element == "zone":
         return edit_zone(request)
     elif element == "ticket":
-        print(request.POST)
         return edit_ticket(request)
     elif element == "manager":
         return edit_manager(request)
     else:
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)
+
+
+def compute_logs(request):
+    id_val = request.GET.get("id", -1)
+    action = request.GET.get("action", None)
+    if id_val == -1 or action == None:
+        return HttpResponse("Impossible de valider/annuler ce changement", status=500)
+    transaction = Transaction.objects.filter(id=id_val)
+    if len(transaction) != 1:
+        return HttpResponse("Impossible d'identifier le changement", status=404)
+    transaction = transaction[0]
+    if action == "accept":
+        logs = Log.objects.filter(transaction=transaction)
+        log_finished(logs, transaction)
+        return HttpResponse(status=200)
+    elif action == "revert":
+        roll_back(transaction)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse("Action non reconnue", status=500)
+
+
+def log_element(element, request):
+    if not is_same(element):
+        transaction = Transaction(user=request.user)
+        transaction.save()
+        element.log_delete(transaction)
+
+
+def is_same(element):
+    log = Log.objects.filter(action="ADD", column_name="ID", table_name=element._meta.model_name,
+                             new_value=element.id)
+    if len(log) != 0:  # If we found a log for adding the element removed
+        transaction = log[0].transaction
+        all_logs = Log.objects.filter(transaction=transaction)
+        log_finished(all_logs, transaction)
+        return True
+    return False
 
 
 def parse(request):

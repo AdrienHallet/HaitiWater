@@ -2,6 +2,9 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from enum import Enum
 from django.contrib.postgres.fields import ArrayField
+from django.db.models import ManyToOneRel
+
+from ..utils.common_models import *
 
 #########
 # Enums #
@@ -48,6 +51,24 @@ class Zone(models.Model):
     def descript(self):
         return [self.id, self.name]
 
+    def infos(self):
+        result = {
+            "Zone mère": str(self.superzone.id)+" ("+self.superzone.name+")",
+            "Nom": self.name,
+            "ID": self.id
+        }
+        print(result)
+        return result
+
+    def log_add(self, transaction):
+        add(self._meta.model_name, self.infos(), transaction)
+
+    def log_delete(self, transaction):
+        delete(self._meta.model_name, self.infos(), transaction)
+
+    def log_edit(self, old, transaction):
+        edit(self._meta.model_name, self.infos(), old, transaction)
+
 
 class Location(models.Model):
 
@@ -86,7 +107,29 @@ class Element(models.Model):
             result = "Pas de gestionnaire  "
         return result[:-2]
 
+    def get_type(self):
+        return ElementType[self.type].value
+
     def network_descript(self):
-        tab = [self.id, ElementType[self.type].value, self.location,
+        tab = [self.id, self.get_type(), self.location,
                ElementStatus[self.status].value, self.get_managers(), self.zone.name]
         return tab
+
+    def infos(self):
+        result = {}
+        for field in Element._meta.get_fields():
+            if type(field) != ManyToOneRel:
+                if field.name == "zone":
+                    result[field.verbose_name] = self.zone.id
+                else:
+                    result[field.verbose_name] = self.__getattribute__(field.name)
+        return result
+
+    def log_add(self, transaction):
+        add(self._meta.model_name, self.infos(), transaction)
+
+    def log_delete(self, transaction):
+        delete(self._meta.model_name, self.infos(), transaction)
+
+    def log_edit(self, old, transaction):
+        edit(self._meta.model_name, self.infos(), old, transaction)

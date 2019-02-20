@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'apps.authentication',
     'apps.dashboard',
+    'apps.log',
     'apps.water_network',
     'apps.zone_management',
     'apps.api',
@@ -129,7 +130,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'haitiwater',
         'HOST': 'localhost',
-        'PORT': '5433',
+        'PORT': '5432',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
     }

@@ -1,5 +1,6 @@
 from django.contrib.gis.db import models
 from ..water_network.models import Element
+from ..utils.common_models import *
 from enum import Enum
 
 
@@ -48,6 +49,21 @@ class Report(models.Model):
     price = models.FloatField("Prix au mètre cube", null=True)
     recette = models.FloatField("Recettes du mois", null=True)
 
+    def infos(self):
+        result = {}
+        for field in Report._meta.get_fields():
+            result[field.name] = self.__getattribute__(field.name)
+        return result
+
+    def log_add(self, transaction):
+        add(self._meta.model_name, self.infos(), transaction)
+
+    def log_delete(self, transaction):
+        delete(self._meta.model_name, self.infos(), transaction)
+
+    def log_edit(self, old, transaction):
+        edit(self._meta.model_name, self.infos(), old, transaction)
+
 
 class Ticket(models.Model):
     water_outlet = models.ForeignKey(Element, verbose_name="Sortie d'eau concernée",
@@ -66,3 +82,21 @@ class Ticket(models.Model):
 
     def get_image(self):
         return self.image.url if self.image else None
+
+    def infos(self):
+        result = {}
+        for field in Ticket._meta.get_fields():
+            if field.name == "water_outlet":
+                result[field.verbose_name] = self.water_outlet.id
+            else:
+                result[field.verbose_name] = self.__getattribute__(field.name)
+        return result
+
+    def log_add(self, transaction):
+        add(self._meta.model_name, self.infos(), transaction)
+
+    def log_delete(self, transaction):
+        delete(self._meta.model_name, self.infos(), transaction)
+
+    def log_edit(self, old, transaction):
+        edit(self._meta.model_name, self.infos(), old, transaction)
