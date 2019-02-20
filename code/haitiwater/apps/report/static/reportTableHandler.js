@@ -27,7 +27,7 @@ function getReportDatatableConfiguration(dataURL){
         "processing": true,
         "serverSide": true,
         "responsive": true,
-        "autoWidth": false,
+        "autoWidth": true,
         scrollX:        true,
         scrollCollapse: true,
         "columnDefs": [
