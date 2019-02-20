@@ -1,6 +1,9 @@
 import os
 
 from django.contrib.gis.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+
 from ..water_network.models import Element
 from ..utils.common_models import *
 from enum import Enum
@@ -102,3 +105,7 @@ class Ticket(models.Model):
 
     def log_edit(self, old, transaction):
         edit(self._meta.model_name, self.infos(), old, transaction)
+
+@receiver(post_delete, sender=Ticket)
+def submission_delete(sender, instance, **kwargs):
+    instance.image.delete(False)
