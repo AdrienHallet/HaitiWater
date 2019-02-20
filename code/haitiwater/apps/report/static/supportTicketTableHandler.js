@@ -67,8 +67,9 @@ function getTicketDatatableConfiguration(dataURL){
 
         //Callbacks on fetched data
         "createdRow": function (row, data, index, cells) {
-            let imageURL = '../static/' + data[7];
-            if (imageURL !== 'none'){
+            let path = data[7];
+            if (path !== null){
+                let imageURL = '../static/' + data[7];
                 let commentDom = $('td', row).eq(5);
                 let comment = commentDom.text();
 
