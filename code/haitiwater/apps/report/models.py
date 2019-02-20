@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.gis.db import models
 from ..water_network.models import Element
 from ..utils.common_models import *
