@@ -134,7 +134,7 @@ DATABASES = {
     },
 }
 
-MEDIA_ROOT = 'static-common/images'
+MEDIA_ROOT = 'static-common/images/'
 
 MEDIA_URL = '/images/'
 
@@ -182,12 +182,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-STATIC_ROOT = os.path.join(os.getcwd(), 'static')
+STATIC_ROOT = os.path.join(os.getcwd(), 'static/')
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
-    os.path.join(os.getcwd(), 'static-common'),
+    os.path.join(os.getcwd(), 'static-common/'),
 ]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
