@@ -28,7 +28,7 @@
 	-moz-transition: all 0.15s ease-out;
 	transition: all 0.15s ease-out;
 	background: #F4F4F4;
-	border-left: 3px solid #EE6C4D;
+	border-left: 5px solid lightgrey;
 	border-radius: 5px;
 	color: #cccccc;
 	display: block;
@@ -54,10 +54,6 @@
 
 .collapsible > label::selection {
 	background: none;
-}
-
-.collapsible > label:hover {
-	background: #333333;
 }
 
 .collapsible > label + p {
@@ -94,7 +90,13 @@
 	display: none;
 }
 
-.collapsible > label {
+.collapsible.collapsed > label {
+	background: #293241;
+	border-color: lightgrey;
+	color: #FFF;
+}
+
+.collapsible > label:hover, .collapsible > label {
 	background: #293241;
 	border-color: #EE6C4D;
 	color: #FFF;
