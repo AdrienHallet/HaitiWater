@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'apps.consumers',
     'apps.report',
     'apps.offline',
+    'apps.help',
     'compressor',
     'django_tables2',
     'bootstrap3',
@@ -186,7 +187,7 @@ STATIC_ROOT = os.path.join(os.getcwd(), 'static/')
 STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
-    os.path.join(os.getcwd(), 'static-common'),
+    os.path.join(os.getcwd(), 'static-common/'),
 ]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
