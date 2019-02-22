@@ -32,6 +32,7 @@ urlpatterns = [
     path('profil/', include('apps.authentication.urls')),
     path('user/', include('apps.authentication.urls')),
     path('offline/', include('apps.offline.urls')),
+    path('aide/', include('apps.help.urls')),
 ]
 
 # Add Django site authentication urls (for login, logout, password management)
