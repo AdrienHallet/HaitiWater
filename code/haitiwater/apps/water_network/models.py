@@ -69,6 +69,8 @@ class Element(models.Model):
     status = models.CharField("État", max_length=20, choices=[(i.name, i.value) for i in ElementStatus])
     zone = models.ForeignKey(Zone, verbose_name="Zone de l'élément", related_name="elements", on_delete=models.CASCADE, default=1)
     location = models.CharField("Localisation", max_length=50)
+    price = models.FloatField("Prix de la souscription", default=0)
+    validity = models.IntegerField("Nombre de mois de validité de la souscription", default=12)
 
     def __str__(self):
         return self.name
