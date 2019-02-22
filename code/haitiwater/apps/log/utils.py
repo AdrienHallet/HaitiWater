@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.http import HttpResponse
 
@@ -43,15 +44,15 @@ def roll_back(transaction):
                        for log in logs
                        if log.table_name == table and log.column_name != "ID"}
             )
-        log_finished()
+        log_finished(logs, transaction)
     elif logs[0].action == "ADD": #Add case
         elements = get_elem_logged(logs)
         for elem in elements:
             elem.delete()
-        log_finished()
+        log_finished(logs, transaction)
     elif logs[0].action == "DELETE": #Delete case
         re_add_item(logs)
-        log_finished()
+        log_finished(logs, transaction)
 
 
 def get_concerned_tables(logs):
@@ -88,17 +89,17 @@ def re_add_item(logs):
 
 
 def restore_item(dict, table):
-    if table == "Consumer":
+    if table == "consumer":
         restore_consumer(dict)
-    elif table == "Ticket":
+    elif table == "ticket":
         restore_outlet(dict)
-    elif table == "WaterElement":
+    elif table == "element":
         restore_water_element(dict)
-    elif table == "Zone":
+    elif table == "zone":
         restore_zone(dict)
-    elif table == "Report":
+    elif table == "report":
         pass
-    elif table == "User":
+    elif table == "user":
         restore_user(dict)
 
 
@@ -213,7 +214,10 @@ def restore_user(dict):
 
 
 def get_elem_logged(logs):
-    tables = get_concerned_tables()
+    from ..water_network.models import Element, Zone
+    from ..report.models import Report, Ticket
+    from ..consumers.models import Consumer
+    tables = get_concerned_tables(logs)
     ids = []
     for elem in logs:
         if elem.column_name =="ID":
@@ -221,17 +225,18 @@ def get_elem_logged(logs):
     elems = []
     for number, table in enumerate(tables):
         elem = None
-        if table == "Consumer":
+        if table == "consumer":
             elem = Consumer.objects.filter(id=ids[number])[0]
-        elif table == "Ticket":
+        elif table == "ticket":
             elem = Ticket.objects.filter(id=ids[number])[0]
-        elif table == "WaterElement":
+        elif table == "element":
             elem = Element.objects.filter(id=ids[number])[0]
-        elif table == "Zone":
+        elif table == "zone":
             elem = Zone.objects.filter(id=ids[number])[0]
-        elif table == "Report":
+        elif table == "report":
             elem = Report.objects.filter(id=ids[number])[0]
-        elif table == "User":
+        elif table == "user":
             elem = User.objects.filter(id=ids[number])[0]
-        elems.append(elem)
+        if elem is not None:
+            elems.append(elem)
     return elems

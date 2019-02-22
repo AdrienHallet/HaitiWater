@@ -1,7 +1,8 @@
 from django.contrib.gis.db import models
-from ..water_network.models import Location, Element, ElementType
 from ..log.utils import *
 from ..utils.common_models import *
+from ..water_network.models import Location, Element
+
 
 
 class Person(models.Model):
