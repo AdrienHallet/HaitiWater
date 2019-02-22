@@ -11,6 +11,7 @@ def log_add(table, column, value, transaction):
                   new_value=value, transaction=transaction)
         new_val.save()
     else: #If no one has the hierarchical status to see the transactions + log, don't save them in DB
+        transaction.save()
         transaction.delete()
 
 
@@ -20,6 +21,7 @@ def log_delete(table, column, value, transaction):
                   old_value=value, transaction=transaction)
         new_val.save()
     else:
+        transaction.save()
         transaction.delete()
 
 
@@ -29,6 +31,7 @@ def log_edit(table, column, old_val, new_val, transaction):
                   old_value=old_val, new_value=new_val, transaction=transaction)
         new_val.save()
     else:
+        transaction.save()
         transaction.delete()
 
 
