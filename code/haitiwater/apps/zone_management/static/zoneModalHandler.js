@@ -47,12 +47,14 @@ function setupModalZoneAdd(){
     $('#modal-zone-submit-edit').addClass("hidden");
     $('#form-zone-id-component').addClass("hidden");
 
+    //Empty inputs
+    $('#input-zone-id').val("");
+    $('#input-zone-name').val("");
+
     showZoneModal();
 }
 
 function setupModalZoneEdit(data){
-    console.log(data);
-    console.log(data[0].innerText);
     //Hide add components
     $('#modal-zone-title-add').addClass("hidden");
     $('#modal-zone-submit-add').addClass("hidden");
