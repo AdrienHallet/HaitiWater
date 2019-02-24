@@ -151,7 +151,6 @@ def table(request):
     elif d["table_name"] == "report":
         all = get_last_reports(request, json_test, d)
     elif d["table_name"] == "ticket":
-        get_last_reports(request, json_test, d)
         all = get_ticket_elements(request, json_test, d)
     elif d["table_name"] == "logs":
         all = get_logs_elements(request, json_test, d)
@@ -159,7 +158,7 @@ def table(request):
         return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
     if all is False: #There was a problem when retrieving the data
         return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
-    if d["table_name"] == "logs":
+    if d["table_name"] == "logs" or d["table_name"] == "report":
         if len(all) > 1:
             keys = list(all[0].keys())
             final = sorted(all, key=lambda x: x[keys[d["column_ordered"]]],
