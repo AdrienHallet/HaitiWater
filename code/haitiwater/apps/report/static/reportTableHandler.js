@@ -4,11 +4,6 @@ function format ( d ) {
     return 'TODO<br><button id="button-modal-edit-report" type="button" class="btn" href="#modalMonthlyReportEdit" onclick="showMonthlyReportEdit()">Modifier</button>';
 }
 
-function showMonthlyReportEdit(data){
-    console.log(data);
-    showModal('#button-modal-edit-report');
-}
-
 function drawReportTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=report";
@@ -31,7 +26,7 @@ function drawReportTable(){
             editButton.off();
             editButton.on('click', function(){
                 console.log(row.data());
-                showMonthlyReportEdit(row.data());
+                setupModalMonthlyReportEdit(row.data());
             });
             tr.addClass('shown');
 
