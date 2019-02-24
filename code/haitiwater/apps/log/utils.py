@@ -7,6 +7,7 @@ from .models import Log
 
 def log_add(table, column, value, transaction):
     if transaction.is_visible():
+        transaction.save()
         new_val = Log(action="ADD", table_name=table, column_name=column,
                   new_value=value, transaction=transaction)
         new_val.save()
@@ -17,6 +18,7 @@ def log_add(table, column, value, transaction):
 
 def log_delete(table, column, value, transaction):
     if transaction.is_visible():
+        transaction.save()
         new_val = Log(action="DELETE", table_name=table, column_name=column,
                   old_value=value, transaction=transaction)
         new_val.save()
@@ -27,6 +29,7 @@ def log_delete(table, column, value, transaction):
 
 def log_edit(table, column, old_val, new_val, transaction):
     if transaction.is_visible():
+        transaction.save()
         new_val = Log(action="EDIT", table_name=table, column_name=column,
                   old_value=old_val, new_value=new_val, transaction=transaction)
         new_val.save()

@@ -215,7 +215,7 @@ def get_last_reports(request, json, parsed):
                  "details":[detail]
                 }
             all.append(infos)
-    print(all)
+    json["recordsTotal"] = len(all)
     return all
 
 
