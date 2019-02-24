@@ -23,14 +23,16 @@ function drawReportTable(){
 
 function getReportDatatableConfiguration(dataURL){
     let config = {
-        "sortable": true,
-        "processing": true,
-        "serverSide": true,
-        "responsive": true,
-        "autoWidth": true,
+        sortable: false,
+        searching: false,
+        paging: false,
+        processing: true,
+        serverSide: true,
+        responsive: true,
+        autoWidth: true,
         scrollX:        true,
         scrollCollapse: true,
-        "columnDefs": [
+        columnDefs: [
             {
                 "targets": -1,
                 "data": null,
@@ -38,8 +40,8 @@ function getReportDatatableConfiguration(dataURL){
                 "defaultContent": "TODO",
             },
             ],
-        "language": getDataTableFrenchTranslation(),
-        "ajax": {
+        language: getDataTableFrenchTranslation(),
+        ajax: {
             url: dataURL,
             error: function (xhr, error, thrown) {
                 console.log(xhr + '\n' + error + '\n' + thrown);
