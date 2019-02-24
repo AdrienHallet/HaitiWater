@@ -276,7 +276,7 @@ def remove_element(request):
                 z.subzones.remove(str(to_delete.name))
                 z.save()
                 z.log_edit(old, transaction)
-        if not is_same(to_delete):
+        if not is_same(to_delete, request.user):
             to_delete.log_delete(transaction)
         transaction.save()
         to_delete.delete()

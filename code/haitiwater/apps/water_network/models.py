@@ -54,7 +54,7 @@ class Zone(models.Model):
 
     def infos(self):
         result = {
-            "Zone mère": str(self.superzone.id)+" ("+self.superzone.name+")",
+            "Zone mère": str(self.superzone.id)+" ("+self.superzone.name+")" if self.superzone else "Aucune",
             "Nom": self.name,
             "ID": self.id
         }
