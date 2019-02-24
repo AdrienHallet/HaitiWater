@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load group_filter %}
 
 {% block page_import %}
     <script src="{% static "report.js" %}"></script>
@@ -28,7 +29,11 @@
 
 {% block page_content %}
     <div class="row">
-        <div class="col-md-6">
+        {% if user|has_group:"Gestionnaire de fontaine"%}
+            <div class="col-md-6">
+        {% else %}
+            <div class="col-md-12">
+        {% endif %}
             <!-- Report buttons -->
             <section class="panel">
                 <header class="panel-heading">
@@ -47,21 +52,23 @@
                 </div>
             </section>
         </div>
-        <div class="col-md-6">
-            <section class="panel">
-                <header class="panel-heading">
-                    <div class="panel-actions">
-                        <a href="#" class="fa fa-caret-down"></a>
-                    </div>
+        {% if user|has_group:"Gestionnaire de fontaine"%}
+            <div class="col-md-6">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                        </div>
 
-                    <h2 class="panel-title">Mes rapports récents</h2>
-                    <p class="panel-subtitle">Vous pouvez voir et éditer vos 5 derniers rapports.</p>
-                </header>
-                <div class="panel-body">
-                    {% include "report_table.html" %}
-                </div>
-            </section>
-        </div>
+                        <h2 class="panel-title">Mes rapports récents</h2>
+                        <p class="panel-subtitle">Vous pouvez voir et éditer vos 5 derniers rapports.</p>
+                    </header>
+                    <div class="panel-body">
+                        {% include "report_table.html" %}
+                    </div>
+                </section>
+            </div>
+        {% endif %}
     </div>
 
     <!-- Support ticket table -->
