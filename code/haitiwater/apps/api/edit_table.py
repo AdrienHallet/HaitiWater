@@ -112,6 +112,7 @@ def edit_manager(request):
         type = request.POST.get("type", None)
         if type == "fountain-manager":
             water_out = request.POST.get("outlets", None)
+            water_out = water_out.split(',')
             if len(water_out) > 1:
                 res = Element.objects.filter(id__in=water_out)
             else:
@@ -125,6 +126,7 @@ def edit_manager(request):
             if user.profile.zone: #If user had a zone, switch it
                 g = Group.objects.get(name='Gestionnaire de zone')
                 g.user_set.remove(user)
+                user.profile.zone = None
             log_element(user.profile, old, request)
             user.save()
         elif type == "zone-manager":
