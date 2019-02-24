@@ -112,6 +112,7 @@ def edit_manager(request):
         type = request.POST.get("type", None)
         if type == "fountain-manager":
             water_out = request.POST.get("outlets", None)
+            water_out = water_out.split(',')
             if len(water_out) > 1:
                 res = Element.objects.filter(id__in=water_out)
             else:
