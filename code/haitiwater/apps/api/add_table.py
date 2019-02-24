@@ -63,18 +63,17 @@ def add_report_element(request):
         if not active:
             report_line = Report(water_outlet=outlet, was_active=active)
             report_line.save()
+            log_element(report_line, request)
             return success_200
         meters_distr = values["details"][index]["cubic"]
         value_meter = values["details"][index]["perCubic"]
         hour_activity = values["inputHours"]
         day_activity = values["inputDays"]
-        month = values["month"]
-        year = 2018 #TODO : Temporary
         recette = values["details"][index]["bill"]
         report_line = Report(water_outlet=outlet, was_active=active,
                              quantity_distributed=meters_distr, price=value_meter,
-                             month=month, hours_active=hour_activity,
-                             days_active=day_activity, year=year, recette=recette)
+                             hours_active=hour_activity,
+                             days_active=day_activity, recette=recette)
         report_line.save()
         log_element(report_line, request)
     return success_200

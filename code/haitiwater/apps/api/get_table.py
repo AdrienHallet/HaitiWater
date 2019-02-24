@@ -35,7 +35,7 @@ def get_water_elements(request, json, parsed):
     all = []
     for elem in all_water_element:
         cust = Consumer.objects.filter(water_outlet=elem)
-        distributed = Report.objects.filter(water_outlet=elem)
+        distributed = Report.objects.filter(water_outlet=elem, has_data=True)
         quantity = 0
         for report in distributed:
             quantity += report.quantity_distributed
@@ -176,6 +176,46 @@ def get_ticket_elements(request, json, parsed):
                             all.append(tab)
                             break
         json["recordsTotal"] = tot
+    return all
+
+
+def get_last_reports(request, json, parsed):
+    print("GET REPORTS ?")
+    from ..utils.get_data import is_user_fountain
+    all_reports = []
+    all = []
+    if is_user_fountain(request):
+        for outlet_id in request.user.profile.outlets:
+            outlet = Element.objects.get(id=outlet_id)
+            print(outlet)
+            if outlet:
+                reports = Report.objects.filter(water_outlet=outlet).order_by("timestamp")[:5]
+                print(len(reports))
+                for report in reports:
+                    all_reports.append(report)
+    else:
+        #TODO
+        pass
+    for report in all_reports:
+        detail = {"id": report.water_outlet_id,
+                 "name": report.water_outlet.name,
+                 "has_data": report.has_data,
+                 "volume": report.quantity_distributed,
+                 "price": report.price,
+                 "revenue": report.recette
+                 }
+        new = True
+        for elem in all:
+            if str(report.timestamp.date().month) in elem["date"]:
+                elem["details"].append(detail)
+                new = False
+        if new:
+            infos =  {"id": report.id,
+                 "date": str(report.timestamp.date()),
+                 "details":[detail]
+                }
+            all.append(infos)
+    print(all)
     return all
 
 

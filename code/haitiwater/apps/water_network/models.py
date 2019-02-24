@@ -107,9 +107,11 @@ class Element(models.Model):
 
     def get_current_output(self):
         from ..report.models import Report #Avoid cycle in imports
-        from ..utils.get_data import get_current_month
+        from datetime import date
         reports = Report.objects.filter(water_outlet_id=self.id,
-                                        month=get_current_month().upper())
+                                        timestamp__month=date.today().month,
+                                        has_data=True,
+                                        was_active=True)
         if len(reports) > 1:
             return "Erreur dans le calcul de quantité"
         elif len(reports) == 0:
@@ -119,7 +121,7 @@ class Element(models.Model):
 
     def get_all_output(self):
         from ..report.models import Report  # Avoid cycle in imports
-        reports = Report.objects.filter(water_outlet_id=self.id)
+        reports = Report.objects.filter(water_outlet_id=self.id, has_data=True, was_active=True)
         if len(reports) == 0:
             return 0, 0
         total = 0
