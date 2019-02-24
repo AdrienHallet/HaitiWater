@@ -2,16 +2,11 @@
 {% load static %}
 
 {% block page_import %}
-
-{% endblock %}
-
-
-
-{% block page_name %}
     <script src="{% static "report.js" %}"></script>
 
     <script src="{% static "vendor/bootstrap-wizard/jquery.bootstrap.wizard.js" %}"></script>
     <script src="{% static "monthlyReportFormHandler.js" %}"></script>
+    <script src="{% static "monthlyReportEditFormHandler.js" %}"></script>
     <script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
 
 
@@ -23,6 +18,11 @@
     <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
 
     <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
+{% endblock %}
+
+
+
+{% block page_name %}
     Rapports
 {% endblock %}
 
@@ -81,6 +81,9 @@
 
     <!-- Modal form to report the monthly values -->
     {% include "modal_monthly_report.html" %}
+
+    <!-- Modal form to edit a monthly report after submission -->
+    {% include "modal_monthly_report_edit.html" %}
 
     <!-- Modal form to report a problem on a water outlet -->
     {% include "modal_problem_report.html" %}
