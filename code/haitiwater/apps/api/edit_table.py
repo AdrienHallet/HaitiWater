@@ -1,11 +1,13 @@
 import re
-from django.http import HttpResponse
+from datetime import date
 
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
+from ..financial.models import Invoice
 from django.contrib.auth.models import User, Group
 
 
@@ -42,8 +44,17 @@ def edit_consumer(request):
         outlet = outlet[0]
     else:
         return HttpResponse("Impossibe de trouver cet élément du réseau", status=404)  # Outlet not found, can't edit
+    old_outlet = consumer.water_outlet
     consumer.water_outlet = outlet
     consumer.save()
+    if old_outlet != outlet and not outlet.type == ElementType.INDIVIDUAL:
+        old_invoice = Invoice.objects.filter(water_outlet=old_outlet, expiration__gt=date.today())[0]
+        old_invoice.expiration = date.today()
+        creation = date.today()
+        expiration = creation + timedelta(days=outlet.validity * 30)
+        invoice = Invoice(consumer=consumer, outlet=outlet, creation=creation, expiration=expiration, amount=outlet.price)
+        invoice.save()
+
     return success_200
 
 

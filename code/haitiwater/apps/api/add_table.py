@@ -1,11 +1,13 @@
 import re
-from django.http import HttpResponse
+from datetime import date, timedelta
 
+from django.http import HttpResponse
 from django.core.mail import send_mail
 
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
+from ..financial.models import Invoice
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.models import Group
 from ..water_network.models import ElementType
@@ -36,6 +38,11 @@ def add_consumer_element(request):
                           gender=gender, location=address, phone_number=phone,
                           email="", household_size=sub, water_outlet=outlet) #Creation
     new_c.save()
+    if outlet.type != ElementType.INDIVIDUAL:
+        creation = date.today()
+        expiration = creation + timedelta(days=outlet.validity*30)
+        invoice = Invoice(consumer=new_c, water_outlet=outlet, creation=creation, expiration=expiration, amount=outlet.price)
+        invoice.save()
     return success_200
 
 
@@ -69,6 +76,13 @@ def add_report_element(request):
                              quantity_distributed=meters_distr, price=value_meter,
                              month=month, year=year, recette=recette)
         report_line.save()
+        if outlet.type == ElementType.INDIVIDUAL: # Create an invoice for individual outlets
+            consumer = Consumer.objects.filter(water_outlet=outlet)[0]
+            amount = meters_distr * value_meter
+            creation = date.today()
+            expiration = creation + timedelta(days=30)
+            invoice = Invoice(consumer=consumer, water_outlet=outlet, creation=creation, expiration=expiration, amount=amount)
+            invoice.save()
     return success_200
 
 
