@@ -64,7 +64,6 @@ def get_amount_household(request):
         return total
 
 
-
 def get_amount_consumer(zone):
     res = 0
     for consumer in Consumer.objects.all():
@@ -119,7 +118,8 @@ def get_outlets_report(request):
     all_outlets = get_outlets(request)
     result = []
     for elem in all_outlets:
-        reports = Report.objects.filter(water_outlet=elem[0], month=get_current_month())
+        reports = Report.objects.filter(water_outlet=elem[0],
+                                        timestamp__month=datetime.date.today().month)
         if len(reports) == 0:
             result.append(elem)
     return result
@@ -129,12 +129,12 @@ def get_quantity_distributed(request):
     outlets = get_outlets(request)
     total = 0
     for outlet in outlets:
-        report = Report.objects.filter(water_outlet=outlet[0], month=get_current_month())
+        report = Report.objects.filter(water_outlet=outlet[0],
+                                       timestamp__month=datetime.date.today().month)
         if len(report) == 1:
             report = report[0]
             total += report.quantity_distributed
     return [total, round(total*264.17, 3)] #m3, gals
-
 
 
 def get_zone(request):

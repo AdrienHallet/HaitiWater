@@ -133,7 +133,6 @@ def table(request):
     json_test = json.loads(export)
     json_test["draw"] = str(int(request.GET.get('draw', "1")) + 1)
     d = parse(request)
-    print(d)
     all = []
     if d["table_name"] == "water_element":
         if is_user_fountain(request):
@@ -149,7 +148,10 @@ def table(request):
         if is_user_fountain(request):
             return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
         all = get_manager_elements(request, json_test, d)
+    elif d["table_name"] == "report":
+        all = get_last_reports(request, json_test, d)
     elif d["table_name"] == "ticket":
+        get_last_reports(request, json_test, d)
         all = get_ticket_elements(request, json_test, d)
     elif d["table_name"] == "logs":
         all = get_logs_elements(request, json_test, d)
@@ -193,7 +195,6 @@ def add_element(request):
 
 
 def remove_element(request):
-    print("REMOVE ?")
     element = request.POST.get("table", None)
     if element == "water_element":
         id = request.POST.get("id", None)

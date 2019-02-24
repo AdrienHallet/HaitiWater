@@ -45,8 +45,8 @@ class Month(Enum):
 class Report(models.Model):
     water_outlet = models.ForeignKey(Element, verbose_name="Sortie d'eau concernée",
                                      related_name="reports", on_delete=models.CASCADE)
-    month = models.CharField("Mois", max_length=10, choices=[(i.name, i.value) for i in Month], null=True)
-    year = models.IntegerField("Année", null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    has_data = models.BooleanField("A un compteur", default=True)
     was_active = models.BooleanField("A été active")
     days_active = models.IntegerField("Jours d'activité", null=False, default=0)
     hours_active = models.IntegerField("Heures d'activité", null=False, default=0)
