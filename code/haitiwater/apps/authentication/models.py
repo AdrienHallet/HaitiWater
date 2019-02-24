@@ -43,7 +43,7 @@ class Profile(models.Model):
             if not user.profile:
                 pass
             elif user.profile.zone != None: #Zone manager
-                if user.profile.zone.name in self.zone.subzones \
+                if user.profile.zone and user.profile.zone.name in self.zone.subzones \
                         and user != self.user:
                     sub.append(user)
             elif len(user.profile.outlets) > 0: #Fountain manager

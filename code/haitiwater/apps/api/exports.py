@@ -322,20 +322,21 @@ def compute_logs(request):
 
 
 def log_element(element, request):
-    if not is_same(element):
+    if not is_same(element, request.user):
         transaction = Transaction(user=request.user)
         transaction.save()
         element.log_delete(transaction)
 
 
-def is_same(element):
+def is_same(element, user):
     log = Log.objects.filter(action="ADD", column_name="ID", table_name=element._meta.model_name,
                              new_value=element.id)
     if len(log) != 0:  # If we found a log for adding the element removed
         transaction = log[0].transaction
-        all_logs = Log.objects.filter(transaction=transaction)
-        log_finished(all_logs, transaction)
-        return True
+        if transaction.user == user:
+            all_logs = Log.objects.filter(transaction=transaction)
+            log_finished(all_logs, transaction)
+            return True
     return False
 
 

@@ -25,7 +25,7 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def is_visible(self):
-        for user in User.objects.all():
+        for user in [user for user in User.objects.all() if user.profile.zone is not None]:
             if self.user in user.profile.get_subordinates():
                 return True
         return False
