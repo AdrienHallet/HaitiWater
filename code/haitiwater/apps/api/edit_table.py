@@ -125,6 +125,7 @@ def edit_manager(request):
             if user.profile.zone: #If user had a zone, switch it
                 g = Group.objects.get(name='Gestionnaire de zone')
                 g.user_set.remove(user)
+                user.profile.zone = None
             log_element(user.profile, old, request)
             user.save()
         elif type == "zone-manager":
