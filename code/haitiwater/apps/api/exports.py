@@ -134,6 +134,7 @@ def table(request):
     json_test["draw"] = str(int(request.GET.get('draw', "1")) + 1)
     d = parse(request)
     all = []
+    print(d["table_name"])
     if d["table_name"] == "water_element":
         if is_user_fountain(request):
             json_test["editable"] = False
@@ -176,7 +177,6 @@ def table(request):
     print(json.dumps(json_test))
     return HttpResponse(json.dumps(json_test))
 
-@csrf_exempt
 def add_element(request):
     element = request.POST.get("table", None)
     if element == "water_element":
@@ -355,7 +355,8 @@ def parse(request):
          "column_ordered": int(request.GET.get(res1[0], 0)),
          "type_order": request.GET.get(res2[0], 'asc'),
          "search": request.GET.get('search[value]', ""),
-         "searchable": searchable_cols
+         "searchable": searchable_cols,
+         "month_wanted": request.GET.get("month", "none")
          }
 
     return d
