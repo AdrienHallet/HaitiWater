@@ -10,7 +10,7 @@ function drawReportTable(){
     console.log("Request data from: " + dataURL);
     let table = $('#datatable-report').DataTable(getReportDatatableConfiguration(dataURL));
 
-    $('#datatable-report tbody').on( 'click', 'tr', function () {
+    $('#datatable-report tbody').on( 'click', 'tr', function (event) {
         let tr = $(this).closest('tr');
         let row = table.row(tr);
 
@@ -20,13 +20,13 @@ function drawReportTable(){
             tr.removeClass('shown');
         }
         else {
+            if($(event.target).is('button')) { // The click is on the button
+                showModal('#button-modal-edit-report');
+            } else { // The click is somewhere in the details
+                setupModalMonthlyReportEdit(row.data());
+            }
             // Open this row
             row.child( format(row.data()) ).show();
-                let editButton = $('#button-modal-edit-report');
-                setupModalMonthlyReportEdit(row.data());
-                editButton.on('click', function(){
-                    showModal('#button-modal-edit-report');
-                });
             tr.addClass('shown');
         }
     });
