@@ -69,11 +69,11 @@ function getTicketDatatableConfiguration(dataURL){
         "createdRow": function (row, data, index, cells) {
             let path = data[7];
             if (path !== null){
-                let imageURL = '../static/' + data[7];
+                let imageURL = '../static' + data[7];
                 let commentDom = $('td', row).eq(5);
                 let comment = commentDom.text();
 
-                commentDom.html('<i class="far fa-image" title="Cliquez pour voir l\'image"></i>' + comment);
+                commentDom.html('<i class="far fa-image" title="Cliquez pour voir l\'image"></i>&nbsp' + comment);
                 commentDom.on('click', function(){
                     $.magnificPopup.open({
                         type: 'image',

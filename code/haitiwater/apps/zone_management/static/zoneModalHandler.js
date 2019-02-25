@@ -47,6 +47,10 @@ function setupModalZoneAdd(){
     $('#modal-zone-submit-edit').addClass("hidden");
     $('#form-zone-id-component').addClass("hidden");
 
+    //Empty inputs
+    $('#input-zone-id').val("");
+    $('#input-zone-name').val("");
+
     showZoneModal();
 }
 
@@ -68,7 +72,6 @@ function setupModalZoneEdit(data){
 }
 
 function showZoneModal(){
-    $('#form-add-zone').find('input').val('');
     $('#plus-zone').magnificPopup({
         type: 'inline',
         preloader: false,
@@ -93,4 +96,6 @@ function showZoneModal(){
  */
 function dismissZoneModal() {
     $.magnificPopup.close();
+    $('#input-zone-id').val("");
+    $('#input-zone-name').val("");
 }

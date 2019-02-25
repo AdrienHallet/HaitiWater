@@ -1,0 +1,63 @@
+{% load static %}
+
+<!-- Modal form to add/edit network element -->
+<div id="modalMonthlyReportEdit" class="modal-block modal-block-primary modal-block-lg mfp-hide">
+    <section class="panel">
+        <header class="panel-heading">
+            <h2 class="panel-monthly-edit-title">Editer le rapport du <b id="monthly-edit-date">$erreur$</b></h2>
+        </header>
+        <div class="panel-body">
+            <div id="form-ticket-error" class="alert alert-danger hidden">
+                <button type="button" class="close" onclick="hideFormErrorMsg('monthly-report-edit')" aria-hidden="true">×</button>
+                <div id="form-monthly-report-edit-error-msg"></div>
+            </div>
+            Contenu en chantier
+            <form id="form-monthly-report-edit" class="form-horizontal mb-lg">
+                <section class="panel water-outlet">
+                    <header class="panel-heading">
+                        <h2 class="panel-title">Fontaine</h2>
+                    </header>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-2 control-label">Volume</label>
+                        <div class="col-sm-4 cubic">
+                            <input id="input-volume-cubic" type="number" min="0" class="form-control">
+                        </div>
+                        <div class="col-sm-4 gallon">
+                            <input id="input-volume-gallon" type="number" min="0" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-2 control-label">Prix au volume</label>
+                        <div class="col-sm-4 per-cubic">
+                            <input id="input-price-cubic" type="number" min="0" class="form-control">
+                        </div>
+                        <div class="col-sm-4 per-gallon">
+                            <input id="input-price-gallon" type="number" min="0" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-4">
+                            <label for="input-gains-real">Recettes réelles</label><input id="input-gains-real" type="number" min="0" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="input-gains-computed">Recettes calculées</label><input id="input-gains-computed" type="number" min="0" class="form-control" disabled>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+        <footer class="panel-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button id="modal-monthly-report-edit-button" onclick="editMonthlyReport()" class="btn btn-primary modal-confirm">
+                        Modifier
+                    </button>
+                    <button onclick="dismissModalMonthlyReportEdit()" class="btn btn-default modal-dismiss">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>

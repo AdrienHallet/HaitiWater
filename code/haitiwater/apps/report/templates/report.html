@@ -1,17 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
+{% load group_filter %}
 
 {% block page_import %}
-
-{% endblock %}
-
-
-
-{% block page_name %}
     <script src="{% static "report.js" %}"></script>
 
     <script src="{% static "vendor/bootstrap-wizard/jquery.bootstrap.wizard.js" %}"></script>
     <script src="{% static "monthlyReportFormHandler.js" %}"></script>
+    <script src="{% static "monthlyReportEditFormHandler.js" %}"></script>
     <script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
 
 
@@ -23,12 +19,21 @@
     <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
 
     <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
+{% endblock %}
+
+
+
+{% block page_name %}
     Rapports
 {% endblock %}
 
 {% block page_content %}
     <div class="row">
-        <div class="col-md-6">
+        {% if user|has_group:"Gestionnaire de fontaine"%}
+            <div class="col-md-6">
+        {% else %}
+            <div class="col-md-12">
+        {% endif %}
             <!-- Report buttons -->
             <section class="panel">
                 <header class="panel-heading">
@@ -47,21 +52,23 @@
                 </div>
             </section>
         </div>
-        <div class="col-md-6">
-            <section class="panel">
-                <header class="panel-heading">
-                    <div class="panel-actions">
-                        <a href="#" class="fa fa-caret-down"></a>
-                    </div>
+        {% if user|has_group:"Gestionnaire de fontaine"%}
+            <div class="col-md-6">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                        </div>
 
-                    <h2 class="panel-title">Mes rapports récents</h2>
-                    <p class="panel-subtitle">Vous pouvez voir et éditer vos 5 derniers rapports.</p>
-                </header>
-                <div class="panel-body">
-                    {% include "report_table.html" %}
-                </div>
-            </section>
-        </div>
+                        <h2 class="panel-title">Mes rapports récents</h2>
+                        <p class="panel-subtitle">Vous pouvez voir et éditer vos 5 derniers rapports.</p>
+                    </header>
+                    <div class="panel-body">
+                        {% include "report_table.html" %}
+                    </div>
+                </section>
+            </div>
+        {% endif %}
     </div>
 
     <!-- Support ticket table -->
@@ -81,6 +88,9 @@
 
     <!-- Modal form to report the monthly values -->
     {% include "modal_monthly_report.html" %}
+
+    <!-- Modal form to edit a monthly report after submission -->
+    {% include "modal_monthly_report_edit.html" %}
 
     <!-- Modal form to report a problem on a water outlet -->
     {% include "modal_problem_report.html" %}

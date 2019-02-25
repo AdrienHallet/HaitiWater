@@ -1,45 +1,62 @@
+//Formatting function for row details
+function format ( d ) {
+    // d is the original data object for the row
+    return 'TODO<br><button id="button-modal-edit-report" type="button" class="btn" href="#modalMonthlyReportEdit" onclick="showMonthlyReportEdit()">Modifier</button>';
+}
+
 function drawReportTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=report";
     console.log("Request data from: " + dataURL);
-    $('#datatable-report').DataTable(getReportDatatableConfiguration(dataURL));
+    let table = $('#datatable-report').DataTable(getReportDatatableConfiguration(dataURL));
 
-    let table = $('#datatable-report').DataTable();
     $('#datatable-report tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
+        let tr = $(this).closest('tr');
+        let row = table.row(tr);
+
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
         }
         else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
+            // Open this row
+            row.child( format(row.data()) ).show();
+            let editButton = $('#button-modal-edit-report');
+            editButton.off();
+            editButton.on('click', function(){
+                console.log(row.data());
+                setupModalMonthlyReportEdit(row.data());
+            });
+            tr.addClass('shown');
+
         }
     });
-
-    $('#datatable-report tbody').on( 'click', '.edit-row', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
-        editElement(data);
-    } );
 }
 
 function getReportDatatableConfiguration(dataURL){
     let config = {
-        "sortable": true,
-        "processing": true,
-        "serverSide": true,
-        "responsive": true,
-        "autoWidth": true,
+        sortable: false,
+        searching: false,
+        paging: false,
+        processing: true,
+        serverSide: true,
+        responsive: true,
+        autoWidth: true,
         scrollX:        true,
         scrollCollapse: true,
-        "columnDefs": [
+        columns: [
             {
-                "targets": -1,
-                "data": null,
-                "orderable": false,
-                "defaultContent": "TODO",
+                data: "id",
+                sortable: false,
             },
-            ],
-        "language": getDataTableFrenchTranslation(),
-        "ajax": {
+            {
+                data: "date",
+                sortable: false,
+            },
+        ],
+        language: getDataTableFrenchTranslation(),
+        ajax: {
             url: dataURL,
             error: function (xhr, error, thrown) {
                 console.log(xhr + '\n' + error + '\n' + thrown);
