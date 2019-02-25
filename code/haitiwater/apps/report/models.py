@@ -81,7 +81,7 @@ class Ticket(models.Model):
                               default="UNRESOLVED")
 
     def descript(self):
-        return [self.id, "", UrgencyType[self.urgency].value,
+        return [self.id, UrgencyType[self.urgency].value,
                 self.water_outlet.name, BreakType[self.type].value,
                 self.comment, StatusType[self.status].value, self.get_image()]
 
