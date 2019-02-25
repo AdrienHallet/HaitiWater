@@ -112,11 +112,11 @@ function waterGISInit(map) {
     }).addTo(map);
 
     // Open Street maps layer
-    let osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    let osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     let osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: 'Open Street Maps' });
 
     // Google sattelite layer
-    let googleUrl = 'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}';
+    let googleUrl = 'https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}';
     let google = L.tileLayer(googleUrl, {attribution: 'Google'});
 
     // Draw layer
