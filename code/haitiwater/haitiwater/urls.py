@@ -59,5 +59,5 @@ urlpatterns += [
 
 # https://stackoverflow.com/questions/38696595/django-and-service-workers-serve-sw-js-at-applications-root-url
 urlpatterns += [
-    path('sw.js/', TemplateView.as_view(template_name="sw.js", content_type='application/javascript'), name='sw.js'),
+    path('sw.js', TemplateView.as_view(template_name="sw.js", content_type='application/javascript'), name='sw.js'),
 ]
