@@ -136,11 +136,13 @@ def get_manager_elements(request, json, parsed):
                                "Gestionnaire de fontaine", u.profile.get_zone()]
                         if parsed["search"] == "":
                             all.append(tab)
+                            break
                         else:
                             for cols in parsed["searchable"]:
                                 if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
                                     all.append(tab)
                                     break
+                            break
 
     return all
 
@@ -187,7 +189,6 @@ def get_last_reports(request, json, parsed):
     if is_user_fountain(request):
         for outlet_id in request.user.profile.outlets:
             outlet = Element.objects.get(id=outlet_id)
-            print(outlet)
             if outlet:
                 reports = Report.objects.filter(water_outlet=outlet).order_by("timestamp")[:5]
                 print(len(reports))
@@ -215,6 +216,7 @@ def get_last_reports(request, json, parsed):
                  "details":[detail]
                 }
             all.append(infos)
+    print(all)
     json["recordsTotal"] = len(all)
     return all
 
