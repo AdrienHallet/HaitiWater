@@ -1,7 +1,7 @@
 //Formatting function for row details
 function format ( d ) {
     // d is the original data object for the row
-    return 'TODO<br><button id="button-modal-edit-report" type="button" class="btn" href="#modalMonthlyReportEdit" onclick="showMonthlyReportEdit()">Modifier</button>';
+    return 'TODO<br><button id="button-modal-edit-report" type="button" class="btn" href="#modalMonthlyReportEdit">Modifier</button>';
 }
 
 function drawReportTable(){
@@ -22,14 +22,12 @@ function drawReportTable(){
         else {
             // Open this row
             row.child( format(row.data()) ).show();
-            let editButton = $('#button-modal-edit-report');
-            editButton.off();
-            editButton.on('click', function(){
-                console.log(row.data());
+                let editButton = $('#button-modal-edit-report');
                 setupModalMonthlyReportEdit(row.data());
-            });
+                editButton.on('click', function(){
+                    showModal('#button-modal-edit-report');
+                });
             tr.addClass('shown');
-
         }
     });
 }

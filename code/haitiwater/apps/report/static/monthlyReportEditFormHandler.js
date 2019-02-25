@@ -1,3 +1,7 @@
+$(document).ready(function() {
+
+});
+
 /**
  * Hide the modal and reset the fields
  */
@@ -10,8 +14,18 @@ function dismissModalMonthlyReportEdit() {
  * @param data the report data
  */
 function setupModalMonthlyReportEdit(data){
-    showModal('#button-modal-edit-report');
     $('#monthly-edit-date').html(data.date);
 
+    console.log(data);
+    attachComputeGainsHandler();
     attachCubicGallonConverter();
+}
+
+function attachComputeGainsHandler(){
+    $('.water-outlet').each(function(i){
+        $('input', this).on('input', function(){
+            let sum = $('.cubic input').val() * $('.per-cubic input').val();
+            $('.computed-gains').val(sum);
+        });
+    });
 }
