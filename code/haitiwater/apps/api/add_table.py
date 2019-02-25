@@ -52,6 +52,7 @@ def add_network_element(request):
 @csrf_exempt
 def add_report_element(request):
     values = json.loads(request.body.decode("utf-8"))
+    print(values)
     for index, elem in enumerate(values["selectedOutlets"]):
         outlets = Element.objects.filter(id=elem)
         if len(outlets) < 1:
@@ -65,15 +66,22 @@ def add_report_element(request):
             report_line.save()
             log_element(report_line, request)
             return success_200
-        meters_distr = values["details"][index]["cubic"]
-        value_meter = values["details"][index]["perCubic"]
         hour_activity = values["inputHours"]
         day_activity = values["inputDays"]
-        recette = values["details"][index]["bill"]
-        report_line = Report(water_outlet=outlet, was_active=active,
+        data = values["details"][index]["perCubic"] != "none"
+        if data:
+            meters_distr = values["details"][index]["cubic"]
+            value_meter = values["details"][index]["perCubic"]
+            recette = values["details"][index]["bill"]
+            report_line = Report(water_outlet=outlet, was_active=active,
                              quantity_distributed=meters_distr, price=value_meter,
-                             hours_active=hour_activity,
+                             hours_active=hour_activity, has_data=data,
                              days_active=day_activity, recette=recette)
+        else:
+            report_line = Report(water_outlet=outlet, was_active=active,
+                                 hours_active=hour_activity, has_data=data,
+                                 days_active=day_activity)
+
         report_line.save()
         log_element(report_line, request)
     return success_200

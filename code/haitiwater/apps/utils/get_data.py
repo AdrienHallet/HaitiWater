@@ -130,7 +130,8 @@ def get_quantity_distributed(request):
     total = 0
     for outlet in outlets:
         report = Report.objects.filter(water_outlet=outlet[0],
-                                       timestamp__month=datetime.date.today().month)
+                                       timestamp__month=datetime.date.today().month,
+                                       has_data=True)
         if len(report) == 1:
             report = report[0]
             total += report.quantity_distributed

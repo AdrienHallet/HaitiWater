@@ -35,7 +35,15 @@ def get_water_elements(request, json, parsed):
     all = []
     for elem in all_water_element:
         cust = Consumer.objects.filter(water_outlet=elem)
-        distributed = Report.objects.filter(water_outlet=elem, has_data=True)
+        if parsed["month_wanted"] == "none":
+            distributed = Report.objects.filter(water_outlet=elem, has_data=True)
+        else:
+            month = parsed["month_wanted"].split("-")[0]
+            year = parsed["month_wanted"].split("-")[1]
+            distributed = Report.objects.filter(water_outlet=elem, has_data=True,
+                                                timestamp__month=month,
+                                                timestamp__year=year)
+            print(distributed)
         quantity = 0
         for report in distributed:
             quantity += report.quantity_distributed

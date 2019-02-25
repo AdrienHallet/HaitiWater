@@ -118,8 +118,8 @@ def edit_manager(request):
             else:
                 res = Element.objects.filter(id=water_out)
             if len(res) > 0:
+                user.profile.outlets = []
                 for outlet in res:
-                    user.profile.outlets = []
                     user.profile.outlets.append(outlet.id)
             my_group = Group.objects.get(name='Gestionnaire de fontaine')
             my_group.user_set.add(user)
