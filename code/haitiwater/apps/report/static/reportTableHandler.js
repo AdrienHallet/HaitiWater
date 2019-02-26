@@ -1,7 +1,15 @@
 //Formatting function for row details
 function format ( d ) {
+    let outletAsHTMLList = '<ul>';
+    for(let i = 0; i < d.details.length; i++){
+        outletAsHTMLList += '<li>' + d.details[i].name + '</li>'
+    }
+    outletAsHTMLList += '</ul>';
+
     // d is the original data object for the row
-    return 'TODO<br><button id="button-modal-edit-report" type="button" class="btn" href="#modalMonthlyReportEdit">Modifier</button>';
+    return 'Rapport du ' + d.date +
+        outletAsHTMLList +
+        '<br><button id="button-modal-edit-report" type="button" class="btn" href="#modalMonthlyReportEdit">Modifier</button>';
 }
 
 function drawReportTable(){
