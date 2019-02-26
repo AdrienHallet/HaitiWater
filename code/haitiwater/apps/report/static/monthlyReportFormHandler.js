@@ -368,10 +368,12 @@ function setupStepOne(savedData){
 
 	if (location.pathname === '/offline/') {
 		$("#multiselect-outlets").html();
-		for (let i = 0; i < outlets.length; i++) {
-			const outlet = outlets[i];
-			const option = "<option value='" + outlet[0] + "'>" + outlet[1] + "</option>";
-			$("#multiselect-outlets").append(option);
+		if (outlets) {
+			for (let i = 0; i < outlets.length; i++) {
+				const outlet = outlets[i];
+				const option = "<option value='" + outlet[0] + "'>" + outlet[1] + "</option>";
+				$("#multiselect-outlets").append(option);
+			}
 		}
 	}
 
@@ -413,7 +415,8 @@ function setupStepTwo(savedData){
 		}
 		return '' +
 			'<div class="panel-body">' +
-			  '<div class="checkbox"><label><input type="checkbox" class="element-activity">' +
+			  '<div class="checkbox"><label>' +
+			  '<input type="checkbox" class="element-activity" ' + (data && data.cubic === 'none' && data.perCubic === 'none' ? '' : 'checked') + '>' +
 			  'Je dispose de données pour cet élément</label></div>' +
 				'<div class="row">' +
 					'<div class="col-sm-6">' +
@@ -421,11 +424,13 @@ function setupStepTwo(savedData){
 						'<div class="row">' +
 							'<div class="col-sm-6 cubic">' +
 								'<input class="form-control" type="number"'
-									+ (data ? 'value="' + data.cubic + '"' : '') + '">' +
+									+ (data && data.cubic !== 'none' ? 'value="' + data.cubic + '"' : '')
+									+ (data && data.cubic === 'none' && data.perCubic === 'none' ? 'disabled' : 'enabled') + '>' +
 							'</div>' +
 							'<div class="col-sm-6 gallon">' +
 								'<input class="form-control" type="number"'
-									+ (data ? 'value="' + (data.cubic * CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '') + '">' +
+									+ (data && data.cubic !== 'none' ? 'value="' + (data.cubic * CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '')
+									+ (data && data.cubic === 'none' && data.perCubic === 'none' ? 'disabled' : 'enabled') + '>' +
 							'</div>' +
 						'</div>' +
 						'<label class="volume error">Valeurs de volume incorrectes</label>' +
@@ -435,11 +440,13 @@ function setupStepTwo(savedData){
 						'<div class="row">' +
 							'<div class="col-sm-6 per-cubic">' +
 								'<input class="form-control" type="number"'
-									+ (data ? 'value="' + data.perCubic + '"' : '') + '">' +
+									+ (data && data.perCubic !== 'none' ? 'value="' + data.perCubic + '"' : '')
+									+ (data && data.cubic === 'none' && data.perCubic === 'none' ? 'disabled' : 'enabled') + '>' +
 							'</div>' +
 							'<div class="col-sm-6 per-gallon">' +
 								'<input class="form-control" type="number"'
-									+ (data ? 'value="' + (data.perCubic / CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '') + '">' +
+									+ (data && data.perCubic !== 'none' ? 'value="' + (data.perCubic / CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '')
+									+ (data && data.cubic === 'none' && data.perCubic === 'none' ? 'disabled' : 'enabled') + '>' +
 							'</div>' +
 						'</div>' +
 						'<label class="cost error">Valeurs de coût incorrectes</label>' +
@@ -630,6 +637,6 @@ function attachCubicGallonConverter(){
 				})
 			}
 		});
-		hasData.prop('checked', true); // Start as checked
+		//hasData.prop('checked', true); // Start as checked
     });
 }
