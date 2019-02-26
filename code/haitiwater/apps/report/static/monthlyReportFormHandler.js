@@ -623,7 +623,7 @@ function attachCubicGallonConverter(){
 
 		// Has data or not
 		let hasData = $('.element-activity', this);
-		let inputs = [cubic, gallon, perCubic, perGallon];
+		let inputs = [cubic, gallon, perCubic, perGallon, $('.real-gains input', $(this))];
 		hasData.on('click', function(){
 			if (this.checked){
 				inputs.forEach(function(input){

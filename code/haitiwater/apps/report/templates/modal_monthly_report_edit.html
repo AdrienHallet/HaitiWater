@@ -5,18 +5,26 @@
     <section class="panel">
         <header class="panel-heading">
             <h2 class="panel-monthly-edit-title">Editer le rapport du <b id="monthly-edit-date">$erreur$</b></h2>
+            <input id="monthly-edit-id" type="number" disabled style="display: none;">
         </header>
         <div class="panel-body">
-            <div id="form-ticket-error" class="alert alert-danger hidden">
+            <div id="form-monthly-report-edit-error" class="alert alert-danger hidden">
                 <button type="button" class="close" onclick="hideFormErrorMsg('monthly-report-edit')" aria-hidden="true">×</button>
                 <div id="form-monthly-report-edit-error-msg"></div>
             </div>
-            Contenu en chantier
             <form id="form-monthly-report-edit" class="form-horizontal mb-lg">
                 <section class="panel water-outlet">
                     <header class="panel-heading">
                         <h2 class="panel-title">Fontaine</h2>
+                        <input class="outlet-id" type="number" disabled style="display: none;">
+                        <label>
+                            <input type="checkbox" class="element-activity" checked>
+                            Je dispose de données pour cet élément
+                        </label>
                     </header>
+                    <div class="form-group mt-lg center">
+
+                    </div>
                     <div class="form-group mt-lg">
                         <label class="col-sm-2 control-label">Volume</label>
                         <div class="col-sm-4 cubic">
@@ -50,7 +58,7 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <button id="modal-monthly-report-edit-button" onclick="editMonthlyReport()" class="btn btn-primary modal-confirm">
+                    <button id="modal-monthly-report-edit-button" onclick="postReportEdit()" class="btn btn-primary modal-confirm">
                         Modifier
                     </button>
                     <button onclick="dismissModalMonthlyReportEdit()" class="btn btn-default modal-dismiss">
