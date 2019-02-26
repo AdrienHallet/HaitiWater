@@ -9,7 +9,6 @@ window.onload = function() {
     for(i; i < len; i++) {
         buttons[i].className += " hidden";
     }
-    console.log("Generic table handler loaded");
 };
 
 function editElement(data){
@@ -73,7 +72,6 @@ function getActionButtonsHTML(modalName){
 }
 
 function hideFormErrorMsg(table){
-    console.log("hiding message");
     $('#form-' + table + '-error').addClass('hidden');
 }
 
@@ -120,7 +118,6 @@ function getRequest(table){
  */
 function postNewRow(table){
     let request = getRequest(table);
-    console.log(request);
     if(!request){
         // Form is not valid (missing/wrong fields)
         console.log("invalid form");
