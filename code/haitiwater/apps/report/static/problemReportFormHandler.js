@@ -91,6 +91,7 @@ function setupTicketModalAdd(){
 }
 
 function setupModalEdit(data){
+    console.log("modal edit");
     //Show add components
     $('#modal-title-add').addClass("hidden");
     $('#modal-submit-add').addClass("hidden");
@@ -116,7 +117,7 @@ function setupModalEdit(data){
 
     //Set value for problem type
     let typeOption = $("#select-type option").filter(function() {
-        if (this.text.trim() === data[4].innerText.trim()) {
+        if (this.text.trim() === data[3].innerText.trim()) {
             return this;
         }
     });
@@ -124,7 +125,7 @@ function setupModalEdit(data){
 
     //Set value for problem urgency
     let urgencyOption = $("#select-urgency option").filter(function() {
-        if (this.text.trim() === data[2].innerText.trim()) {
+        if (this.text.trim() === data[1].innerText.trim()) {
             return this;
         }
     });
@@ -132,17 +133,17 @@ function setupModalEdit(data){
 
     //Set value for problem outlet
     let outletOption = $("#select-outlet option").filter(function() {
-        if (this.text.trim() === data[3].innerText.trim()) {
+        if (this.text.trim() === data[2].innerText.trim()) {
             return this;
         }
     });
     form['select-outlet'].value = outletOption[0].value;
 
-    form["input-comment"].value = data[5].innerText;
+    form["input-comment"].value = data[4].innerText;
 
     //Set value for problem outlet
     let stateOption = $("#select-state option").filter(function() {
-        if (this.text.trim() === data[6].innerText.trim()) {
+        if (this.text.trim() === data[5].innerText.trim()) {
             return this;
         }
     });
@@ -155,6 +156,7 @@ function setupModalEdit(data){
  */
 function dismissTicketModal() {
     $.magnificPopup.close();
+    $('.error').addClass('hidden');
     let form = document.forms["form-add-ticket"];
 
     form["input-id"].value = "";
