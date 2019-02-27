@@ -30,6 +30,7 @@ function drawReportTable(){
         else {
             if($(event.target).is('button')) { // The click is on the button
                 showModal('#button-modal-edit-report');
+                return;
             } else { // The click is somewhere in the details
                 setupModalMonthlyReportEdit(row.data());
             }
