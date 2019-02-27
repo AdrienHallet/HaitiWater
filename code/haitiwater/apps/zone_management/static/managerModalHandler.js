@@ -205,8 +205,15 @@ function setupModalManagerEdit(data){
     $('#input-manager-last-name').val(data[1].innerText);
     $('#input-manager-first-name').val(data[2].innerText);
     $('#input-manager-email').val(data[3].innerText);
-    $('#select-manager-type').val(data[4].innerText);
-
+    console.log(data[4].innerText);
+    if(data[4].innerText.includes('zone')) {
+        console.log('yes zone');
+        $('#select-manager-type option[value="zone-manager"]').prop('selected', true).change();
+    } else if(data[4].innerText.includes('fontaine')) {
+        console.log('yes fountain');
+        $('#select-manager-type option[value="fountain-manager"]').prop('selected', true).change();
+        //Todo pre-select fountain
+    }
     showManagerModal();
 }
 
@@ -236,4 +243,7 @@ function showManagerModal(){
 function dismissManagerModal() {
     $.magnificPopup.close();
     $('form').find('input').val('');
+    $('form').find('select').val('none');
+    $('#select-manager-type').change();
+
 }
