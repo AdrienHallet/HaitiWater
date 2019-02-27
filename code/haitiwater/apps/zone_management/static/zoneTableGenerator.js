@@ -10,11 +10,13 @@ function drawZoneTable(){
         if ( row.hasClass('selected') ) {
             row.removeClass('selected');
             filterManagerFromZone(table);
+            filterWaterElementFromZone(table);
         }
         else {
-            row.removeClass('selected');
+            table.$('tr.selected').removeClass('selected');
             row.addClass('selected');
             filterManagerFromZone(table);
+            filterWaterElementFromZone(table);
         }
     });
 
@@ -33,6 +35,7 @@ function drawZoneTable(){
 
 /**
  * Automatically fill the field on the manager table from the selected zone
+ * (Takes the data from the first tr.selected)
  *
  * @param zoneTable the table zone datatable object
  */
@@ -43,9 +46,20 @@ function filterManagerFromZone(zoneTable){
         $('#datatable-manager').DataTable().search("").draw();
         return;
     }
-
     let zoneName = data[1];
     $('#datatable-manager').DataTable().search(zoneName).draw();
+
+}
+
+function filterWaterElementFromZone(zoneTable){
+    let data = zoneTable.row('tr.selected').data();
+
+    if  (data == null){ // If nothing selected
+        $('#datatable-water_element').DataTable().search("").draw();
+        return;
+    }
+    let zoneName = data[1];
+    $('#datatable-water_element').DataTable().search(zoneName).draw();
 }
 
 function getZoneTableConfiguration(dataURL){

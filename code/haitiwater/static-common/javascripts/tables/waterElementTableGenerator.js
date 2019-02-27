@@ -78,7 +78,7 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             },
             {
                 targets: -2, // Zone column
-                visible: false,
+                visible: true,
                 defaultContent: 'Pas de zone',
 
             },
