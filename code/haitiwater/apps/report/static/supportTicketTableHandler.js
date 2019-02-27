@@ -70,7 +70,7 @@ function getTicketDatatableConfiguration(dataURL){
             let path = data[6];
             if (path !== null){
                 let imageURL = '../static' + path;
-                let commentDom = $('td', row).eq(5);
+                let commentDom = $('td', row).eq(4);
                 let comment = commentDom.text();
 
                 commentDom.html('<i class="far fa-image" title="Cliquez pour voir l\'image"></i>&nbsp' + comment);
