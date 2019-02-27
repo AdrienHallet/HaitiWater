@@ -286,6 +286,8 @@ def remove_element(request):
 
 def edit_element(request):
     element = request.POST.get("table", None)
+    if not element:
+        element = request.GET.get("table", None)
     if element == "water_element":
         return edit_water_element(request)
     elif element == "consumer":
@@ -296,6 +298,8 @@ def edit_element(request):
         return edit_ticket(request)
     elif element == "manager":
         return edit_manager(request)
+    elif element == "report":
+        return edit_report(request)
     else:
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)

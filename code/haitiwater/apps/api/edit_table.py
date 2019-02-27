@@ -1,10 +1,12 @@
+import json
+
 import django
 from django.http import HttpResponse
 
 from ..water_network.models import Element, Zone
 from ..consumers.models import Consumer
 from ..log.models import Transaction, Log
-from ..report.models import Ticket
+from ..report.models import Ticket, Report
 from django.contrib.auth.models import User, Group
 from django.db.models import Field
 
@@ -147,6 +149,26 @@ def edit_manager(request):
     else:
         return HttpResponse("Utilisateur introuvable dans la base de donnée",
                           status=404)
+    return success_200
+
+
+def edit_report(request):
+    values = json.loads(request.body.decode("utf-8"))
+    year = values["date"].split("-")[0]
+    month = values["date"].split("-")[1]
+    for elem in values["details"]:
+        report = Report.objects.get(water_outlet_id=elem["id"],
+                                    timestamp__month=month,
+                                    timestamp__year=year)
+        report.has_data = elem["has_data"]
+        if elem["has_data"]:
+            #Days active
+            if True: #TODO was active
+                report.quantity_distributed = elem["volume"]
+                report.price = elem["price"]
+                report.recette = elem["revenue"]
+        report.save()
+    print(values)
     return success_200
 
 

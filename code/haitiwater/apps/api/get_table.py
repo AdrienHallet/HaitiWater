@@ -190,7 +190,6 @@ def get_ticket_elements(request, json, parsed):
 
 
 def get_last_reports(request, json, parsed):
-    print("GET REPORTS ?")
     from ..utils.get_data import is_user_fountain
     all_reports = []
     all = []
@@ -209,6 +208,9 @@ def get_last_reports(request, json, parsed):
         detail = {"id": report.water_outlet_id,
                  "name": report.water_outlet.name,
                  "has_data": report.has_data,
+                 "was_active": report.was_active,
+                 "days_active": report.days_active,
+                 "hours_active": report.hours_active,
                  "volume": report.quantity_distributed,
                  "price": report.price,
                  "revenue": report.recette
