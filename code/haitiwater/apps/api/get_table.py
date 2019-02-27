@@ -14,7 +14,7 @@ def add_with_search(parsed, values):
     else:
         for cols in parsed["searchable"]:
             if cols < len(values) and parsed["search"].lower() in str(values[cols]).lower():
-                result.append(values)
+                result.append(values[cols])
                 break
     return result
 
