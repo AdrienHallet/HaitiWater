@@ -15,7 +15,7 @@ function postReportEdit(){
         return;
     }
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let postURL = baseURL + "/api/report/edit/";
+    let postURL = baseURL + "/api/edit/?table=report";
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
