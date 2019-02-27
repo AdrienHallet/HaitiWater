@@ -57,11 +57,11 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             'pageLength',
 
         ],
-        "sortable": true,
-        "processing": true,
-        "serverSide": true,
-        "responsive": true,
-        "autoWidth": true,
+        sortable: true,
+        processing: true,
+        serverSide: true,
+        responsive: true,
+        autoWidth: true,
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
@@ -69,21 +69,27 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
             leftColumns: 1,
             rightColumns: 1
         },
-        "columnDefs": [
+        columnDefs: [
             {
-                "targets": -1,
-                "data": null,
-                "orderable": false,
-                "defaultContent": getActionButtonsHTML('modalWaterElement'),
+                targets: -1, // Actions column
+                data: null,
+                sortable: false,
+                defaultContent: getActionButtonsHTML('modalWaterElement'),
             },
             {
-                "targets": -2,
-                "defaultContent": 'Pas de gestionnaire',
-                "visible": withManagers,
+                targets: -2, // Zone column
+                visible: false,
+                defaultContent: 'Pas de zone',
+
+            },
+            {
+                targets: -3, // Manager column
+                defaultContent: 'Pas de gestionnaire',
+                visible: withManagers,
             }
             ],
-        "language": getDataTableFrenchTranslation(),
-        "ajax": {
+        language: getDataTableFrenchTranslation(),
+        ajax: {
             url: dataURL
         },
 
