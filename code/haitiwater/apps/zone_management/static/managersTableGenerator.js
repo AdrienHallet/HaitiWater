@@ -8,10 +8,12 @@ function drawManagerTable(){
     $('#datatable-manager tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
+            filterWaterElementFromManager(table);
         }
         else {
             table.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
+            filterWaterElementFromManager(table);
         }
     });
 
@@ -27,6 +29,27 @@ function drawManagerTable(){
     } );
 
     prettifyHeader('manager');
+}
+
+function filterWaterElementFromManager(managerTable){
+    let data = managerTable.row('tr.selected').data();
+
+    if  (data == null){ // If nothing selected
+        $('#datatable-water_element').DataTable().search("").draw();
+        return;
+    }
+    console.log(data);
+    let managerType = data[4];
+    let managerZone = data[5];
+    let managerId = data[0];
+    if (managerType.includes('fontaine')){
+        // Filter on the manager if he's a fountain manager
+        $('#datatable-water_element').DataTable().search(managerId).draw();
+    } else {
+        // Filter on the zone if he's a zone manager
+        $('#datatable-water_element').DataTable().search(managerZone).draw();
+    }
+
 }
 
 function getManagerDatatableConfiguration(dataURL){
