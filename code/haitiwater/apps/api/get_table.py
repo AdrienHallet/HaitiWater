@@ -12,10 +12,11 @@ def add_with_search(parsed, values):
         for elem in values:
             result.append(elem)
     else:
-        for cols in parsed["searchable"]:
-            if cols < len(values) and parsed["search"].lower() in str(values[cols]).lower():
-                result.append(values[cols])
-                break
+        for elem in values:
+            for cols in parsed["searchable"]:
+                if cols < len(elem) and parsed["search"].lower() in str(elem[cols]).lower():
+                    result.append(elem)
+                    break
     return result
 
 
