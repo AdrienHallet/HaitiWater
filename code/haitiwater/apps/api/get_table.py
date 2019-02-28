@@ -43,11 +43,12 @@ def get_water_elements(request, json, parsed):
             year = parsed["month_wanted"].split("-")[1]
             distributed = Report.objects.filter(water_outlet=elem, has_data=True,
                                                 timestamp__month=month,
-                                                timestamp__year=year)
+                                                timestamp__year=year,
+                                                was_active=True)
             print(distributed)
         quantity = 0
         for report in distributed:
-            quantity += report.quantity_distributed
+            quantity += report.quantity_distributed if report.quantity_distributed else 0
         tab = elem.network_descript()
         tab.insert(4, round(quantity, 2))
         tab.insert(5, round(quantity * 264.17, 2))  # TODO make sure this is correct
