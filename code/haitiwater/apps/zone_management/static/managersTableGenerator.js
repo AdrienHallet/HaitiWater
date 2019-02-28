@@ -24,7 +24,7 @@ function drawManagerTable(){
         } else {}
     } );
     $('#datatable-manager tbody').on( 'click', '.edit-row', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
+        let data = table.row($(this).closest('tr')).data();
         setupModalManagerEdit(data);
     } );
 
@@ -38,7 +38,6 @@ function filterWaterElementFromManager(managerTable){
         $('#datatable-water_element').DataTable().search("").draw();
         return;
     }
-    console.log(data);
     let managerType = data[4];
     let managerZone = data[5];
     let managerId = data[0];
