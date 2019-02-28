@@ -1,4 +1,4 @@
-const cacheVersion = 'v1';
+const cacheVersion = 'v2';
 
 self.addEventListener('install', function (event) {
     // Cache the offline page by default

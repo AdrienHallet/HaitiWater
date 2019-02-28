@@ -1,23 +1,28 @@
 $(document).ready(function() {
-
     //Show only relevant form component to the desired user type
+
     $('#select-manager-type').on('change', function(){
         $('#form-group-select-zone').addClass('hidden');
         $('#form-group-multiselect-outlets').addClass('hidden');
+        setupFountainOrZoneManagerDisplay(this.value, null);
 
-        if(this.value === 'fountain-manager'){
-            requestAvailableWaterElements();
-            $('#form-group-multiselect-outlets').removeClass('hidden');
-        }
-        else if (this.value === 'zone-manager'){
-            requestAvailableZones();
-            $('#form-group-select-zone').removeClass('hidden');
-        }
     });
 });
 
+function setupFountainOrZoneManagerDisplay(value, preSelection){
+    if(value === 'fountain-manager'){
+        requestAvailableWaterElements(preSelection);
 
-function requestAvailableZones(){
+        $('#form-group-multiselect-outlets').removeClass('hidden');
+    }
+    else if (value === 'zone-manager'){
+        requestAvailableZones(preSelection);
+        $('#form-group-select-zone').removeClass('hidden');
+    }
+}
+
+
+function requestAvailableZones(preSelection){
     let select = $('#select-manager-zone');
     select.html("");
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
@@ -34,6 +39,9 @@ function requestAvailableZones(){
                 '<option value="' + zone[0] + '">' + zone[1] + '</option>'
             )
         });
+        // Pre-select data from edition
+        let idZoneOption = select.find('option').filter(function () { return $(this).html() === preSelection; }).val();
+        select.val(idZoneOption);
       } else {
         console.log(xhr.response);
       }
@@ -42,9 +50,17 @@ function requestAvailableZones(){
 }
 
 
-function requestAvailableWaterElements(){
+function requestAvailableWaterElements(preSelection){
+    // Instantiate the select2 object and make sure it is empty from previous requests
     let multiselect = $('#multiselect-manager-outlets');
-    multiselect.html("");
+    multiselect.empty();
+    multiselect.select2({
+        dropdownParent: $('#modalManager'),
+        width: '100%',
+        data: null,
+    }).trigger('change');
+
+    // AJAX request
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/table/?name=water_element&draw=0&columns%5B0%5D%5Bdata%5D=0&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=1&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=2&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=3&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=4&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=5&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=6&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B7%5D%5Bdata%5D=7&columns%5B7%5D%5Bname%5D=&columns%5B7%5D%5Bsearchable%5D=true&columns%5B7%5D%5Borderable%5D=true&columns%5B7%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B7%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B8%5D%5Bdata%5D=&columns%5B8%5D%5Bname%5D=&columns%5B8%5D%5Bsearchable%5D=true&columns%5B8%5D%5Borderable%5D=false&columns%5B8%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B8%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=-1&search%5Bvalue%5D=&search%5Bregex%5D=false";
     var xhr = new XMLHttpRequest();
@@ -53,12 +69,15 @@ function requestAvailableWaterElements(){
     xhr.onload = function() {
       var status = xhr.status;
       if (status === 200) {
+        //Populate the select2
         let zones = xhr.response.data;
         zones.forEach(function(zone){
             multiselect.append(
                 '<option value="' + zone[0] + '">' + zone[1] + " " + zone[2] + '</option>'
             )
         });
+        //Pre select the data from edition
+        multiselect.val(preSelection).change();
       } else {
         console.log(xhr.response);
       }
@@ -201,20 +220,20 @@ function setupModalManagerEdit(data){
     disableModalElements(true);
 
     //Setup elements
-    $('#input-manager-id').val(data[0].innerText);
-    $('#input-manager-last-name').val(data[1].innerText);
-    $('#input-manager-first-name').val(data[2].innerText);
-    $('#input-manager-email').val(data[3].innerText);
-    console.log(data[4].innerText);
-    if(data[4].innerText.includes('zone')) {
-        console.log('yes zone');
-        $('#select-manager-type option[value="zone-manager"]').prop('selected', true).change();
-    } else if(data[4].innerText.includes('fontaine')) {
-        console.log('yes fountain');
-        $('#select-manager-type option[value="fountain-manager"]').prop('selected', true).change();
-        //Todo pre-select fountain
+    $('#input-manager-id').val(data[0]);
+    $('#input-manager-last-name').val(data[1]);
+    $('#input-manager-first-name').val(data[2]);
+    $('#input-manager-email').val(data[3]);
+    if(data[4].includes('zone')) {
+        $('#select-manager-type option[value="zone-manager"]').prop('selected', true);
+        setupFountainOrZoneManagerDisplay("zone-manager", data[5]);
+    } else if(data[4].includes('fontaine')) {
+        $('#select-manager-type option[value="fountain-manager"]').prop('selected', true);
+        setupFountainOrZoneManagerDisplay("fountain-manager", data[6]);
+
     }
     showManagerModal();
+
 }
 
 function showManagerModal(){
