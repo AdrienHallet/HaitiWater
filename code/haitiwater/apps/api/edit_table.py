@@ -160,6 +160,7 @@ def edit_report(request):
         report = Report.objects.get(water_outlet_id=elem["id"],
                                     timestamp__month=month,
                                     timestamp__year=year)
+        old = report.infos()
         report.has_data = elem["has_data"]
         if elem["has_data"]:
             #Days active
@@ -168,11 +169,13 @@ def edit_report(request):
                 report.price = elem["price"]
                 report.recette = elem["revenue"]
         report.save()
+        log_element(report, old, request)
     print(values)
     return success_200
 
 
 def log_element(element, old, request):
+    print("LOG")
     transaction = Transaction(user=request.user)
     transaction.save()
     element.log_edit(old, transaction)

@@ -17,6 +17,7 @@ class TableType(Enum):
     report = "Rapport mensuel"
     ticket = "Ticket de problème"
     location = "Point géographique"
+    profile = "Profil utilisateur"
 
 
 class Transaction(models.Model):

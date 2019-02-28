@@ -179,20 +179,22 @@ def restore_user(dict):
         import ast
         water_out = ast.literal_eval(dict["outlets"])
         if len(water_out) < 1:
-            user.delete()
             return HttpResponse("Vous n'avez pas choisi de fontaine a attribuer !", status=500)
         elif len(water_out) > 1:
             res = Element.objects.filter(id__in=water_out)
         else:
             res = Element.objects.filter(id=water_out[0])
         if len(res) > 0:
+            user.profile.outlets = []
             for outlet in res:
                 user.profile.outlets.append(outlet.id)
         else:
-            user.delete()
             return HttpResponse("Impossible d'attribuer cette fontaine au gestionnaire", status=404)
         my_group = Group.objects.get(name='Gestionnaire de fontaine')
+        other_group = Group.objects.get(name='Gestionnaire de zone')
+        other_group.user_set.remove(user)
         my_group.user_set.add(user)
+        user.save()
     elif dict["Role"] == "Gestionnaire de zone":
         zone = dict["Zone gérée"]
         res = Zone.objects.filter(id=zone)
@@ -204,6 +206,9 @@ def restore_user(dict):
             return HttpResponse("Impossible d'attribuer cette zone au gestionnaire", status=404)
         my_group = Group.objects.get(name='Gestionnaire de zone')
         my_group.user_set.add(user)
+        other_group = Group.objects.get(name='Gestionnaire de fontaine')
+        other_group.user_set.remove(user)
+        user.save()
     else:
         user.delete()
         return HttpResponse("Impossible d'ajouter l'utilisateur", status=500)
@@ -241,7 +246,7 @@ def get_elem_logged(logs):
             elem = Zone.objects.filter(id=ids[number])[0]
         elif table == "report":
             elem = Report.objects.filter(id=ids[number])[0]
-        elif table == "user":
+        elif table == "profile":
             elem = User.objects.filter(id=ids[number])[0]
         if elem is not None:
             elems.append(elem)
