@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
-from ..financial.models import Invoice
+from ..financial.models import Invoice, Payment
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.models import Group
 from ..water_network.models import ElementType
@@ -172,4 +172,16 @@ def add_ticket_element(request):
         ticket = Ticket(water_outlet=outlet, type=typeR, comment=comment,
                         urgency=urgency, image=image)
         ticket.save()
+    return success_200
+
+
+def add_payment_element(request):
+    id_consumer = request.POST.get("id_consumer", None)
+    consumer = Consumer.objects.get(id=id_consumer)
+    if not consumer:
+        return HttpResponse("Impossible de trouver l'utilisateur", status=404)
+    outlet = consumer.water_outlet
+    amount = request.POST.get("amount", None)
+    payment = Payment(consumer=consumer, water_outlet=outlet, amount=amount)
+    payment.save()
     return success_200
