@@ -206,13 +206,13 @@ def remove_element(request):
             return HttpResponse("Impossible de supprimer cet élément", status=500)
         elem_delete = elem_delete[0]
         transaction = Transaction(user=request.user)
-        if not is_same(elem_delete):
+        if not is_same(elem_delete, request.user):
             transaction.save()
             elem_delete.log_delete(transaction)
         elem_delete.delete()
         tickets = Ticket.objects.filter(water_outlet=id)
         for t in tickets:
-            if not is_same(t):
+            if not is_same(t, request.user):
                 t.log_delete(transaction)
             t.delete()
         users = User.objects.filter()
