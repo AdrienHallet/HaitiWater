@@ -119,6 +119,10 @@ def add_collaborator_element(request):
     username = request.POST.get("id", None)
     password = User.objects.make_random_password() #New random password
     email = request.POST.get("email", None)
+    already = User.objects.filter(username=username)
+    if len(already) > 0:
+        return HttpResponse("Cet utilisateur existe déjà ! Vérifier que son identifiant est bien unique, "
+                            "ou que vous n'avez pas appuyé plusieurs fois sur le bouton \"Ajouter\"")
     new_user = User.objects.create_user(username=username, email=email, password=password,
                                     first_name=first_name, last_name=last_name)
     type = request.POST.get("type", None)
