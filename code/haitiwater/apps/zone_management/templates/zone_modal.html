@@ -1,4 +1,5 @@
 {% load static %}
+{% load utils %}
 
 <!-- Modal form to add/edit zone -->
 <script src="{% static "zoneModalHandler.js"%}"></script>
@@ -15,16 +16,43 @@
             </div>
             <form id="form-add-zone" class="form-horizontal mb-lg">
                 <div id="form-zone-id-component" class="form-group mt-lg hidden">
-                    <label class="col-sm-3 control-label">Identifiant</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-4 control-label">Identifiant</label>
+                    <div class="col-sm-8">
                         <input id="input-zone-id" name="id" class="form-control" disabled>
                     </div>
                 </div>
                 <div id="form-zone-name-component" class="form-group mt-lg">
-                    <label class="col-sm-3 control-label">Nom</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-4 control-label">Nom</label>
+                    <div class="col-sm-8">
                         <input id="input-zone-name" name="name" class="form-control">
                         <label id="input-zone-name-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+                <hr>
+                <div id="form-zone-name-component" class="form-group mt-lg">
+                    <label class="col-sm-4 control-label">Coût des fontaines (HTG)</label>
+                    <div class="col-sm-4">
+                        <input id="input-fountain-price-value" name="name" class="form-control" type="number" min=0>
+                    </div>
+                    <div class="col-sm-4">
+                        <select class="form-control">
+                            {% for value in 13|range_from_one %}
+                                <option id="select-fountain-price-duration" value="{{ value }}">Tous les {{ value }} mois</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div id="form-zone-name-component" class="form-group mt-lg">
+                    <label class="col-sm-4 control-label">Coût des kiosques (HTG)</label>
+                    <div class="col-sm-4">
+                        <input id="input-kiosk-price-value" name="name" class="form-control" type="number" min=0>
+                    </div>
+                    <div class="col-sm-4">
+                        <select class="form-control">
+                            {% for value in 13|range_from_one %}
+                                <option id="select-kiosk-price-duration" value="{{ value }}">Tous les {{ value }} mois</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
             </form>
