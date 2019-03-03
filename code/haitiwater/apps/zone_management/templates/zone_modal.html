@@ -30,12 +30,25 @@
                 </div>
                 <hr>
                 <div id="form-zone-name-component" class="form-group mt-lg">
-                    <label class="col-sm-4 control-label">Coût des adductions (HTG)</label>
+                    <label class="col-sm-4 control-label">Coût des fontaines (HTG)</label>
                     <div class="col-sm-4">
-                        <input id="input-outlet-price-value" name="name" class="form-control" type="number" min=0>
+                        <input id="input-fountain-price-value" name="name" class="form-control" type="number" min=0>
                     </div>
                     <div class="col-sm-4">
-                        <select class="form-control" id="select-outlet-price-duration">
+                        <select class="form-control" id="select-fountain-price-duration">
+                            {% for value in 13|range_from_one %}
+                                <option value="{{ value }}">Tous les {{ value }} mois</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div id="form-zone-name-component" class="form-group mt-lg">
+                    <label class="col-sm-4 control-label">Coût des kiosques (HTG)</label>
+                    <div class="col-sm-4">
+                        <input id="input-kiosk-price-value" name="name" class="form-control" type="number" min=0>
+                    </div>
+                    <div class="col-sm-4">
+                        <select class="form-control" id="select-kiosk-price-duration">
                             {% for value in 13|range_from_one %}
                                 <option value="{{ value }}">Tous les {{ value }} mois</option>
                             {% endfor %}
