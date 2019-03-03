@@ -48,7 +48,7 @@ function buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice,
     request += "&fountain-price=" + fountainPrice;
     request += "&fountain-duration=" + fountainDuration;
     request += "&kiosk-price=" + kioskPrice;
-    request += "&kiosk-duration=" + kioskPrice;
+    request += "&kiosk-duration=" + kioskDuration;
 
     return request;
 }

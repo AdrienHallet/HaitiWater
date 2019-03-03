@@ -39,9 +39,10 @@ def add_consumer_element(request):
                           email="", household_size=sub, water_outlet=outlet) #Creation
     new_c.save()
     if outlet.type != ElementType.INDIVIDUAL:
+        price, duration = outlet.get_price_and_duration()
         creation = date.today()
-        expiration = creation + timedelta(days=outlet.validity*30)
-        invoice = Invoice(consumer=new_c, water_outlet=outlet, creation=creation, expiration=expiration, amount=outlet.price)
+        expiration = creation + timedelta(days=duration*30)  # TODO each month
+        invoice = Invoice(consumer=new_c, water_outlet=outlet, creation=creation, expiration=expiration, amount=price)
         invoice.save()
     return success_200
 
@@ -88,11 +89,18 @@ def add_report_element(request):
 
 def add_zone_element(request):
     name = request.POST.get("name", None)
+    fountain_price = request.POST.get("fountain-price", 0)
+    fountain_duration = request.POST.get("fountain-duration", 1)
+    kiosk_price = request.POST.get("kiosk-price", 0)
+    kiosk_duration = request.POST.get("kiosk-duration", 1)
+    print(fountain_price, fountain_duration, kiosk_price, kiosk_duration)
     if request.user and request.user.profile.zone: #If user is connected and zone manager
         result = Zone.objects.filter(name=request.user.profile.zone)
         if len(result) == 1:
             super = result[0]
-            to_add = Zone(name=name, superzone=super, subzones=[name])
+            to_add = Zone(name=name, superzone=super, subzones=[name],
+                          fountain_price=fountain_price, fountain_duration=fountain_duration,
+                          kiosk_price=kiosk_price, kiosk_duration=kiosk_duration)
             up = True
             while up:
                 super.subzones.append(name)

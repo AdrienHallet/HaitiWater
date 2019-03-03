@@ -37,6 +37,10 @@ class ElementStatus(Enum):
 class Zone(models.Model):
 
     name = models.CharField("Nom", max_length=50)
+    fountain_price = models.FloatField("Prix de la souscription à une fontaine")
+    fountain_duration = models.IntegerField("Durée en mois de la souscription à une fontaine")
+    kiosk_price = models.FloatField("Prix de la souscription à un kiosque")
+    kiosk_duration = models.IntegerField("Durée en mois de la souscription à un kiosque")
     superzone = models.ForeignKey('self', verbose_name="Superzone", related_name='sub', null=True, on_delete=models.CASCADE)
     subzones = ArrayField(models.CharField(max_length=30), blank=True, default=list)
 
@@ -46,7 +50,7 @@ class Zone(models.Model):
         return self.name
 
     def descript(self):
-        return [self.id, self.name]
+        return [self.id, self.name, self.fountain_price, self.fountain_duration, self.kiosk_price, self.kiosk_duration]
 
 
 class Location(models.Model):
@@ -69,8 +73,6 @@ class Element(models.Model):
     status = models.CharField("État", max_length=20, choices=[(i.name, i.value) for i in ElementStatus])
     zone = models.ForeignKey(Zone, verbose_name="Zone de l'élément", related_name="elements", on_delete=models.CASCADE, default=1)
     location = models.CharField("Localisation", max_length=50)
-    price = models.FloatField("Prix de la souscription", default=0)
-    validity = models.IntegerField("Nombre de mois de validité de la souscription", default=12)
 
     def __str__(self):
         return self.name
@@ -88,6 +90,17 @@ class Element(models.Model):
         if result == "":
             result = "Pas de gestionnaire  "
         return result[:-2]
+
+    def get_price_and_duration(self):
+        price = 0
+        duration = 1
+        if self.type == ElementType.FOUNTAIN:
+            price = self.zone.fountain_price
+            duration = self.zone.fountain_duration
+        elif outlet.type == ElementType.KIOSK:
+            price = self.zone.kiosk_price
+            duration = self.zone.kiosk_duration
+        return price, duration
 
     def network_descript(self):
         tab = [self.id, ElementType[self.type].value, self.location,
