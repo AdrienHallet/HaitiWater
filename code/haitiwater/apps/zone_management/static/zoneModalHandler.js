@@ -77,8 +77,14 @@ function setupModalZoneEdit(data){
     $('#form-zone-id-component').removeClass("hidden");
 
     //Fill with existing data
-    $('#input-zone-id').val(data[0].innerText);
-    $('#input-zone-name').val(data[1].innerText);
+    $('#input-zone-id').val(data[0]);
+    $('#input-zone-name').val(data[1]);
+
+    $('#input-fountain-price-value').val(data[2]);
+    $('#select-fountain-price-duration').val(data[3]);
+
+    $('#input-kiosk-price-value').val(data[4]);
+    $('#select-kiosk-price-duration').val(data[5]);
 
     showZoneModal();
 }
