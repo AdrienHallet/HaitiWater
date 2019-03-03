@@ -35,9 +35,9 @@
                         <input id="input-fountain-price-value" name="name" class="form-control" type="number" min=0>
                     </div>
                     <div class="col-sm-4">
-                        <select class="form-control">
+                        <select class="form-control" id="select-fountain-price-duration">
                             {% for value in 13|range_from_one %}
-                                <option id="select-fountain-price-duration" value="{{ value }}">Tous les {{ value }} mois</option>
+                                <option value="{{ value }}">Tous les {{ value }} mois</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -48,9 +48,9 @@
                         <input id="input-kiosk-price-value" name="name" class="form-control" type="number" min=0>
                     </div>
                     <div class="col-sm-4">
-                        <select class="form-control">
+                        <select class="form-control" id="select-kiosk-price-duration">
                             {% for value in 13|range_from_one %}
-                                <option id="select-kiosk-price-duration" value="{{ value }}">Tous les {{ value }} mois</option>
+                                <option value="{{ value }}">Tous les {{ value }} mois</option>
                             {% endfor %}
                         </select>
                     </div>
