@@ -3,7 +3,7 @@
  * Used to prettify the table and make it respond to custom input and commands
  *
  */
-$(document).ready(function() {
+function drawConsumerTable() {
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=consumer";
     console.log(dataURL);
@@ -35,7 +35,7 @@ $(document).ready(function() {
     } );
 
     prettifyHeader('consumer');
-});
+}
 
 function getDatatableConfiguration(dataURL){
     let config = {
