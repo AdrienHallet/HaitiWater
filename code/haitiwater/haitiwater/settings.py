@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'apps.water_network',
     'apps.zone_management',
     'apps.api',
+    'apps.utils',
     'apps.consumers',
     'apps.report',
     'apps.offline',
