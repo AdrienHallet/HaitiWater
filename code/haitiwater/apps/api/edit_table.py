@@ -50,9 +50,10 @@ def edit_consumer(request):
     if old_outlet != outlet and not outlet.type == ElementType.INDIVIDUAL:
         old_invoice = Invoice.objects.filter(water_outlet=old_outlet, expiration__gt=date.today())[0]
         old_invoice.expiration = date.today()
+        price, duration = outlet.get_price_and_duration()
         creation = date.today()
-        expiration = creation + timedelta(days=outlet.validity * 30)
-        invoice = Invoice(consumer=consumer, outlet=outlet, creation=creation, expiration=expiration, amount=outlet.price)
+        expiration = creation + timedelta(days=duration*30)  # TODO each month
+        invoice = Invoice(consumer=consumer, outlet=outlet, creation=creation, expiration=expiration, amount=price)
         invoice.save()
 
     return success_200
@@ -66,6 +67,10 @@ def edit_zone(request):
     zone = zone[0]
     old_name = zone.name
     zone.name = request.POST.get("name", None)
+    zone.fountain_price = request.POST.get("fountain-price", 0)
+    zone.fountain_duration = request.POST.get("fountain-duration", 1)
+    zone.kiosk_price = request.POST.get("kiosk-price", 0)
+    zone.kiosk_duration = request.POST.get("kiosk-duration", 1)
     zone.subzones.remove(old_name)
     zone.subzones.append(zone.name)
     for z in Zone.objects.all():

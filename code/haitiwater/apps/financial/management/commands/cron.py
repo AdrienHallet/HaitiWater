@@ -13,9 +13,9 @@ class Command(BaseCommand):
             if invoice.water_outlet.type != ElementType.INDIVIDUAL:
                 consumer = invoice.consumer
                 outlet = consumer.water_outlet
+                price, duration = outlet.get_price_and_duration()
                 creation = date.today()
-                expiration = creation + timedelta(days=30*outlet.validity)
-                amount = outlet.price
+                expiration = creation + timedelta(days=duration*30)  # TODO each month
                 new_invoice = Invoice(consumer=consumer, water_outlet=outlet,
-                                      creation=creation, expiration=expiration, amount=amount)
+                                      creation=creation, expiration=expiration, amount=price)
                 new_invoice.save()
