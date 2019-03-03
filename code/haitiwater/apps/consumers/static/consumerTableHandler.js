@@ -31,7 +31,7 @@ $(document).ready(function() {
     } );
     datatable.find('tbody').on( 'click', '.edit-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
-        editElement(data);
+        setupModalConsumerEdit(data);
     } );
 
     prettifyHeader('consumer');

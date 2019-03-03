@@ -69,7 +69,7 @@ function buildRequest(id, lastName, firstName, gender, address, phone, subConsum
     return request;
 }
 
-function setupModalAdd(){
+function setupModalConsumerAdd(){
     //Show add components
     $('#modal-title-add').removeClass("hidden");
     $('#modal-submit-add').removeClass("hidden");
@@ -79,10 +79,10 @@ function setupModalAdd(){
     $('#modal-submit-edit').addClass("hidden");
     $('#form-id-component').addClass("hidden");
 
-    showModal();
+    showModalConsumer();
 }
 
-function setupModalEdit(data){
+function setupModalConsumerEdit(data){
     //Show add components
     $('#modal-title-add').addClass("hidden");
     $('#modal-submit-add').addClass("hidden");
@@ -122,10 +122,10 @@ function setupModalEdit(data){
     if(mainOutlet[0] != null)
         form['select-main-outlet'].vaule = mainOutlet[0].value;
 
-    showModal();
+    showModalConsumer();
 }
 
-function showModal(){
+function showModalConsumer(){
     $('#call-consumer-modal').magnificPopup({
         type: 'inline',
         preloader: false,
