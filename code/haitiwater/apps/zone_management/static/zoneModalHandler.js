@@ -7,25 +7,22 @@ function validateZoneForm() {
 
     let id = form["input-zone-id"].value;
     let name = form["input-zone-name"].value;
-    let fountainPrice = form["input-fountain-price-value"].value;
-    let fountainDuration = form["select-fountain-price-duration"].value;
-    let kioskPrice = form["input-kiosk-price-value"].value;
-    let kioskDuration = form["select-kiosk-price-duration"].value;
+    let outletPrice = form["input-outlet-price-value"].value;
+    let outletDuration = form["select-outlet-price-duration"].value;
 
     let valid = true;
     if (name.trim() === "") {
         document.getElementById("input-zone-name-error").className = "error";
         valid = false;
     }
-    console.log(fountainPrice);
-    if (fountainPrice < 0 || kioskPrice < 0){
+    if (outletPrice < 0){
         $('#form-zone-error-msg').html("Vous ne pouvez entrer un coût négaif");
         $('#form-zone-error').removeClass('hidden');
         valid = false;
     }
 
     if(valid){
-        return buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice, kioskDuration);
+        return buildZoneRequest(id, name, outletPrice, outletDuration);
     }
     return false;
 
@@ -35,20 +32,16 @@ function validateZoneForm() {
  * Build the request
  * @param id id of the zone (if edition, empty otherwise)
  * @param name of the zone
- * @param fountainPrice price for fountains
- * @param fountainDuration duration of the bill for fountains
- * @param kioskPrice price for kiosks
- * @param kioskDuration duration of the bill for kiosks
+ * @param outletPrice price for non-individuals outlets
+ * @param outletDuration duration of the bill for non-individuals outlets
  * @returns {string} the request
  */
-function buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice, kioskDuration){
+function buildZoneRequest(id, name, outletPrice, outletDuration){
     let request = "table=zone";
     request += "&id=" + id;
     request += "&name=" + name;
-    request += "&fountain-price=" + fountainPrice;
-    request += "&fountain-duration=" + fountainDuration;
-    request += "&kiosk-price=" + kioskPrice;
-    request += "&kiosk-duration=" + kioskPrice;
+    request += "&outlet-price=" + outletPrice;
+    request += "&outlet-duration=" + outletDuration;
 
     return request;
 }
