@@ -79,7 +79,8 @@ class Element(models.Model):
     type = models.CharField("Type", max_length=20, choices=[(i.name, i.value) for i in ElementType])
     status = models.CharField("État", max_length=20, choices=[(i.name, i.value) for i in ElementStatus])
     zone = models.ForeignKey(Zone, verbose_name="Zone de l'élément", related_name="elements", on_delete=models.CASCADE, default=1)
-    location = models.CharField("Localisation", max_length=50)
+    location = models.CharField("Localisation", max_length=500)
+    manager_names = models.CharField("Nom des gestionnaires", max_length=300, default="Pas de gestionnaire")
 
     def __str__(self):
         return self.name
@@ -92,12 +93,6 @@ class Element(models.Model):
 
     def get_status(self):
         return ElementStatus[self.status].value
-
-    def get_manager(self):
-        managers = User.objects.all()
-        for manager in managers:
-            if str(self.id) in manager.profile.outlets:
-                return manager.username
 
     def get_consumers(self):
         from ..consumers.models import Consumer #Avoid cycle in imports
@@ -131,7 +126,6 @@ class Element(models.Model):
             total += report.quantity_distributed
         return total, total/len(reports)
 
-
     def get_managers(self):
         all_managers = User.objects.all()
         result = ""
@@ -144,10 +138,12 @@ class Element(models.Model):
         return result[:-2]
 
     def network_descript(self):
+        self.manager_names = self.get_managers()
+        self.save()
         view = VirtualElementTotal.objects.get(relevant_model=self.id)
         tab = [self.id, self.get_type(), self.location, view.total_consumers,
                self.get_status(), round(view.total_distributed, 2),
-               round(view.total_distributed * 264.17, 2), "", self.zone.name]
+               round(view.total_distributed * 264.17, 2), self.manager_names, self.zone.name]
         return tab
 
     def infos(self):

@@ -1,4 +1,4 @@
-from ..water_network.models import Element
+from ..water_network.models import Element, VirtualElementTotal
 from ..consumers.models import Consumer
 from ..report.models import Report
 import datetime
@@ -81,9 +81,8 @@ def get_total_consumers(request):
                 result += consumer.household_size + 1
     elif is_user_fountain(request):
         for outlet in request.user.profile.outlets:
-            consumers_outlet = Consumer.objects.filter(water_outlet_id=outlet)
-            for consumer in consumers_outlet:
-                result += consumer.household_size+1
+            view = VirtualElementTotal.objects.get(relevant_model=outlet)
+            result += view.total_consumers
     return result
 
 
@@ -91,7 +90,7 @@ def get_amount_indiv_consummer(zone):
     result = 0
     for consumer in Consumer.objects.all():
         if consumer.water_outlet.zone.name in zone.subzones:
-            result += consumer.household_size
+            result += consumer.household_size+1
     return result
 
 

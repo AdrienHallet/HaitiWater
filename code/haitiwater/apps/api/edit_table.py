@@ -118,11 +118,21 @@ def edit_manager(request):
             if len(water_out) > 1:
                 res = Element.objects.filter(id__in=water_out)
             else:
-                res = Element.objects.filter(id=water_out)
+                res = Element.objects.filter(id=water_out[0])
             if len(res) > 0:
+                old_outlets = user.profile.outlets
                 user.profile.outlets = []
                 for outlet in res:
+                    outlet.manager_names = outlet.get_managers()
+                    outlet.save()
                     user.profile.outlets.append(outlet.id)
+                if len(water_out) > 1:
+                    res = Element.objects.filter(id__in=old_outlets)
+                else:
+                    res = Element.objects.filter(id=old_outlets[0])
+                for outlet in res:
+                    outlet.manager_names = outlet.get_managers()
+                    outlet.save()
             my_group = Group.objects.get(name='Gestionnaire de fontaine')
             my_group.user_set.add(user)
             if user.profile.zone: #If user had a zone, switch it

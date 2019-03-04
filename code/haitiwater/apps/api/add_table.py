@@ -137,6 +137,8 @@ def add_collaborator_element(request):
             res = Element.objects.filter(id=water_out[0])
         if len(res) > 0:
             for outlet in res:
+                outlet.manager_names = outlet.get_managers()
+                outlet.save()
                 new_user.profile.outlets.append(outlet.id)
         else:
             return HttpResponse("Impossible d'attribuer cette fontaine au gestionnaire", status=404)
