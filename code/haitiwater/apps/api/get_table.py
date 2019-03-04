@@ -6,7 +6,7 @@ from ..log.models import Transaction, Log
 from django.contrib.auth.models import User
 
 
-def add_with_search(parsed, values):
+def filter_search(parsed, values):
     result = []
     if parsed["search"] == "" and len(values) > 0:
         for elem in values:
@@ -37,7 +37,7 @@ def get_water_elements(request, json, parsed):
     for elem in all_water_element:
         tab = elem.network_descript()
         all.append(tab)
-    return add_with_search(parsed, all)
+    return all
 
 
 def get_consumer_elements(request, json, parsed):
@@ -54,40 +54,22 @@ def get_consumer_elements(request, json, parsed):
     elif len(outlets) > 0:
         all_consumers = Consumer.objects.filter(water_outlet_id__in=outlets)
     else:
-        return all
-
+        return False
     json["recordsTotal"] = len(all_consumers)
     for elem in all_consumers:
-        if parsed["search"] == "":
-            all.append(elem.descript())
-        else:
-            for cols in parsed["searchable"]:
-                tab = elem.descript()
-                if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                    all.append(tab)
-                    break
+        all.append(elem.descript())
     return all
 
 
 def get_zone_elements(request, json, parsed):
     all = []
     if request.user.profile.zone: #Zone manager
-        total = 0
         for z in request.user.profile.zone.subzones:
             zone = Zone.objects.filter(name=z)
             if len(zone) == 1:
-                if parsed["search"] == "":
-                    total += 1
-                    all.append(zone[0].descript())
-                else:
-                    for cols in parsed["searchable"]:
-                        tab = zone[0].descript()
-                        total += 1
-                        if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                            all.append(tab)
-                            break
+                all.append(zone[0].descript())
 
-        json["recordsTotal"] = total
+        json["recordsTotal"] = len(all)
     return all
 
 
@@ -101,7 +83,6 @@ def get_manager_elements(request, json, parsed):
         else:
             return False
         all_collab = User.objects.all()
-        json["recordsTotal"] = len(all_collab) -1 #Remove the admin account
         for u in all_collab:
             group = u.groups.values_list('name', flat=True)
             if "Gestionnaire de zone" in group:
@@ -110,13 +91,7 @@ def get_manager_elements(request, json, parsed):
                     tab = [u.username, u.last_name, u.first_name, u.email,
                            "Gestionnaire de zone", u.profile.zone.name,
                            u.profile.outlets]
-                    if parsed["search"] == "":
-                        all.append(tab)
-                    else:
-                        for cols in parsed["searchable"]:
-                            if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                                all.append(tab)
-                                break
+                    all.append(tab)
             if "Gestionnaire de fontaine" in group:
                 for elem in u.profile.outlets:
                     out = Element.objects.filter(id=elem)
@@ -126,50 +101,23 @@ def get_manager_elements(request, json, parsed):
                         tab = [u.username, u.last_name, u.first_name, u.email,
                                "Gestionnaire de fontaine", u.profile.get_zone(),
                                u.profile.outlets]
-                        if parsed["search"] == "":
-                            all.append(tab)
-                            break
-                        else:
-                            for cols in parsed["searchable"]:
-                                if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                                    all.append(tab)
-                                    break
-                            break
-
+                        all.append(tab)
+                        break
+        json["recordsTotal"] = len(all)
     return all
 
 
 def get_ticket_elements(request, json, parsed):
     all = []
     if request.user.profile.zone: #Zone manager
-        tot = 0
         for elem in Ticket.objects.all():
             if elem.water_outlet.zone.name in request.user.profile.zone.subzones:
-                if parsed["search"] == "":
-                    all.append(elem.descript())
-                    tot += 1
-                else:
-                    for cols in parsed["searchable"]:
-                        tab = elem.descript()
-                        if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                            all.append(tab)
-                            tot += 1
-                            break
-        json["recordsTotal"] = tot
+                all.append(elem.descript())
     else: #Fountain manager
-        tot = 0
         for elem in Ticket.objects.all():
             if str(elem.water_outlet.id) in request.user.profile.outlets:
-                tot += 1
-                if parsed["search"] == "":
-                    all.append(elem.descript())
-                else:
-                    for cols in parsed["searchable"]:
-                        tab = elem.descript()
-                        if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                            all.append(tab)
-                            break
-        json["recordsTotal"] = tot
+                all.append(elem.descript())
+        json["recordsTotal"] = len(all)
     return all
 
 
@@ -182,11 +130,9 @@ def get_last_reports(request, json, parsed):
             outlet = Element.objects.get(id=outlet_id)
             if outlet:
                 reports = Report.objects.filter(water_outlet=outlet).order_by("timestamp")[:5]
-                print(len(reports))
                 for report in reports:
                     all_reports.append(report)
     else:
-        #TODO
         pass
     for report in all_reports:
         detail = {"id": report.water_outlet_id,
@@ -210,7 +156,6 @@ def get_last_reports(request, json, parsed):
                  "details":[detail]
                 }
             all.append(infos)
-    print(all)
     json["recordsTotal"] = len(all)
     return all
 
@@ -218,24 +163,14 @@ def get_last_reports(request, json, parsed):
 def get_logs_elements(request, json, parsed):
     transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates())
     all = []
-    tot = 0
     for t in transactions:
         logs = Log.objects.filter(transaction=t)
         details = get_transaction_detail(logs)
         item = {"id": t.id, "time": str(t.timestamp.date()),
                 "type": logs[0].get_action(), "user": t.user.username,
                 "summary": logs[0].get_table(), "details": details}
-        if parsed["search"] == "":
-            all.append(item)
-            tot += 1
-        else:
-            for cols in parsed["searchable"]:
-                if cols < len(item) and parsed["search"].lower() in item.keys() \
-                        or parsed["search"].lower() in item.values():
-                    all.append(item)
-                    tot += 1
-                    break
-    json["recordsTotal"] = tot
+        all.append(item)
+    json["recordsTotal"] = len(all)
     return all
 
 def get_transaction_detail(logs):

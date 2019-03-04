@@ -1,6 +1,7 @@
 import re
 
 from django.views.decorators.csrf import csrf_exempt
+from django.core.cache import cache
 
 from ..water_network.models import Element, ElementType, Zone, Location
 from ..consumers.models import Consumer
@@ -134,31 +135,45 @@ def table(request):
     json_test["draw"] = str(int(request.GET.get('draw', "1")) + 1)
     d = parse(request)
     all = []
-    print(d["table_name"])
-    if d["table_name"] == "water_element":
-        if is_user_fountain(request):
-            json_test["editable"] = False
-        all = get_water_elements(request, json_test, d)
-    elif d["table_name"] == "consumer":
-        all = get_consumer_elements(request, json_test, d)
-    elif d["table_name"] == "zone":
-        if is_user_fountain(request):
-            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
-        all = get_zone_elements(request, json_test, d)
-    elif d["table_name"] == "manager":
-        if is_user_fountain(request):
-            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
-        all = get_manager_elements(request, json_test, d)
-    elif d["table_name"] == "report":
-        all = get_last_reports(request, json_test, d)
-    elif d["table_name"] == "ticket":
-        all = get_ticket_elements(request, json_test, d)
-    elif d["table_name"] == "logs":
-        all = get_logs_elements(request, json_test, d)
+    #Get data
+    cache_key = d["table_name"]+request.user.username
+    if cache.get(cache_key):
+        print("CACHE HIT !")
+        all = json.loads(cache.get(cache_key))
+        json_test["recordsTotal"] = len(all)
     else:
-        return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
+        print("CACHE MISS !")
+        if d["table_name"] == "water_element":
+            if is_user_fountain(request):
+                json_test["editable"] = False
+            all = get_water_elements(request, json_test, d)
+        elif d["table_name"] == "consumer":
+            all = get_consumer_elements(request, json_test, d)
+        elif d["table_name"] == "zone":
+            if is_user_fountain(request):
+                return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
+            all = get_zone_elements(request, json_test, d)
+        elif d["table_name"] == "manager":
+            if is_user_fountain(request):
+                return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
+            all = get_manager_elements(request, json_test, d)
+        elif d["table_name"] == "report":
+            all = get_last_reports(request, json_test, d)
+        elif d["table_name"] == "ticket":
+            all = get_ticket_elements(request, json_test, d)
+        elif d["table_name"] == "logs":
+            all = get_logs_elements(request, json_test, d)
+        else:
+            return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
+        if all:
+            cache.set(cache_key, json.dumps(all), 30)
+
     if all is False: #There was a problem when retrieving the data
         return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
+
+    #Filter data
+    all = filter_search(d, all)
+
     if d["table_name"] == "logs" or d["table_name"] == "report":
         if len(all) > 1:
             keys = list(all[0].keys())
