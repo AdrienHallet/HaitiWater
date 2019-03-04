@@ -4,6 +4,8 @@ from django.contrib.postgres.fields import JSONField
 from enum import Enum
 from django.contrib.postgres.fields import ArrayField
 from django.db.models import ManyToOneRel
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from ..utils.common_models import *
 
@@ -142,8 +144,10 @@ class Element(models.Model):
         return result[:-2]
 
     def network_descript(self):
-        tab = [self.id, self.get_type(), self.location,
-               ElementStatus[self.status].value, self.get_managers(), self.zone.name]
+        view = VirtualElementTotal.objects.get(relevant_model=self.id)
+        tab = [self.id, self.get_type(), self.location, view.total_consumers,
+               self.get_status(), round(view.total_distributed, 2),
+               round(view.total_distributed * 264.17, 2), self.get_managers(), self.zone.name]
         return tab
 
     def infos(self):
@@ -164,6 +168,17 @@ class Element(models.Model):
 
     def log_edit(self, old, transaction):
         edit(self._meta.model_name, self.infos(), old, transaction)
+
+
+
+class VirtualElementTotal(models.Model):
+    relevant_model = models.BigIntegerField("Id", primary_key=True)
+    total_distributed = models.FloatField("Volume total distribué", null=False, default=0)
+    total_consumers = models.IntegerField("Consommateurs de cet élément", null=False, default=0)
+
+    class Meta:
+        managed = False
+        db_table = 'water_network_virtualelementtotal'
 
 
 class Location(models.Model):

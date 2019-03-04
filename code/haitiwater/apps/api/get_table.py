@@ -29,33 +29,13 @@ def get_water_elements(request, json, parsed):
             target = target[0]
         else:
             return False
-        all_water_element = [elem for elem in Element.objects.all() if elem.is_in_subzones(target)]
+        all_water_element = Element.objects.filter(zone__name__in=target.subzones)
     else: #We have a fountain manager
-        all_water_element = [elem for elem in Element.objects.all() if str(elem.id) in outlets]
+        all_water_element =Element.objects.filter(id__in=outlets)
     json["recordsTotal"] = len(all_water_element)
     all = []
     for elem in all_water_element:
-        cust = Consumer.objects.filter(water_outlet=elem)
-        if parsed["month_wanted"] == "none":
-            distributed = Report.objects.filter(water_outlet=elem, has_data=True)
-        else:
-            month = parsed["month_wanted"].split("-")[0]
-            year = parsed["month_wanted"].split("-")[1]
-            distributed = Report.objects.filter(water_outlet=elem, has_data=True,
-                                                timestamp__month=month,
-                                                timestamp__year=year,
-                                                was_active=True)
-            print(distributed)
-        quantity = 0
-        for report in distributed:
-            quantity += report.quantity_distributed if report.quantity_distributed else 0
         tab = elem.network_descript()
-        tab.insert(4, round(quantity, 2))
-        tab.insert(5, round(quantity * 264.17, 2))  # TODO make sure this is correct
-        total_consumers = 0
-        for c in cust:
-            total_consumers += c.household_size
-        tab.insert(3, total_consumers)
         all.append(tab)
     return add_with_search(parsed, all)
 
