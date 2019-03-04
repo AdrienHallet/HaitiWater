@@ -147,7 +147,7 @@ class Element(models.Model):
         view = VirtualElementTotal.objects.get(relevant_model=self.id)
         tab = [self.id, self.get_type(), self.location, view.total_consumers,
                self.get_status(), round(view.total_distributed, 2),
-               round(view.total_distributed * 264.17, 2), self.get_managers(), self.zone.name]
+               round(view.total_distributed * 264.17, 2), "", self.zone.name]
         return tab
 
     def infos(self):
