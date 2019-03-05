@@ -97,7 +97,7 @@ class Element(models.Model):
         if self.type == ElementType.FOUNTAIN:
             price = self.zone.fountain_price
             duration = self.zone.fountain_duration
-        elif outlet.type == ElementType.KIOSK:
+        elif self.type == ElementType.KIOSK:
             price = self.zone.kiosk_price
             duration = self.zone.kiosk_duration
         return price, duration
