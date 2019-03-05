@@ -38,7 +38,7 @@ def add_consumer_element(request):
                           gender=gender, location=address, phone_number=phone,
                           email="", household_size=sub, water_outlet=outlet) #Creation
     new_c.save()
-    if outlet.type != ElementType.INDIVIDUAL:
+    if outlet.type != ElementType.INDIVIDUAL.name:
         price, duration = outlet.get_price_and_duration()
         creation = date.today()
         expiration = creation + timedelta(days=duration*30)  # TODO each month
@@ -77,9 +77,9 @@ def add_report_element(request):
                              quantity_distributed=meters_distr, price=value_meter,
                              month=month, year=year, recette=recette)
         report_line.save()
-        if outlet.type == ElementType.INDIVIDUAL:  # Create an invoice for individual outlets
+        if outlet.type == ElementType.INDIVIDUAL.name:  # Create an invoice for individual outlets
             consumer = Consumer.objects.filter(water_outlet=outlet)[0]
-            amount = meters_distr * value_meter
+            amount = int(meters_distr) * int(value_meter)
             creation = date.today()
             expiration = creation + timedelta(days=30)
             invoice = Invoice(consumer=consumer, water_outlet=outlet, creation=creation, expiration=expiration, amount=amount)

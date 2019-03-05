@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for invoice in Invoice.objects.filter(expiration=date.today()):
-            if invoice.water_outlet.type != ElementType.INDIVIDUAL:
+            if invoice.water_outlet.type != ElementType.INDIVIDUAL.name:
                 consumer = invoice.consumer
                 outlet = consumer.water_outlet
                 price, duration = outlet.get_price_and_duration()

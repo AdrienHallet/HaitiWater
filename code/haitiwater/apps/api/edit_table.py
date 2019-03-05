@@ -1,5 +1,5 @@
 import re
-from datetime import date
+from datetime import date, timedelta
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -47,13 +47,13 @@ def edit_consumer(request):
     old_outlet = consumer.water_outlet
     consumer.water_outlet = outlet
     consumer.save()
-    if old_outlet != outlet and not outlet.type == ElementType.INDIVIDUAL:
+    if old_outlet != outlet and not outlet.type == ElementType.INDIVIDUAL.name:
         old_invoice = Invoice.objects.filter(water_outlet=old_outlet, expiration__gt=date.today())[0]
         old_invoice.expiration = date.today()
         price, duration = outlet.get_price_and_duration()
         creation = date.today()
         expiration = creation + timedelta(days=duration*30)  # TODO each month
-        invoice = Invoice(consumer=consumer, outlet=outlet, creation=creation, expiration=expiration, amount=price)
+        invoice = Invoice(consumer=consumer, water_outlet=outlet, creation=creation, expiration=expiration, amount=price)
         invoice.save()
 
     return success_200

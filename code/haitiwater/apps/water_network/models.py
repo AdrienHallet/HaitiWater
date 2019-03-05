@@ -94,10 +94,10 @@ class Element(models.Model):
     def get_price_and_duration(self):
         price = 0
         duration = 1
-        if self.type == ElementType.FOUNTAIN:
+        if self.type == ElementType.FOUNTAIN.name:
             price = self.zone.fountain_price
             duration = self.zone.fountain_duration
-        elif self.type == ElementType.KIOSK:
+        elif self.type == ElementType.KIOSK.name:
             price = self.zone.kiosk_price
             duration = self.zone.kiosk_duration
         return price, duration
