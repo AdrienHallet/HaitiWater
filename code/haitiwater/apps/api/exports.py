@@ -199,7 +199,7 @@ def edit_element(request):
 
 
 def details(request):
-    table = request.POST.get("table", None)
+    table = request.GET.get("table", None)
     result = {}
     if table == "payment":
         balance, validity = get_payment_details(request)
