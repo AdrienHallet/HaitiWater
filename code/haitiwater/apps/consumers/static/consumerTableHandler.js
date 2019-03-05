@@ -3,19 +3,19 @@
  * Used to prettify the table and make it respond to custom input and commands
  *
  */
-function drawConsumerTable() {
+function drawConsumerTable(fullView = true) {
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=consumer";
     console.log(dataURL);
 
     let datatable = $('#datatable-consumer');
 
-    datatable.DataTable(getConsumerDatatableConfiguration(dataURL));
+    datatable.DataTable(getConsumerDatatableConfiguration(dataURL, fullView));
 
     let table = datatable.DataTable();
     datatable.find('tbody').on('click', 'tr', function () {
         if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
+            //$(this).removeClass('selected');
         }
         else {
             table.$('tr.selected').removeClass('selected');
@@ -35,9 +35,11 @@ function drawConsumerTable() {
     } );
 
     prettifyHeader('consumer');
+
+    return table;
 }
 
-function getConsumerDatatableConfiguration(dataURL){
+function getConsumerDatatableConfiguration(dataURL, fullView){
     let config = {
         lengthMenu: [
             [ 10, 25, 50, -1 ],
@@ -65,12 +67,19 @@ function getConsumerDatatableConfiguration(dataURL){
             leftColumns: 1,
             rightColumns: 1
         },
-        "columnDefs": [{
+        "columnDefs": [
+            {
+                targets: [3,4,5,6,7],
+                searchable: fullView,
+                visible: fullView,
+            },
+            {
                 "targets": -1,
                 "data": null,
                 "orderable": false,
                 "defaultContent": getActionButtonsHTML("modalConsumer"),
-            }],
+            }
+            ],
         "language": getDataTableFrenchTranslation(),
         "ajax": {
             url: dataURL,
@@ -80,7 +89,7 @@ function getConsumerDatatableConfiguration(dataURL){
                 new PNotify({
                     title: 'Échec du téléchargement!',
                     text: "Les données de la table n'ont pas pu être téléchargées",
-                    type: 'failure'
+                    type: 'failure',
                 });
             }
         },
