@@ -10,7 +10,7 @@ function drawConsumerTable() {
 
     let datatable = $('#datatable-consumer');
 
-    datatable.DataTable(getDatatableConfiguration(dataURL));
+    datatable.DataTable(getConsumerDatatableConfiguration(dataURL));
 
     let table = datatable.DataTable();
     datatable.find('tbody').on('click', 'tr', function () {
@@ -37,7 +37,7 @@ function drawConsumerTable() {
     prettifyHeader('consumer');
 }
 
-function getDatatableConfiguration(dataURL){
+function getConsumerDatatableConfiguration(dataURL){
     let config = {
         lengthMenu: [
             [ 10, 25, 50, -1 ],
