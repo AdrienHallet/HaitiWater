@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
 from ..water_network.models import Element, Zone
+from ..financial.models import Invoice, Payment
 from django.contrib.auth.models import User, Group
 
 
@@ -175,3 +176,33 @@ def get_ticket_elements(request, json, parsed):
                             break
         json["recordsTotal"] = tot
     return all
+
+
+def get_payment_elements(request, json, parsed, id):
+    all = []
+    tot = 0
+    for elem in Payment.objects.filter(consumer_id=id):
+        tot += 1
+        if parsed["search"] == "":
+            all.append(elem.descript())
+        else:
+            for cols in parsed["searchable"]:
+                tab = elem.descript()
+                if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
+                    all.append(tab)
+                    break
+    json["recordsTotal"] = tot
+    return all
+
+
+def get_payment_details(request):
+    id = request.GET.get("user", None)
+    balance = 0
+    validity = None
+    for elem in Invoice.objects.filter(consumer_id=id):
+        balance -= elem.amount
+        if not validity or elem.expiration > validity:
+            validity = elem.expiration
+    for elem in Payment.objects.filter(consumer_id=id):
+        balance += elem.amount
+    return balance, validity

@@ -77,7 +77,7 @@ def add_report_element(request):
                              quantity_distributed=meters_distr, price=value_meter,
                              month=month, year=year, recette=recette)
         report_line.save()
-        if outlet.type == ElementType.INDIVIDUAL: # Create an invoice for individual outlets
+        if outlet.type == ElementType.INDIVIDUAL:  # Create an invoice for individual outlets
             consumer = Consumer.objects.filter(water_outlet=outlet)[0]
             amount = meters_distr * value_meter
             creation = date.today()

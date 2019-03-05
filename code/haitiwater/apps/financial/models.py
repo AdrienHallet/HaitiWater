@@ -22,3 +22,6 @@ class Payment(models.Model):
                                      related_name="payments", on_delete=models.CASCADE)
     date = models.DateField("Date de la facture", auto_now=True)
     amount = models.FloatField("Montant")
+
+    def descript(self):
+        return [self.id, self.date, self.amount, self.water_outlet.name]

@@ -85,6 +85,11 @@ def table(request):
         all = get_manager_elements(request, json_test, d)
     elif d["table_name"] == "ticket":
         all = get_ticket_elements(request, json_test, d)
+    elif d["table_name"] == "payment":
+        id = request.GET.get("user", "none")
+        if id == "none":
+            return success_200
+        all = get_payment_elements(request, json_test, d, id)
     else:
         return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
     if all is False: #There was a problem when retrieving the data
@@ -191,6 +196,19 @@ def edit_element(request):
     else:
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)
+
+
+def details(request):
+    table = request.POST.get("table", None)
+    result = {}
+    if table == "payment":
+        balance, validity = get_payment_details(request)
+        result["balance"] = balance
+        result["validity"] = validity
+    else:
+        return HttpResponse("Impossible d'obtenir des détails pour la table " + table +
+                            ", elle n'est pas reconnue", status=500)
+    return HttpResponse(json.dumps(result))
 
 
 def parse(request):
