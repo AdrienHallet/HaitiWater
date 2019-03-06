@@ -23,7 +23,7 @@ function drawPaymentTable() {
         setupModalPaymentEdit(data);
     } );
 
-    prettifyHeader('consumer');
+    prettifyHeader('payment');
 }
 
 function getPaymentDatatableConfiguration(dataURL){
@@ -55,7 +55,6 @@ function getPaymentDatatableConfiguration(dataURL){
             url: dataURL,
             error: function (xhr, error, thrown) {
                 console.log(xhr + '\n' + error + '\n' + thrown);
-                $('#datatable-payment_wrapper').hide();
                 new PNotify({
                     title: 'Échec du téléchargement!',
                     text: "Les données des paiements n'ont pas pu être téléchargées",
