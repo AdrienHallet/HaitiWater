@@ -24,6 +24,7 @@ function attachHandlers(consumerTable){
 function consumerDetails(data){
     let userID = data[0];
     setPaymentTableURL(userID);
+    $('#input-payment-id-consumer').val(userID);
 
     let userName = data[1] + " " + data[2];
     $('.consumer-name-details').html(userName);

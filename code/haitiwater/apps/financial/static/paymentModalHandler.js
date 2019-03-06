@@ -5,6 +5,7 @@
 function validatePaymentForm() {
     let form = document.forms["form-add-payment"];
 
+    let id_consumer = form["input-payment-id-consumer"].value;
     let id = form["input-payment-id"].value;
     let amount = form["input-payment-value"].value;
 
@@ -12,12 +13,13 @@ function validatePaymentForm() {
         $("#input-payment-value-error").removeClass('hidden');
         return false;
     }
-    return buildPaymentRequest(id, amount);
+    return buildPaymentRequest(id_consumer, id, amount);
 
 }
 
-function buildPaymentRequest(id, amount){
+function buildPaymentRequest(id_consumer, id, amount){
     let request = "table=payment";
+    request += "&id_consumer=" + id_consumer;
     request += "&id=" + id;
     request += "&amount=" + amount;
 
