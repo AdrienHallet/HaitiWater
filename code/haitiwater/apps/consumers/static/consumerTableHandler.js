@@ -79,7 +79,7 @@ function getConsumerDatatableConfiguration(dataURL, fullView){
                 "orderable": false,
                 "defaultContent": getActionButtonsHTML("modalConsumer"),
             }
-            ],
+        ],
         "language": getDataTableFrenchTranslation(),
         "ajax": {
             url: dataURL,
