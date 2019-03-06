@@ -110,6 +110,8 @@ function getRequest(table){
             return validateManagerForm();
         case 'zone':
             return validateZoneForm();
+        case 'payment':
+            return validatePaymentForm();
         default:
             return validateForm();
     }

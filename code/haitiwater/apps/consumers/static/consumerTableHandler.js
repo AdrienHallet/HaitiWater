@@ -30,7 +30,7 @@ function drawConsumerTable(fullView = true) {
         } else {}
     } );
     datatable.find('tbody').on( 'click', '.edit-row', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
+        let data = table.row($(this).closest('tr')).data();
         setupModalConsumerEdit(data);
     } );
 

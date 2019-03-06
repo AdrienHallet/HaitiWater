@@ -9,10 +9,10 @@ function validatePaymentForm() {
     let amount = form["input-payment-value"].value;
 
     if (amount <= 0) {
-        $("#input-payment-value-error").html('Vous ne pouvez entrer un paiement nul ou négatif');
+        $("#input-payment-value-error").removeClass('hidden');
         return false;
     }
-    return true;
+    return buildPaymentRequest(id, amount);
 
 }
 
@@ -26,7 +26,7 @@ function buildPaymentRequest(id, amount){
 
 function setupModalPaymentAdd(){
     //Show add components
-    $('#modal-payment-submit-add').removeClass("hidden");
+    $('#modal-payment-title-add').removeClass("hidden");
     $('#modal-payment-submit-edit').removeClass("hidden");
 
     //Hide edit components
@@ -53,7 +53,7 @@ function setupModalPaymentEdit(data){
 }
 
 function showPaymentModal(){
-    $('#plus-payment').magnificPopup({
+    $('#call-payment-modal').magnificPopup({
         type: 'inline',
         preloader: false,
         focus: '#name',
