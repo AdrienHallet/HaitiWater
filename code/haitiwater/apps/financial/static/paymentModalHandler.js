@@ -33,7 +33,7 @@ function setupModalPaymentAdd(){
     $('#modal-payment-title-edit').addClass("hidden");
     $('#modal-payment-submit-edit').addClass("hidden");
 
-    showPaymentModal();
+    showModal('#call-payment-modal');
 }
 
 function setupModalPaymentEdit(data){
@@ -49,27 +49,7 @@ function setupModalPaymentEdit(data){
     $('#input-payment-id').val(data[0]);
     $('#input-payment-value').val(data[1]);
 
-    showPaymentModal();
-}
-
-function showPaymentModal(){
-    $('#call-payment-modal').magnificPopup({
-        type: 'inline',
-        preloader: false,
-        focus: '#name',
-        modal: true,
-
-        // Do not zoom on mobile
-        callbacks: {
-            beforeOpen: function() {
-                if($(window).width() < 700) {
-                    this.st.focus = false;
-                } else {
-                    this.st.focus = '#name';
-                }
-            }
-        }
-    }).magnificPopup('open');
+    showModal('#call-payment-modal');
 }
 
 /**
