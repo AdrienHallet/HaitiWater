@@ -140,6 +140,7 @@ def table(request):
     if cache.get(cache_key):
         print("CACHE HIT !")
         all = json.loads(cache.get(cache_key))
+        cache.touch(cache_key, 30)
         json_test["recordsTotal"] = len(all)
     else:
         print("CACHE MISS !")
