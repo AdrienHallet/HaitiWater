@@ -24,4 +24,4 @@ class Payment(models.Model):
     amount = models.FloatField("Montant")
 
     def descript(self):
-        return [self.id, self.date, self.amount, self.water_outlet.name]
+        return [self.id, str(self.date), self.amount, self.water_outlet.name]

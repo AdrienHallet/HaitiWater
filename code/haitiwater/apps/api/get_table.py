@@ -205,5 +205,4 @@ def get_payment_details(request):
             validity = elem.expiration
     for elem in Payment.objects.filter(consumer_id=id):
         balance += elem.amount
-    print(balance, str(validity))
     return balance, str(validity)
