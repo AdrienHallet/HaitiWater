@@ -13,9 +13,9 @@ function drawPaymentTable() {
     datatable.DataTable(getPaymentDatatableConfiguration(dataURL));
 
     datatable.find('tbody').on( 'click', '.remove-row', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
-        if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
-            removeElement("consumer", data[0].innerText);
+        let data = table.row($(this).closest('tr')).data();
+        if (confirm("Voulez-vous supprimer: " + data[0] + ' ?')){
+            removeElement("payment", data[0]);
         } else {}
     } );
     datatable.find('tbody').on( 'click', '.edit-row', function () {
