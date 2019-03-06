@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
-from ..financial.models import Invoice
+from ..financial.models import Invoice, Payment
 from django.contrib.auth.models import User, Group
 
 
@@ -142,4 +142,23 @@ def edit_manager(request):
     else:
         return HttpResponse("Utilisateur introuvable dans la base de donnée",
                           status=404)
+    return success_200
+
+
+def edit_payment(request):
+    id = request.POST.get("id", None)
+    payment = Payment.objects.get(id=id)
+    if not payment:
+        return HttpResponse("Paiement introuvable dans la base de donnée", status=404)
+
+    id_consumer = request.POST.get("id_consumer", None)
+    consumer = Consumer.objects.get(id=id_consumer)
+    if not consumer:
+        return HttpResponse("Impossible de trouver l'utilisateur", status=404)
+    payment.consumer = consumer
+
+    payment.water_outlet = consumer.water_outlet
+    payment.amount = request.POST.get("amount", None)
+
+    payment.save()
     return success_200

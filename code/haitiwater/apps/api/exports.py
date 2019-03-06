@@ -117,6 +117,8 @@ def add_element(request):
         return add_collaborator_element(request)
     elif element == "ticket":
         return add_ticket_element(request)
+    elif element == "payment":
+        return add_payment_element(request)
     else:
         return HttpResponse("Impossible d'ajouter l'élément "+element, status=500)
 
@@ -193,6 +195,8 @@ def edit_element(request):
         return edit_ticket(request)
     elif element == "manager":
         return edit_manager(request)
+    elif element == "payment":
+        return edit_payment(request)
     else:
         return HttpResponse("Impossible d'éditer la table "+element+
                             ", elle n'est pas reconnue", status=500)

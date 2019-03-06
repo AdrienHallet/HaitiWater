@@ -196,7 +196,7 @@ def get_payment_elements(request, json, parsed, id):
 
 
 def get_payment_details(request):
-    id = request.GET.get("user", None)
+    id = request.GET.get("id", None)
     balance = 0
     validity = None
     for elem in Invoice.objects.filter(consumer_id=id):
@@ -205,4 +205,5 @@ def get_payment_details(request):
             validity = elem.expiration
     for elem in Payment.objects.filter(consumer_id=id):
         balance += elem.amount
-    return balance, validity
+    print(balance, str(validity))
+    return balance, str(validity)
