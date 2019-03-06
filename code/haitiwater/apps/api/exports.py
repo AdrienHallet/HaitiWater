@@ -193,7 +193,9 @@ def table(request):
     return HttpResponse(json.dumps(json_test))
 
 def add_element(request):
-    element = request.POST.get("table", None)
+    element = request.POST.get("table", "")
+    cache_key = element+request.user.username
+    cache.delete(cache_key)
     if element == "water_element":
         return add_network_element(request)
     elif element == "consumer":
@@ -209,7 +211,9 @@ def add_element(request):
 
 
 def remove_element(request):
-    element = request.POST.get("table", None)
+    element = request.POST.get("table", "")
+    cache_key = element+request.user.username
+    cache.delete(cache_key)
     if element == "water_element":
         id = request.POST.get("id", None)
         consumers = Consumer.objects.filter(water_outlet=id)
@@ -300,7 +304,9 @@ def remove_element(request):
 
 
 def edit_element(request):
-    element = request.POST.get("table", None)
+    element = request.POST.get("table", "")
+    cache_key = element+request.user.username
+    cache.delete(cache_key)
     if not element:
         element = request.GET.get("table", None)
     if element == "water_element":
