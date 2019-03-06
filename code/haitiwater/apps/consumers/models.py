@@ -4,7 +4,6 @@ from ..utils.common_models import *
 from ..water_network.models import Location, Element
 
 
-
 class Person(models.Model):
 
     first_name = models.CharField("Prénom", max_length=20)
@@ -12,7 +11,6 @@ class Person(models.Model):
     gender = models.CharField("Genre", max_length=1, choices=[("M", "Homme"), ("F", "Femme"), ("O", "Autre")], null=True)
     phone_number = models.CharField("Numéro de téléphone", max_length=10, null=True)
     email = models.CharField("Adresse email", max_length=50, null=True)
-    #location = models.ForeignKey(Location, verbose_name="Localité", on_delete=models.CASCADE)
     location = models.CharField("Adresse", max_length=50)
 
     def __str__(self):
@@ -31,7 +29,8 @@ class Consumer(Person):
 
     def descript(self):
         tab = [self.id, self.last_name, self.first_name, self.get_gender_display(),
-               self.location, self.phone_number, self.household_size, self.water_outlet.name, ""]
+               self.location, self.phone_number if self.phone_number != "0" else "Non spécifié",
+               self.household_size, self.water_outlet.name, ""]
         return tab
 
     def infos(self):
