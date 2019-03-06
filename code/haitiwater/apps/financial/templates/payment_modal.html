@@ -1,0 +1,45 @@
+<!-- Modal form to add/edit payment -->
+<div id="modalpayment" class="modal-block modal-block-primary mfp-hide">
+    <section class="panel">
+        <header class="panel-heading">
+            <h2 id="modal-payment-title-add" class="panel-title hidden">Ajouter un paiement</h2>
+            <h2 id="modal-payment-title-edit" class="panel-title hidden">Modifier un paiement</h2>
+        </header>
+        <div class="panel-body">
+            <div id="form-payment-error" class="alert alert-danger hidden">
+                <button type="button" class="close" onclick="hideFormErrorMsg('payment')" aria-hidden="true">×</button>
+                <div id="form-payment-error-msg"></div>
+            </div>
+            <form id="form-add-payment" class="form-horizontal mb-lg">
+                <div id="form-payment-id-component" class="form-group mt-lg hidden">
+                    <label class="col-sm-4 control-label">Identifiant</label>
+                    <div class="col-sm-8">
+                        <input id="input-payment-id" name="id" class="form-control" disabled>
+                    </div>
+                </div>
+                <div id="form-payment-name-component" class="form-group mt-lg">
+                    <label class="col-sm-4 control-label">Somme payée (HTG)</label>
+                    <div class="col-sm-8">
+                        <input id="input-payment-value" name="name" class="form-control">
+                        <label id="input-payment-value-error" class="error">Champ requis</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <footer class="panel-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button id="modal-payment-submit-add" onclick="postNewRow('payment')" class="btn btn-primary modal-confirm">
+                        Ajouter
+                    </button>
+                    <button id="modal-payment-submit-edit" onclick="postEditRow('payment')" class="btn btn-primary modal-confirm hidden">
+                        Modifier
+                    </button>
+                    <button onclick="dismissPaymentModal()" class="btn btn-default modal-dismiss">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>

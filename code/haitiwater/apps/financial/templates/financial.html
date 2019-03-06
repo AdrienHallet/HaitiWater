@@ -12,6 +12,7 @@
     <script src="{% static "consumerFormHandler.js"%}"></script>
 
     <script src="{% static "paymentTableHandler.js"%}"></script>
+    <script src="{% static "paymentModalHandler.js"%}"></script>
 
     <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
 
@@ -98,7 +99,7 @@
 									<td class="text-left" id="consumer-details-gender"></td>
 								</tr>
                                 <tr>
-									<td class="text-left">Addresse</td>
+									<td class="text-left">Adresse</td>
 									<td class="text-left" id="consumer-details-address"></td>
 								</tr>
                                 <tr>
@@ -141,4 +142,6 @@
     {% include "zone_modal.html" %}
 
     {% include "consumer_modal.html" %}
+
+    {% include "payment_modal.html" %}
 {% endblock %}
