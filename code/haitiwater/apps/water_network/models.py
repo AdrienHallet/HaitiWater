@@ -25,6 +25,8 @@ class ElementType(Enum):
     INDIVIDUAL = "Prise individuelle"
     # Conduite
     PIPE = "Conduite"
+    # Réservoir
+    TANK = "Réservoir"
 
 
 class ElementStatus(Enum):
