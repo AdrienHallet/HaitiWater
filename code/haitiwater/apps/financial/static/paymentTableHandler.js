@@ -10,12 +10,13 @@ function drawPaymentTable() {
 
     let datatable = $('#datatable-payment');
 
-    datatable.DataTable(getPaymentDatatableConfiguration(dataURL));
+    let table = datatable.DataTable(getPaymentDatatableConfiguration(dataURL));
 
     datatable.find('tbody').on( 'click', '.remove-row', function () {
         let data = table.row($(this).closest('tr')).data();
         if (confirm("Voulez-vous supprimer: " + data[0] + ' ?')){
-            removeElement("payment", data[0]);
+            let consumerIdParameter = '&id_consumer=' + $('#input-payment-id-consumer');
+            removeElement("payment", data[0], consumerIdParameter );
         } else {}
     } );
     datatable.find('tbody').on( 'click', '.edit-row', function () {
@@ -42,6 +43,14 @@ function getPaymentDatatableConfiguration(dataURL){
             },
             'pageLength'
         ],
+        "columnDefs": [
+            {
+                "targets": -1,
+                "data": null,
+                "orderable": false,
+                "defaultContent": getActionButtonsHTML("modal-payment"),
+            }
+        ],
         "sortable": true,
         "processing": false,
         "serverSide": true,
@@ -54,12 +63,14 @@ function getPaymentDatatableConfiguration(dataURL){
         "ajax": {
             url: dataURL,
             error: function (xhr, error, thrown) {
-                console.log(xhr + '\n' + error + '\n' + thrown);
-                new PNotify({
-                    title: 'Échec du téléchargement!',
-                    text: "Les données des paiements n'ont pas pu être téléchargées",
-                    type: 'failure'
-                });
+                if(xhr.status !== 200) { // Avoid first load error
+                    console.log(xhr + '\n' + error + '\n' + thrown);
+                    new PNotify({
+                        title: 'Échec du téléchargement!',
+                        text: "Les données des paiements n'ont pas pu être téléchargées",
+                        type: 'failure'
+                    });
+                }
             }
         },
     };

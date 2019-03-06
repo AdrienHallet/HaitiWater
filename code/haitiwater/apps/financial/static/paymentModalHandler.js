@@ -49,7 +49,7 @@ function setupModalPaymentEdit(data){
 
     //Setup elements
     $('#input-payment-id').val(data[0]);
-    $('#input-payment-value').val(data[1]);
+    $('#input-payment-value').val(data[2]);
 
     showModal('#call-payment-modal');
 }

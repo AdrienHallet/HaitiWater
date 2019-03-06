@@ -31,8 +31,6 @@ function consumerDetails(data){
 
     let financialDetails = requestFinancialDetails(userID);
 
-    console.log(financialDetails);
-
     $('#consumer-details-id').html(data[0]);
     $('#consumer-details-lastname').html(data[1]);
     $('#consumer-details-firstname').html(data[2]);
@@ -41,9 +39,6 @@ function consumerDetails(data){
     $('#consumer-details-phone').html(data[5]);
     $('#consumer-details-subconsumers').html(data[6]);
     $('#consumer-details-outlet').html(data[7]);
-
-
-
 }
 
 /**
@@ -56,8 +51,10 @@ function requestFinancialDetails(userID){
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
-        if (this.status === 200) {
-            return JSON.parse(this.response);
+        if (this.status === 200 && this.readyState === 4) {
+            let financialDetails = JSON.parse(this.response);
+            $('#consumer-details-balance').html('(HTG) ' + financialDetails.balance);
+            $('#consumer-details-next-bill').html(financialDetails.validity);
         }
         else if (this.readyState === 4){
             console.log(this);

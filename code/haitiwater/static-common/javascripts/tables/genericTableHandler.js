@@ -33,7 +33,7 @@ function drawDataTable(tableName){
  * @param table a String containing the table name
  * @param id an integer corresponding to the primary key of the element to remove
  */
-function removeElement(table, id){
+function removeElement(table, id, otherParameters){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/remove/";
     let xhttp = new XMLHttpRequest();
@@ -59,7 +59,8 @@ function removeElement(table, id){
             }
         }
     };
-    xhttp.send("table=" + table + "&id=" + id);
+    if (typeof otherParameters === 'undefined') { otherParameters = ''; }
+    xhttp.send("table=" + table + "&id=" + id + otherParameters);
 }
 
 /**
