@@ -36,6 +36,7 @@
                         <a href="#" class="fa fa-caret-down"></a>
                     </div>
                     <h2 class="panel-title">Zones</h2>
+                    <h2 class="panel-subtitle">Cliquez sur une zone pour afficher uniquement ses consommateurs</h2>
                 </header>
                 <div class="panel-body">
                     {% include 'zones_table.html' %}
@@ -53,6 +54,7 @@
                         <a href="#" class="fa fa-caret-down"></a>
                     </div>
                     <h2 class="panel-title">Consommateurs</h2>
+                    <h2 class="panel-subtitle">Cliquez sur un consommateur pour afficher ses paiements</h2>
                 </header>
                 <div class="panel-body">
                     {% include 'consumer_table.html' %}
@@ -61,7 +63,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div id="consumer-payment-details" class="row hidden">
         <div class="col-md-4">
             <section class="panel">
                 <header class="panel-heading">

@@ -14,6 +14,7 @@ $(document).ready(function() {
  */
 function attachHandlers(zoneTable, consumerTable){
     $('#datatable-consumer').first('tbody').on('click', 'tr td:not(:last-child)', function(){
+        $('#consumer-payment-details').removeClass('hidden');
         consumerDetails(consumerTable.row($(this).closest('tr')).data());
     });
 
