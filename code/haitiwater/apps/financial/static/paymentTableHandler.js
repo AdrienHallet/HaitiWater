@@ -1,9 +1,3 @@
-function setPaymentTableURL(userID){
-    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let dataURL = baseURL + "/api/table/?name=payment&user=" + userID;
-    $('#datatable-payment').DataTable().ajax.url(dataURL).load();
-}
-
 function drawPaymentTable() {
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=payment&user=none";

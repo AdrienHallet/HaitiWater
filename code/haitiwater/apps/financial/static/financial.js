@@ -1,19 +1,32 @@
 $(document).ready(function() {
     // Draw DataTables
-    drawZoneTable();
+    let zoneTable = drawZoneTable();
     let consumerTable = drawConsumerTable(false);
     drawPaymentTable();
 
-    attachHandlers(consumerTable);
+    attachHandlers(zoneTable, consumerTable);
 });
 
 /**
  * Attach the handlers for onclick navigation
+ * @param zoneTable to attach event to
  * @param consumerTable to attach event to
  */
-function attachHandlers(consumerTable){
+function attachHandlers(zoneTable, consumerTable){
     $('#datatable-consumer').first('tbody').on('click', 'tr td:not(:last-child)', function(){
         consumerDetails(consumerTable.row($(this).closest('tr')).data());
+    });
+
+    $('#datatable-zone').first('tbody').on('click', 'tr td:not(:last-child)', function(){
+        let row = ($(this).closest('tr'));
+        console.log(row);
+        if (row.hasClass('selected')) {
+            let zoneID = (zoneTable.row(row).data())[0];
+            setTableURL('consumer', '&zone=' + zoneID);
+        } else {
+            setTableURL('consumer', "");
+        }
+
     });
 }
 
@@ -23,13 +36,13 @@ function attachHandlers(consumerTable){
  */
 function consumerDetails(data){
     let userID = data[0];
-    setPaymentTableURL(userID);
+    setTableURL('payment', '&user=' + userID);
     $('#input-payment-id-consumer').val(userID);
 
     let userName = data[1] + " " + data[2];
     $('.consumer-name-details').html(userName);
 
-    let financialDetails = requestFinancialDetails(userID);
+    requestFinancialDetails(userID);
 
     $('#consumer-details-id').html(data[0]);
     $('#consumer-details-lastname').html(data[1]);

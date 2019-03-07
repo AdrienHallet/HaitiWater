@@ -224,7 +224,11 @@ function getDataTableFrenchTranslation(){
     }
 }
 
-// Get the cookie of given cookie name cookieName
+/**
+ * Get a cookie value
+ * @param cookieName the name
+ * @returns {string} the value
+ */
 function getCookie(cookieName)
 {
     if (document.cookie.length > 0)
@@ -239,4 +243,15 @@ function getCookie(cookieName)
         }
     }
     return "";
- }
+}
+
+/**
+ * Set a new URL for a datatable, useful for live changes of DataTable URL logic
+ * @param table the table name
+ * @param optional additional parameters
+ */
+function setTableURL(table, optional){
+    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    let dataURL = baseURL + "/api/table/?name=" + table + optional;
+    $('#datatable-'+table).DataTable().ajax.url(dataURL).load();
+}

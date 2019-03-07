@@ -28,6 +28,8 @@ function drawZoneTable(){
         setupModalZoneEdit(data);
     } );
     prettifyHeader('zone');
+
+    return table;
 }
 
 /**
