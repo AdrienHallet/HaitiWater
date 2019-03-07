@@ -26,6 +26,9 @@ function editElement(data){
 
 function drawDataTable(tableName){
     $('#datatable-' + tableName).DataTable().draw();
+    if (tableName === 'payment'){ // Should go in callback called by postNewRow
+        requestFinancialDetails($('#input-payment-id-consumer').val());
+    }
 }
 
 /**
