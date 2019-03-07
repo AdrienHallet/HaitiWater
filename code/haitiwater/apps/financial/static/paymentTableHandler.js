@@ -67,6 +67,13 @@ function getPaymentDatatableConfiguration(dataURL){
                 }
             }
         },
+        "initComplete": function(settings, json){
+            // Removes the last column (both header and body) if we cannot edit
+            if(!(json.hasOwnProperty('editable') && json['editable'])){
+                $('#datatable-water_element').DataTable().column(-1).visible(false);
+
+            }
+        },
     };
     return config;
 }

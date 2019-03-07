@@ -26,24 +26,28 @@
 
 {% block page_content %}
     <div class="row">
-        <div class="col-md-4">
-            <section class="panel">
-                <header class="panel-heading">
-                    <!-- Table block control actions -->
-                    <div class="panel-actions form-inline">
-                        <a href="#modalZone" onclick="setupModalZoneAdd()" class="modal-with-form fa fa-plus" id="plus-zone"></a>
-                        <a id="zone-options" class="fas fa-cog"></a>
-                        <a href="#" class="fa fa-caret-down"></a>
+        {% if user.is_authenticated and user|has_group:"Gestionnaire de zone"%}
+            <div class="col-md-4">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <!-- Table block control actions -->
+                        <div class="panel-actions form-inline">
+                            <a href="#modalZone" onclick="setupModalZoneAdd()" class="modal-with-form fa fa-plus" id="plus-zone"></a>
+                            <a id="zone-options" class="fas fa-cog"></a>
+                            <a href="#" class="fa fa-caret-down"></a>
+                        </div>
+                        <h2 class="panel-title">Zones</h2>
+                        <h2 class="panel-subtitle">Cliquez sur une zone pour afficher uniquement ses consommateurs</h2>
+                    </header>
+                    <div class="panel-body">
+                        {% include 'zones_table.html' %}
                     </div>
-                    <h2 class="panel-title">Zones</h2>
-                    <h2 class="panel-subtitle">Cliquez sur une zone pour afficher uniquement ses consommateurs</h2>
-                </header>
-                <div class="panel-body">
-                    {% include 'zones_table.html' %}
-                </div>
-            </section>
-        </div>
-        <div class="col-md-8">
+                </section>
+            </div>
+            <div class="col-md-8">
+        {% else %}
+            <div>
+        {% endif %}
             <section class="panel">
                 <header class="panel-heading">
                     <!-- Table block control actions -->
