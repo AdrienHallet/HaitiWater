@@ -4,6 +4,9 @@
 
 {% block page_name %}
 {#  TODO page imports  #}
+    <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
+
     <script src="{% static "zoneTableGenerator.js" %}"></script>
 
     <script src="{% static "consumerTableHandler.js" %}"></script>
@@ -14,9 +17,6 @@
 
     <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
     <script src="{% static "javascripts/tables/genericModalHandler.js" %}"></script>
-
-    <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
-    <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
 
     <script src="{% static "financial.js" %}"></script>
 
