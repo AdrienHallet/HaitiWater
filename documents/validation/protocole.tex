@@ -20,11 +20,11 @@ Hallet Adrien \hfill \today \\
 Strebelle Sébastien
 
 \section*{Abstract}
-    Ce document établit le protocole et les questions de l'expérience de validation avec des utilisateurs hors de l'équipe de développement. En fin de document, vous trouvez les scénarios tels que les utilisateurs les verront imprimés lors des essais.
+    Ce document établit le protocole et les questions de l'expérience de validation de l'interface et des fonctionnalités de l'application, principalement du point de vue de la facilité d'utilisation et de compréhension, avec des utilisateurs hors de l'équipe de développement. En fin de document, vous trouvez les scénarios tels que les utilisateurs les verront imprimés lors des essais.
 \hrule
 
 \section{Objectifs}
-    Les expériences de validation cherchent à mettre en avant les points forts/faibles de l'interface en utilisant un protocole identique, pour plusieurs participants, visant à normaliser les résultats et tenter de dégager une tendance positive ou négative. Les résultats de l'expérimentation permettront de confirmer ou infirmer des choix techniques, esthétiques et fonctionnels.
+    Les expériences de validation cherchent à mettre en avant les points forts/faibles de l'interface graphique en utilisant un protocole identique, pour plusieurs participants, visant à normaliser les résultats et tenter de dégager une tendance positive ou négative. Les résultats de l'expérimentation permettront de confirmer ou infirmer certains choix techniques, esthétiques et fonctionnels. L'exactitude des résultats n'est pas évaluée lors de cette validation.
 
 \section{Protocole}
     \subsection*{Résumé}
@@ -33,10 +33,10 @@ Strebelle Sébastien
     \subsection*{Présentation}
         L'objectif de l'application est de fournir un appui logiciel aux gestionnaires du réseau de distribution d'eau potable d'Haïti. On considère qu'il y a deux groupes d'utilisateurs principaux:
         \begin{itemize}
-            \item Le \emph{gestionnaires de zone} qui coordonne l'activité dans une certaine zone géographique. Il est un responsable administratif.
+            \item Le \emph{gestionnaire de zone} qui coordonne l'activité dans une certaine zone géographique. Il est un responsable administratif.
             \item Le \emph{gestionnaire de fontaine} qui participe au quotidien à la gestion physique du réseau de distribution. Il est au plus proche contact des consommateurs.
         \end{itemize}
-        En tant que sujet d'expérimentation, vous allez être présenté à différentes situations qui vont vous demander d'utiliser l'application à divers degrés de responsabilité et à travers plusieurs écrans. \emph{Le participant reçoit un numéro permettant de l'identifier à travers les différents scénarios}.
+        En tant que sujet d'expérimentation, le participant va être présenté à différentes situations qui vont lui demander d'utiliser l'application à divers degrés de responsabilité et à travers plusieurs écrans. Le participant reçoit un numéro permettant de l'identifier à travers les différents scénarios.
 
     \subsection*{Scénarios d'utilisation}
         L'utilisateur est placé devant l'application, ouverte sur le portail de connexion, et peut lire le scénario qui lui est proposé. Une fois prêt, l'utilisateur démarre la tâche et l'expérimentateur lance le chronomètre. Chaque participant est seul devant l'application ouverte en mode écran complet, écran simulant une tablette ou un smartphone. Le scénario (comprenant les instructions) lui est laissé à disposition. L'expérimentateur peut venir en aide au participant de manière brève et sans interagir avec le périphérique. Toute aide apportée sera notée. Une fois le scénario accompli, le temps écoulé est noté par l'expérimentateur. Si le participant ne parvient pas à compléter la tâche dans le temps imparti, l'expérimentateur interrompt l'expérience.
@@ -46,15 +46,18 @@ Strebelle Sébastien
     \subsection*{Questionnaire}
         Après accomplissement des tâches, le participant complète le questionnaire annexe visant à évaluer sa satisfaction quant à l'utilisation du logiciel et composé des 22 questions ci-après et d'un commentaire libre. Les questions sont regroupées en catégories. Chaque question dispose
         de quatre choix à sélection unique basés sur une échelle de Likert~\cite{wikipediaLikertScale}: \texttt{-{}-}, \texttt{-}, Neutre, \texttt{+} et \texttt{++}.
+        La section usabilité se base sur la \emph{Software Usability Scale}~\cite{sus, usagov}, qui est une technique d'évaluation simple et rapide de l'usabilité, traduite et adaptée au contexte de l'application. Les participants doivent répondre sans trop réfléchir aux questions et de manière individuelle. Si un participant ne peut répondre à une question, il doit sélectionner le neutre comme demandé par la software usability scale. Les autres sections se basent sur des gabarits d'évaluation logicielle~\cite{ssi} et expérimentations précédentes~\cite{richardbastin}. En plus d'un commentaire libre final, chacune des quatre sections de questions dispose d'un champ de commentaire libre.
 
-        La section usabilité se base sur la \emph{Software Usability Scale}~\cite{sus, usagov}, traduite et adaptée au contexte de l'application. Les participants doivent répondre sans trop réfléchir aux questions et de manière individuelle. Si un participant ne peut répondre à une question, il doit sélectionner le neutre. Les autres sections se basent sur des gabarits d'évaluation logicielle~\cite{ssi} et expérimentations précédentes~\cite{richardbastin}.
-
-
+        \subsection{Général}
+            \begin{description}
+                \item[G1] Je comprends les tâches demandées.
+                \item[G2] Je comprends l'utilité des tâches demandées dans le contexte de la gestion de l'eau.
+                \item[G3] Je comprends l'utilité de l'application.
+            \end{description}
         \subsubsection*{Fonctionnalités}
             \begin{description}
                 \item[F1] Je comprends l'utilité des contrôles de l'interface, je sais à quoi m'attendre en utilisant un contrôle (bouton, champ de texte, ...).
                 \item[F2] Je sais où cliquer pour réaliser la tâche demandée.
-                \item[F3] Je comprends l'utilité des tâches demandées dans le contexte de la gestion de l'eau.
                 \item[F4] Je peux réaliser les tâches facilement.
                 \item[F5] Je peux réaliser les tâches rapidement.
                 \item[F6] Je comprends les données qui me sont présentées à l'écran.
@@ -85,7 +88,7 @@ Strebelle Sébastien
             \end{description}
 
 \section{Attentes}
-    Avec cette expérimentation, nous cherchons à obtenir des vues externes sur l'application et ses fonctionnalités, récoltées de manière rigoureuse afin d'être critiques et objectifs quant aux réalisations logicielles. La phase de validation arrivant avant la phase de documentation finale, nous espérons non seulement récolter des informations sur la qualité de l'application sans documentation, mais aussi sur les points importants de la documentation et sur lesquels il faudra insister. Les objectifs sont donc de déceler les problèmes et d'envisager leurs solutions, dans l'objectif de les mettre en place dans la documentation ou dans le logiciel (selon des critères de temps, efficacité et pertinence).
+    Avec cette expérimentation, nous cherchons à obtenir des vues externes sur l'application et ses fonctionnalités, récoltées de manière rigoureuse afin d'être critiques et objectifs quant aux réalisations logicielles. La phase de validation arrivant avant la phase de documentation finale, nous espérons non seulement récolter des informations sur la qualité de l'application sans documentation, mais aussi sur les points importants de la documentation et sur lesquels il faudra insister. Les objectifs sont donc de déceler les problèmes et d'envisager leurs solutions, dans l'objectif de les mettre en place dans la documentation utilisateur ou dans le logiciel (selon des critères d'utilité, expérience utilisateur et pertinence).
 
 \newpage
 \section*{Scenario 1 - Gestion}
@@ -93,7 +96,7 @@ Strebelle Sébastien
         \item[Rôle] Administrateur principal
         \item[Objectif] Créer une nouvelle zone et y assigner un gestionnaire
         \item[Prérequis du système] /
-        \item[Contexte] Vous êtes un membre de l’ONG Protos. L’application HaïtiWater est déjà utilisée dans plusieurs départements d’Haïti et le département de l’Artibonite souhaite pouvoir l’utiliser également. En tant que responsable de l’application, vous devez permettre au responsable de la gestion de l’eau en Artibonite de se connecter à l’application et de gérer son réseau. Pour que le réseau de l’Artibonite soit indépendant des autres réseaux, vous devez créer une nouvelle zone et y assigner le responsable de la gestion de l'eau en Artibonite.
+        \item[Contexte] Vous êtes Claude, membre de l’ONG Protos. L’application HaïtiWater est déjà utilisée dans plusieurs départements d’Haïti et le département de l’Artibonite souhaite pouvoir l’utiliser également. En tant que responsable de l’application, vous devez permettre au responsable de la gestion de l’eau en Artibonite de se connecter à l’application et de gérer son réseau. Pour que le réseau de l’Artibonite soit indépendant des autres réseaux, vous devez créer une nouvelle zone et y assigner le responsable de la gestion de l'eau en Artibonite.
     \end{description}
 
     \subsubsection*{Informations nécessaires}
@@ -114,7 +117,7 @@ Strebelle Sébastien
             \end{description}
         \end{multicols}
 
-    \subsubsection*{Tâches (5 minutes)}
+    \subsubsection*{Tâches (30 minutes)}
         \begin{enumerate}
             \item Connectez-vous à l'application avec votre compte de gestionnaire: Protos.
             \item L’Artibonite n’existe pas encore dans l'application, vous devez l’ajouter en tant que nouvelle zone. Pour cela, il faut aller dans l’onglet de gestion de zone et créer une nouvelle zone. Vous pouvez choisir son nom.
@@ -126,9 +129,9 @@ Strebelle Sébastien
 \section*{Scenario 2 - Utiliser les tables}
     \begin{description}
         \item[Rôle] Gestionnaire de zone
-        \item[Objectif] Imprimer la liste des tous les éléments du réseau de la zone 'Ouest' classées par volume de sortie total
+        \item[Objectif] Imprimer la liste des tous les éléments (fontaines, kiosques, ...) du réseau de la zone \emph{Ouest} classées par volume de sortie total
         \item[Prérequis du système] Quatre zones (Nord, Sud, Est, Ouest) avec plus de dix fontaines par zone.
-        \item[Contexte] Vous êtes gestionnaire de zone et supervisez les opérations au niveau national. Cette semaine, une réunion a lieu pour décider des budgets alloués à la maintenance des fontaines de la zone de l'Ouest. Pour vous aider à allouer les fonds de manière équitable, vous avez besoin de la liste des installations de cette zone, classées par ordre de volume décroissant.
+        \item[Contexte] Vous êtes Dominique, gestionnaire de zone et supervisez les opérations au niveau national. Cette semaine, une réunion a lieu pour décider des budgets alloués à la maintenance des fontaines de la zone de l'Ouest. Pour vous aider à allouer les fonds de manière équitable, vous avez besoin de la liste des installations de cette zone, classées par ordre de volume décroissant.
     \end{description}
 
     \subsubsection*{Informations nécessaires}
@@ -137,12 +140,12 @@ Strebelle Sébastien
             \item[Utilisateur] Protos
             \item[Mot de passe] Protos
         \end{description}
-    \subsubsection*{Tâches (5 minutes)}
+    \subsubsection*{Tâches (30 minutes)}
         \begin{enumerate}
             \item Connectez-vous à l'application avec vote compte de gestionnaire: Protos.
-            \item Rendez-vous dans votre page de gestion et trouvez un moyen de filtrer les éléments pour ne conserver que ceux de la zone 'Ouest'.
+            \item Rendez-vous dans votre page de gestion et trouvez un moyen de filtrer les éléments pour ne conserver que ceux de la zone  \emph{Ouest}.
             \item Triez les éléments par volume décroissant.
-            \item Imprimez les éléments en vous assurant d'avoir la liste complète affichée. Par défaut, les tables n'affichent qu'un nombre limité d'éléments.
+            \item Imprimez les éléments en vous assurant d'avoir la liste complète affichée. Par défaut, les tables n'affichent qu'un nombre limité d'éléments. Vous pouvez vous arrêter une fois que le navigateur vous propose d'imprimer le bon document, il n'est pas nécessaire de l'imprimer physiquement.
         \end{enumerate}
 
 \newpage
@@ -152,7 +155,7 @@ Strebelle Sébastien
         \item[Rôle] Gestionnaire de fontaine
         \item[Objectif] Ajouter des consommateurs et envoyer un rapport mensuel
         \item[Prérequis du système] Un gestionnaire de fontaines et ses éléments du réseau: une fontaine, un kiosque et une prise individuelle.
-        \item[Contexte] Vous êtes gestionnaire de fontaine. Vous avez la responsabilité de trois points d'eau et d'une communauté d'utilisateurs. Votre objctif de la journée est d'enregistrer un nouveau consommateur ayant récemment déménagé dans la région, puis d'envoyer votre rapport mensuel.
+        \item[Contexte] Vous êtes Frédérique, gestionnaire de fontaine. Vous avez la responsabilité de trois points d'eau et d'une communauté d'utilisateurs. Votre objctif de la journée est d'enregistrer un nouveau consommateur ayant récemment déménagé dans la région, puis d'envoyer votre rapport mensuel.
     \end{description}
 
     \subsubsection*{Informations nécessaires}
@@ -167,18 +170,18 @@ Strebelle Sébastien
 
         Le nouveau consommateur est Monsieur Alain Proviste. Il vit seul au 32, Rue du foin, Belleville. Nous n'avons pas son numéro de téléphone et il habite juste à côté de la seule fontaine du village.
     \end{multicols}
-    Informations mensuelles:
-    \begin{description}
-        \item[Kiosque] 400 gallons de volume total à 10 gourdes le gallon
-        \item[Fontaine] 2 mètres cubes de débit total à 500 gourdes le mètre cube
-        \item[Prise individuelle] un demi mètre cube à 500 gourdes le mètre cube
-    \end{description}
 
-    \subsubsection*{Tâches (7 minutes)}
+    \subsubsection*{Tâches (30 minutes)}
         \begin{enumerate}
             \item Connectez-vous sur l'application avec votre compte: GestionnaireFontaine
             \item Ajoutez le nouveau consommateur récemment arrivé
             \item Envoyez le rapport du mois en cours
+            Informations mensuelles:
+            \begin{description}
+                \item[Kiosque] 400 gallons de volume total à 10 gourdes le gallon
+                \item[Fontaine] 2 mètres cubes de débit total à 500 gourdes le mètre cube
+                \item[Prise individuelle] un demi mètre cube à 500 gourdes le mètre cube
+            \end{description}
             \item Déconnectez-vous de l'application
         \end{enumerate}
 
@@ -213,7 +216,7 @@ Strebelle Sébastien
         \item[Rôle] Gestionnaire de fontaine
         \item[Objectif] Se connecter pour la première fois, changer de mot de passe et signaler un problème
         \item[Prérequis du système] Un utilisateur avec un mot de passe autogénéré et un élément
-        \item[Contexte] Vous êtes un gestionnaire de fontaine nouvellement nommé, félicitations ! Vous venez à l'instant de recevoir un courriel vous donnant vos informations de connexion. Le mot de passe généré est impossible à retenir alors vous allez le modifier. Vous allez également en profiter pour rapporter un problème mineur: votre fontaine produit des sons étranges quand on arrête de pomper.
+        \item[Contexte] Vous êtes Jean, un gestionnaire de fontaine nouvellement nommé, félicitations ! Vous venez à l'instant de recevoir un courriel vous donnant vos informations de connexion. Le mot de passe généré est impossible à retenir alors vous allez le modifier. Vous allez également en profiter pour rapporter un problème mineur: votre fontaine produit des sons étranges quand on arrête de pomper.
     \end{description}
 
     \subsubsection*{Informations nécessaires}
@@ -252,7 +255,7 @@ Strebelle Sébastien
     \\\texttt{https://www.usability.gov/}
 
 \bibitem{richardbastin}
-    Bastien Richard, \textit{ReflectOn : un outil logiciel de coaching à la rélfexion et l'apprentissage d'employés}, Mémoire de master en sciences informatiques, sous la direction de Kim Mens, Louvain-la-Neuve, Université catholique de Louvain, 2015, 96p.
+    Bastien Richard, \textit{ReflectOn : un outil logiciel de coaching à la réflexion et l'apprentissage d'employés}, Mémoire de master en sciences informatiques, sous la direction de Kim Mens, Louvain-la-Neuve, Université catholique de Louvain, 2015, 96p.
 
 \end{thebibliography}
 
