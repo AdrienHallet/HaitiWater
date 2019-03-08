@@ -11,6 +11,6 @@ urlpatterns = [
     url(r'gis/$', exports.gis_infos, name='network_gis'),
     url(r'edit/$', exports.edit_element, name='edit'),
     url(r'report/$', exports.add_report_element, name='report_add'),
-    url(r'log/$', exports.compute_logs, name='compute_logs')
+    url(r'log/$', exports.compute_logs, name='compute_logs'),
     url(r'details/$', exports.details, name="payment_detail"),
 ]

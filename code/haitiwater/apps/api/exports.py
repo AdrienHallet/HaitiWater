@@ -76,7 +76,7 @@ def get_details_network(request):
     infos = {"id": id_outlet,
              "type": outlet.get_type(),
              "localization": outlet.location,
-             "manager": outlet.get_manager(),
+             "manager": outlet.get_managers(),
              "users": outlet.get_consumers(),
              "state": outlet.get_status(),
              "currentMonthCubic": outlet.get_current_output(),

@@ -5,7 +5,11 @@
     "fields": {
       "name": "Haiti",
       "superzone": null,
-      "subzones":["Haiti"]
+      "subzones":["Haiti"],
+      "fountain_price": 0,
+      "fountain_duration": 1,
+      "kiosk_price": 0,
+      "kiosk_duration": 1
     }
   },
   {

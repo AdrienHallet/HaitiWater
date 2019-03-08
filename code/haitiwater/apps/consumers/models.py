@@ -24,7 +24,7 @@ class Consumer(Person):
 
     household_size = models.IntegerField("Taille du ménage")
     water_outlet = models.ForeignKey(Element, verbose_name="Sortie d'eau", related_name="consumers", on_delete=models.CASCADE)
-    creation_date = models.DateTimeField(auto_now_add=True)
+    creation_date = models.DateTimeField("Date de création", auto_now_add=True)
     #Consumer's zone is infered regarding the water_outlet he uses
 
     def descript(self):
