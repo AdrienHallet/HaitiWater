@@ -1,18 +1,22 @@
+import re
+import json
+from datetime import date, timedelta
+
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import Group
+
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
+
 from ..log.models import Transaction
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
-from django.contrib.auth.models import User, Group
-from django.contrib.auth.models import Group
+from ..financial.models import Invoice, Payment
 from ..water_network.models import ElementType
 from ..api.get_table import *
-
-import json
 
 success_200 = HttpResponse(status=200)
 
@@ -35,6 +39,13 @@ def add_consumer_element(request):
                           gender=gender, location=address, phone_number=phone,
                           email="", household_size=sub, water_outlet=outlet) #Creation
     log_element(new_c, request)
+    new_c.save()
+    if outlet.type != ElementType.INDIVIDUAL.name:
+        price, duration = outlet.get_price_and_duration()
+        creation = date.today()
+        expiration = creation + timedelta(days=duration*30)  # TODO each month
+        invoice = Invoice(consumer=new_c, water_outlet=outlet, creation=creation, expiration=expiration, amount=price)
+        invoice.save()
     return success_200
 
 
@@ -47,12 +58,12 @@ def add_network_element(request):
     e = Element(name=string_type+" "+loc, type=type, status=state,
                 location=loc, zone=zone) #Creation
     log_element(e, request)
+    e.save()
     return success_200
 
-@csrf_exempt
+
 def add_report_element(request):
     values = json.loads(request.body.decode("utf-8"))
-    print(values)
     for index, elem in enumerate(values["selectedOutlets"]):
         outlets = Element.objects.filter(id=elem)
         if len(outlets) < 1:
@@ -81,14 +92,25 @@ def add_report_element(request):
             report_line = Report(water_outlet=outlet, was_active=active,
                                  hours_active=hour_activity, has_data=data,
                                  days_active=day_activity)
-
-        report_line.save()
         log_element(report_line, request)
+        report_line.save()
+        if outlet.type == ElementType.INDIVIDUAL.name:  # Create an invoice for individual outlets
+            consumer = Consumer.objects.filter(water_outlet=outlet)[0]
+            amount = int(meters_distr) * int(value_meter)
+            creation = date.today()
+            expiration = creation + timedelta(days=30)
+            invoice = Invoice(consumer=consumer, water_outlet=outlet, creation=creation, expiration=expiration, amount=amount)
+            invoice.save()
     return success_200
 
 
 def add_zone_element(request):
     name = request.POST.get("name", None)
+    fountain_price = request.POST.get("fountain-price", 0)
+    fountain_duration = request.POST.get("fountain-duration", 1)
+    kiosk_price = request.POST.get("kiosk-price", 0)
+    kiosk_duration = request.POST.get("kiosk-duration", 1)
+    print(fountain_price, fountain_duration, kiosk_price, kiosk_duration)
     if request.user and request.user.profile.zone: #If user is connected and zone manager
         result = Zone.objects.filter(name=request.user.profile.zone)
         test_already_exist = Zone.objects.filter(name=name)
@@ -96,7 +118,9 @@ def add_zone_element(request):
             return HttpResponse("Une zone avec ce nom existe déjà dans l'application, veuillez en choisir un autre", status=500)
         if len(result) == 1:
             super = result[0]
-            to_add = Zone(name=name, superzone=super, subzones=[name])
+            to_add = Zone(name=name, superzone=super, subzones=[name],
+                          fountain_price=fountain_price, fountain_duration=fountain_duration,
+                          kiosk_price=kiosk_price, kiosk_duration=kiosk_duration)
             up = True
             while up:
                 super.subzones.append(name)
@@ -166,6 +190,7 @@ def add_collaborator_element(request):
         fail_silently=False,
     )
     log_element(new_user.profile, request)
+    new_user.save()
     return success_200
 
 
@@ -197,3 +222,15 @@ def log_element(elem, request):
     transaction.save()
     elem.save()
     elem.log_add(transaction)
+
+
+def add_payment_element(request):
+    id_consumer = request.POST.get("id_consumer", None)
+    consumer = Consumer.objects.get(id=id_consumer)
+    if not consumer:
+        return HttpResponse("Impossible de trouver l'utilisateur", status=404)
+    outlet = consumer.water_outlet
+    amount = request.POST.get("amount", None)
+    payment = Payment(consumer=consumer, water_outlet=outlet, amount=amount)
+    payment.save()
+    return success_200

@@ -33,6 +33,8 @@ urlpatterns = [
     path('user/', include('apps.authentication.urls')),
     path('offline/', include('apps.offline.urls')),
     path('aide/', include('apps.help.urls')),
+    path('finances/', include('apps.financial.urls')),
+    url(r'^sw.js', TemplateView.as_view(template_name="sw.js", content_type='application/javascript'), name='sw.js')
 ]
 
 # Add Django site authentication urls (for login, logout, password management)

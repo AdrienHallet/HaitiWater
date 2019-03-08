@@ -1,9 +1,15 @@
+import json
+from decimal import Decimal, ROUND_HALF_UP
+
+from django.http import HttpResponse
+from django.contrib.auth.models import User, Group
 
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
 from ..water_network.models import Element, Zone
+from ..financial.models import Invoice, Payment
+from ..utils.get_data import is_user_fountain, is_user_zone
 from ..log.models import Transaction, Log
-from django.contrib.auth.models import User
 
 
 def filter_search(parsed, values):
@@ -41,24 +47,20 @@ def get_water_elements(request, json, parsed):
 
 
 def get_consumer_elements(request, json, parsed):
-    zone = request.user.profile.zone
-    outlets = request.user.profile.outlets
-    all = []
-    if zone: #Zone manager
-        target = Zone.objects.filter(name=zone.name)
-        if len(target) == 1:
-            target = target[0]
-        else:
-            return False
-        all_consumers = [elem for elem in Consumer.objects.all() if elem.water_outlet.is_in_subzones(target)]
-    elif len(outlets) > 0:
+    all_consumers = None
+    if is_user_zone(request):
+        zone_id = request.GET.get("zone", None)  # TODO check if user can access this zone
+        zone = Zone.objects.get(id=zone_id) if zone_id else request.user.profile.zone
+        all_consumers = [elem for elem in Consumer.objects.all() if elem.water_outlet.is_in_subzones(zone)]
+    elif is_user_fountain(request):
+        outlets = request.user.profile.outlets
         all_consumers = Consumer.objects.filter(water_outlet_id__in=outlets)
-    else:
-        return False
+
+    result = []
     json["recordsTotal"] = len(all_consumers)
     for elem in all_consumers:
-        all.append(elem.descript())
-    return all
+        result.append(elem.descript())
+    return result
 
 
 def get_zone_elements(request, json, parsed):
@@ -189,6 +191,25 @@ def get_transaction_detail(logs):
                 else:
                     detail += indiv.column_name+" : "+indiv.old_value +" -> "+\
                           indiv.new_value+"<br>"
-
-
     return detail
+
+
+def get_payment_elements(request, json, parsed, id):
+    all = []
+    for elem in Payment.objects.filter(consumer_id=id):
+        all.append(elem.descript())
+    json["recordsTotal"] = len(all)
+    return all
+
+
+def get_payment_details(request):
+    id = request.GET.get("id", None)
+    balance = 0
+    validity = None
+    for elem in Invoice.objects.filter(consumer_id=id):
+        balance -= elem.amount
+        if not validity or elem.expiration > validity:
+            validity = elem.expiration
+    for elem in Payment.objects.filter(consumer_id=id):
+        balance += elem.amount
+    return balance, str(validity)
