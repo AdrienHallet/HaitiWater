@@ -1,13 +1,14 @@
 import json
-
 from decimal import Decimal, ROUND_HALF_UP
+
 from django.http import HttpResponse
+from django.contrib.auth.models import User, Group
 
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
 from ..water_network.models import Element, Zone
 from ..financial.models import Invoice, Payment
-from django.contrib.auth.models import User, Group
+from ..utils.get_data import is_user_fountain, is_user_zone
 
 
 def add_with_search(parsed, values):
@@ -55,32 +56,27 @@ def get_water_elements(request, json, parsed):
 
 
 def get_consumer_elements(request, json, parsed):
-    zone = request.user.profile.zone
-    outlets = request.user.profile.outlets
-    all = []
-    if zone: #Zone manager
-        target = Zone.objects.filter(name=zone.name)
-        if len(target) == 1:
-            target = target[0]
-        else:
-            return False
-        all_consumers = [elem for elem in Consumer.objects.all() if elem.water_outlet.is_in_subzones(target)]
-    elif len(outlets) > 0:
+    all_consumers = None
+    if is_user_zone(request):
+        zone_id = request.GET.get("zone", None)  # TODO check if user can access this zone
+        zone = Zone.objects.get(id=zone_id) if zone_id else request.user.profile.zone
+        all_consumers = [elem for elem in Consumer.objects.all() if elem.water_outlet.is_in_subzones(zone)]
+    elif is_user_fountain(request):
+        outlets = request.user.profile.outlets
         all_consumers = Consumer.objects.filter(water_outlet_id__in=outlets)
-    else:
-        return all
 
+    result = []
     json["recordsTotal"] = len(all_consumers)
     for elem in all_consumers:
         if parsed["search"] == "":
-            all.append(elem.descript())
+            result.append(elem.descript())
         else:
             for cols in parsed["searchable"]:
                 tab = elem.descript()
                 if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                    all.append(tab)
+                    result.append(tab)
                     break
-    return all
+    return result
 
 
 def get_zone_elements(request, json, parsed):

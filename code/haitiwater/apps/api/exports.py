@@ -89,6 +89,8 @@ def table(request):
         id = request.GET.get("user", "none")
         if id == "none":
             return success_200
+        if is_user_fountain(request):
+            json_test["editable"] = False
         all = get_payment_elements(request, json_test, d, id)
     else:
         return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
