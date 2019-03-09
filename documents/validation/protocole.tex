@@ -28,7 +28,7 @@ Strebelle Sébastien
 
 \section{Protocole}
     \subsection*{Résumé}
-        Chaque participant est introduit à l'application de manière générale sans présentation de l'interface. Chaque participant reçoit un numéro. L'expérimentation commence avec un scénario et un type d'interface (mobile ou desktop) défini. L'application est déjà ouverte sur le périphérique utilisé. Le participant doit ensuite compléter un scénario, divisé en plusieurs tâches, dans le temps imparti. Si le participant ne parvient pas à résoudre une tâche, il peut être aidé de manière brève et orale par l'expérimentateur qui notera chaque intervention de sa part. Une fois le scénario accompli, le participant réitère sur d'autres scénarios pour une durée maximale d'une heure trente au total. La dernière demie-heure est réservée à la complétion d'un formulaire en ligne composé de 22 questions utilisant une échelle de Likert~\cite{wikipediaLikertScale} et à une éventuelle discussion avec les participants.
+        Chaque participant est introduit à l'application de manière générale sans présentation de l'interface. Chaque participant reçoit un numéro. L'expérimentation commence avec un scénario et un type d'interface (mobile ou desktop) défini. L'application est déjà ouverte sur le périphérique utilisé. Le participant doit ensuite compléter un scénario, divisé en plusieurs tâches, dans le temps imparti. Si le participant ne parvient pas à résoudre une tâche, il peut être aidé de manière brève et orale par l'expérimentateur qui notera chaque intervention de sa part. Une fois le scénario accompli, le participant réitère sur d'autres scénarios pour une durée maximale d'une heure trente au total. La dernière demie-heure est réservée à la complétion d'un formulaire en ligne composé de 24 questions utilisant une échelle de Likert~\cite{wikipediaLikertScale} et à une éventuelle discussion avec les participants.
 
     \subsection*{Présentation}
         L'objectif de l'application est de fournir un appui logiciel aux gestionnaires du réseau de distribution d'eau potable d'Haïti. On considère qu'il y a deux groupes d'utilisateurs principaux:
@@ -44,7 +44,7 @@ Strebelle Sébastien
         Après un scénario accompli, le participant peut en commencer un nouveau. Les scénarios sont choisis aléatoirement.
 
     \subsection*{Questionnaire}
-        Après accomplissement des tâches, le participant complète le questionnaire annexe visant à évaluer sa satisfaction quant à l'utilisation du logiciel et composé des 22 questions ci-après et d'un commentaire libre. Les questions sont regroupées en catégories. Chaque question dispose
+        Après accomplissement des tâches, le participant complète le questionnaire annexe visant à évaluer sa satisfaction quant à l'utilisation du logiciel et composé des 24 questions ci-après et d'un commentaire libre. Les questions sont regroupées en catégories. Chaque question dispose
         de quatre choix à sélection unique basés sur une échelle de Likert~\cite{wikipediaLikertScale}: \texttt{-{}-}, \texttt{-}, Neutre, \texttt{+} et \texttt{++}.
         La section usabilité se base sur la \emph{Software Usability Scale}~\cite{sus, usagov}, qui est une technique d'évaluation simple et rapide de l'usabilité, traduite et adaptée au contexte de l'application. Les participants doivent répondre sans trop réfléchir aux questions et de manière individuelle. Si un participant ne peut répondre à une question, il doit sélectionner le neutre comme demandé par la software usability scale. Les autres sections se basent sur des gabarits d'évaluation logicielle~\cite{ssi} et expérimentations précédentes~\cite{richardbastin}. En plus d'un commentaire libre final, chacune des quatre sections de questions dispose d'un champ de commentaire libre.
 
@@ -129,9 +129,9 @@ Strebelle Sébastien
 \section*{Scenario 2 - Utiliser les tables}
     \begin{description}
         \item[Rôle] Gestionnaire de zone
-        \item[Objectif] Imprimer la liste des tous les éléments (fontaines, kiosques, ...) du réseau de la zone \emph{Ouest} classées par volume de sortie total
-        \item[Prérequis du système] Quatre zones (Nord, Sud, Est, Ouest) avec plus de dix fontaines par zone.
-        \item[Contexte] Vous êtes Dominique, gestionnaire de zone et supervisez les opérations au niveau national. Cette semaine, une réunion a lieu pour décider des budgets alloués à la maintenance des fontaines de la zone de l'Ouest. Pour vous aider à allouer les fonds de manière équitable, vous avez besoin de la liste des installations de cette zone, classées par ordre de volume décroissant.
+        \item[Objectif] Imprimer la liste des tous les éléments (fontaines, kiosques, ...) du réseau de la zone \emph{CAEPA Passe Catabois} classées par volume de sortie total
+        \item[Prérequis du système] Plusieurs avec plus de dix fontaines par zone, ou la version live du serveur.
+        \item[Contexte] Vous êtes Dominique, gestionnaire de zone et supervisez les opérations au niveau national. Cette semaine, une réunion a lieu pour décider des budgets alloués à la maintenance des fontaines de la zone de l'Ouest. Pour vous aider à allouer les fonds de manière équitable, vous avez besoin de la liste des installations de cette zone, classées par nombre d'utilisateurs décroissant.
     \end{description}
 
     \subsubsection*{Informations nécessaires}
@@ -143,8 +143,8 @@ Strebelle Sébastien
     \subsubsection*{Tâches (30 minutes)}
         \begin{enumerate}
             \item Connectez-vous à l'application avec vote compte de gestionnaire: Protos.
-            \item Rendez-vous dans votre page de gestion et trouvez un moyen de filtrer les éléments pour ne conserver que ceux de la zone  \emph{Ouest}.
-            \item Triez les éléments par volume décroissant.
+            \item Rendez-vous dans votre page de gestion et trouvez un moyen de filtrer les éléments pour ne conserver que ceux de la zone  \emph{CAEPA Passe Catabois}.
+            \item Triez les éléments par nombre d'utilisateurs décroissant.
             \item Imprimez les éléments en vous assurant d'avoir la liste complète affichée. Par défaut, les tables n'affichent qu'un nombre limité d'éléments. Vous pouvez vous arrêter une fois que le navigateur vous propose d'imprimer le bon document, il n'est pas nécessaire de l'imprimer physiquement.
         \end{enumerate}
 
@@ -162,8 +162,8 @@ Strebelle Sébastien
     \begin{multicols}{2}
         Vos informations:
         \begin{description}
-            \item[Utilisateur] GestionnaireFontaine
-            \item[Mot de passe] Gestionn4ire
+            \item[Utilisateur] frederique
+            \item[Mot de passe] gestionfontaine
         \end{description}
         \vfill\null
         \columnbreak
@@ -178,9 +178,11 @@ Strebelle Sébastien
             \item Envoyez le rapport du mois en cours
             Informations mensuelles:
             \begin{description}
+                \item[Activité] 22 jours, 14 heures par jour.
                 \item[Kiosque] 400 gallons de volume total à 10 gourdes le gallon
                 \item[Fontaine] 2 mètres cubes de débit total à 500 gourdes le mètre cube
                 \item[Prise individuelle] un demi mètre cube à 500 gourdes le mètre cube
+                \item[Recettes] 0 gourdes pour le kiosque et la fontaine, 150 gourdes pour la prise individuelle
             \end{description}
             \item Déconnectez-vous de l'application
         \end{enumerate}
@@ -203,7 +205,7 @@ Strebelle Sébastien
             \item[Une conduite] qui relie les deux
         \end{description}
 
-    \subsubsection*{Tâches (7 minutes)}
+    \subsubsection*{Tâches (30 minutes)}
         \begin{enumerate}
             \item Vous êtes sur la page d'accueil, rendez-vous sur la page de gestion géographique du réseau.
             \item Pour les trois éléments décrits ci-dessus, vous devez encoder l'élément dans la base de données, puis le placer sur la carte.
@@ -226,7 +228,7 @@ Strebelle Sébastien
         \item[Mot de passe] [Donné par l'examinateur]
     \end{description}
 
-    \subsubsection*{Tâches (5 minutes)}
+    \subsubsection*{Tâches (30 minutes)}
         \begin{enumerate}
             \item Connectez-vous à l'application à l'aide de votre mot de passe autogénéré.
             \item Modifiez votre mot de passe. Vous adorez le mot de passe "123456".
