@@ -13,7 +13,7 @@ function drawZoneTable(){
             filterWaterElementFromZone(table);
         }
         else {
-            table.$('tr.selected').removeClass('selected');
+            table.$('.selected').removeClass('selected');
             row.addClass('selected');
             filterManagerFromZone(table);
             filterWaterElementFromZone(table);
