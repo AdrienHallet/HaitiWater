@@ -1,4 +1,6 @@
 from django.contrib.gis.db import models
+from django.db.models import ManyToOneRel
+
 from ..log.utils import *
 from ..utils.common_models import *
 from ..water_network.models import Location, Element
@@ -36,10 +38,11 @@ class Consumer(Person):
     def infos(self):
         result = {}
         for field in Consumer._meta.get_fields():
-            if field.name == "water_outlet":
-                result[field.verbose_name] = self.water_outlet.id
-            else:
-                result[field.verbose_name] = self.__getattribute__(field.name)
+            if type(field) != ManyToOneRel:
+                if field.name == "water_outlet":
+                    result[field.verbose_name] = self.water_outlet.id
+                else:
+                    result[field.verbose_name] = self.__getattribute__(field.name)
         return result
 
     def log_add(self, transaction):

@@ -362,6 +362,7 @@ def details(request):
 def compute_logs(request):
     id_val = request.GET.get("id", -1)
     action = request.GET.get("action", None)
+    cache_key = "logs"+request.user.username
     if id_val == -1 or action == None:
         return HttpResponse("Impossible de valider/annuler ce changement", status=500)
     transaction = Transaction.objects.filter(id=id_val)
@@ -371,9 +372,11 @@ def compute_logs(request):
     if action == "accept":
         logs = Log.objects.filter(transaction=transaction)
         log_finished(logs, transaction)
+        cache.delete(cache_key)
         return HttpResponse(status=200)
     elif action == "revert":
         roll_back(transaction)
+        cache.delete(cache_key)
         return HttpResponse(status=200)
     else:
         return HttpResponse("Action non reconnue", status=500)
