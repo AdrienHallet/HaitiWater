@@ -1,14 +1,18 @@
+import re
 import json
+from datetime import date, timedelta
 
-import django
 from django.http import HttpResponse
-
-from ..water_network.models import Element, Zone
-from ..consumers.models import Consumer
-from ..log.models import Transaction, Log
-from ..report.models import Ticket, Report
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
 from django.db.models import Field
+
+from ..water_network.models import Element, ElementType, Zone
+from ..consumers.models import Consumer
+from ..report.models import Report, Ticket
+from ..financial.models import Invoice, Payment
+from ..log.models import Transaction, Log
+from ..report.models import Ticket, Report
 
 
 success_200 = HttpResponse(status=200)
@@ -49,9 +53,18 @@ def edit_consumer(request):
         outlet = outlet[0]
     else:
         return HttpResponse("Impossibe de trouver cet élément du réseau", status=404)  # Outlet not found, can't edit
+    old_outlet = consumer.water_outlet
     consumer.water_outlet = outlet
     log_element(consumer, old, request)
     consumer.save()
+    if old_outlet != outlet and not outlet.type == ElementType.INDIVIDUAL.name:
+        old_invoice = Invoice.objects.filter(water_outlet=old_outlet, expiration__gt=date.today())[0]
+        old_invoice.expiration = date.today()
+        price, duration = outlet.get_price_and_duration()
+        creation = date.today()
+        expiration = creation + timedelta(days=duration*30)  # TODO each month
+        invoice = Invoice(consumer=consumer, water_outlet=outlet, creation=creation, expiration=expiration, amount=price)
+        invoice.save()
     return success_200
 
 
@@ -64,6 +77,10 @@ def edit_zone(request):
     old = zone.infos()
     old_name = zone.name
     zone.name = request.POST.get("name", None)
+    zone.fountain_price = request.POST.get("fountain-price", 0)
+    zone.fountain_duration = request.POST.get("fountain-duration", 1)
+    zone.kiosk_price = request.POST.get("kiosk-price", 0)
+    zone.kiosk_duration = request.POST.get("kiosk-duration", 1)
     zone.subzones.remove(old_name)
     zone.subzones.append(zone.name)
     for z in Zone.objects.all():
@@ -159,6 +176,25 @@ def edit_manager(request):
     else:
         return HttpResponse("Utilisateur introuvable dans la base de donnée",
                           status=404)
+    return success_200
+
+
+def edit_payment(request):
+    id = request.POST.get("id", None)
+    payment = Payment.objects.get(id=id)
+    if not payment:
+        return HttpResponse("Paiement introuvable dans la base de donnée", status=404)
+
+    id_consumer = request.POST.get("id_consumer", None)
+    consumer = Consumer.objects.get(id=id_consumer)
+    if not consumer:
+        return HttpResponse("Impossible de trouver l'utilisateur", status=404)
+    payment.consumer = consumer
+
+    payment.water_outlet = consumer.water_outlet
+    payment.amount = request.POST.get("amount", None)
+
+    payment.save()
     return success_200
 
 

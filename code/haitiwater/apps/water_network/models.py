@@ -45,6 +45,10 @@ class ElementStatus(Enum):
 class Zone(models.Model):
 
     name = models.CharField("Nom", max_length=50)
+    fountain_price = models.FloatField("Prix de la souscription à une fontaine")
+    fountain_duration = models.IntegerField("Durée en mois de la souscription à une fontaine")
+    kiosk_price = models.FloatField("Prix de la souscription à un kiosque")
+    kiosk_duration = models.IntegerField("Durée en mois de la souscription à un kiosque")
     superzone = models.ForeignKey('self', verbose_name="Superzone", related_name='sub', null=True, on_delete=models.CASCADE)
     subzones = ArrayField(models.CharField(max_length=30), blank=True, default=list)
 
@@ -54,7 +58,7 @@ class Zone(models.Model):
         return self.name
 
     def descript(self):
-        return [self.id, self.name]
+        return [self.id, self.name, self.fountain_price, self.fountain_duration, self.kiosk_price, self.kiosk_duration]
 
     def infos(self):
         result = {
@@ -138,6 +142,17 @@ class Element(models.Model):
         if result == "":
             result = "Pas de gestionnaire  "
         return result[:-2]
+
+    def get_price_and_duration(self):
+        price = 0
+        duration = 1
+        if self.type == ElementType.FOUNTAIN.name:
+            price = self.zone.fountain_price
+            duration = self.zone.fountain_duration
+        elif self.type == ElementType.KIOSK.name:
+            price = self.zone.kiosk_price
+            duration = self.zone.kiosk_duration
+        return price, duration
 
     def network_descript(self):
         self.manager_names = self.get_managers()

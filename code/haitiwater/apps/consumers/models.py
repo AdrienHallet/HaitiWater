@@ -1,4 +1,6 @@
 from django.contrib.gis.db import models
+from django.db.models import ManyToOneRel
+
 from ..log.utils import *
 from ..utils.common_models import *
 from ..water_network.models import Location, Element
@@ -24,7 +26,7 @@ class Consumer(Person):
 
     household_size = models.IntegerField("Taille du ménage")
     water_outlet = models.ForeignKey(Element, verbose_name="Sortie d'eau", related_name="consumers", on_delete=models.CASCADE)
-    creation_date = models.DateTimeField(auto_now_add=True)
+    creation_date = models.DateTimeField("Date de création", auto_now_add=True)
     #Consumer's zone is infered regarding the water_outlet he uses
 
     def descript(self):
@@ -36,10 +38,11 @@ class Consumer(Person):
     def infos(self):
         result = {}
         for field in Consumer._meta.get_fields():
-            if field.name == "water_outlet":
-                result[field.verbose_name] = self.water_outlet.id
-            else:
-                result[field.verbose_name] = self.__getattribute__(field.name)
+            if type(field) != ManyToOneRel:
+                if field.name == "water_outlet":
+                    result[field.verbose_name] = self.water_outlet.id
+                else:
+                    result[field.verbose_name] = self.__getattribute__(field.name)
         return result
 
     def log_add(self, transaction):

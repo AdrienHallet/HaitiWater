@@ -1,21 +1,23 @@
 import re
+import json
+from django.http import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 
+from django.contrib.auth.models import User, Group
+from django.contrib.gis.geos import GEOSGeometry
+
 from ..water_network.models import Element, ElementType, Zone, Location
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
-from django.contrib.auth.models import User, Group
 from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
 from ..utils.get_data import is_user_fountain
-from django.contrib.gis.geos import GEOSGeometry
 from ..log.models import Transaction, Log
 from ..log.utils import *
 
-import json
 
 error_500 = HttpResponse(False, status=500)
 error_404 = HttpResponse(False, status=404)
@@ -74,7 +76,7 @@ def get_details_network(request):
     infos = {"id": id_outlet,
              "type": outlet.get_type(),
              "localization": outlet.location,
-             "manager": outlet.get_manager(),
+             "manager": outlet.get_managers(),
              "users": outlet.get_consumers(),
              "state": outlet.get_status(),
              "currentMonthCubic": outlet.get_current_output(),
@@ -83,6 +85,7 @@ def get_details_network(request):
              "geoJSON": location}
     print(infos)
     return HttpResponse(json.dumps(infos))
+
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def gis_infos(request):
@@ -164,6 +167,13 @@ def table(request):
             all = get_ticket_elements(request, json_test, d)
         elif d["table_name"] == "logs":
             all = get_logs_elements(request, json_test, d)
+        elif d["table_name"] == "payment":
+            id = request.GET.get("user", "none")
+            if id == "none":
+                return success_200
+            if is_user_fountain(request):
+                json_test["editable"] = False
+            all = get_payment_elements(request, json_test, d, id)
         else:
             return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
         if all:
@@ -193,6 +203,7 @@ def table(request):
     print(json.dumps(json_test))
     return HttpResponse(json.dumps(json_test))
 
+
 def add_element(request):
     element = request.POST.get("table", "")
     cache_key = element+request.user.username
@@ -207,6 +218,8 @@ def add_element(request):
         return add_collaborator_element(request)
     elif element == "ticket":
         return add_ticket_element(request)
+    elif element == "payment":
+        return add_payment_element(request)
     else:
         return HttpResponse("Impossible d'ajouter l'élément "+element, status=500)
 
@@ -271,6 +284,10 @@ def remove_element(request):
         log_element(to_delete, request)
         to_delete.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
+    elif element == "payment":
+        id = request.POST.get("id", None)
+        Payment.objects.get(id=id).delete()
+        return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "zone":
         id = request.POST.get("id", None)
         to_delete = Zone.objects.filter(id=id)
@@ -320,6 +337,8 @@ def edit_element(request):
         return edit_ticket(request)
     elif element == "manager":
         return edit_manager(request)
+    elif element == "payment":
+        return edit_payment(request)
     elif element == "report":
         return edit_report(request)
     else:
@@ -327,9 +346,23 @@ def edit_element(request):
                             ", elle n'est pas reconnue", status=500)
 
 
+def details(request):
+    table = request.GET.get("table", None)
+    result = {}
+    if table == "payment":
+        balance, validity = get_payment_details(request)
+        result["balance"] = balance
+        result["validity"] = validity
+    else:
+        return HttpResponse("Impossible d'obtenir des détails pour la table " + table +
+                            ", elle n'est pas reconnue", status=500)
+    return HttpResponse(json.dumps(result))
+
+
 def compute_logs(request):
     id_val = request.GET.get("id", -1)
     action = request.GET.get("action", None)
+    cache_key = "logs"+request.user.username
     if id_val == -1 or action == None:
         return HttpResponse("Impossible de valider/annuler ce changement", status=500)
     transaction = Transaction.objects.filter(id=id_val)
@@ -339,9 +372,11 @@ def compute_logs(request):
     if action == "accept":
         logs = Log.objects.filter(transaction=transaction)
         log_finished(logs, transaction)
+        cache.delete(cache_key)
         return HttpResponse(status=200)
     elif action == "revert":
         roll_back(transaction)
+        cache.delete(cache_key)
         return HttpResponse(status=200)
     else:
         return HttpResponse("Action non reconnue", status=500)
