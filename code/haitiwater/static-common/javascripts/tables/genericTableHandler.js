@@ -117,6 +117,7 @@ function getRequest(table){
  * Send a post request to server and handle it
  */
 function postNewRow(table){
+    beforeModalRequest();
     let request = getRequest(table);
     if(!request){
         // Form is not valid (missing/wrong fields)
@@ -148,6 +149,7 @@ function postNewRow(table){
                 });
                 drawDataTable(table);
             }
+            afterModalRequest();
         }
     };
     xhttp.send(request)
@@ -157,6 +159,7 @@ function postNewRow(table){
  * Send a post request to server and handle it
  */
 function postEditRow(table){
+    beforeModalRequest();
     let request = getRequest(table);
     if(!request){
         // Form is not valid (missing/wrong fields)
@@ -186,6 +189,7 @@ function postEditRow(table){
                 });
                 drawDataTable(table);
             }
+            afterModalRequest();
         }
     };
     xhttp.send(request)
@@ -220,6 +224,15 @@ function getDataTableFrenchTranslation(){
             }
         },
     }
+}
+
+function beforeModalRequest(){
+    //Disable the button to avoid multiple send
+    $('.modal-confirm').prop('disabled', true);
+}
+
+function afterModalRequest(){
+    $('.modal-confirm').prop('disabled', false);
 }
 
 /**
