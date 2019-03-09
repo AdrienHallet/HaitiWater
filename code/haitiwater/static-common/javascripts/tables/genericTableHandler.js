@@ -123,13 +123,13 @@ function getRequest(table){
  * Send a post request to server and handle it
  */
 function postNewRow(table){
-    beforeModalRequest();
     let request = getRequest(table);
     if(!request){
         // Form is not valid (missing/wrong fields)
         console.log("invalid form");
         return false;
     }
+    beforeModalRequest();
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/add/";
     let xhttp = new XMLHttpRequest();
@@ -165,12 +165,12 @@ function postNewRow(table){
  * Send a post request to server and handle it
  */
 function postEditRow(table){
-    beforeModalRequest();
     let request = getRequest(table);
     if(!request){
         // Form is not valid (missing/wrong fields)
         return false;
     }
+    beforeModalRequest();
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/edit/?" + request;
     let xhttp = new XMLHttpRequest();
