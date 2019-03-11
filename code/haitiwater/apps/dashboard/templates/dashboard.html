@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load group_filter %}
+{% load static %}
 
 {% block page_import %}
     <script type="application/javascript">
@@ -15,6 +16,7 @@
             localStorage.removeItem("outlets");
         {% endif %}
     </script>
+    <script src="{% static "dashboard.js" %}"></script>
 {% endblock %}
 
 {% block page_name %}
