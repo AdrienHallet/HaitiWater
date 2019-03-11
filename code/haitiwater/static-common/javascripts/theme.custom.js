@@ -11,7 +11,7 @@ $( document ).ready(function() {
     $('.sidebar-toggle').on('click', function (){
         isMenuOpen = !isMenuOpen;
         localStorage.setItem('isMenuOpen', isMenuOpen.toString());
-    })
+    });
 
     setupNotifications();
 });
@@ -80,4 +80,16 @@ function formatNotification(title, msg){
         '<span class="title">'+ title +'</span>' +
         '<span class="message">' + msg + '</span>' +
     '</a>';
+}
+
+/**
+ * Intro.JS page tour start
+ */
+function startPageTour(){
+    introJs().setOptions({
+        nextLabel: 'Suivant',
+        prevLabel: 'Précédent',
+        skipLabel: 'Passer',
+        doneLabel: 'Terminer',
+    }).start();
 }
