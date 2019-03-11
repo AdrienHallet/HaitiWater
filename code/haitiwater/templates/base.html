@@ -173,9 +173,7 @@
 						        <h2>{% block page_name %}{% endblock %}</h2>
                             </div>
                             <div class="col-sm-1">
-                                {% if request.path != '/accueil/' %}
-                                    <i class="fas fa-info-circle fa-2x" title="Aide rapide" onclick="startPageTour();"></i>
-                                {% endif %}
+                                <i id="quick-help" class="fas fa-info-circle fa-2x" title="Aide rapide" onclick="startPageTour();"></i>
                             </div>
                         </div>
 					</header>
