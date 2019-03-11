@@ -105,3 +105,22 @@
 .collapsible > p {
 	white-space: normal;
 }
+
+.breathing-color {
+    background-color: black;
+
+    animation: 1s infinite alternate ease-out breathing-color;
+}
+
+@keyframes breathing-color {
+    from
+    {
+        color: #777777;
+		background-color: transparent;
+    }
+    to
+    {
+        color: #ee6c4d;
+		background-color: transparent;
+    }
+}
