@@ -74,7 +74,7 @@ def get_details_network(request):
     infos = {"id": id_outlet,
              "type": outlet.get_type(),
              "localization": outlet.location,
-             "manager": outlet.get_manager(),
+             "manager": outlet.manager_names,
              "users": outlet.get_consumers(),
              "state": outlet.get_status(),
              "currentMonthCubic": outlet.get_current_output(),
@@ -107,7 +107,7 @@ def gis_infos(request):
         if len(elem) != 1:
             return HttpResponse("Impossible de trouver l'élément demandé", status=404)
         elem = elem[0]
-        if request.GET.get("action", None) == "add":
+        if request.GET.get("action", "none") == "add":
             json_value = json.loads(request.body.decode('utf-8'))
             poly = GEOSGeometry(str(json_value["geometry"]))
             loc = Location(elem=elem, lat=0, lon=0,
