@@ -165,8 +165,8 @@ def table(request):
             all = get_logs_elements(request, json_test, d)
         else:
             return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
-        #if all:
-        #    cache.set(cache_key, json.dumps(all), 30)
+        if all:
+            cache.set(cache_key, json.dumps(all), 30)
 
     if all is False: #There was a problem when retrieving the data
         return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
