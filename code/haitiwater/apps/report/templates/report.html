@@ -35,7 +35,7 @@
             <div class="col-md-12">
         {% endif %}
             <!-- Report buttons -->
-            <section class="panel">
+            <section class="panel" data-intro="Vous pouvez envoyer votre rapport mensuel, ou signaler un problème avec un élement du réseau de distribution.">
                 <header class="panel-heading">
                     <div class="panel-actions">
                         <a href="#" class="fa fa-caret-down"></a>
@@ -54,7 +54,7 @@
         </div>
         {% if user|has_group:"Gestionnaire de fontaine"%}
             <div class="col-md-6">
-                <section class="panel">
+                <section class="panel" data-intro="Vous pouvez éditer les rapports mensuels récents pour modifier des informations en cas d'erreur.">
                     <header class="panel-heading">
                         <div class="panel-actions">
                             <a href="#" class="fa fa-caret-down"></a>
@@ -72,7 +72,7 @@
     </div>
 
     <!-- Support ticket table -->
-    <section class="panel">
+    <section class="panel" data-intro="Consultez l'état des demandes de support.">
         <header class="panel-heading">
             <!-- Table block control actions -->
             <div class="panel-actions form-inline">
