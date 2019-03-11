@@ -70,9 +70,9 @@ function removeElement(table, id, otherParameters){
  * @returns {string} containing edit and remove buttons HTML code
  */
 function getActionButtonsHTML(modalName){
-    return '<div class="center"><a href="#'+ modalName + '" class="modal-with-form edit-row fa fa-pen"></a>' +
+    return '<div class="center"><a href="#'+ modalName + '" class="modal-with-form edit-row fa fa-pen" title="Editer"></a>' +
             '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
-            '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
+            '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash" title="Supprimer"></a></div>'
 }
 
 function hideFormErrorMsg(table){

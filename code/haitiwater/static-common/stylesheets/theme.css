@@ -2470,6 +2470,13 @@ ul.nav-main li .nav-children .nav-children .nav-children li a {
 	padding: 0 22px 0 20px;
 }
 
+.page-header i {
+    float:none;
+    display:inline-block;
+    vertical-align:middle;
+	margin-top: 12px
+}
+
 .page-header .right-wrapper {
 	float: right;
 }
@@ -2572,6 +2579,10 @@ html.sidebar-right-opened .page-header .sidebar-right-toggle i:before {
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		max-width: 100%;
+	}
+
+	.page-header i {
+		right: 50px
 	}
 
 	.page-header .sidebar-right-toggle {
