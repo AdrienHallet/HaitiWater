@@ -479,3 +479,50 @@ function isLine(type){
     let lineElements = ['conduite'];
     return lineElements.indexOf(type.toLowerCase()) > -1;
 }
+
+function startPageTour(){
+    if (!$('#details').hasClass('in')){
+        console.log("collapsed");
+        toggleDrawer();
+    }
+    let intro = introJs();
+    intro.setOptions({
+        nextLabel: 'Suivant',
+        prevLabel: 'Précédent',
+        skipLabel: 'Passer',
+        doneLabel: 'Terminer',
+        steps: [
+            {
+                element: document.getElementById('map-container'),
+                position: "bottom",
+                intro: "Voici une carte interactive. Vous pouvez visualiser les données de l'application géographiquement"
+            },
+            {
+                element: document.querySelector('.leaflet-left'),
+                position: "right",
+                intro: "Vous pouvez zoomer sur la carte (aussi avec la molette de la souris), modifier le type de vue et afficher ou masquer le réseau."
+            },
+            {
+                element: document.querySelector('.leaflet-right'),
+                position: "left",
+                intro: "Déroulez le panneau de détails pour en apprendre plus sur une fontaine et la placer sur la carte (manuellement ou via ses coordonnées)"
+            },
+            {
+                element: document.getElementById('button-draw'),
+                position: "left",
+                intro: "Placez l'élément manuellement sur la carte.",
+            },
+            {
+                element: document.getElementById('button-edit'),
+                position: "left",
+                intro: "Placez l'élément à l'aide de ses coordonnées géographiques.",
+            },
+            {
+                element: document.getElementById('button-remove'),
+                position: "left",
+                intro: "Supprimez la position géographique de l'élément.",
+            },
+        ].filter(function(obj) { return $(obj.element).length; }) // Only show step if element exists (multi-menu)
+    });
+    intro.start();
+}
