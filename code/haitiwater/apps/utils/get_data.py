@@ -73,7 +73,6 @@ def get_amount_household(request):
         return total
 
 
-
 def get_total_consumers(request):
     result = 0
     if is_user_zone(request):
@@ -99,18 +98,16 @@ def get_outlets(request):
     zone = request.user.profile.zone
     outlets = request.user.profile.outlets
     if zone:
-        all_outlets = Element.objects.all()
+        all_outlets = Element.objects.filter(zone__name__in=zone.subzones, type__in=["KIOSK", "FOUNTAIN", "INDIVIDUAL"])
         result = []
         for elem in all_outlets:
-            if elem.type in ["KIOSK", "FOUNTAIN", "INDIVIDUAL"] and elem.zone.name in zone.subzones:
-                result.append((elem.id, elem.name))
+            result.append((elem.id, elem.name))
         return result
     else:
-        all_outlets = Element.objects.all()
         result = []
-        for elem in all_outlets:
-            if elem.type in ["KIOSK", "FOUNTAIN", "INDIVIDUAL"] and str(elem.id) in outlets:
-                result.append((elem.id, elem.name))
+        for elem_id in outlets:
+            elem = Element.objects.get(id=elem_id)
+            result.append((elem.id, elem.name))
         return result
 
 
