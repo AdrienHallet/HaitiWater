@@ -2,8 +2,7 @@
 {% load static %}
 {% load group_filter %}
 
-{% block page_name %}
-{#  TODO page imports  #}
+{% block page_import %}
     <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
     <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
 
@@ -21,6 +20,9 @@
     <script src="{% static "financial.js" %}"></script>
 
     <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
+{% endblock %}
+
+{% block page_name %}
     Finances de {{zone_name}}
 {% endblock %}
 
@@ -28,7 +30,7 @@
     <div class="row">
         {% if user.is_authenticated and user|has_group:"Gestionnaire de zone"%}
             <div class="col-md-4">
-                <section class="panel">
+                <section class="panel" data-intro="Voici votre zone et ses éventuelles sous-zones. Cliquez sur une zone pour n'afficher que ses consommateurs.">
                     <header class="panel-heading">
                         <!-- Table block control actions -->
                         <div class="panel-actions form-inline">
@@ -37,7 +39,7 @@
                             <a href="#" class="fa fa-caret-down"></a>
                         </div>
                         <h2 class="panel-title">Zones</h2>
-                        <h2 class="panel-subtitle">Cliquez sur une zone pour afficher uniquement ses consommateurs</h2>
+                        <h2 class="panel-subtitle">Cliquez sur une zone pour filtrer les consommateurs</h2>
                     </header>
                     <div class="panel-body">
                         {% include 'zones_table.html' %}
@@ -48,7 +50,7 @@
         {% else %}
             <div>
         {% endif %}
-            <section class="panel">
+            <section class="panel" data-intro="Vos consommateurs s'affichent ici, cliquez sur un consommateur pour afficher ses détails et paiements.">
                 <header class="panel-heading">
                     <!-- Table block control actions -->
                     <div class="panel-actions form-inline">
