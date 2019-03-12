@@ -79,6 +79,23 @@ class Zone(models.Model):
         edit(self._meta.model_name, self.infos(), old, transaction)
 
 
+class VirtualZoneTotal(models.Model):
+    relevant_model = models.BigIntegerField("Id", primary_key=True)
+    zone_name = models.CharField("Nom de la zone", max_length=300)
+    indiv_consumers = models.IntegerField("Consommateurs individuels de cette zone", null=False, default=0)
+    total_consumers = models.IntegerField("Consommateurs de cette zone", null=False, default=0)
+    fountains = models.IntegerField("Fontaines de cette zone", null=False, default=0)
+    kiosks = models.IntegerField("Kiosques de cette zone", null=False, default=0)
+    indiv_outputs = models.IntegerField("Prises individuelles de cette zone", null=False, default=0)
+    water_points = models.IntegerField("Sources de cette zone", null=False, default=0)
+    pipes = models.IntegerField("Conduites de cette zone", null=False, default=0)
+    tanks = models.IntegerField("Réservoirs de cette zone", null=False, default=0)
+
+    class Meta:
+        managed = False
+        db_table = 'water_network_virtualzonetotal'
+
+
 class Element(models.Model):
 
     name = models.CharField("Nom", max_length=50)
