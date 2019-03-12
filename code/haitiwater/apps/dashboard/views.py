@@ -12,7 +12,6 @@ def index(request):
     }
     if request.user.is_authenticated:
         context['water_outlets_report'] = get_outlets_report(request)
-        print(request.user.profile.zone)
         if request.user.profile.zone:  # Gestionnaire de zone
             context['zone_name'] = request.user.profile.zone.name
             context['amount_fountain'] = get_amount_fountain(request.user.profile.zone)
