@@ -60,7 +60,7 @@ def roll_back(transaction):
         log_finished(logs, transaction)
     elif logs[0].action == "DELETE": #Delete case
         re_add_item(logs)
-        log_finished(logs, transaction)
+        #log_finished(logs, transaction)
 
 
 def get_concerned_tables(logs):
@@ -88,6 +88,7 @@ def roll_back_item(item, values):
 
 def re_add_item(logs):
     tables = get_concerned_tables(logs)
+    print(tables)
     for table in tables:
         restore_item(
             {log.column_name: log.old_value
@@ -111,6 +112,8 @@ def restore_item(dict, table):
         restore_user(dict)
     elif table == "payment":
         restore_payment(dict)
+    elif table == "location":
+        restore_location(dict)
 
 
 def restore_consumer(dict):
@@ -230,14 +233,25 @@ def restore_user(dict):
 
 def restore_payment(dict):
     from ..financial.models import Payment
-    id_payment = dict["ID"]
-    payment = Payment.objects.get(id=id_payment)
-    payment.amount = dict["Montant"]
+    from ..water_network.models import Element
+    from ..consumers.models import Consumer
+    cons = Consumer.objects.get(id=dict["Identifiant consommateur"])
+    water = Element.objects.get(id=dict["Identifiant point d'eau"])
+    payment = Payment(consumer=cons, water_outlet=water,
+                      amount=dict["Montant"], date=dict["Date de la facture"])
     payment.save()
 
 
+def restore_location(dict):
+    from ..water_network.models import Location, Element
+    elem = Element.objects.get(id=dict["Identifiant de l'élément"])
+    location = Location(poly=dict["_poly"], json_representation=dict["_json"],
+                        elem=elem, lat=dict["Latitude"], lon=dict["Longitude"])
+    location.save()
+
+
 def get_elem_logged(logs):
-    from ..water_network.models import Element, Zone
+    from ..water_network.models import Element, Zone, Location
     from ..report.models import Report, Ticket
     from ..consumers.models import Consumer
     from ..financial.models import Payment
@@ -263,6 +277,8 @@ def get_elem_logged(logs):
             elem = User.objects.get(id=ids[number])
         elif table == "payment":
             elem = Payment.objects.get(id=ids[number])
+        elif table == "location":
+            elem = Location.objects.get(id=ids[number])
         if elem is not None:
             elems.append(elem)
     return elems

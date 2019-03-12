@@ -111,16 +111,11 @@ def gis_infos(request):
             return HttpResponse("Impossible de trouver l'élément demandé", status=404)
         elem = elem[0]
         if request.GET.get("action", "none") == "add":
-            json_value = json.loads(request.body.decode('utf-8'))
-            poly = GEOSGeometry(str(json_value["geometry"]))
-            loc = Location(elem=elem, lat=0, lon=0,
-                       json_representation=request.body.decode('utf-8'),
-                       poly=poly)
-            loc.save()
-            return HttpResponse(status=200)
+            return add_location_element(request, elem)
         elif request.GET.get("action", None) == "remove":
-            loc = Location.objects.filter(elem_id=elem_id)
-            loc.delete() #TODO log
+            loc = Location.objects.get(elem_id=elem_id)
+            log_element(loc, request)
+            loc.delete()
             return HttpResponse(status=200)
         else:
             return HttpResponse("Impossible de traiter cette requête", status=500)
@@ -392,6 +387,7 @@ def log_element(element, request):
 
 
 def is_same(element, user):
+    print(element)
     log = Log.objects.filter(action="ADD", column_name="ID", table_name=element._meta.model_name,
                              new_value=element.id)
     if len(log) != 0:  # If we found a log for adding the element removed

@@ -175,17 +175,18 @@ def get_logs_elements(request, json, parsed):
     json["recordsTotal"] = len(all)
     return all
 
+
 def get_transaction_detail(logs):
     detail = ""
     for indiv in logs:
         if indiv.action == "ADD":
-            if indiv.new_value and indiv.new_value != "[]":
+            if indiv.new_value and indiv.new_value != "[]" and "_" not in indiv.column_name:
                 detail += indiv.column_name+" : "+indiv.new_value + "<br>"
-        elif indiv.action == "DELETE":
+        elif indiv.action == "DELETE" and "_" not in indiv.column_name:
             if indiv.old_value and indiv.old_value != "[]":
                 detail += indiv.column_name+" : "+indiv.old_value + "<br>"
         else:
-            if indiv.old_value and indiv.new_value:
+            if indiv.old_value and indiv.new_value and "_" not in indiv.column_name:
                 if indiv.column_name == "ID":
                     detail += "Id : " + indiv.old_value
                 else:
