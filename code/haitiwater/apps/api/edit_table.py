@@ -184,7 +184,7 @@ def edit_payment(request):
     payment = Payment.objects.get(id=id)
     if not payment:
         return HttpResponse("Paiement introuvable dans la base de donnée", status=404)
-
+    old = payment.infos()
     id_consumer = request.POST.get("id_consumer", None)
     consumer = Consumer.objects.get(id=id_consumer)
     if not consumer:
@@ -193,7 +193,7 @@ def edit_payment(request):
 
     payment.water_outlet = consumer.water_outlet
     payment.amount = request.POST.get("amount", None)
-
+    log_element(payment, old, request)
     payment.save()
     return success_200
 

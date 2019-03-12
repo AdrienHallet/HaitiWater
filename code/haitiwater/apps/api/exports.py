@@ -286,7 +286,9 @@ def remove_element(request):
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "payment":
         id = request.POST.get("id", None)
-        Payment.objects.get(id=id).delete()
+        payement = Payment.objects.get(id=id)
+        log_element(payement, request)
+        payement.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "zone":
         id = request.POST.get("id", None)

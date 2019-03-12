@@ -232,5 +232,6 @@ def add_payment_element(request):
     outlet = consumer.water_outlet
     amount = request.POST.get("amount", None)
     payment = Payment(consumer=consumer, water_outlet=outlet, amount=amount)
+    log_element(payment, request)
     payment.save()
     return success_200

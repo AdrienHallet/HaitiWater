@@ -18,6 +18,7 @@ class TableType(Enum):
     ticket = "Ticket de problème"
     location = "Point géographique"
     profile = "Profil utilisateur"
+    payment = "Payement de consommateur"
 
 
 class Transaction(models.Model):
