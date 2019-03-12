@@ -3,18 +3,19 @@
 {% load django_tables2 %}
 {% load compress %}
 
-{% block page_name %}
-{#    TODO page imports #}
+{% block page_import %}
     <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
     <script src="{% static "consumerTableHandler.js" %}"></script>
     <script src="{% static "consumerFormHandler.js"%}"></script>
     <script src="{% static "consumers.js" %}"></script>
 
-
     <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
     <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
 
     <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
+{% endblock %}
+
+{% block page_name %}
     Consommateurs
 {% endblock %}
 
