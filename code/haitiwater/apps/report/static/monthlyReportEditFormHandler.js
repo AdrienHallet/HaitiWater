@@ -11,9 +11,10 @@ $(document).ready(function() {
  */
 function postReportEdit(){
     let report = getEditedData();
-    if(!validateReport(report)){
+    if(!validateReport(report)) {
         return;
     }
+    beforeModalRequest();
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/edit/?table=report";
     let xhttp = new XMLHttpRequest();
@@ -38,6 +39,7 @@ function postReportEdit(){
                 });
                 dismissModal();
             }
+            afterModalRequest()
         }
     };
     console.log(JSON.stringify(report));
