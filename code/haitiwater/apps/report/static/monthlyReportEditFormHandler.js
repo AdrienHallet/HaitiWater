@@ -170,19 +170,3 @@ function attachComputeGainsHandler(){
         });
     });
 }
-
-/**
- * Refuse non-numeric inputs in number fields. Default on chrome but necessary on others.
- */
-function attachNumericInputHandler(){
-    $('input[type="number"]').keypress(function(e) {
-        let a = [];
-        let k = e.which;
-
-        for (let i = 48; i < 58; i++)
-            a.push(i);
-
-        if (!(a.indexOf(k)>=0))
-            e.preventDefault();
-    });
-}
