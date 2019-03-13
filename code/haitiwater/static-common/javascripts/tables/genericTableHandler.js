@@ -233,12 +233,17 @@ function getDataTableFrenchTranslation(){
 }
 
 function beforeModalRequest(){
-    //Disable the button to avoid multiple send
-    $('.modal-confirm').prop('disabled', true);
+    //Disable the button to avoid multiple send and put loading spinner
+    let button = $('.modal-confirm');
+    button.prop('disabled', true);
+    button.append('<i class="loader fas fa-spinner fa-spin"></i>');
+    button.addClass('loading');
 }
 
 function afterModalRequest(){
-    $('.modal-confirm').prop('disabled', false);
+    let button = $('.modal-confirm');
+    button.prop('disabled', false);
+    button.find('.loader').remove();
 }
 
 /**
