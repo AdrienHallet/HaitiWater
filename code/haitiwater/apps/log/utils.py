@@ -80,7 +80,7 @@ def log_finished(transaction, action):
     transaction.date_archived = now
     transaction.save()
     #Check to flush if needed #TODO : Maybe do a cron job on this
-    delta = datetime.timedelta(days=0) #Delta of two weeks
+    delta = datetime.timedelta(weeks=3) #Delta of three weeks
     for old_transaction in Transaction.objects.filter(archived=True):
         if old_transaction.date_archived + delta <= now \
                 and old_transaction != transaction: #If we need to flush this
