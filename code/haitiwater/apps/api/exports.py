@@ -62,31 +62,6 @@ def graph(request):
     return HttpResponse(json.dumps(json_val))
 
 
-def get_details_network(request):
-    id_outlet = request.GET.get("id", -1)
-    results = Element.objects.filter(id=id_outlet)
-    if len(results) != 1:
-        return HttpResponse("Impossible de charger cet élément", status=404)
-    outlet = results[0]
-    location = Location.objects.filter(elem=id_outlet)
-    if len(location) != 1:
-        location = None
-    else:
-        location = location[0].json_representation
-    infos = {"id": id_outlet,
-             "type": outlet.get_type(),
-             "localization": outlet.location,
-             "manager": outlet.manager_names,
-             "users": outlet.get_consumers(),
-             "state": outlet.get_status(),
-             "currentMonthCubic": outlet.get_current_output(),
-             "averageMonthCubic": outlet.get_all_output()[1],
-             "totalCubic": outlet.get_all_output()[0],
-             "geoJSON": location}
-    print(infos)
-    return HttpResponse(json.dumps(infos))
-
-
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def gis_infos(request):
     print(request)
@@ -348,15 +323,18 @@ def edit_element(request):
 
 def details(request):
     table = request.GET.get("table", None)
-    result = {}
     if table == "payment":
         balance, validity = get_payment_details(request)
+        result = {}
         result["balance"] = balance
         result["validity"] = validity
+        return HttpResponse(json.dumps(result))
+    elif table == "water_element":
+        return get_details_network(request)
     else:
         return HttpResponse("Impossible d'obtenir des détails pour la table " + table +
                             ", elle n'est pas reconnue", status=500)
-    return HttpResponse(json.dumps(result))
+
 
 
 def compute_logs(request):

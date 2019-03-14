@@ -95,12 +95,13 @@ def add_report_element(request):
         log_element(report_line, request)
         report_line.save()
         if outlet.type == ElementType.INDIVIDUAL.name:  # Create an invoice for individual outlets
-            consumer = Consumer.objects.filter(water_outlet=outlet)[0]
-            amount = int(meters_distr) * int(value_meter)
-            creation = date.today()
-            expiration = creation + timedelta(days=30)
-            invoice = Invoice(consumer=consumer, water_outlet=outlet, creation=creation, expiration=expiration, amount=amount)
-            invoice.save()
+            consumer = Consumer.objects.filter(water_outlet=outlet).first()
+            if consumer and data:
+                amount = int(meters_distr) * int(value_meter)
+                creation = date.today()
+                expiration = creation + timedelta(days=30)
+                invoice = Invoice(consumer=consumer, water_outlet=outlet, creation=creation, expiration=expiration, amount=amount)
+                invoice.save()
     return success_200
 
 
