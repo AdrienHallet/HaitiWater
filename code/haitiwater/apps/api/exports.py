@@ -367,8 +367,7 @@ def compute_logs(request):
         return HttpResponse("Impossible d'identifier le changement", status=404)
     transaction = transaction[0]
     if action == "accept":
-        logs = Log.objects.filter(transaction=transaction)
-        log_finished(logs, transaction)
+        log_finished(transaction)
         cache.delete(cache_key)
         return HttpResponse(status=200)
     elif action == "revert":

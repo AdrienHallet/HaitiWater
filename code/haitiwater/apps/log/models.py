@@ -25,6 +25,8 @@ class Transaction(models.Model):
     user = models.ForeignKey(User, verbose_name="Utilisateur ayant fait la modification",
                              related_name="MadeBy", null=False, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
+    archived = models.BooleanField("Archivé", default=False)
+    date_archived = models.DateField("Date d'archive", null=True)
 
     def is_visible(self):
         for user in [user for user in User.objects.all() if user.profile.zone is not None

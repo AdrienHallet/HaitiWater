@@ -1,8 +1,10 @@
+import datetime
+
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.http import HttpResponse
 
-from .models import Log
+from .models import Log, Transaction
 
 
 def log_add(table, column, value, transaction):
@@ -52,15 +54,15 @@ def roll_back(transaction):
                        for log in logs
                        if log.table_name == table and log.column_name != "ID"}
             )
-        log_finished(logs, transaction)
+        log_finished(transaction)
     elif logs[0].action == "ADD": #Add case
         elements = get_elem_logged(logs)
         for elem in elements:
             elem.delete()
-        log_finished(logs, transaction)
+        log_finished(transaction)
     elif logs[0].action == "DELETE": #Delete case
         re_add_item(logs)
-        #log_finished(logs, transaction)
+        log_finished(transaction)
 
 
 def get_concerned_tables(logs):
@@ -71,10 +73,20 @@ def get_concerned_tables(logs):
     return tables
 
 
-def log_finished(logs, transaction):
-    for log in logs:
-        log.delete()
-    transaction.delete()
+def log_finished(transaction):
+    #Archive
+    transaction.archived = True
+    now = datetime.datetime.now().date()
+    transaction.date_archived = now
+    transaction.save()
+    #Check to flush if needed
+    delta = datetime.timedelta(days=14) #Delta of two weeks
+    for old_transaction in Transaction.objects.filter(archived=True):
+        if old_transaction.date_archived + delta <= now \
+                and old_transaction != transaction: #If we need to flush this
+            for log in Log.objects.filter(transaction=old_transaction):
+                log.delete()
+            old_transaction.delete()
 
 
 def roll_back_item(item, values):

@@ -163,7 +163,7 @@ def get_last_reports(request, json, parsed):
 
 
 def get_logs_elements(request, json, parsed):
-    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates())
+    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates(), archived=False)
     all = []
     for t in transactions:
         logs = Log.objects.filter(transaction=t)
