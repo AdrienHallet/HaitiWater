@@ -11,9 +11,10 @@ $(document).ready(function() {
  */
 function postReportEdit(){
     let report = getEditedData();
-    if(!validateReport(report)){
+    if(!validateReport(report)) {
         return;
     }
+    beforeModalRequest();
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/edit/?table=report";
     let xhttp = new XMLHttpRequest();
@@ -38,6 +39,7 @@ function postReportEdit(){
                 });
                 dismissModal();
             }
+            afterModalRequest()
         }
     };
     console.log(JSON.stringify(report));
@@ -168,21 +170,5 @@ function attachComputeGainsHandler(){
             let sum = $('.cubic input').val() * $('.per-cubic input').val();
             $('.computed-gains').val(sum);
         });
-    });
-}
-
-/**
- * Refuse non-numeric inputs in number fields. Default on chrome but necessary on others.
- */
-function attachNumericInputHandler(){
-    $('input[type="number"]').keypress(function(e) {
-        let a = [];
-        let k = e.which;
-
-        for (let i = 48; i < 58; i++)
-            a.push(i);
-
-        if (!(a.indexOf(k)>=0))
-            e.preventDefault();
     });
 }

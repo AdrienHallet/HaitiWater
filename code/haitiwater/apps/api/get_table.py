@@ -6,7 +6,7 @@ from django.contrib.auth.models import User, Group
 
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
-from ..water_network.models import Element, Zone
+from ..water_network.models import Element, Zone, Location
 from ..financial.models import Invoice, Payment
 from ..utils.get_data import is_user_fountain, is_user_zone
 from ..log.models import Transaction, Log
@@ -214,3 +214,28 @@ def get_payment_details(request):
     for elem in Payment.objects.filter(consumer_id=id):
         balance += elem.amount
     return balance, str(validity)
+
+
+def get_details_network(request):
+    id_outlet = request.GET.get("id", -1)
+    results = Element.objects.filter(id=id_outlet)
+    if len(results) != 1:
+        return HttpResponse("Impossible de charger cet élément", status=404)
+    outlet = results[0]
+    location = Location.objects.filter(elem=id_outlet)
+    if len(location) != 1:
+        location = None
+    else:
+        location = location[0].json_representation
+    infos = {"id": id_outlet,
+             "type": outlet.get_type(),
+             "localization": outlet.location,
+             "manager": outlet.manager_names,
+             "users": outlet.get_consumers(),
+             "state": outlet.get_status(),
+             "currentMonthCubic": outlet.get_current_output(),
+             "averageMonthCubic": outlet.get_all_output()[1],
+             "totalCubic": outlet.get_all_output()[0],
+             "geoJSON": location}
+    print(infos)
+    return HttpResponse(json.dumps(infos))

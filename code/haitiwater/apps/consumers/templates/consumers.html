@@ -3,17 +3,19 @@
 {% load django_tables2 %}
 {% load compress %}
 
-{% block page_name %}
-{#    TODO page imports #}
-    <script src="{% static "consumers.js" %}"></script>
+{% block page_import %}
+    <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
     <script src="{% static "consumerTableHandler.js" %}"></script>
     <script src="{% static "consumerFormHandler.js"%}"></script>
-    <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
+    <script src="{% static "consumers.js" %}"></script>
 
     <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
     <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
 
     <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
+{% endblock %}
+
+{% block page_name %}
     Consommateurs
 {% endblock %}
 
@@ -24,7 +26,7 @@
             {% include "components/graphs/block_all_graphs.html" %}
         </div>
         <div class="col-md-6">
-            <section class="panel">
+            <section class="panel" data-intro="Des informations rapides sont disponibles sur les consommateurs de la zone">
                 <header class="panel-heading">
                     <div class="panel-actions form-inline">
                         <a href="#" class="fa fa-caret-down"></a>
@@ -79,7 +81,7 @@
         </div>
     </div>
 
-    <section class="panel">
+    <section class="panel" data-intro="Vous pouvez consulter et modifier les consommateurs de votre zone.">
         <header class="panel-heading">
             <!-- Table block control actions -->
             <div class="panel-actions form-inline">

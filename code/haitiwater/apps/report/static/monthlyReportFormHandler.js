@@ -72,6 +72,7 @@ $(document).ready(function() {
 							type: 'success'
 						});
 						localStorage.removeItem("monthlyReport");
+						drawDataTable('report');
 						dismissModal();
 					}
 				}
