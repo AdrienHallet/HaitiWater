@@ -54,15 +54,15 @@ def roll_back(transaction):
                        for log in logs
                        if log.table_name == table and log.column_name != "ID"}
             )
-        log_finished(transaction)
+        log_finished(transaction, "CANCEL")
     elif logs[0].action == "ADD": #Add case
         elements = get_elem_logged(logs)
         for elem in elements:
             elem.delete()
-        log_finished(transaction)
+        log_finished(transaction, "CANCEL")
     elif logs[0].action == "DELETE": #Delete case
         re_add_item(logs)
-        log_finished(transaction)
+        log_finished(transaction, "CANCEL")
 
 
 def get_concerned_tables(logs):
@@ -73,14 +73,14 @@ def get_concerned_tables(logs):
     return tables
 
 
-def log_finished(transaction):
+def log_finished(transaction, action):
     #Archive
     transaction.archived = True
     now = datetime.datetime.now().date()
     transaction.date_archived = now
     transaction.save()
-    #Check to flush if needed
-    delta = datetime.timedelta(days=14) #Delta of two weeks
+    #Check to flush if needed #TODO : Maybe do a cron job on this
+    delta = datetime.timedelta(days=0) #Delta of two weeks
     for old_transaction in Transaction.objects.filter(archived=True):
         if old_transaction.date_archived + delta <= now \
                 and old_transaction != transaction: #If we need to flush this

@@ -9,6 +9,11 @@ class ActionType(Enum):
     EDIT = "Modifier"
 
 
+class ChoiceType(Enum):
+    ACCEPT = "Validé"
+    CANCEL = "Refusé"
+
+
 class TableType(Enum):
     element = "Élément du réseau"
     zone = "Zone du réseau"
@@ -27,6 +32,8 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     archived = models.BooleanField("Archivé", default=False)
     date_archived = models.DateField("Date d'archive", null=True)
+    action = models.CharField("Choix du supérieur", choices=[(i.name, i.value) for i in ChoiceType], max_length=30,
+                              null=True)
 
     def is_visible(self):
         for user in [user for user in User.objects.all() if user.profile.zone is not None
