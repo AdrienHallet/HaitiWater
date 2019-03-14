@@ -197,14 +197,15 @@ function requestWaterElementDetails(elementID){
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
-        if (this.status == 200) {
-            $('.selected').removeClass('selected'); //de-select row as to not confuse in case of map selection (element click)
-            setupWaterElementDetails(JSON.parse(this.response));
-        }
-        else if (this.readyState == 4){
-            console.log(this);
-            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText;
-            displayDetailTableError(msg);
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                $('.selected').removeClass('selected'); //de-select row as to not confuse in case of map selection (element click)
+                setupWaterElementDetails(JSON.parse(this.response));
+            } else {
+                console.log(this);
+                let msg = "Une erreur est survenue:<br>" + this.status + ": " + this.statusText;
+                displayDetailTableError(msg);
+            }
         }
     };
 
