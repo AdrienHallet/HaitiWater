@@ -14,7 +14,7 @@ function drawLogsHistoryTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=logs_history";
     console.log("Request data from: " + dataURL);
-    let table = $('#datatable-logs-history').DataTable(getLogsTableConfiguration(dataURL));
+    let table = $('#datatable-logs-history').DataTable(getLogsHistoryTableConfiguration(dataURL));
 
     $('#datatable-logs-history tbody').on( 'click', 'tr td:not(:last-child)', function () {
         var tr = $(this).closest('tr');
@@ -36,29 +36,7 @@ function drawLogsHistoryTable(){
     prettifyHeader('logs-history');
 }
 
-function requestHandler(url){
-    let xhttp = new XMLHttpRequest();
-    xhttp.open('POST', url, true);
-    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
-
-    xhttp.onreadystatechange = function(){
-        if (this.status === 200) {
-            drawDataTable('logs-history');
-        }
-        else if (this.readyState === 4){
-            console.log(this);
-            new PNotify({
-                title: 'Échec!',
-                text: "Opération impossible: " + this.statusText,
-                type: 'error'
-            });
-        }
-    };
-    xhttp.send();
-}
-
-function getLogsTableConfiguration(dataURL){
+function getLogsHistoryTableConfiguration(dataURL){
     let config = {
         lengthMenu: [
             [ 10, 25, 50, -1 ],
