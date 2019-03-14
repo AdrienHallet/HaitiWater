@@ -176,6 +176,22 @@ def get_logs_elements(request, json, parsed):
     return all
 
 
+def get_old_logs_elements(request, json, parsed):
+    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates(), archived=True)
+    all = []
+    for t in transactions:
+        logs = Log.objects.filter(transaction=t)
+        details = get_transaction_detail(logs)
+        item = {"id": t.id, "time": str(t.timestamp.date()),
+                "type": logs[0].get_action(), "user": t.user.username,
+                "summary": logs[0].get_table(), "details": details, "action": t.get_action()}
+        print(item)
+        all.append(item)
+    json["recordsTotal"] = len(all)
+    print(all)
+    return all
+
+
 def get_transaction_detail(logs):
     detail = ""
     for indiv in logs:

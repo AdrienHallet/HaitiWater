@@ -137,6 +137,8 @@ def table(request):
             all = get_ticket_elements(request, json_test, d)
         elif d["table_name"] == "logs":
             all = get_logs_elements(request, json_test, d)
+        elif d["table_name"] == "logs_history":
+            all = get_old_logs_elements(request, json_test, d)
         elif d["table_name"] == "payment":
             id = request.GET.get("user", "none")
             if id == "none":
@@ -155,7 +157,8 @@ def table(request):
     #Filter data
     all = filter_search(d, all)
 
-    if d["table_name"] == "logs" or d["table_name"] == "report":
+    if d["table_name"] == "logs" or d["table_name"] == "logs_history"\
+            or d["table_name"] == "report":
         if len(all) > 1:
             keys = list(all[0].keys())
             final = sorted(all, key=lambda x: x[keys[d["column_ordered"]]],
