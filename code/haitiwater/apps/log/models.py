@@ -34,6 +34,7 @@ class Transaction(models.Model):
     date_archived = models.DateField("Date d'archive", null=True)
     action = models.CharField("Choix du supérieur", choices=[(i.name, i.value) for i in ChoiceType], max_length=30,
                               null=True)
+
     def get_action(self):
         return ChoiceType[self.action].value
 

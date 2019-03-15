@@ -78,6 +78,7 @@ def log_finished(transaction, action):
     transaction.archived = True
     now = datetime.datetime.now().date()
     transaction.date_archived = now
+    transaction.action = action
     transaction.save()
     #Check to flush if needed #TODO : Maybe do a cron job on this
     delta = datetime.timedelta(weeks=3) #Delta of three weeks

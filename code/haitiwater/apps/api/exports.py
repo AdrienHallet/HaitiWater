@@ -341,6 +341,7 @@ def compute_logs(request):
     id_val = request.GET.get("id", -1)
     action = request.GET.get("action", None)
     cache_key = "logs"+request.user.username
+    cache_key2 = "logs_history"+request.user.username
     if id_val == -1 or action == None:
         return HttpResponse("Impossible de valider/annuler ce changement", status=500)
     transaction = Transaction.objects.filter(id=id_val)
@@ -350,10 +351,12 @@ def compute_logs(request):
     if action == "accept":
         log_finished(transaction, "ACCEPT")
         cache.delete(cache_key)
+        cache.delete(cache_key2)
         return HttpResponse(status=200)
     elif action == "revert":
         roll_back(transaction)
         cache.delete(cache_key)
+        cache.delete(cache_key2)
         return HttpResponse(status=200)
     else:
         return HttpResponse("Action non reconnue", status=500)
@@ -372,9 +375,10 @@ def is_same(element, user):
                              new_value=element.id)
     if len(log) != 0:  # If we found a log for adding the element removed
         transaction = log[0].transaction
-        if transaction.user == user:
+        if transaction.user == user and not transaction.archived:
             all_logs = Log.objects.filter(transaction=transaction)
-            log_finished(all_logs, transaction)
+            #log_finished(all_logs, transaction)
+            #TODO : remove transaction
             return True
     return False
 
