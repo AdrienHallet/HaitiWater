@@ -38,18 +38,17 @@ class Profile(models.Model):
 
     def get_subordinates(self):
         sub = []
-        all_users = User.objects.all()
-        for user in all_users:
-            if not user.profile:
+        for user in User.objects.all():
+            if user.username == "admin": #Skip the admin
                 pass
-            elif user.profile.zone != None: #Zone manager
+            elif user.profile.zone is not None: #Zone manager
                 if user.profile.zone and user.profile.zone.name in self.zone.subzones \
-                        and user != self.user:
+                        and user.username != self.user.username:
                     sub.append(user)
             elif len(user.profile.outlets) > 0: #Fountain manager
                 add = True
                 for outlet in user.profile.outlets:
-                    outlet = Element.objects.filter(id=outlet)[0]
+                    outlet = Element.objects.get(id=outlet)
                     if outlet.zone.name not in self.zone.subzones:
                         add = False
                 if add:

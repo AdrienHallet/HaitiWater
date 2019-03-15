@@ -1,8 +1,10 @@
+import datetime
+
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.http import HttpResponse
 
-from .models import Log
+from .models import Log, Transaction
 
 
 def log_add(table, column, value, transaction):
@@ -43,6 +45,8 @@ def roll_back(transaction):
     if logs[0].action == "EDIT": #Edit case
         elements = get_elem_logged(logs)
         tables = get_concerned_tables(logs)
+        print(tables)
+        print(elements)
         for number, table in enumerate(tables):
             roll_back_item(
                 elements[number],
@@ -50,15 +54,15 @@ def roll_back(transaction):
                        for log in logs
                        if log.table_name == table and log.column_name != "ID"}
             )
-        log_finished(logs, transaction)
+        log_finished(transaction, "CANCEL")
     elif logs[0].action == "ADD": #Add case
         elements = get_elem_logged(logs)
         for elem in elements:
             elem.delete()
-        log_finished(logs, transaction)
+        log_finished(transaction, "CANCEL")
     elif logs[0].action == "DELETE": #Delete case
         re_add_item(logs)
-        log_finished(logs, transaction)
+        log_finished(transaction, "CANCEL")
 
 
 def get_concerned_tables(logs):
@@ -69,10 +73,21 @@ def get_concerned_tables(logs):
     return tables
 
 
-def log_finished(logs, transaction):
-    for log in logs:
-        log.delete()
-    transaction.delete()
+def log_finished(transaction, action):
+    #Archive
+    transaction.archived = True
+    now = datetime.datetime.now().date()
+    transaction.date_archived = now
+    transaction.action = action
+    transaction.save()
+    #Check to flush if needed #TODO : Maybe do a cron job on this
+    delta = datetime.timedelta(weeks=3) #Delta of three weeks
+    for old_transaction in Transaction.objects.filter(archived=True):
+        if old_transaction.date_archived + delta <= now \
+                and old_transaction != transaction: #If we need to flush this
+            for log in Log.objects.filter(transaction=old_transaction):
+                log.delete()
+            old_transaction.delete()
 
 
 def roll_back_item(item, values):
@@ -86,6 +101,7 @@ def roll_back_item(item, values):
 
 def re_add_item(logs):
     tables = get_concerned_tables(logs)
+    print(tables)
     for table in tables:
         restore_item(
             {log.column_name: log.old_value
@@ -107,6 +123,10 @@ def restore_item(dict, table):
         pass
     elif table == "user":
         restore_user(dict)
+    elif table == "payment":
+        restore_payment(dict)
+    elif table == "location":
+        restore_location(dict)
 
 
 def restore_consumer(dict):
@@ -224,10 +244,30 @@ def restore_user(dict):
     )
 
 
+def restore_payment(dict):
+    from ..financial.models import Payment
+    from ..water_network.models import Element
+    from ..consumers.models import Consumer
+    cons = Consumer.objects.get(id=dict["Identifiant consommateur"])
+    water = Element.objects.get(id=dict["Identifiant point d'eau"])
+    payment = Payment(consumer=cons, water_outlet=water,
+                      amount=dict["Montant"], date=dict["Date de la facture"])
+    payment.save()
+
+
+def restore_location(dict):
+    from ..water_network.models import Location, Element
+    elem = Element.objects.get(id=dict["Identifiant de l'élément"])
+    location = Location(poly=dict["_poly"], json_representation=dict["_json"],
+                        elem=elem, lat=dict["Latitude"], lon=dict["Longitude"])
+    location.save()
+
+
 def get_elem_logged(logs):
-    from ..water_network.models import Element, Zone
+    from ..water_network.models import Element, Zone, Location
     from ..report.models import Report, Ticket
     from ..consumers.models import Consumer
+    from ..financial.models import Payment
     tables = get_concerned_tables(logs)
     ids = []
     for elem in logs:
@@ -237,17 +277,21 @@ def get_elem_logged(logs):
     for number, table in enumerate(tables):
         elem = None
         if table == "consumer":
-            elem = Consumer.objects.filter(id=ids[number])[0]
+            elem = Consumer.objects.get(id=ids[number])
         elif table == "ticket":
-            elem = Ticket.objects.filter(id=ids[number])[0]
+            elem = Ticket.objects.get(id=ids[number])
         elif table == "element":
-            elem = Element.objects.filter(id=ids[number])[0]
+            elem = Element.objects.get(id=ids[number])
         elif table == "zone":
-            elem = Zone.objects.filter(id=ids[number])[0]
+            elem = Zone.objects.get(id=ids[number])
         elif table == "report":
-            elem = Report.objects.filter(id=ids[number])[0]
+            elem = Report.objects.get(id=ids[number])
         elif table == "profile":
-            elem = User.objects.filter(id=ids[number])[0]
+            elem = User.objects.get(id=ids[number])
+        elif table == "payment":
+            elem = Payment.objects.get(id=ids[number])
+        elif table == "location":
+            elem = Location.objects.get(id=ids[number])
         if elem is not None:
             elems.append(elem)
     return elems

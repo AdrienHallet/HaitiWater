@@ -86,16 +86,11 @@ def gis_infos(request):
             return HttpResponse("Impossible de trouver l'élément demandé", status=404)
         elem = elem[0]
         if request.GET.get("action", "none") == "add":
-            json_value = json.loads(request.body.decode('utf-8'))
-            poly = GEOSGeometry(str(json_value["geometry"]))
-            loc = Location(elem=elem, lat=0, lon=0,
-                       json_representation=request.body.decode('utf-8'),
-                       poly=poly)
-            loc.save()
-            return HttpResponse(status=200)
+            return add_location_element(request, elem)
         elif request.GET.get("action", None) == "remove":
-            loc = Location.objects.filter(elem_id=elem_id)
-            loc.delete() #TODO log
+            loc = Location.objects.get(elem_id=elem_id)
+            log_element(loc, request)
+            loc.delete()
             return HttpResponse(status=200)
         else:
             return HttpResponse("Impossible de traiter cette requête", status=500)
@@ -142,6 +137,8 @@ def table(request):
             all = get_ticket_elements(request, json_test, d)
         elif d["table_name"] == "logs":
             all = get_logs_elements(request, json_test, d)
+        elif d["table_name"] == "logs_history":
+            all = get_old_logs_elements(request, json_test, d)
         elif d["table_name"] == "payment":
             id = request.GET.get("user", "none")
             if id == "none":
@@ -160,7 +157,8 @@ def table(request):
     #Filter data
     all = filter_search(d, all)
 
-    if d["table_name"] == "logs" or d["table_name"] == "report":
+    if d["table_name"] == "logs" or d["table_name"] == "logs_history"\
+            or d["table_name"] == "report":
         if len(all) > 1:
             keys = list(all[0].keys())
             final = sorted(all, key=lambda x: x[keys[d["column_ordered"]]],
@@ -261,7 +259,9 @@ def remove_element(request):
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "payment":
         id = request.POST.get("id", None)
-        Payment.objects.get(id=id).delete()
+        payement = Payment.objects.get(id=id)
+        log_element(payement, request)
+        payement.delete()
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "zone":
         id = request.POST.get("id", None)
@@ -341,6 +341,7 @@ def compute_logs(request):
     id_val = request.GET.get("id", -1)
     action = request.GET.get("action", None)
     cache_key = "logs"+request.user.username
+    cache_key2 = "logs_history"+request.user.username
     if id_val == -1 or action == None:
         return HttpResponse("Impossible de valider/annuler ce changement", status=500)
     transaction = Transaction.objects.filter(id=id_val)
@@ -348,13 +349,14 @@ def compute_logs(request):
         return HttpResponse("Impossible d'identifier le changement", status=404)
     transaction = transaction[0]
     if action == "accept":
-        logs = Log.objects.filter(transaction=transaction)
-        log_finished(logs, transaction)
+        log_finished(transaction, "ACCEPT")
         cache.delete(cache_key)
+        cache.delete(cache_key2)
         return HttpResponse(status=200)
     elif action == "revert":
         roll_back(transaction)
         cache.delete(cache_key)
+        cache.delete(cache_key2)
         return HttpResponse(status=200)
     else:
         return HttpResponse("Action non reconnue", status=500)
@@ -368,13 +370,15 @@ def log_element(element, request):
 
 
 def is_same(element, user):
+    print(element)
     log = Log.objects.filter(action="ADD", column_name="ID", table_name=element._meta.model_name,
                              new_value=element.id)
     if len(log) != 0:  # If we found a log for adding the element removed
         transaction = log[0].transaction
-        if transaction.user == user:
+        if transaction.user == user and not transaction.archived:
             all_logs = Log.objects.filter(transaction=transaction)
-            log_finished(all_logs, transaction)
+            #log_finished(all_logs, transaction)
+            #TODO : remove transaction
             return True
     return False
 

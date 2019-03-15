@@ -163,7 +163,7 @@ def get_last_reports(request, json, parsed):
 
 
 def get_logs_elements(request, json, parsed):
-    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates())
+    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates(), archived=False)
     all = []
     for t in transactions:
         logs = Log.objects.filter(transaction=t)
@@ -175,17 +175,34 @@ def get_logs_elements(request, json, parsed):
     json["recordsTotal"] = len(all)
     return all
 
+
+def get_old_logs_elements(request, json, parsed):
+    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates(), archived=True)
+    all = []
+    for t in transactions:
+        logs = Log.objects.filter(transaction=t)
+        details = get_transaction_detail(logs)
+        item = {"id": t.id, "time": str(t.timestamp.date()),
+                "type": logs[0].get_action(), "user": t.user.username,
+                "summary": logs[0].get_table(), "details": details, "action": t.get_action()}
+        print(item)
+        all.append(item)
+    json["recordsTotal"] = len(all)
+    print(all)
+    return all
+
+
 def get_transaction_detail(logs):
     detail = ""
     for indiv in logs:
         if indiv.action == "ADD":
-            if indiv.new_value and indiv.new_value != "[]":
+            if indiv.new_value and indiv.new_value != "[]" and "_" not in indiv.column_name:
                 detail += indiv.column_name+" : "+indiv.new_value + "<br>"
-        elif indiv.action == "DELETE":
+        elif indiv.action == "DELETE" and "_" not in indiv.column_name:
             if indiv.old_value and indiv.old_value != "[]":
                 detail += indiv.column_name+" : "+indiv.old_value + "<br>"
         else:
-            if indiv.old_value and indiv.new_value:
+            if indiv.old_value and indiv.new_value and "_" not in indiv.column_name:
                 if indiv.column_name == "ID":
                     detail += "Id : " + indiv.old_value
                 else:

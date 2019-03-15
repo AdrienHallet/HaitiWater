@@ -2,6 +2,7 @@ import re
 import json
 from datetime import date, timedelta
 
+from django.contrib.gis.geos import GEOSGeometry
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
@@ -15,7 +16,7 @@ from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
 from ..financial.models import Invoice, Payment
-from ..water_network.models import ElementType
+from ..water_network.models import ElementType, Location
 from ..api.get_table import *
 
 success_200 = HttpResponse(status=200)
@@ -233,5 +234,22 @@ def add_payment_element(request):
     outlet = consumer.water_outlet
     amount = request.POST.get("amount", None)
     payment = Payment(consumer=consumer, water_outlet=outlet, amount=amount)
+    log_element(payment, request)
     payment.save()
+    return success_200
+
+
+def add_location_element(request, elem):
+    json_value = json.loads(request.body.decode('utf-8'))
+    poly = GEOSGeometry(str(json_value["geometry"]))
+    lat = 0
+    lon = 0
+    if len(poly.coord_seq) == 1:
+        lat = poly[1]
+        lon = poly[0]
+    loc = Location(elem=elem, lat=lat, lon=lon,
+                   json_representation=request.body.decode('utf-8'),
+                   poly=poly)
+    log_element(loc, request)
+    loc.save()
     return success_200

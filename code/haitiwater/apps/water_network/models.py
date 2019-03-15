@@ -223,3 +223,24 @@ class Location(models.Model):
     def __str__(self):
         return self.elem.name + " : (" + str(self.lon) + ", " + str(self.lat) + ")"
 
+    def infos(self):
+        result = {
+            "ID": self.id,
+            "Nom de l'élément": self.elem.name,
+            "Identifiant de l'élément": self.elem.id,
+            "Latitude": self.lat,
+            "Longitude": self.lon,
+            "_json": self.json_representation,
+            "_poly": self.poly
+        }
+        return result
+
+    def log_add(self, transaction):
+        add(self._meta.model_name, self.infos(), transaction)
+
+    def log_delete(self, transaction):
+        delete(self._meta.model_name, self.infos(), transaction)
+
+    def log_edit(self, old, transaction):
+        edit(self._meta.model_name, self.infos(), old, transaction)
+
