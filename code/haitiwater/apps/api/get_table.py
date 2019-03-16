@@ -119,7 +119,7 @@ def get_ticket_elements(request, json, parsed):
         for elem in Ticket.objects.all():
             if str(elem.water_outlet.id) in request.user.profile.outlets:
                 all.append(elem.descript())
-        json["recordsTotal"] = len(all)
+    json["recordsTotal"] = len(all)
     return all
 
 
