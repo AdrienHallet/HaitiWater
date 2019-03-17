@@ -63,10 +63,11 @@ function requestHandler(url){
     xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
 
     xhttp.onreadystatechange = function(){
-        if (this.status == 200) {
+        if (this.status === 200) {
             drawDataTable('logs');
+            drawDataTable('logs-history');
         }
-        else if (this.readyState == 4){
+        else if (this.readyState === 4){
             console.log(this);
             new PNotify({
                 title: 'Échec!',
@@ -74,7 +75,7 @@ function requestHandler(url){
                 type: 'error'
             });
         }
-    }
+    };
     xhttp.send();
 }
 

@@ -344,8 +344,12 @@ function validateStepThree(){
 	let billValues = $('#wizardMonthlyReport-billing');
 	billValues.find('.error').addClass('hidden');
 	billValues.find('.bill').each(function(e){
+		if (monthlyReport.details[e].cubic === "none"){
+			//Skip the current loop if we are in a fountain without data
+			return true; // Equal to "continue"
+		}
 		let id = $(this).attr('id').replace('bill-','');
-		let value = $(this).find('.real-bill').val()
+		let value = $(this).find('.real-bill').val();
 		console.log("value : " + value);
 		console.log("id : " + id);
 		if (value < 0 || value === ''){
@@ -353,8 +357,9 @@ function validateStepThree(){
 			valid = false;
 		} else{
 			let obj = monthlyReport.details[e];
-			if(obj.id != id)
-				throw new Exception('Something really bad happened');
+
+			if(obj.id !== id)
+				throw 'Something really bad happened';
 			obj.bill = value;
 		}
 	});
