@@ -7281,7 +7281,7 @@ html.dark .ui-slider.ui-widget-content {
 /* Notification */
 .ui-pnotify {
 	right: 15px;
-	top: 15px;
+	top: 120px;
 }
 
 .ui-pnotify .notification {
