@@ -329,7 +329,6 @@ def details(request):
                             ", elle n'est pas reconnue", status=500)
 
 
-
 def compute_logs(request):
     id_val = request.GET.get("id", -1)
     action = request.GET.get("action", None)
@@ -364,7 +363,7 @@ def log_element(element, request):
 
 def is_same(element, user):
     log = Log.objects.filter(action="ADD", column_name="ID", table_name=element._meta.model_name,
-                             new_value=element.id)
+                             new_value=element.id, transaction__archived=False)
     if len(log) != 0:  # If we found a log for adding the element removed
         transaction = log[0].transaction
         if transaction.user == user and not transaction.archived:

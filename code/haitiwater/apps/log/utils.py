@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django.db.models import ManyToOneRel
+from django.db.models import ManyToOneRel, OneToOneRel
 from django.http import HttpResponse
 
 from .models import Log, Transaction
@@ -90,10 +90,45 @@ def log_finished(transaction, action):
 
 
 def roll_back_item(item, values):
+    if "Role" in values or "_zone" in values or "_outlets" in values:#Change of user, handle separately
+        if values["Role"] == "Gestionnaire de fontaine":
+            from django.contrib.auth.models import Group
+            my_group = Group.objects.get(name='Gestionnaire de fontaine')
+            other_group = Group.objects.get(name='Gestionnaire de zone')
+            other_group.user_set.remove(item)
+            my_group.user_set.add(item)
+        if values["Role"] == "Gestionnaire de zone":
+            from django.contrib.auth.models import Group
+            my_group = Group.objects.get(name='Gestionnaire de zone')
+            other_group = Group.objects.get(name='Gestionnaire de fontaine')
+            other_group.user_set.remove(item)
+            my_group.user_set.add(item)
+        if values["_zone"] and values["_zone"] != "Rien":
+            from ..water_network.models import Zone
+            item.profile.zone = Zone.objects.filter(id=values["_zone"]).first()
+            item.profile.outlets = []
+        if values["_outlets"] and values["_outlets"] != "Rien":
+            from ..water_network.models import Element
+            import ast
+            water_out = ast.literal_eval(values["_outlets"])
+            if len(water_out) < 1:
+                return
+            elif len(water_out) > 1:
+                res = Element.objects.filter(id__in=water_out)
+            else:
+                res = Element.objects.filter(id=water_out[0])
+            if len(res) > 0:
+                item.profile.outlets = []
+                for outlet in res:
+                    item.profile.outlets.append(outlet.id)
+                item.profile.zone = None
+        item.save()
+        return
     all_attributes = item._meta.get_fields()
     for verbose_field, value in values.items():
         for field in all_attributes:
-            if type(field) != ManyToOneRel and verbose_field == field.verbose_name \
+            if type(field) != ManyToOneRel and type(field) != OneToOneRel and\
+                    verbose_field == field.verbose_name \
                     and verbose_field != "ID":
                 if field.name == "type":
                     item.type = values["_type"]
@@ -108,7 +143,6 @@ def roll_back_item(item, values):
                 elif field.name == "gender":
                     item.gender = values["_gender"]
                 else:
-                    pass
                     item.__setattr__(field.name, value)
     item.save()
 
