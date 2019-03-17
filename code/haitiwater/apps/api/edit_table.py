@@ -143,9 +143,9 @@ def edit_manager(request):
                     outlet.manager_names = outlet.get_managers()
                     outlet.save()
                     user.profile.outlets.append(outlet.id)
-                if len(water_out) > 1:
+                if len(old_outlets) > 1:
                     res = Element.objects.filter(id__in=old_outlets)
-                else:
+                elif len(old_outlets) == 1:
                     res = Element.objects.filter(id=old_outlets[0])
                 for outlet in res:
                     outlet.manager_names = outlet.get_managers()
@@ -216,12 +216,10 @@ def edit_report(request):
                 report.recette = elem["revenue"]
         report.save()
         log_element(report, old, request)
-    print(values)
     return success_200
 
 
 def log_element(element, old, request):
-    print("LOG")
     transaction = Transaction(user=request.user)
     transaction.save()
     element.log_edit(old, transaction)
@@ -230,8 +228,8 @@ def log_element(element, old, request):
 
 def clean_up(element):
     logs = Log.objects.filter(action="EDIT", column_name="ID", table_name=element._meta.model_name,
-                             new_value=element.id)
-    if len(logs) != 0:  # If we found a logs modifying this element
+                             new_value=element.id, transaction__archived=False)
+    if len(logs) != 0 and element._meta.model_name != "profile":  # If we found a logs modifying this element
         transactions = []
         for log in logs:
             transactions.append(log.transaction)

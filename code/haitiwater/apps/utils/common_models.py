@@ -15,7 +15,13 @@ def edit(name, infos, old, transaction):
     edited = False
     id = -1
     for field, value in infos.items():
-        if str(value) != str(old[field]):
+        if field not in old:
+            log_edit(name, field, "Rien", str(value), transaction)
+            edited = True
+            for old_field, old_value in old.items():
+                if field not in infos:
+                    log_edit(name, field, str(old_value), "Rien", transaction)
+        elif str(value) != str(old[field]):
             log_edit(name, field, str(old[field]), str(value), transaction)
             edited = True
         if field == "ID":

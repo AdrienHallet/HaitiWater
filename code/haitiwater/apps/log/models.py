@@ -48,7 +48,7 @@ class Transaction(models.Model):
 
 class Log(models.Model):
     table_name = models.CharField("Nom de la table", choices=[(i.name, i.value) for i in TableType], max_length=30)
-    column_name = models.CharField("Nom de la colonne", max_length=30)
+    column_name = models.CharField("Nom de la colonne", max_length=100)
     action = models.CharField("Action", max_length=10, choices=[(i.name, i.value) for i in ActionType])
     # States :
     # Add : old_value is null, new_value is not

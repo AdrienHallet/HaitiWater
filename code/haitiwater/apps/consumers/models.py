@@ -31,16 +31,28 @@ class Consumer(Person):
 
     def descript(self):
         tab = [self.id, self.last_name, self.first_name, self.get_gender_display(),
-               self.location, self.phone_number if self.phone_number != "0" else "Non spécifié",
+               self.location, self.get_phone_number(),
                self.household_size, self.water_outlet.name, ""]
         return tab
+
+    def get_phone_number(self):
+        return self.phone_number if self.phone_number != "0" else "Non spécifié"
 
     def infos(self):
         result = {}
         for field in Consumer._meta.get_fields():
             if type(field) != ManyToOneRel:
                 if field.name == "water_outlet":
-                    result[field.verbose_name] = self.water_outlet.id
+                    result[field.verbose_name] = self.water_outlet.name
+                    result["_water_outlet"] = self.water_outlet_id
+                elif field.name == "gender":
+                    result[field.verbose_name] = self.get_gender_display()
+                    result["_gender"] = self.gender
+                elif field.name == "phone_number":
+                    result[field.verbose_name] = self.get_phone_number()
+                elif field.name == "creation_date":
+                    print(self.creation_date)
+                    result[field.verbose_name] = str(self.creation_date.date())
                 else:
                     result[field.verbose_name] = self.__getattribute__(field.name)
         return result

@@ -185,10 +185,8 @@ def get_old_logs_elements(request, json, parsed):
         item = {"id": t.id, "time": str(t.timestamp.date()),
                 "type": logs[0].get_action(), "user": t.user.username,
                 "summary": logs[0].get_table(), "details": details, "action": t.get_action()}
-        print(item)
         all.append(item)
     json["recordsTotal"] = len(all)
-    print(all)
     return all
 
 
@@ -204,7 +202,7 @@ def get_transaction_detail(logs):
         else:
             if indiv.old_value and indiv.new_value and "_" not in indiv.column_name:
                 if indiv.column_name == "ID":
-                    detail += "Id : " + indiv.old_value
+                    detail += "Id : " + indiv.old_value+"<br>"
                 else:
                     detail += indiv.column_name+" : "+indiv.old_value +" -> "+\
                           indiv.new_value+"<br>"
@@ -253,5 +251,4 @@ def get_details_network(request):
              "averageMonthCubic": outlet.get_all_output()[1],
              "totalCubic": outlet.get_all_output()[0],
              "geoJSON": location}
-    print(infos)
     return HttpResponse(json.dumps(infos))
