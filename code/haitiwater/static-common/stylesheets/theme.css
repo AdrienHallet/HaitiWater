@@ -3789,6 +3789,10 @@ html.dark .form-bordered .form-group {
 	pointer-events: none;
 }
 
+.allow-pointer-events {
+	pointer-events: auto;
+}
+
 .input-group-icon .input-group-addon span.icon.icon-lg,
 .input-search .input-group-addon span.icon.icon-lg {
 	padding: 10px 14px;
