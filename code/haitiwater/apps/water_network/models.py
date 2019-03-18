@@ -64,9 +64,12 @@ class Zone(models.Model):
         result = {
             "Zone mère": str(self.superzone.id)+" ("+self.superzone.name+")" if self.superzone else "Aucune",
             "Nom": self.name,
-            "ID": self.id
+            "ID": self.id,
+            "Prix des fontaines": self.fountain_price,
+            "Durée de la souspricption des fontaines": self.fountain_duration,
+            "Prix des kiosques": self.kiosk_price,
+            "Durée de la souspricption des kiosques": self.kiosk_duration,
         }
-        print(result)
         return result
 
     def log_add(self, transaction):
@@ -185,7 +188,14 @@ class Element(models.Model):
         for field in Element._meta.get_fields():
             if type(field) != ManyToOneRel:
                 if field.name == "zone":
-                    result[field.verbose_name] = self.zone.id
+                    result[field.verbose_name] = self.zone.name
+                    result["_zone"] = self.zone.id
+                if field.name == "type":
+                    result["Type"] = ElementType[self.type].value #Not working wtf
+                    result["_type"] = self.type
+                if field.name == "status":
+                    result[field.verbose_name] = self.get_status()
+                    result["_status"] = self.status
                 else:
                     result[field.verbose_name] = self.__getattribute__(field.name)
         return result

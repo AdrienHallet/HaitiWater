@@ -16,15 +16,22 @@ class Profile(models.Model):
 
     def infos(self):
         result = {}
+        result["ID"] = self.id
         result["Identifiant"] = self.user.username
         result["Prénom"] = self.user.first_name
         result["Nom de famille"] = self.user.last_name
         result["Email"] = self.user.email
-        result["Role"] = self.user.groups.values_list('name',flat=True)[0]
-        for field in Profile._meta.get_fields():
-            result[field.verbose_name] = self.__getattribute__(field.name)
-            if field.name == "zone" and self.zone:
-                result[field.verbose_name] = self.zone.id
+        result["Role"] = self.user.groups.values_list('name', flat=True)[0]
+        if self.zone:
+            result["Zone gérée"] = self.zone.name
+            result["_zone"] = self.zone.id
+        elif len(self.outlets) > 0:
+            all_outlets = ""
+            for id in self.outlets:
+                outlet = Element.objects.get(id=id)
+                all_outlets += outlet.name+", "
+            result["Fontaines gérées"] = all_outlets[:-2]
+            result["_outlets"] = self.outlets
         return result
 
     def log_add(self, transaction):

@@ -34,7 +34,6 @@ class Payment(models.Model):
         result = {}
         for field in Payment._meta.get_fields():
             if type(field) != ManyToOneRel:
-                print(field.name)
                 if field.name == "consumer":
                     result["Identifiant consommateur"] = self.consumer.id
                     result["Nom consommateur"] = self.consumer.first_name+" "+self.consumer.last_name

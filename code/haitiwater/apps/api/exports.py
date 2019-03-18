@@ -14,7 +14,7 @@ from ..report.models import Report, Ticket
 from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
-from ..utils.get_data import is_user_fountain
+from ..utils.get_data import is_user_fountain, get_outlets
 from ..log.models import Transaction, Log
 from ..log.utils import *
 
@@ -64,9 +64,7 @@ def graph(request):
 
 @csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def gis_infos(request):
-    print(request)
     if request.method == "GET":
-        print("Getting infos")
         markers = request.GET.get("marker", None) #The fuck
         if markers == "all": #TODO : be mindfull of the connected user
             all_loc = Location.objects.all()
@@ -76,8 +74,6 @@ def gis_infos(request):
         return HttpResponse(json.dumps(result))
 
     elif request.method == "POST":
-        print("Posting infos")
-        print(request.GET)
         elem_id = request.GET.get("id", -1) #The fuck
         if elem_id == -1:
             return HttpResponse("Impossible de trouver l'élément demandé", status=404)
@@ -111,12 +107,10 @@ def table(request):
     #Get data
     cache_key = d["table_name"]+request.user.username
     if cache.get(cache_key):
-        print("CACHE HIT !")
         all = json.loads(cache.get(cache_key))
-        cache.touch(cache_key, 30)
+        cache.touch(cache_key, 60)
         json_test["recordsTotal"] = len(all)
     else:
-        print("CACHE MISS !")
         if d["table_name"] == "water_element":
             if is_user_fountain(request):
                 json_test["editable"] = False
@@ -149,7 +143,7 @@ def table(request):
         else:
             return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
         if all:
-            cache.set(cache_key, json.dumps(all), 30)
+            cache.set(cache_key, json.dumps(all), 60)
 
     if all is False: #There was a problem when retrieving the data
         return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
@@ -173,7 +167,6 @@ def table(request):
     else:
         json_test["data"] = final[d["start"]:d["start"]+d["length_max"]]
     json_test["recordsFiltered"] = len(final)
-    print(json.dumps(json_test))
     return HttpResponse(json.dumps(json_test))
 
 
@@ -336,6 +329,10 @@ def details(request):
                             ", elle n'est pas reconnue", status=500)
 
 
+def outlets(request):
+    result = {"data": get_outlets(request)}
+    return HttpResponse(json.dumps(result))
+
 
 def compute_logs(request):
     id_val = request.GET.get("id", -1)
@@ -370,15 +367,15 @@ def log_element(element, request):
 
 
 def is_same(element, user):
-    print(element)
     log = Log.objects.filter(action="ADD", column_name="ID", table_name=element._meta.model_name,
-                             new_value=element.id)
+                             new_value=element.id, transaction__archived=False)
     if len(log) != 0:  # If we found a log for adding the element removed
         transaction = log[0].transaction
         if transaction.user == user and not transaction.archived:
             all_logs = Log.objects.filter(transaction=transaction)
-            #log_finished(all_logs, transaction)
-            #TODO : remove transaction
+            for log in all_logs:
+                log.delete()
+            transaction.delete()
             return True
     return False
 

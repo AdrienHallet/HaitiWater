@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.db.models import ManyToOneRel, OneToOneRel
 from django.http import HttpResponse
 
 from .models import Log, Transaction
@@ -45,8 +46,6 @@ def roll_back(transaction):
     if logs[0].action == "EDIT": #Edit case
         elements = get_elem_logged(logs)
         tables = get_concerned_tables(logs)
-        print(tables)
-        print(elements)
         for number, table in enumerate(tables):
             roll_back_item(
                 elements[number],
@@ -54,7 +53,7 @@ def roll_back(transaction):
                        for log in logs
                        if log.table_name == table and log.column_name != "ID"}
             )
-        log_finished(transaction, "CANCEL")
+        #log_finished(transaction, "CANCEL")
     elif logs[0].action == "ADD": #Add case
         elements = get_elem_logged(logs)
         for elem in elements:
@@ -91,17 +90,65 @@ def log_finished(transaction, action):
 
 
 def roll_back_item(item, values):
+    if "Role" in values or "_zone" in values or "_outlets" in values:#Change of user, handle separately
+        if values["Role"] == "Gestionnaire de fontaine":
+            from django.contrib.auth.models import Group
+            my_group = Group.objects.get(name='Gestionnaire de fontaine')
+            other_group = Group.objects.get(name='Gestionnaire de zone')
+            other_group.user_set.remove(item)
+            my_group.user_set.add(item)
+        if values["Role"] == "Gestionnaire de zone":
+            from django.contrib.auth.models import Group
+            my_group = Group.objects.get(name='Gestionnaire de zone')
+            other_group = Group.objects.get(name='Gestionnaire de fontaine')
+            other_group.user_set.remove(item)
+            my_group.user_set.add(item)
+        if values["_zone"] and values["_zone"] != "Rien":
+            from ..water_network.models import Zone
+            item.profile.zone = Zone.objects.filter(id=values["_zone"]).first()
+            item.profile.outlets = []
+        if values["_outlets"] and values["_outlets"] != "Rien":
+            from ..water_network.models import Element
+            import ast
+            water_out = ast.literal_eval(values["_outlets"])
+            if len(water_out) < 1:
+                return
+            elif len(water_out) > 1:
+                res = Element.objects.filter(id__in=water_out)
+            else:
+                res = Element.objects.filter(id=water_out[0])
+            if len(res) > 0:
+                item.profile.outlets = []
+                for outlet in res:
+                    item.profile.outlets.append(outlet.id)
+                item.profile.zone = None
+        item.save()
+        return
     all_attributes = item._meta.get_fields()
     for verbose_field, value in values.items():
         for field in all_attributes:
-            if verbose_field == field.verbose_name and verbose_field != "ID":
-                item.__setattr__(field.name, value)
+            if type(field) != ManyToOneRel and type(field) != OneToOneRel and\
+                    verbose_field == field.verbose_name \
+                    and verbose_field != "ID":
+                if field.name == "type":
+                    item.type = values["_type"]
+                elif field.name == "status":
+                    item.status = values["_status"]
+                elif field.name == "urgency":
+                    item.status = values["_urgency"]
+                elif field.name == "zone":
+                    from ..water_network.models import Zone
+                    zone = Zone.objects.get(values["_zone"])
+                    item.zone = zone
+                elif field.name == "gender":
+                    item.gender = values["_gender"]
+                else:
+                    item.__setattr__(field.name, value)
     item.save()
 
 
 def re_add_item(logs):
     tables = get_concerned_tables(logs)
-    print(tables)
     for table in tables:
         restore_item(
             {log.column_name: log.old_value
@@ -114,14 +161,14 @@ def restore_item(dict, table):
     if table == "consumer":
         restore_consumer(dict)
     elif table == "ticket":
-        restore_outlet(dict)
+        restore_ticket(dict)
     elif table == "element":
         restore_water_element(dict)
     elif table == "zone":
         restore_zone(dict)
     elif table == "report":
         pass
-    elif table == "user":
+    elif table == "profile":
         restore_user(dict)
     elif table == "payment":
         restore_payment(dict)
@@ -132,37 +179,39 @@ def restore_item(dict, table):
 def restore_consumer(dict):
     from ..water_network.models import Element
     from ..consumers.models import Consumer
-    outlet = Element.objects.filter(id=dict["Sortie d'eau"])
+    outlet = Element.objects.filter(id=dict["_water_outlet"])
     if len(outlet) != 1:
         return HttpResponse("Impossible de restaurer cet élément", status=500)
     outlet = outlet[0]
     restored = Consumer(last_name=dict["Nom"], first_name=dict["Prénom"],
-                        gender=dict["Genre"], location=dict["Adresse"], phone_number=dict["Numéro de téléphone"],
-                        email="", household_size=dict["Taille du ménage"], water_outlet=outlet)
+                        gender=dict["_gender"], location=dict["Adresse"],
+                        phone_number=dict["Numéro de téléphone"] if dict["Numéro de téléphone"] != "Non spécifié" else "0",
+                        email="", household_size=dict["Taille du ménage"], creation_date=dict["Date de création"],
+                        water_outlet=outlet)
     restored.save()
 
 
-def restore_outlet(dict):
+def restore_ticket(dict):
     from ..water_network.models import Element
     from ..report.models import Ticket
     outlet = Element.objects.filter(id=dict["Sortie d'eau concernée"])
     if len(outlet) != 1:
         return HttpResponse("Impossible de restaurer cet élément", status=500)
     outlet = outlet[0]
-    restored = Ticket(water_outlet=outlet, type=dict["Type de panne"],
-                      comment=dict["Commentaire"], urgency=dict["Niveau d'urgence"],
-                      status=dict["Etat de résolution"], image=None)
+    restored = Ticket(water_outlet=outlet, type=dict["_type"],
+                      comment=dict["Commentaire"], urgency=dict["_urgency"],
+                      status=dict["_status"], image=None)
     restored.save()
 
 
 def restore_water_element(dict):
     from ..water_network.models import Element, Zone
-    zone = Zone.objects.filter(id=dict["Zone de l'élément"])
+    zone = Zone.objects.filter(id=dict["_zone"])
     if len(zone) != 1:
         return HttpResponse("Impossible de restaurer cet élément", status=500)
     zone = zone[0]
-    restored = Element(name=dict["Nom"], type=dict["Type"],
-                       status=dict["État"], location=dict["Localisation"],
+    restored = Element(name=dict["Nom"], type=dict["_type"],
+                       status=dict["_status"], location=dict["Localisation"],
                        zone=zone)
     restored.save()
 
@@ -174,7 +223,11 @@ def restore_zone(dict):
     if len(super_zone) != 1:
         return HttpResponse("Impossible de restaurer cet élément", status=500)
     super_zone = super_zone[0]
-    restored = Zone(name=dict["Nom"], superzone=super_zone, subzones=[])
+    restored = Zone(name=dict["Nom"], superzone=super_zone, subzones=[],
+                    fountain_duration=dict["Durée de la souspricption des fontaines"],
+                    fountain_price=dict["Prix des fontaines"],
+                    kiosk_duration=dict["Durée de la souspricption des kiosques"],
+                    kiosk_price=dict["Prix des kiosques"])
     up = True
     while up:
         super_zone.subzones.append(dict["Nom"])
@@ -197,7 +250,7 @@ def restore_user(dict):
 
     if dict["Role"] == "Gestionnaire de fontaine":
         import ast
-        water_out = ast.literal_eval(dict["outlets"])
+        water_out = ast.literal_eval(dict["_outlets"])
         if len(water_out) < 1:
             return HttpResponse("Vous n'avez pas choisi de fontaine a attribuer !", status=500)
         elif len(water_out) > 1:
@@ -216,7 +269,7 @@ def restore_user(dict):
         my_group.user_set.add(user)
         user.save()
     elif dict["Role"] == "Gestionnaire de zone":
-        zone = dict["Zone gérée"]
+        zone = dict["_zone"]
         res = Zone.objects.filter(id=zone)
         if len(res) == 1:
             user.profile.zone = res[0]

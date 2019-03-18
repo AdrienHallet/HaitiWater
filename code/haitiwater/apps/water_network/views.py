@@ -20,6 +20,7 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+
 def gis(request):
     template = loader.get_template('water_gis.html')
     context = {

@@ -6,41 +6,47 @@ from ..utils.common_models import *
 from ..water_network.models import Location, Element
 
 
-class Person(models.Model):
+class Consumer(models.Model):
 
     first_name = models.CharField("Prénom", max_length=20)
     last_name = models.CharField("Nom", max_length=20)
-    gender = models.CharField("Genre", max_length=1, choices=[("M", "Homme"), ("F", "Femme"), ("O", "Autre")], null=True)
+    gender = models.CharField("Genre", max_length=1, choices=[("M", "Homme"), ("F", "Femme"), ("O", "Autre")],
+                              null=True)
     phone_number = models.CharField("Numéro de téléphone", max_length=10, null=True)
     email = models.CharField("Adresse email", max_length=50, null=True)
     location = models.CharField("Adresse", max_length=50)
-
-    def __str__(self):
-        return self.first_name + " " + self.last_name
-
-    class Meta:
-        abstract = True
-
-
-class Consumer(Person):
-
     household_size = models.IntegerField("Taille du ménage")
     water_outlet = models.ForeignKey(Element, verbose_name="Sortie d'eau", related_name="consumers", on_delete=models.CASCADE)
     creation_date = models.DateTimeField("Date de création", auto_now_add=True)
     #Consumer's zone is infered regarding the water_outlet he uses
 
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
     def descript(self):
         tab = [self.id, self.last_name, self.first_name, self.get_gender_display(),
-               self.location, self.phone_number if self.phone_number != "0" else "Non spécifié",
+               self.location, self.get_phone_number(),
                self.household_size, self.water_outlet.name, ""]
         return tab
+
+    def get_phone_number(self):
+        return self.phone_number if self.phone_number != "0" else "Non spécifié"
 
     def infos(self):
         result = {}
         for field in Consumer._meta.get_fields():
             if type(field) != ManyToOneRel:
                 if field.name == "water_outlet":
-                    result[field.verbose_name] = self.water_outlet.id
+                    result[field.verbose_name] = self.water_outlet.name
+                    result["_water_outlet"] = self.water_outlet_id
+                elif field.name == "gender":
+                    result[field.verbose_name] = self.get_gender_display()
+                    result["_gender"] = self.gender
+                elif field.name == "phone_number":
+                    result[field.verbose_name] = self.get_phone_number()
+                elif field.name == "creation_date":
+                    print(self.creation_date)
+                    result[field.verbose_name] = str(self.creation_date.date())
                 else:
                     result[field.verbose_name] = self.__getattribute__(field.name)
         return result
