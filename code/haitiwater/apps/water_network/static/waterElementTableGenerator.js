@@ -65,6 +65,7 @@ function getWaterDatatableConfiguration(dataURL, withManagers, withActions){
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
+        pagingType: 'full_numbers',
         fixedColumns:   {
             leftColumns: 1,
             rightColumns: 1

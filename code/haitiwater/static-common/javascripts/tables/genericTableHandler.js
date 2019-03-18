@@ -214,10 +214,10 @@ function getDataTableFrenchTranslation(){
         "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
         "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
         "oPaginate": {
-            "sFirst": "Premier",
-            "sPrevious": "Pr&eacute;c&eacute;dent",
-            "sNext": "Suivant",
-            "sLast": "Dernier"
+            "sFirst": '<i class="fas fa-angle-double-left fa-lg"></i>',
+            "sPrevious": '<i class="fas fa-angle-left fa-lg"></i>',
+            "sNext": '<i class="fas fa-angle-right fa-lg"></i>',
+            "sLast": '<i class="fas fa-angle-double-right fa-lg"></i>'
         },
         "oAria": {
             "sSortAscending": ": activer pour trier la colonne par ordre croissant",
@@ -225,8 +225,8 @@ function getDataTableFrenchTranslation(){
         },
         buttons: {
             pageLength: {
-                _: "Afficher %d éléments ▼",
-                '-1': "Tout afficher ▼"
+                _: "Afficher %d éléments <i class='fas fa-angle-down'></i>",
+                '-1': "Tout afficher <i class='fas fa-angle-down'></i>"
             }
         },
     }

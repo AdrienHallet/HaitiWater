@@ -53,6 +53,7 @@ function getPaymentDatatableConfiguration(dataURL){
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
+        pagingType: 'full_numbers',
         "language": getDataTableFrenchTranslation(),
         "ajax": {
             url: dataURL,

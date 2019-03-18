@@ -43,6 +43,7 @@ function getTicketDatatableConfiguration(dataURL){
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
+        pagingType: 'full_numbers',
         "columnDefs": [
             {
                 "targets": -1,
