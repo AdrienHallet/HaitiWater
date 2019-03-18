@@ -73,7 +73,7 @@ function getTicketDatatableConfiguration(dataURL){
                 let commentDom = $('td', row).eq(4);
                 let comment = commentDom.text();
 
-                commentDom.html('<i class="far fa-image" title="Cliquez pour voir l\'image"></i>&nbsp' + comment);
+                commentDom.html('<i class="far fa-image clickable" title="Cliquez pour voir l\'image"></i>&nbsp' + comment);
                 commentDom.on('click', function(){
                     $.magnificPopup.open({
                         type: 'image',

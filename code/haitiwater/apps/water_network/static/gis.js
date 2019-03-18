@@ -151,7 +151,7 @@ var drawerControl = L.Control.extend({
     },
 
     onAdd: function (map) {
-        var container = L.DomUtil.create('i', 'leaflet-bar leaflet-control leaflet-drawer-control fas fa-question');
+        var container = L.DomUtil.create('i', 'leaflet-bar clickable leaflet-drawer-control fas fa-question');
         container.style.backgroundColor = 'white';
         container.style.width = '26px';
         container.style.height = '26px';
