@@ -181,6 +181,8 @@ def add_element(request):
     elif element == "zone":
         return add_zone_element(request)
     elif element == "manager":
+        cache_key = "water_element" + request.user.username
+        cache.delete(cache_key)
         return add_collaborator_element(request)
     elif element == "ticket":
         return add_ticket_element(request)
@@ -240,6 +242,8 @@ def remove_element(request):
         to_delete = to_delete[0]
         log_element(to_delete.profile, request)
         to_delete.delete()
+        cache_key = "water_element" + request.user.username
+        cache.delete(cache_key)
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
     elif element == "ticket":
         id = request.POST.get("id", None)
@@ -304,6 +308,8 @@ def edit_element(request):
     elif element == "ticket":
         return edit_ticket(request)
     elif element == "manager":
+        cache_key = "water_element" + request.user.username
+        cache.delete(cache_key)
         return edit_manager(request)
     elif element == "payment":
         return edit_payment(request)
