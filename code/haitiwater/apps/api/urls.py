@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'report/$', exports.add_report_element, name='report_add'),
     url(r'log/$', exports.compute_logs, name='compute_logs'),
     url(r'details/$', exports.details, name="details"),
+    url(r'outlets/', exports.outlets, name="outlets"),
 ]

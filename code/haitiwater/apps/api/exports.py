@@ -14,7 +14,7 @@ from ..report.models import Report, Ticket
 from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
-from ..utils.get_data import is_user_fountain
+from ..utils.get_data import is_user_fountain, get_outlets
 from ..log.models import Transaction, Log
 from ..log.utils import *
 
@@ -327,6 +327,11 @@ def details(request):
     else:
         return HttpResponse("Impossible d'obtenir des détails pour la table " + table +
                             ", elle n'est pas reconnue", status=500)
+
+
+def outlets(request):
+    result = {"data": get_outlets(request)}
+    return HttpResponse(json.dumps(result))
 
 
 def compute_logs(request):
