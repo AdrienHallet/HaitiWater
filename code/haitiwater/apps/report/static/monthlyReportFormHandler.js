@@ -586,7 +586,7 @@ function setupConfirmation(){
 			"<ul>" +
 			selectionAsHTMLList +
 			"</ul>"+
-			"Cette opération est irréversible, cliquez sur \"Terminer\" pour confirmer l'envoi. <br>" +
+			"Cette opération est irréversible, cliquez sur \"Envoyer\" pour confirmer l'envoi. <br>" +
 			"Cliquez sur \"Sauvegarder\" pour sauvegarder les informations sans les envoyer. <br>" +
 			"Vous pourrez encore les modifier en revenant sur ce formulaire." +
 			"</div>");

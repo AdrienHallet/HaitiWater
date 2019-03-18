@@ -52,7 +52,7 @@ class Report(models.Model):
     hours_active = models.IntegerField("Heures d'activité", null=False, default=0)
     quantity_distributed = models.FloatField("Quantité distribuée", null=True)
     price = models.FloatField("Prix au mètre cube", null=True)
-    recette = models.FloatField("Recettes du mois", null=True)
+    recette = models.FloatField("Recettes du mois", null=True)  # TODO English please x)
 
     def infos(self):
         result = {}

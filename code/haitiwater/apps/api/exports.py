@@ -108,7 +108,7 @@ def table(request):
     cache_key = d["table_name"]+request.user.username
     if cache.get(cache_key):
         all = json.loads(cache.get(cache_key))
-        cache.touch(cache_key, 30)
+        cache.touch(cache_key, 60)
         json_test["recordsTotal"] = len(all)
     else:
         if d["table_name"] == "water_element":
@@ -143,7 +143,7 @@ def table(request):
         else:
             return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
         if all:
-            cache.set(cache_key, json.dumps(all), 30)
+            cache.set(cache_key, json.dumps(all), 60)
 
     if all is False: #There was a problem when retrieving the data
         return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
