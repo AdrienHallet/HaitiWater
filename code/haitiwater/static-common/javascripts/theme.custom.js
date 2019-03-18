@@ -2,7 +2,8 @@
 $( document ).ready(function() {
 
     //Get local storage value or true (as it is default to be open)
-    let isMenuOpen = (localStorage.getItem('isMenuOpen') === 'true');
+    let localMenu = localStorage.getItem('isMenuOpen');
+    let isMenuOpen = (localMenu === 'true' || localMenu === null);
     if(!isMenuOpen){
         $('html').addClass('sidebar-left-collapsed')
     }
@@ -23,7 +24,7 @@ function setupNotifications(){
     let notificationParent = $('#notification-parent');
     let notificationList = $('#notification-content');
     let alertBadge = $('#alert-badge');
-    let classicBadge = $('#classic-badge')
+    let classicBadge = $('#classic-badge');
 
     let notificationCounter = 0;
     if (notificationMonthlyReport(notificationList)) notificationCounter += 1;
