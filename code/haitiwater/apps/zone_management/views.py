@@ -12,11 +12,3 @@ def index(request):
         'zone_name': get_zone(request)
     }
     return HttpResponse(template.render(context, request))
-
-def logs(request):
-    template = loader.get_template('logs.html')
-    context = {
-        'project_version': PROJECT_VERSION,
-        'project_name': PROJECT_NAME,
-    }
-    return HttpResponse(template.render(context, request))
