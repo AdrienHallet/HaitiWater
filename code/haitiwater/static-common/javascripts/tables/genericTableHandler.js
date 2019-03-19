@@ -156,9 +156,7 @@ function postNewRow(table, callback){
                 drawDataTable(table);
             }
             afterModalRequest();
-            console.log('1');
             typeof callback === 'function' && callback();
-            console.log('2')
         }
     };
     xhttp.send(request)
@@ -199,9 +197,7 @@ function postEditRow(table, callback){
                 drawDataTable(table);
             }
             afterModalRequest();
-            console.log('1');
             typeof callback === 'function' && callback();
-            console.log('2');
         }
     };
     xhttp.send(request)
