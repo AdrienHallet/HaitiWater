@@ -7,7 +7,22 @@ $(document).ready(function() {
         setupFountainOrZoneManagerDisplay(this.value, null);
 
     });
+
+    $('#modal-manager-submit-add').on('click', postNewManager);
+    $('#modal-manager-submit-edit').on('click', postEditManager);
 });
+
+function postNewManager(){
+    postNewRow('manager', drawDataTableWaterElement)
+}
+
+function postEditManager(){
+    postEditRow('manager', drawDataTableWaterElement)
+}
+
+function drawDataTableWaterElement(){
+    drawDataTable('water_element');
+}
 
 function setupFountainOrZoneManagerDisplay(value, preSelection){
     if(value === 'fountain-manager'){
@@ -196,6 +211,10 @@ function setupModalManagerAdd(){
 
     //Enable personal information modification
     disableModalElements(false);
+
+    $('form').find('input').val('');
+    $('form').find('select').val('none');
+    $('#select-manager-type').change();
 
     showManagerModal();
 }

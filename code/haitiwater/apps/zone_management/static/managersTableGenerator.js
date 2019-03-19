@@ -5,14 +5,15 @@ function drawManagerTable(){
     $('#datatable-manager').DataTable(getManagerDatatableConfiguration(dataURL));
 
     let table = $('#datatable-manager').DataTable();
-    $('#datatable-manager tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
+    $('#datatable-manager tbody').on( 'click', 'tr td:not(:last-child)', function () {
+        let row = $(this).closest('tr');
+        if ( row.hasClass('selected') ) {
+            row.removeClass('selected');
             filterWaterElementFromManager(table);
         }
         else {
             table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
+            row.addClass('selected');
             filterWaterElementFromManager(table);
         }
     });

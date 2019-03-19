@@ -122,7 +122,7 @@ function getRequest(table){
 /**
  * Send a post request to server and handle it
  */
-function postNewRow(table){
+function postNewRow(table, callback){
     let request = getRequest(table);
     if(!request){
         // Form is not valid (missing/wrong fields)
@@ -156,6 +156,9 @@ function postNewRow(table){
                 drawDataTable(table);
             }
             afterModalRequest();
+            console.log('1');
+            typeof callback === 'function' && callback();
+            console.log('2')
         }
     };
     xhttp.send(request)
@@ -164,7 +167,7 @@ function postNewRow(table){
 /**
  * Send a post request to server and handle it
  */
-function postEditRow(table){
+function postEditRow(table, callback){
     let request = getRequest(table);
     if(!request){
         // Form is not valid (missing/wrong fields)
@@ -196,6 +199,9 @@ function postEditRow(table){
                 drawDataTable(table);
             }
             afterModalRequest();
+            console.log('1');
+            typeof callback === 'function' && callback();
+            console.log('2');
         }
     };
     xhttp.send(request)
