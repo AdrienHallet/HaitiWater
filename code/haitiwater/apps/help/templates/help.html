@@ -5,7 +5,10 @@
 
 
 {% block page_import %}
+    <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
     <script src="{% static "help.js" %}"></script>
+
     <link rel="stylesheet" href="{% static "help.css" %}"/>
 {% endblock %}
 
@@ -32,10 +35,92 @@
         </div>
     </section>
 
-    <section class="collapsible collapsed" data-toggle="collapse" data-target="#content-table-help" >
+    <section id="datatable-example-collapsible" class="collapsible collapsed" data-toggle="collapse" data-target="#content-table-help" >
         <label><i class="fa fa-plus"></i><i class="fa fa-minus"></i>Utiliser les tables</label>
         <div id="content-table-help" class="content collapse">
-            <p>Explication sur les tables, peut-être launch un tour. #TODO</p>
+             <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-plus clickable"></a>
+                        <a id="print-example" class="fas fa-print clickable"></a>
+                        <a id="example-options" class="fas fa-cog clickable"></a>
+                    </div>
+                    <h2 class="panel-title">Table d'exemple</h2>
+                    <p class="panel-subtitle">Cette table est présente uniquement à but illustratif.</p>
+                </header>
+                <div class="panel-body dataTables_wrapper no-footer">
+                    <table id="datatable-example" class="display table table-bordered table-responsive table-striped dataTable no-footer">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Fonction</th>
+                                <th>Bureau</th>
+                                <th>Age</th>
+                                <th>Date d'embauche</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cara Stevens</td>
+                                <td>Sales Assistant</td>
+                                <td>New York</td>
+                                <td>46</td>
+                                <td>2011/12/06</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Hermione Butler</td>
+                                <td>Regional Director</td>
+                                <td>London</td>
+                                <td>47</td>
+                                <td>2011/03/21</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Lael Greer</td>
+                                <td>Systems Administrator</td>
+                                <td>London</td>
+                                <td>21</td>
+                                <td>2009/02/27</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Jonas Alexander</td>
+                                <td>Developer</td>
+                                <td>San Francisco</td>
+                                <td>30</td>
+                                <td>2010/07/14</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Shad Decker</td>
+                                <td>Regional Director</td>
+                                <td>Edinburgh</td>
+                                <td>51</td>
+                                <td>2008/11/13</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Michael Bruce</td>
+                                <td>Javascript Developer</td>
+                                <td>Singapore</td>
+                                <td>29</td>
+                                <td>2011/06/27</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Donna Snider</td>
+                                <td>Customer Support</td>
+                                <td>New York</td>
+                                <td>27</td>
+                                <td>2011/01/25</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
     </section>
 {% endblock %}
