@@ -53,7 +53,7 @@ def roll_back(transaction):
                        for log in logs
                        if log.table_name == table and log.column_name != "ID"}
             )
-        #log_finished(transaction, "CANCEL")
+        log_finished(transaction, "CANCEL")
     elif logs[0].action == "ADD": #Add case
         elements = get_elem_logged(logs)
         for elem in elements:
