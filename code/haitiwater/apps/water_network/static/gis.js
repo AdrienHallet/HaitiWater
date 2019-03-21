@@ -16,7 +16,7 @@ let currentElementID = 'undefined';
 
 $(document).ready(function() {
     //Setup water tables first
-    drawWaterElementTable(false, true);
+    drawWaterElementTable(false, true, true);
     waterElementTable = $("#datatable-water_element").DataTable();
     detailTable = $("#detail-table");
     errorDetailTable = $('#error-detail-table');
@@ -37,7 +37,7 @@ $(document).ready(function() {
     );
 
     displayDetailTableError('Sélectionnez un élément du réseau dans la table ou sur la carte.');
-    if(localStorage.getItem('mapDrawer')==='open'){
+    if(localStorage.getItem('mapDrawer')!=='closed'){
         toggleDrawer();
     }
 
@@ -170,16 +170,16 @@ function toggleDrawer(){
     let mapContainer = $('#map-container');
     let controlContainer = $('.leaflet-drawer-control');
 
-    if (mapContainer.hasClass('col-md-9')){
-        localStorage.removeItem('mapDrawer'); // Local storage to retain drawer position
-        mapContainer.removeClass('col-md-9');
+    if (mapContainer.hasClass('col-md-8')){
+        localStorage.setItem('mapDrawer','closed'); // Local storage to retain drawer position
+        mapContainer.removeClass('col-md-8');
         mapContainer.addClass('col-md-12');
         controlContainer.addClass('fa-question');
         controlContainer.removeClass('fa-times');
     }
     else {
-        localStorage.setItem('mapDrawer','open');
-        mapContainer.addClass('col-md-9');
+        localStorage.removeItem('mapDrawer');
+        mapContainer.addClass('col-md-8');
         mapContainer.removeClass('col-md-12');
         controlContainer.removeClass('fa-question');
         controlContainer.addClass('fa-times');
