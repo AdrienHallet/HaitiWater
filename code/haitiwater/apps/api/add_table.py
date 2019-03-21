@@ -19,6 +19,7 @@ from ..report.models import Report, Ticket
 from ..financial.models import Invoice, Payment
 from ..water_network.models import ElementType, Location
 from ..api.get_table import *
+from ..utils.get_data import has_access
 
 success_200 = HttpResponse(status=200)
 
@@ -47,8 +48,7 @@ def add_consumer_element(request):
         return HttpResponse("La sortie d'eau spécifiée n'a pas été trouvée, "
                             "impossible d'ajouter le consommateur", status=400)
 
-    if (is_user_fountain(request) and outlet.id not in request.user.profile.outlets) or \
-            (is_user_zone(request) and outlet.zone.name not in request.user.profile.zone.subzones):
+    if not has_access(outlet, request):
         return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
 
     consumer = Consumer(last_name=last_name, first_name=first_name, gender=gender, location=address,
@@ -97,8 +97,7 @@ def add_report_element(request):
         if outlet is None:
             return HttpResponse("La sortie d'eau concernée par ce rapport n'a pas été trouvée", status=400)
 
-        if (is_user_fountain(request) and outlet.id not in request.user.profile.outlets) or \
-                (is_user_zone(request) and outlet.zone.name not in request.user.profile.zone.subzones):
+        if not has_access(outlet, request):
             return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
 
         active = values["isActive"]
@@ -243,8 +242,7 @@ def add_ticket_element(request):
     if outlet is None:
         return HttpResponse("Impossible de trouver la sortie d'eau correspondante au ticket", status=400)
 
-    if (is_user_fountain(request) and outlet.id not in request.user.profile.outlets) or \
-            (is_user_zone(request) and outlet.zone.name not in request.user.profile.zone.subzones):
+    if not has_access(outlet, request):
         return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
 
     if image:
