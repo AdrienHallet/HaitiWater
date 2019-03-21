@@ -384,8 +384,10 @@ function editHandler( e ){
     let draw = marker.toGeoJSON().features[0];
     let latlng = L.latLng(draw.geometry.coordinates[1], draw.geometry.coordinates[0]);
     gisMap.flyTo(latlng);
+    marker.id = currentElementID;
     sendDrawToServer(draw); //Default type is collection (feature array)
     readyMapDrawButtons(currentElementType, true);
+    latLongDetail.html(coords.lat + "," + coords.lon);
 }
 
 /**
@@ -447,23 +449,24 @@ function removeHandler(e){
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200) {
-            drawLayer.eachLayer(function (draw){
-                if (draw.id === currentElementID){
-                    drawLayer.removeLayer(draw);
-                    $('#element-details-lat-lon').html("N/A");
-                }
-            });
-            readyMapDrawButtons(currentElementType, false);
-        }
-        else if (this.readyState == 4){
-            console.log(this);
-            new PNotify({
-                title: 'Erreur',
-                text: "L'élément ne peut être supprimé: " + this.statusText,
-                type: 'error'
-            });
-            return this;
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                drawLayer.eachLayer(function (draw) {
+                    console.log(draw);
+                    if (draw.id === currentElementID) {
+                        drawLayer.removeLayer(draw);
+                        $('#element-details-lat-lon').html("N/A");
+                    }
+                });
+                readyMapDrawButtons(currentElementType, false);
+            } else {
+                new PNotify({
+                    title: 'Erreur',
+                    text: "L'élément ne peut être supprimé: " + this.statusText,
+                    type: 'error'
+                });
+                return this;
+            }
         }
     };
 
