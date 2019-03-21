@@ -428,14 +428,15 @@ function sendDrawToServer(geoJSON){
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this);
-        }
-        else if (this.readyState == 4){
-            console.log(this);
-            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText;
-            errorDetailTable.html(msg);
-            return this;
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                console.log(this);
+            } else {
+                console.log(this);
+                let msg = "Une erreur est survenue:<br>" + this.status + ": " + this.statusText;
+                errorDetailTable.html(msg);
+                return this;
+            }
         }
     };
 

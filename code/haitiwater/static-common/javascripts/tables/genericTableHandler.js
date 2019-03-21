@@ -156,7 +156,7 @@ function postNewRow(table, callback){
                 drawDataTable(table);
             }
             afterModalRequest();
-            typeof callback === 'function' && callback();
+            typeof callback === 'function' && callback(xhttp.responseText);
         }
     };
     xhttp.send(request)

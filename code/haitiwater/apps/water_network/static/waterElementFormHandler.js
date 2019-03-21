@@ -126,3 +126,11 @@ function dismissModal() {
     form["select-state"].value = "none";
 
 }
+
+/**
+ * Request water element details if exists (aka. if we are on GIS)
+ * @param id the created ID from the callback
+ */
+function focusWaterElementDetails(id) {
+    typeof requestWaterElementDetails === 'function' && requestWaterElementDetails(id);
+}
