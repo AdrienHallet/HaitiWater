@@ -42,10 +42,14 @@ def add_consumer_element(request):
     phone = request.POST.get("phone", None)
     outlet_id = request.POST.get("mainOutlet", None)
 
-    outlet = Element.objects.filter(id=outlet_id).first()  # TODO check if user can access outlet
+    outlet = Element.objects.filter(id=outlet_id).first()
     if outlet is None:
         return HttpResponse("La sortie d'eau spécifiée n'a pas été trouvée, "
                             "impossible d'ajouter le consommateur", status=400)
+
+    if (is_user_fountain(request) and outlet.id not in request.user.profile.outlets) or \
+            (is_user_zone(request) and outlet.zone.name not in request.user.profile.zone.subzones):
+        return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
 
     consumer = Consumer(last_name=last_name, first_name=first_name, gender=gender, location=address,
                         phone_number=phone, household_size=sub, water_outlet=outlet)  # Creation
@@ -89,9 +93,13 @@ def add_report_element(request):
     values = json.loads(request.body.decode("utf-8"))
 
     for index, elem in enumerate(values["selectedOutlets"]):
-        outlet = Element.objects.filter(id=elem).first()  # TODO check if user can access outlet
+        outlet = Element.objects.filter(id=elem).first()
         if outlet is None:
             return HttpResponse("La sortie d'eau concernée par ce rapport n'a pas été trouvée", status=400)
+
+        if (is_user_fountain(request) and outlet.id not in request.user.profile.outlets) or \
+                (is_user_zone(request) and outlet.zone.name not in request.user.profile.zone.subzones):
+            return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
 
         active = values["isActive"]
         if active:
@@ -231,9 +239,13 @@ def add_ticket_element(request):
     urgency = request.POST.get('urgency', None).upper()
     image = request.FILES.get("picture", None)
 
-    outlet = Element.objects.filter(id=outlet_id).first()  # TODO check if user can access outlet
+    outlet = Element.objects.filter(id=outlet_id).first()
     if outlet is None:
         return HttpResponse("Impossible de trouver la sortie d'eau correspondante au ticket", status=400)
+
+    if (is_user_fountain(request) and outlet.id not in request.user.profile.outlets) or \
+            (is_user_zone(request) and outlet.zone.name not in request.user.profile.zone.subzones):
+        return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
 
     if image:
         import uuid
