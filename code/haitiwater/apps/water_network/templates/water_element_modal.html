@@ -1,7 +1,7 @@
 {% load static %}
 
 <!-- Modal form to add/edit network element -->
-<script src="{% static "javascripts/forms/waterElementFormHandler.js"%}"></script>
+<script src="{% static "waterElementFormHandler.js"%}"></script>
 <div id="modal-water-element" class="modal-block modal-block-primary mfp-hide">
     <section class="panel">
         <header class="panel-heading">
@@ -61,7 +61,7 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <button id="modal-submit-add" onclick="postNewRow('water_element')" class="btn btn-primary modal-confirm">
+                    <button id="modal-submit-add" onclick="postNewRow('water_element', focusWaterElementDetails)" class="btn btn-primary modal-confirm">
                         Ajouter
                     </button>
                     <button id="modal-submit-edit" onclick="postEditRow('water_element')" class="btn btn-primary modal-confirm hidden">

@@ -83,3 +83,7 @@ function requestFinancialDetails(userID){
     xhttp.open('GET', requestURL, true);
     xhttp.send();
 }
+
+function refreshFinancialDetails() {
+    requestFinancialDetails($('#input-payment-id-consumer').val());
+}

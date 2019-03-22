@@ -53,14 +53,15 @@
                 <div class="form-group mt-lg">
                     <label class="col-sm-3 control-label">Téléphone</label>
                     <div class="col-sm-9">
-                        <input id="input-phone" name="input-phone" type="number" class="form-control">
-                        <label id="input-phone-error" class="error">Format invalide (8 chiffres requis, ou laissez vide)</label>
+                        <input id="input-phone" class="form-control" type="number" name="telphone" placeholder="012 345 6789" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="10" minlength="8"/>
+{#                        <input id="input-phone" name="input-phone" type="number" class="form-control">#}
+                        <label id="input-phone-error" class="error">Format invalide (8 ou 10 chiffres requis, ou laissez vide)</label>
                     </div>
                 </div>
                 <div class="form-group mt-lg">
-                    <label class="col-sm-3 control-label">Consommateurs à charge</label>
+                    <label class="col-sm-3 control-label">Consommateurs additionnels</label>
                     <div class="col-sm-9">
-                        <input id="input-sub-consumers" name="sub-consumers" type="number" class="form-control">
+                        <input id="input-sub-consumers" name="sub-consumers" type="number" class="form-control" min="0" placeholder="Nombre de personnes en plus du chef de famille.">
                     </div>
                 </div>
                 <div class="form-group mt-lg">

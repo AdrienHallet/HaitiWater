@@ -18,7 +18,7 @@ function validateForm() {
       '#input-first-name' : value => value.trim() !== '',
       '#select-gender' : value => value !== 'none',
       '#input-address' : value => value.trim() !== '',
-      '#input-phone' : value => (value === '' || value.toString().length === 8), // Haiti has 8 digits phone numbers
+      '#input-phone' : value => (value === '' || value.toString().length === 8 || value.toString().length === 10), // Haiti has 8 digits phone numbers, new phones have 10
       '#select-main-outlet' : value => value !== 'none',
     };
 

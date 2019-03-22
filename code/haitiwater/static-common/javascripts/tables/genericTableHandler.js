@@ -25,9 +25,6 @@ function editElement(data){
 
 function drawDataTable(tableName){
     $('#datatable-' + tableName).DataTable().draw();
-    if (tableName === 'payment'){ // Should go in callback called by postNewRow
-        requestFinancialDetails($('#input-payment-id-consumer').val());
-    }
 }
 
 /**
@@ -156,7 +153,7 @@ function postNewRow(table, callback){
                 drawDataTable(table);
             }
             afterModalRequest();
-            typeof callback === 'function' && callback();
+            typeof callback === 'function' && callback(xhttp.responseText);
         }
     };
     xhttp.send(request)
