@@ -23,9 +23,9 @@
                 <header class="panel-heading">
                     <!-- Table block control actions -->
                     <div class="panel-actions form-inline">
-                        <a id="print-water_element" class="fa fa-print clickable"></a>
-                        <a id="water_element-options" class="fas fa-cog clickable"></a>
-                        <a href="#" class="fa fa-caret-down"></a>
+                        <a id="print-water_element" class="fa fa-print clickable" data-toggle="tooltip" title="Imprimer la table"></a>
+                        <a id="water_element-options" class="fas fa-cog clickable" data-toggle="tooltip" title="Options"></a>
+                        <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
                     </div>
                     <h2 class="panel-title">Éléments du réseau</h2>
                 </header>
@@ -40,9 +40,9 @@
                     <!-- Table block control actions -->
                     <div class="panel-actions form-inline">
                         {% if user|has_group:"Gestionnaire de zone" %}
-                            <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus"></a>
+                            <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus" data-toggle="tooltip" title="Ajouter"></a>
                         {% endif %}
-                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
                     </div>
                     <h2 class="panel-title">Carte interactive</h2>
                 </header>
@@ -55,15 +55,15 @@
                         <div id="details" class="col-md-4 collapse">
                             <div class="text-center">
                                <div class="btn-group">
-                                  <button id="button-draw" type="button" class="btn btn-small" title="Placer sur la carte" disabled>
+                                  <button id="button-draw" type="button" class="btn btn-small" data-toggle="tooltip" title="Placer sur la carte" disabled>
                                       <i class="fas fa-map-marker-alt"></i>
                                       Placer
                                   </button>
-                                  <button id="button-edit" type="button" class="btn btn-small" title="Entrer les coordonnées" disabled>
+                                  <button id="button-edit" type="button" class="btn btn-small" data-toggle="tooltip" title="Entrer les coordonnées" disabled>
                                       <i class="fas fa-pen"></i>
                                       Coordonnées
                                   </button>
-                                  <button id="button-remove" type="button" class="btn btn-small" title="Supprimer le marqueur" disabled>
+                                  <button id="button-remove" type="button" class="btn btn-small" data-toggle="tooltip" title="Supprimer le marqueur" disabled>
                                       <i class="fas fa-trash"></i>
                                       Supprimer
                                   </button>
