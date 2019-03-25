@@ -82,18 +82,7 @@ function getConsumerDatatableConfiguration(dataURL, fullView){
             }
         ],
         "language": getDataTableFrenchTranslation(),
-        "ajax": {
-            url: dataURL,
-            error: function (xhr, error, thrown) {
-                console.log(xhr + '\n' + error + '\n' + thrown);
-                $('#datatable-ajax_wrapper').hide();
-                new PNotify({
-                    title: 'Échec du téléchargement!',
-                    text: "Les données de la table n'ont pas pu être téléchargées",
-                    type: 'failure',
-                });
-            }
-        },
+        "ajax": getAjaxController(dataURL),
 
         //Callbacks on fetched data
         "createdRow": function (row, data, index) {

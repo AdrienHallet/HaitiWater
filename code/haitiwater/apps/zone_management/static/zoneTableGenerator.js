@@ -101,9 +101,7 @@ function getZoneTableConfiguration(dataURL){
             },
             ],
         "language": getDataTableFrenchTranslation(),
-        "ajax": {
-            url: dataURL
-        },
+        "ajax": getAjaxController,
 
         //Callbacks on fetched data
         "createdRow": function (row, data, index) {
