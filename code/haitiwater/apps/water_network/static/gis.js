@@ -151,10 +151,12 @@ var drawerControl = L.Control.extend({
     },
 
     onAdd: function (map) {
-        var container = L.DomUtil.create('i', 'leaflet-bar clickable leaflet-drawer-control fas fa-question align-middle');
+        var container = L.DomUtil.create('div', 'leaflet-bar clickable leaflet-drawer-control fas fa-question');
         container.style.backgroundColor = 'white';
         container.style.width = '35px';
         container.style.height = '35px';
+        container.style.paddingLeft = '7px';
+        container.style.paddingTop = '5px';
         container.onclick = function(){
             toggleDrawer();
         };

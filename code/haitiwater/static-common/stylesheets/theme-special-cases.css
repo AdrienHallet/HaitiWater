@@ -10,9 +10,6 @@
     font-size: 20px;
     background-color:black;
     color:black;
-    text-align: center;
-    vertical-align: center;
-    cursor: pointer;
 }
 
 .leaflet-control.clickable {
