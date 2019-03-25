@@ -14,7 +14,7 @@ $( document ).ready(function() {
         localStorage.setItem('isMenuOpen', isMenuOpen.toString());
     });
 
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 
     setupNotifications();
 });

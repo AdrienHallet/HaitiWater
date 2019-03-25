@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
 from django.db.models import Field
 
+from ..utils.get_data import has_access
 from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
@@ -14,221 +15,20 @@ from ..financial.models import Invoice, Payment
 from ..log.models import Transaction, Log
 from ..report.models import Ticket, Report
 
-
 success_200 = HttpResponse(status=200)
-
-
-def edit_water_element(request):
-    id = request.POST.get("id", None)
-    elems = Element.objects.filter(id=id)
-    if len(elems) < 1:
-        return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=404)
-    elem = elems[0]
-    old = elem.infos()
-    elem.type = request.POST.get("type", None).upper()
-    elem.location = request.POST.get("localization", None)
-    elem.status = request.POST.get("state", None).upper()
-    elem.name = elem.get_type()+" "+elem.location
-    log_element(elem, old, request)
-    elem.save()
-    return success_200
-
-
-def edit_consumer(request):
-    id = request.POST.get("id", None)
-    consumers = Consumer.objects.filter(id=id)
-    if len(consumers) < 1:
-        return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=404)
-    consumer = consumers[0]
-    old = consumers[0].infos()
-    consumer.first_name = request.POST.get("firstname", None)
-    consumer.last_name = request.POST.get("lastname", None)
-    consumer.gender = request.POST.get("gender", None)
-    consumer.location = request.POST.get("address", None)
-    consumer.household_size = request.POST.get("subconsumer", None)
-    consumer.phone = request.POST.get("phone", None)
-    outlet_id = request.POST.get("mainOutlet", None)
-    outlet = Element.objects.filter(id=outlet_id)
-    if len(outlet) > 0:
-        outlet = outlet[0]
-    else:
-        return HttpResponse("Impossibe de trouver cet élément du réseau", status=404)  # Outlet not found, can't edit
-    old_outlet = consumer.water_outlet
-    consumer.water_outlet = outlet
-    log_element(consumer, old, request)
-    consumer.save()
-    if old_outlet != outlet and not outlet.type == ElementType.INDIVIDUAL.name:
-        old_invoice = Invoice.objects.filter(water_outlet=old_outlet, expiration__gt=date.today())[0]
-        old_invoice.expiration = date.today()
-        price, duration = outlet.get_price_and_duration()
-        creation = date.today()
-        expiration = creation + timedelta(days=duration*30)  # TODO each month
-        invoice = Invoice(consumer=consumer, water_outlet=outlet, creation=creation, expiration=expiration, amount=price)
-        invoice.save()
-    return success_200
-
-
-def edit_zone(request):
-    id = request.POST.get("id", None)
-    zone = Zone.objects.filter(id=id)
-    if len(zone) < 1:
-        return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=404)
-    zone = zone[0]
-    old = zone.infos()
-    old_name = zone.name
-    zone.name = request.POST.get("name", None)
-    zone.fountain_price = request.POST.get("fountain-price", 0)
-    zone.fountain_duration = request.POST.get("fountain-duration", 1)
-    zone.kiosk_price = request.POST.get("kiosk-price", 0)
-    zone.kiosk_duration = request.POST.get("kiosk-duration", 1)
-    zone.subzones.remove(old_name)
-    zone.subzones.append(zone.name)
-    for z in Zone.objects.all():
-        if old_name in z.subzones:
-            z.subzones.remove(old_name)
-            z.subzones.append(zone.name)
-            z.save()
-    log_element(zone, old, request)
-    zone.save()
-    return success_200
-
-
-def edit_ticket(request):
-    id = request.POST.get("id", None)
-    ticket = Ticket.objects.filter(id=id)
-    if len(ticket) < 1:
-        return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=404)
-    ticket = ticket[0]
-    old = ticket.infos()
-    id_outlet = request.POST.get("id_outlet", None)
-    outlet = Element.objects.filter(id=id_outlet)
-    if len(outlet) != 1:
-        return HttpResponse("Impossible de trouver l'élément du réseau associé", status=404)
-    outlet = outlet[0]
-    ticket.water_outlet = outlet
-    ticket.urgency = request.POST.get("urgency", None).upper()
-    ticket.type = request.POST.get("type", None).upper()
-    ticket.comment = request.POST.get("comment", None)
-    ticket.status = request.POST.get("state", None).upper()
-    image = request.FILES.get("picture", None)
-    if image is not None:
-        extension = image.name.split(".")
-        import uuid
-        filename = str(uuid.uuid4())
-        image.name = filename + "." + extension[1]
-        ticket.image = image
-    log_element(ticket, old, request)
-    ticket.save()
-    return success_200
-
-
-def edit_manager(request):
-    id = request.POST.get("id", None)
-    user = User.objects.filter(username=id)
-    if len(user) == 1:
-        user = user[0]
-        old = user.profile.infos()
-        type = request.POST.get("type", None)
-        if type == "fountain-manager":
-            water_out = request.POST.get("outlets", None)
-            water_out = water_out.split(',')
-            if len(water_out) > 1:
-                res = Element.objects.filter(id__in=water_out)
-            else:
-                res = Element.objects.filter(id=water_out[0])
-            if len(res) > 0:
-                old_outlets = user.profile.outlets
-                user.profile.outlets = []
-                for outlet in res:
-                    outlet.manager_names = outlet.get_managers()
-                    outlet.save()
-                    user.profile.outlets.append(outlet.id)
-                if len(old_outlets) > 1:
-                    res = Element.objects.filter(id__in=old_outlets)
-                elif len(old_outlets) == 1:
-                    res = Element.objects.filter(id=old_outlets[0])
-                for outlet in res:
-                    outlet.manager_names = outlet.get_managers()
-                    outlet.save()
-            my_group = Group.objects.get(name='Gestionnaire de fontaine')
-            my_group.user_set.add(user)
-            if user.profile.zone: #If user had a zone, switch it
-                g = Group.objects.get(name='Gestionnaire de zone')
-                g.user_set.remove(user)
-                user.profile.zone = None
-            log_element(user.profile, old, request)
-            user.save()
-        elif type == "zone-manager":
-            zone = request.POST.get("zone", None)
-            res = Zone.objects.filter(id=zone)
-            if len(res) == 1:
-                user.profile.zone = res[0]
-            else:
-                return HttpResponse("Impossible d'assigner cette zone", status=404)
-            my_group = Group.objects.get(name='Gestionnaire de zone')
-            my_group.user_set.add(user)
-            if len(user.profile.outlets) > 0: #If user had outlets
-                g = Group.objects.get(name='Gestionnaire de fontaine')
-                g.user_set.remove(user)
-                user.profile.outlets = []
-            log_element(user.profile, old, request)
-            user.save()
-    else:
-        return HttpResponse("Utilisateur introuvable dans la base de donnée",
-                          status=404)
-    return success_200
-
-
-def edit_payment(request):
-    id = request.POST.get("id", None)
-    payment = Payment.objects.get(id=id)
-    if not payment:
-        return HttpResponse("Paiement introuvable dans la base de donnée", status=404)
-    old = payment.infos()
-    id_consumer = request.POST.get("id_consumer", None)
-    consumer = Consumer.objects.get(id=id_consumer)
-    if not consumer:
-        return HttpResponse("Impossible de trouver l'utilisateur", status=404)
-    payment.consumer = consumer
-
-    payment.water_outlet = consumer.water_outlet
-    payment.amount = request.POST.get("amount", None)
-    log_element(payment, old, request)
-    payment.save()
-    return success_200
-
-
-def edit_report(request):
-    values = json.loads(request.body.decode("utf-8"))
-    year = values["date"].split("-")[0]
-    month = values["date"].split("-")[1]
-    for elem in values["details"]:
-        report = Report.objects.get(water_outlet_id=elem["id"],
-                                    timestamp__month=month,
-                                    timestamp__year=year)
-        old = report.infos()
-        report.has_data = elem["has_data"]
-        if elem["has_data"]:
-            #Days active
-            if True: #TODO was active
-                report.quantity_distributed = elem["volume"]
-                report.price = elem["price"]
-                report.recette = elem["revenue"]
-        report.save()
-        log_element(report, old, request)
-    return success_200
 
 
 def log_element(element, old, request):
     transaction = Transaction(user=request.user)
     transaction.save()
+    element.save()
     element.log_edit(old, transaction)
     clean_up(element)
 
 
 def clean_up(element):
     logs = Log.objects.filter(action="EDIT", column_name="ID", table_name=element._meta.model_name,
-                             new_value=element.id, transaction__archived=False)
+                              new_value=element.id, transaction__archived=False)
     if len(logs) != 0 and element._meta.model_name != "profile":  # If we found a logs modifying this element
         transactions = []
         for log in logs:
@@ -249,3 +49,260 @@ def clean_up(element):
         logs = Log.objects.filter(transaction=transaction)
         if len(logs) == 0:
             transaction.delete()
+
+
+def edit_water_element(request):
+    if not request.user:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
+    elem_id = request.POST.get("id", None)
+    elem = Element.objects.filter(id=elem_id).first()
+    if elem is None:
+        return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=400)
+
+    if not has_access(elem, request):
+        return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
+
+    old = elem.infos()
+    elem.type = request.POST.get("type", None).upper()
+    elem.location = request.POST.get("localization", None)
+    elem.status = request.POST.get("state", None).upper()
+    elem.name = elem.get_type()+" "+elem.location
+
+    log_element(elem, old, request)
+    return success_200
+
+
+def edit_consumer(request):
+    if not request.user:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
+    consumer_id = request.POST.get("id", None)
+    consumer = Consumer.objects.filter(id=consumer_id).first()
+    if consumer is None:
+        return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=400)
+
+    if not has_access(consumer.water_outlet, request):  # TODO check if good heuristic
+        return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
+
+    old = consumer.infos()
+    consumer.first_name = request.POST.get("firstname", None)
+    consumer.last_name = request.POST.get("lastname", None)
+    consumer.gender = request.POST.get("gender", None)
+    consumer.location = request.POST.get("address", None)
+    consumer.household_size = request.POST.get("subconsumer", None)
+    consumer.phone = request.POST.get("phone", None)
+    outlet_id = request.POST.get("mainOutlet", None)
+
+    outlet = Element.objects.filter(id=outlet_id).first()
+    if outlet is None:
+        return HttpResponse("Impossibe de trouver cet élément du réseau", status=400)
+
+    if not has_access(outlet, request):
+        return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
+
+    old_outlet = consumer.water_outlet
+    consumer.water_outlet = outlet
+
+    log_element(consumer, old, request)
+
+    if old_outlet != outlet and not outlet.type == ElementType.INDIVIDUAL.name:
+        old_invoice = Invoice.objects.filter(water_outlet=old_outlet, expiration__gt=date.today()).first()
+        if old_invoice:
+            old_invoice.expiration = date.today()
+            price, duration = outlet.get_price_and_duration()
+            creation = date.today()
+            expiration = creation + relativedelta(months=duration)
+            invoice = Invoice(consumer=consumer, water_outlet=outlet, amount=price,
+                              creation=creation, expiration=expiration)
+            invoice.save()
+
+    return success_200
+
+
+def edit_zone(request):
+    if not request.user or request.user.profile.zone is None:
+        return HttpResponse("Vous n'êtes pas connecté en tant que gestionnaire de zone", status=403)
+
+    zone_id = request.POST.get("id", None)
+    zone = Zone.objects.filter(id=zone_id).first()
+    if zone is None:
+        return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=400)
+
+    if zone.name not in request.user.profile.zone.subzones:
+        return HttpResponse("Vous n'avez pas les droits sur cette zone", status=403)
+
+    old = zone.infos()
+    old_name = zone.name
+    zone.name = request.POST.get("name", None)
+    zone.fountain_price = request.POST.get("fountain-price", 0)
+    zone.fountain_duration = request.POST.get("fountain-duration", 1)
+    zone.kiosk_price = request.POST.get("kiosk-price", 0)
+    zone.kiosk_duration = request.POST.get("kiosk-duration", 1)
+
+    zone.subzones.remove(old_name)
+    zone.subzones.append(zone.name)
+    for z in Zone.objects.all():
+        if old_name in z.subzones:
+            z.subzones.remove(old_name)
+            z.subzones.append(zone.name)
+            z.save()
+
+    log_element(zone, old, request)
+    return success_200
+
+
+def edit_ticket(request):
+    if not request.user:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
+    ticket_id = request.POST.get("id", None)
+    ticket = Ticket.objects.filter(id=ticket_id).first()
+    if ticket is None:
+        return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=400)
+
+    old = ticket.infos()
+    id_outlet = request.POST.get("id_outlet", None)
+    outlet = Element.objects.filter(id=id_outlet).first()
+    if outlet is None:
+        return HttpResponse("Impossible de trouver l'élément du réseau associé", status=400)
+    if not has_access(outlet, request):
+        return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
+
+    ticket.water_outlet = outlet
+    ticket.urgency = request.POST.get("urgency", None).upper()
+    ticket.type = request.POST.get("type", None).upper()
+    ticket.comment = request.POST.get("comment", None)
+    ticket.status = request.POST.get("state", None).upper()
+    image = request.FILES.get("picture", None)
+    if image is not None:
+        extension = image.name.split(".")
+        import uuid
+        filename = str(uuid.uuid4())
+        image.name = filename + "." + extension[1]
+        ticket.image = image
+
+    log_element(ticket, old, request)
+    return success_200
+
+
+def edit_manager(request):
+    if not request.user or request.user.profile.zone is None:
+        return HttpResponse("Vous n'êtes pas connecté en tant que gestionnaire de zone", status=403)
+
+    user_id = request.POST.get("id", None)
+    user = User.objects.filter(username=user_id).first()
+    if user is None:
+        return HttpResponse("Impossible de trouver cet utilisateur", status=400)
+
+    old = user.profile.infos()
+    type = request.POST.get("type", None)
+
+    if type == "fountain-manager":
+        outlets = request.POST.get("outlets", None)
+        outlets = outlets.split(',')
+
+        if len(outlets) < 1:
+            return HttpResponse("Vous n'avez pas choisi de fontaine a attribuer !", status=400)
+        if len(outlets) > 1:
+            res = Element.objects.filter(id__in=outlets)
+        else:
+            res = Element.objects.filter(id=outlets[0])
+
+        if len(outlets) == 0:
+            return HttpResponse("Impossible d'attribuer cette fontaine au gestionnaire", status=400)
+
+        old_outlets = user.profile.outlets
+        user.profile.outlets = []
+        for outlet in res:
+            if not has_access(outlet, request):
+                return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
+            outlet.manager_names = outlet.get_managers()
+            outlet.save()
+            user.profile.outlets.append(outlet.id)
+
+        if len(old_outlets) > 0:
+            if len(old_outlets) > 1:
+                res2 = Element.objects.filter(id__in=old_outlets)
+            else:
+                res2 = Element.objects.filter(id=old_outlets[0])
+            for outlet in res2:
+                outlet.manager_names = outlet.get_managers()
+                outlet.save()
+
+        my_group = Group.objects.get(name='Gestionnaire de fontaine')
+        my_group.user_set.add(user)
+        if user.profile.zone:  # If user had a zone, switch it
+            g = Group.objects.get(name='Gestionnaire de zone')
+            g.user_set.remove(user)
+            user.profile.zone = None
+
+        log_element(user.profile, old, request)
+
+    elif type == "zone-manager":
+        zone = request.POST.get("zone", None)
+        res = Zone.objects.filter(id=zone).first()
+        if res is None:
+            return HttpResponse("Impossible d'assigner cette zone", status=400)
+        if zone not in request.user.profile.zone.subzones:
+            return HttpResponse("Vous n'avez pas les droits sur cette zone", status=403)
+
+        user.profile.zone = res
+
+        my_group = Group.objects.get(name='Gestionnaire de zone')
+        my_group.user_set.add(user)
+        if len(user.profile.outlets) > 0:  # If user had outlets
+            g = Group.objects.get(name='Gestionnaire de fontaine')
+            g.user_set.remove(user)
+            user.profile.outlets = []
+
+        log_element(user.profile, old, request)
+
+    return success_200
+
+
+def edit_payment(request):
+    if not request.user:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
+    payment_id = request.POST.get("id", None)
+    payment = Payment.objects.filter(id=payment_id).first()
+    if payment is None:
+        return HttpResponse("Impossible de trouver ce paiement", status=400)
+
+    old = payment.infos()
+    id_consumer = request.POST.get("id_consumer", None)
+    consumer = Consumer.objects.filter(id=id_consumer).first()
+    if consumer is None:
+        return HttpResponse("Impossible de trouver l'utilisateur", status=400)
+    payment.consumer = consumer
+
+    payment.water_outlet = consumer.water_outlet
+    payment.amount = request.POST.get("amount", None)
+
+    log_element(payment, old, request)
+    return success_200
+
+
+def edit_report(request):
+    if not request.user:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
+    values = json.loads(request.body.decode("utf-8"))
+    year = values["date"].split("-")[0]
+    month = values["date"].split("-")[1]
+    for elem in values["details"]:
+        report = Report.objects.filter(water_outlet_id=elem["id"], timestamp__month=month, timestamp__year=year).first()
+        if report is None:
+            return HttpResponse("Impossible de trouver ce rapport", status=400)
+
+        old = report.infos()
+        report.has_data = elem["has_data"]
+        if elem["has_data"]:
+            # Days active
+            if True:  # TODO was active
+                report.quantity_distributed = elem["volume"]
+                report.price = elem["price"]
+                report.recette = elem["revenue"]
+        log_element(report, old, request)
+    return success_200

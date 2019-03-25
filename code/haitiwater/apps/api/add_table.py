@@ -197,6 +197,8 @@ def add_collaborator_element(request):
             return HttpResponse("Impossible d'attribuer cette fontaine au gestionnaire", status=400)
 
         for outlet in res:
+            if not has_access(outlet, request):
+                return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
             outlet.manager_names = outlet.get_managers()
             outlet.save()
             user.profile.outlets.append(outlet.id)
