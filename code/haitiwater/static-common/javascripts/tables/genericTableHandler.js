@@ -12,7 +12,7 @@ window.onload = function() {
 };
 
 function getAjaxController(dataURL){
-    return
+    return (
     {
         url: dataURL,
         error: function (xhr, error, thrown) {
@@ -24,7 +24,7 @@ function getAjaxController(dataURL){
                 type: 'failure',
             });
         }
-    }
+    });
 }
 
 function editElement(data){
