@@ -13,7 +13,7 @@ function drawWaterElementTable(withManagers, withActions, gis){
         configuration = getWaterDatatableGISConfiguration(dataURL, withManagers, withActions);
     }
     else {
-        configuration = getWaterDatatableGISConfiguration(dataURL, withManagers, withActions);
+        configuration = getWaterDatatableConfiguration(dataURL, withManagers, withActions);
     }
     $('#datatable-water_element').DataTable(configuration);
 
