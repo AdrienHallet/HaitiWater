@@ -155,7 +155,7 @@ var drawerControl = L.Control.extend({
         container.style.backgroundColor = 'white';
         container.style.width = '35px';
         container.style.height = '35px';
-        container.style.paddingLeft = '7px';
+        container.style.paddingLeft = '9px';
         container.style.paddingTop = '5px';
         container.onclick = function(){
             toggleDrawer();
