@@ -87,7 +87,7 @@ a:active {
 	display: table-cell;
 	position: relative;
 	vertical-align: top;
-	width: 300px;
+	width: 200px;
 	z-index: 1010;
 }
 
@@ -181,7 +181,7 @@ a:active {
 
 	/* Layout Fixed - Content Body */
 	html.fixed .content-body {
-		margin-left: 300px;
+		margin-left: 200px;
 	}
 
 	html.fixed .content-body.has-toolbar {
@@ -190,7 +190,7 @@ a:active {
 
 	/* Layout Fixed - Page header */
 	html.fixed .page-header {
-		left: 300px;
+		left: 200px;
 		margin: 0;
 		position: fixed;
 		right: 0;
