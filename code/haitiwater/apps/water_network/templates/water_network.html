@@ -23,7 +23,7 @@
             <section class="panel" data-intro="Des informations rapides vous sont proposées">
                 <header class="panel-heading">
                     <div class="panel-actions form-inline">
-                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
                     </div>
                     <h2 class="panel-title">{{ zone_name }}</h2>
                 </header>
@@ -80,11 +80,11 @@
             <!-- Table block control actions -->
             <div class="panel-actions form-inline">
                 {% if user|has_group:"Gestionnaire de zone" %}
-                    <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus"></a>
+                    <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus" data-toggle="tooltip" title="Ajouter"></a>
                 {% endif %}
-                <a id="print-water_element" class="fa fa-print clickable"></a>
-                <a id="water_element-options" class="fas fa-cog clickable"></a>
-                <a href="#" class="fa fa-caret-down"></a>
+                <a id="print-water_element" class="fa fa-print clickable" data-toggle="tooltip" title="Imprimer la table"></a>
+                <a id="water_element-options" class="fas fa-cog clickable" data-toggle="tooltip" title="Options"></a>
+                <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
             </div>
             <h2 class="panel-title">Éléments du réseau</h2>
         </header>

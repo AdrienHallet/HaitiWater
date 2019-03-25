@@ -29,7 +29,7 @@
             <section class="panel" data-intro="Des informations rapides sont disponibles sur les consommateurs de la zone">
                 <header class="panel-heading">
                     <div class="panel-actions form-inline">
-                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
                     </div>
                     <h2 class="panel-title">{{ zone_name }}</h2>
                 </header>
@@ -85,10 +85,10 @@
         <header class="panel-heading">
             <!-- Table block control actions -->
             <div class="panel-actions form-inline">
-                <a id="call-consumer-modal" href="#modal-consumer" onclick="setupModalConsumerAdd()" class="modal-with-form fa fa-plus"></a>
-                <a id="print-consumer" href="#" class="fa fa-print clickable"></a>
-                <a id="consumer-options" class="fas fa-cog clickable"></a>
-                <a href="#" class="fa fa-caret-down"></a>
+                <a id="call-consumer-modal" href="#modal-consumer" onclick="setupModalConsumerAdd()" class="modal-with-form fa fa-plus" data-toggle="tooltip" title="Ajouter"></a>
+                <a id="print-consumer" href="#" class="fa fa-print clickable" data-toggle="tooltip" title="Imprimer la table"></a>
+                <a id="consumer-options" class="fas fa-cog clickable" data-toggle="tooltip" title="Options"></a>
+                <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
             </div>
             <h2 class="panel-title">Consommateurs</h2>
         </header>
