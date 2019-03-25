@@ -55,19 +55,7 @@ function getPaymentDatatableConfiguration(dataURL){
         paging:         true,
         pagingType: 'full_numbers',
         "language": getDataTableFrenchTranslation(),
-        "ajax": {
-            url: dataURL,
-            error: function (xhr, error, thrown) {
-                if(xhr.status !== 200) { // Avoid first load error
-                    console.log(xhr + '\n' + error + '\n' + thrown);
-                    new PNotify({
-                        title: 'Échec du téléchargement!',
-                        text: "Les données des paiements n'ont pas pu être téléchargées",
-                        type: 'failure'
-                    });
-                }
-            }
-        },
+        "ajax": getAjaxController(dataURL),
         "initComplete": function(settings, json){
             // Removes the last column (both header and body) if we cannot edit
             if(json.hasOwnProperty('editable') && !json['editable']){
