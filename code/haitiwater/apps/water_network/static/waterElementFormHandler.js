@@ -64,6 +64,7 @@ function setupModalAdd(){
 }
 
 function setupModalEdit(data){
+    console.log(data);
     //Hide add components
     $('#modal-title-add').addClass("hidden");
     $('#modal-submit-add').addClass("hidden");
@@ -75,21 +76,21 @@ function setupModalEdit(data){
 
     //Get the option that contains the values for data 2 and 4
     let typeOption = $("#select-type option").filter(function() {
-        if (this.text.trim() === data[1].innerText.trim()) {
+        if (this.text.trim() === data[1].trim()) {
             return this;
         }
     });
     let stateOption = $("#select-state option").filter(function() {
-        if (this.text.trim() === data[4].innerText.trim()) {
+        if (this.text.trim() === data[4].trim()) {
             return this;
         }
     });
 
     //Set form values to current values
     let form = document.forms["form-add-element"];
-    form["input-id"].value = data[0].innerText;
+    form["input-id"].value = data[0];
     form["select-type"].value = typeOption[0].value;
-    form["input-localization"].value = data[2].innerText;
+    form["input-localization"].value = data[2];
     form["select-state"].value = stateOption[0].value;
 
     showModal();

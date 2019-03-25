@@ -29,13 +29,13 @@ function drawWaterElementTable(withManagers, withActions, gis){
     });
 
     $('#datatable-water_element tbody').on( 'click', '.remove-row', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
-        if (confirm("Voulez-vous supprimer: " + data[1].innerText + ' ' + data[2].innerText + ' ?')){
-            removeElement("water_element", data[0].innerText);
+        let data = table.row($(this).closest('tr')).data();
+        if (confirm("Voulez-vous supprimer: " + data[1] + ' ' + data[2] + ' ?')){
+            removeElement("water_element", data[0]);
         } else {}
     } );
     $('#datatable-water_element tbody').on( 'click', '.edit-row', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
+        let data = table.row($(this).closest('tr')).data();
         editElement(data);
     } );
     prettifyHeader('water_element');
