@@ -16,7 +16,9 @@ function getAjaxController(dataURL){
     {
         url: dataURL,
         error: function (xhr, error, thrown) {
-            console.log(xhr + '\n' + error + '\n' + thrown);
+            if(xhr.status === 200) { return; } //301
+            console.log(xhr);
+            console.log(error + '\n' + thrown);
             $('#datatable-ajax_wrapper').hide();
             new PNotify({
                 title: 'Échec du téléchargement!',

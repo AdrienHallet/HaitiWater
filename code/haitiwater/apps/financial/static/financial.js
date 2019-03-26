@@ -1,8 +1,9 @@
+let paymentTable = 'undefined';
+
 $(document).ready(function() {
     // Draw DataTables
     let zoneTable = drawZoneTable();
     let consumerTable = drawConsumerTable(false);
-    drawPaymentTable();
 
     attachHandlers(zoneTable, consumerTable);
 });
@@ -27,7 +28,6 @@ function attachHandlers(zoneTable, consumerTable){
         } else {
             setTableURL('consumer', "");
         }
-
     });
 }
 
@@ -37,7 +37,11 @@ function attachHandlers(zoneTable, consumerTable){
  */
 function consumerDetails(data){
     let userID = data[0];
+    if (paymentTable === 'undefined') {
+        paymentTable = drawPaymentTable();
+    }
     setTableURL('payment', '&user=' + userID);
+    drawDataTable('payment');
     $('#input-payment-id-consumer').val(userID);
 
     let userName = data[1] + " " + data[2];
@@ -65,18 +69,20 @@ function requestFinancialDetails(userID){
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
-        if (this.status === 200 && this.readyState === 4) {
-            let financialDetails = JSON.parse(this.response);
-            $('#consumer-details-balance').html('(HTG) ' + financialDetails.balance);
-            $('#consumer-details-next-bill').html(financialDetails.validity);
-        }
-        else if (this.readyState === 4){
-            console.log(this);
-            new PNotify({
-                title: 'Échec du téléchargement',
-                text: "Impossible de récupérer les détails financiers de l'utilisateur.",
-                type: 'warning'
-            })
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                let financialDetails = JSON.parse(this.response);
+                $('#consumer-details-balance').html('(HTG) ' + financialDetails.balance);
+                $('#consumer-details-next-bill').html(financialDetails.validity);
+            }
+            else{
+                console.log(this);
+                new PNotify({
+                    title: 'Échec du téléchargement',
+                    text: "Impossible de récupérer les détails financiers de l'utilisateur.",
+                    type: 'warning'
+                })
+            }
         }
     };
 
