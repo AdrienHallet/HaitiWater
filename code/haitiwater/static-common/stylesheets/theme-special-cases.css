@@ -92,5 +92,5 @@ a .fas {
 }
 
 .selected {
-     font-weight: bold;
+     background-color: lightgrey !important;
 }
