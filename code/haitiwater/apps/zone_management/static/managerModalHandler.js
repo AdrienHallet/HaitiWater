@@ -182,7 +182,7 @@ function validateManagerForm() {
             lastName,
             firstName,
             email,
-            phone,
+            padPhone(phone),
             type,
             zone,
             outlets);

@@ -49,7 +49,7 @@ function validateForm() {
             firstName,
             gender,
             address,
-            Math.abs(phone),
+            padPhone(phone),
             Math.abs(subConsumers),
             mainOutlet);
     }

@@ -37,3 +37,13 @@ function attachNumericInputHandler(){
             e.preventDefault();
     });
 }
+
+/**
+ * Pads a phone number with leading zeros
+ */
+ function padPhone(number){
+     if (number.length === 7 || number.length === 9){
+         return "0"+number;
+     }
+     return number;
+ }
