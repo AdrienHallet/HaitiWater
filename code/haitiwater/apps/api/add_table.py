@@ -175,12 +175,14 @@ def add_collaborator_element(request):
     password = User.objects.make_random_password()  # New random password
     email = request.POST.get("email", None)
     type = request.POST.get("type", None)
+    phone = request.POST.get("phone", None)
 
     if User.objects.filter(username=username).first() is not None:
         return HttpResponse("Cet utilisateur existe déjà ! Vérifier que son identifiant est bien unique", status=400)
 
     user = User.objects.create_user(username=username, email=email, password=password,
                                     first_name=first_name, last_name=last_name)
+    user.profile.phone_number = phone
 
     if type == "fountain-manager":
         outlets = request.POST.get("outlets", None).split(',')
