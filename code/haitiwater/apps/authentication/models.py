@@ -9,10 +9,17 @@ from ..utils.common_models import *
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField("Numéro de téléphone", max_length=10, null=True)
     zone = models.ForeignKey(Zone, verbose_name="Zone gérée",
                              related_name="admins", null=True, on_delete=models.CASCADE)
 
     outlets = ArrayField(models.CharField(max_length=30), blank=True, default=list, null=True)
+
+    def get_phone_number(self):
+        if self.phone_number is None or self.phone_number == "0":
+            return "Non spécifié"
+        else:
+            return self.phone_number
 
     def infos(self):
         result = {}

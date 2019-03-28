@@ -81,8 +81,8 @@ def get_manager_elements(request):
         if 'Gestionnaire de zone' in group:
             if type(zone) is Zone and user.profile.zone and \
                     user.profile.zone.name in zone.subzones:  # TODO clean
-                tab = [user.username, user.last_name, user.first_name, user.email,
-                       "Gestionnaire de zone", user.profile.zone.name, user.profile.outlets]
+                tab = [user.username, user.last_name, user.first_name, user.profile.get_phone_number(),
+                       user.email, "Gestionnaire de zone", user.profile.zone.name, user.profile.outlets]
                 result.append(tab)
         if "Gestionnaire de fontaine" in group:
             for elem in user.profile.outlets:
@@ -90,8 +90,8 @@ def get_manager_elements(request):
                 if len(out) == 1:
                     out = out[0]
                 if type(out) is Element and out.is_in_subzones(zone):
-                    tab = [user.username, user.last_name, user.first_name, user.email,
-                           "Gestionnaire de fontaine", user.profile.get_zone(), user.profile.outlets]
+                    tab = [user.username, user.last_name, user.first_name, user.profile.get_phone_number(),
+                           user.email, "Gestionnaire de fontaine", user.profile.get_zone(), user.profile.outlets]
                     result.append(tab)
                     break
 
