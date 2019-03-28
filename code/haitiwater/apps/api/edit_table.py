@@ -91,7 +91,7 @@ def edit_consumer(request):
     consumer.gender = request.POST.get("gender", None)
     consumer.location = request.POST.get("address", None)
     consumer.household_size = request.POST.get("subconsumer", None)
-    consumer.phone = request.POST.get("phone", None)
+    consumer.phone_number = request.POST.get("phone", None)
     outlet_id = request.POST.get("mainOutlet", None)
 
     outlet = Element.objects.filter(id=outlet_id).first()
