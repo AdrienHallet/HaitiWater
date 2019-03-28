@@ -1,8 +1,7 @@
 import re
 import json
-from django.http import HttpResponse
 
-from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 from django.core.cache import cache
 
 from django.contrib.auth.models import User, Group
@@ -14,10 +13,9 @@ from ..report.models import Report, Ticket
 from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
-from ..utils.get_data import is_user_fountain, get_outlets
+from ..utils.get_data import is_user_zone, is_user_fountain, get_outlets
 from ..log.models import Transaction, Log
 from ..log.utils import *
-
 
 error_500 = HttpResponse(False, status=500)
 error_404 = HttpResponse(False, status=404)
@@ -25,155 +23,178 @@ success_200 = HttpResponse(status=200)
 
 
 def graph(request):
+    if request.user is None:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
+    json_object = {}
+
     export_format = request.GET.get('type', None)
     if export_format == "consumer_gender_pie":
-        export = """{
-               "jsonarray": [{
-                  "label": "Femmes",
-                  "data": 0
-               }, {
-                  "label": "Hommes",
-                  "data": 0
-               }, {
-                  "label": "Autre",
-                  "data": 0
-               }]}"""
-        json_val = json.loads(export)
-        all_consumers = Consumer.objects.all()
-        for elem in all_consumers:
+        json_object["jsonarray"] = [
+            {
+                "label": "Femmes",
+                "data": 0
+            },
+            {
+                "label": "Hommes",
+                "data": 0
+            },
+            {
+                "label": "Autres",
+                "data": 0
+            }
+        ]
+
+        for elem in Consumer.objects.all():
             if elem.gender == "F" or elem.gender == "Femme":
-                json_val['jsonarray'][0]['data'] += 1 #One more women
+                json_object['jsonarray'][0]['data'] += 1  # One more women
             elif elem.gender == "M" or elem.gender == "Homme":
-                json_val['jsonarray'][1]['data'] += 1 #One more man
+                json_object['jsonarray'][1]['data'] += 1  # One more man
             else:
-                json_val['jsonarray'][2]['data'] += 1 #One more other
+                json_object['jsonarray'][2]['data'] += 1  # One more other
+
     if export_format == "average_monthly_volume_per_zone":
         # Todo backend : fill "label" with list of zones and "data" with their average output volume in cubic meters.
         # Note that they obviously have to be in the same order
         # Note that the conversion and use of galleons is done in front-end
         # For the formula, I think it would be better to differentiate zones with no data and zones with volume = 0. So
         # that "new" zones aren't left behind for lack of data.
-        export = """{
-                       "jsonarray": [{
-                          "label": ["Nom zone 1", "Nome zone 2"],
-                          "data": [10, 20]
-                       }]}"""
-        json_val = json.loads(export)
-    return HttpResponse(json.dumps(json_val))
+        json_object["jsonarray"] = [
+            {
+                "label": ["Nom zone 1", "Nom zone 2"],
+                "data": [10, 20]
+            }
+        ]
+
+    return HttpResponse(json.dumps(json_object))
 
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def gis_infos(request):
+    if request.user is None:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
     if request.method == "GET":
-        markers = request.GET.get("marker", None) #The fuck
-        if markers == "all": #TODO : be mindfull of the connected user
-            all_loc = Location.objects.all()
-            result = {}
-            for loc in all_loc:
+        result = {}
+
+        markers = request.GET.get("marker", None)
+        if markers == "all":
+            for loc in Location.objects.all():
                 result[loc.elem.id] = [loc.elem.name, loc.json_representation]
+        else:  # TODO : be mindfull of the connected user
+            return HttpResponse("not implemented", status=500)
+
         return HttpResponse(json.dumps(result))
 
     elif request.method == "POST":
-        elem_id = request.GET.get("id", -1) #The fuck
-        if elem_id == -1:
-            return HttpResponse("Impossible de trouver l'élément demandé", status=404)
-        elem = Element.objects.filter(id=elem_id)
-        if len(elem) != 1:
-            return HttpResponse("Impossible de trouver l'élément demandé", status=404)
-        elem = elem[0]
-        if request.GET.get("action", "none") == "add":
+        elem_id = request.GET.get("id", None)
+        elem = Element.objects.filter(id=elem_id).first()
+        if elem is None:
+            return HttpResponse("Impossible de trouver l'élément demandé", status=400)
+
+        action = request.GET.get("action", None)
+        if action == "add":
             return add_location_element(request, elem)
-        elif request.GET.get("action", None) == "remove":
-            loc = Location.objects.get(elem_id=elem_id)
+        elif action == "remove":
+            loc = Location.objects.filter(elem_id=elem_id).first()
+            if loc is None:
+                return HttpResponse("Impossible de trouver l'élément demandé", status=400)
+
             log_element(loc, request)
             loc.delete()
-            return HttpResponse(status=200)
+            return success_200
         else:
-            return HttpResponse("Impossible de traiter cette requête", status=500)
+            return HttpResponse("Impossible de traiter cette requête", status=400)
 
 
-
+# https://datatables.net/manual/server-side
 def table(request):
-    # Todo backend https://datatables.net/manual/server-side
-    # Note that "editable" is a custom field. Setting it to true displays the edit/delete buttons.
-    export = """{
-                      "editable": true,
-                      "data": []
-                    }"""
-    json_test = json.loads(export)
-    json_test["draw"] = str(int(request.GET.get('draw', "1")) + 1)
-    d = parse(request)
-    all = []
-    #Get data
-    cache_key = d["table_name"]+request.user.username
-    if cache.get(cache_key):
-        all = json.loads(cache.get(cache_key))
+    if request.user is None:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
+    params = parse(request)
+    table_name = params["table_name"]
+    last_draw = request.GET.get('draw', "0")  # 1 ?
+    json_object = {
+        "draw": str(int(last_draw) + 1),
+        "editable": True,  # custom field, true to display edit/delete buttons
+        "data": []
+    }
+
+    cache_key = table_name + request.user.username
+    cache_result = cache.get(cache_key)
+    if cache_result:
+        result = json.loads(cache_result)
         cache.touch(cache_key, 60)
-        json_test["recordsTotal"] = len(all)
+    elif table_name == "water_element":
+        if is_user_fountain(request):
+            json_object["editable"] = False
+        result = get_water_elements(request)
+    elif table_name == "consumer":
+        result = get_consumer_elements(request)
+    elif table_name == "zone":
+        if is_user_fountain(request):
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 403)
+        result = get_zone_elements(request)
+    elif table_name == "manager":
+        if is_user_fountain(request):
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 403)
+        result = get_manager_elements(request)
+    elif table_name == "report":
+        if is_user_zone(request):
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 403)
+        result = get_last_reports(request)
+    elif table_name == "ticket":
+        result = get_ticket_elements(request)
+    elif table_name == "logs":
+        result = get_logs_elements(request, archived=False)
+    elif table_name == "logs_history":
+        result = get_logs_elements(request, archived=True)
+    elif table_name == "payment":
+        if is_user_fountain(request):
+            json_object["editable"] = False
+        result = get_payment_elements(request)
     else:
-        if d["table_name"] == "water_element":
-            if is_user_fountain(request):
-                json_test["editable"] = False
-            all = get_water_elements(request, json_test, d)
-        elif d["table_name"] == "consumer":
-            all = get_consumer_elements(request, json_test, d)
-        elif d["table_name"] == "zone":
-            if is_user_fountain(request):
-                return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
-            all = get_zone_elements(request, json_test, d)
-        elif d["table_name"] == "manager":
-            if is_user_fountain(request):
-                return HttpResponse("Vous ne pouvez pas accéder à ces informations", 500)
-            all = get_manager_elements(request, json_test, d)
-        elif d["table_name"] == "report":
-            all = get_last_reports(request, json_test, d)
-        elif d["table_name"] == "ticket":
-            all = get_ticket_elements(request, json_test, d)
-        elif d["table_name"] == "logs":
-            all = get_logs_elements(request, json_test, d)
-        elif d["table_name"] == "logs_history":
-            all = get_old_logs_elements(request, json_test, d)
-        elif d["table_name"] == "payment":
-            id = request.GET.get("user", "none")
-            if id == "none":
-                return success_200
-            if is_user_fountain(request):
-                json_test["editable"] = False
-            all = get_payment_elements(request, json_test, d, id)
+        return HttpResponse("Impossible de charger la table demandée (" + table_name + ").", status=404)
+
+    if result is None:
+        return HttpResponse("Problème à la récupération des données", status=400)
+
+    cache.set(cache_key, json.dumps(result), 60)
+    json_object["recordsTotal"] = len(result)
+
+    filtered = filter_search(params, result)
+
+    if table_name == "logs" or table_name == "logs_history" or table_name == "report":
+        if len(filtered) > 1:
+            keys = list(filtered[0].keys())
+            final = sorted(filtered, key=lambda x: x[keys[params["column_ordered"]]],
+                           reverse=params["type_order"] != "asc")
         else:
-            return HttpResponse("Impossible de charger la table demande ("+d["table_name"]+").", status=404)
-        if all:
-            cache.set(cache_key, json.dumps(all), 60)
-
-    if all is False: #There was a problem when retrieving the data
-        return HttpResponse("Problème à la récupération des données de la table "+d["table_name"], status=500)
-
-    #Filter data
-    all = filter_search(d, all)
-
-    if d["table_name"] == "logs" or d["table_name"] == "logs_history"\
-            or d["table_name"] == "report":
-        if len(all) > 1:
-            keys = list(all[0].keys())
-            final = sorted(all, key=lambda x: x[keys[d["column_ordered"]]],
-                       reverse=d["type_order"] != "asc")
-        else:
-            final = all
+            final = filtered
     else:
-        final = sorted(all, key=lambda x: x[d["column_ordered"]],
-                       reverse=d["type_order"] != "asc")
-    if d["length_max"] == -1:
-        json_test["data"] = final
+        final = sorted(filtered, key=lambda x: x[params["column_ordered"]],
+                       reverse=params["type_order"] != "asc")
+
+    if params["length_max"] == -1:
+        json_object["data"] = final
     else:
-        json_test["data"] = final[d["start"]:d["start"]+d["length_max"]]
-    json_test["recordsFiltered"] = len(final)
-    return HttpResponse(json.dumps(json_test))
+        start = params["start"]
+        stop = start + params["length_max"]
+        json_object["data"] = final[start:stop]
+
+    json_object["recordsFiltered"] = len(final)
+    return HttpResponse(json.dumps(json_object))
 
 
 def add_element(request):
+    if request.user is None:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
     element = request.POST.get("table", "")
-    cache_key = element+request.user.username
+
+    cache_key = element + request.user.username
     cache.delete(cache_key)
+
     if element == "water_element":
         return add_network_element(request)
     elif element == "consumer":
@@ -189,13 +210,18 @@ def add_element(request):
     elif element == "payment":
         return add_payment_element(request)
     else:
-        return HttpResponse("Impossible d'ajouter l'élément "+element, status=500)
+        return HttpResponse("Impossible d'ajouter l'élément " + element, status=400)
 
 
 def remove_element(request):
+    if request.user is None:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
     element = request.POST.get("table", "")
-    cache_key = element+request.user.username
+
+    cache_key = element + request.user.username
     cache.delete(cache_key)
+
     if element == "water_element":
         id = request.POST.get("id", None)
         consumers = Consumer.objects.filter(water_outlet=id)
@@ -294,9 +320,14 @@ def remove_element(request):
 
 
 def edit_element(request):
+    if request.user is None:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
     element = request.POST.get("table", "")
-    cache_key = element+request.user.username
+
+    cache_key = element + request.user.username
     cache.delete(cache_key)
+
     if not element:
         element = request.GET.get("table", None)
     if element == "water_element":
@@ -316,23 +347,23 @@ def edit_element(request):
     elif element == "report":
         return edit_report(request)
     else:
-        return HttpResponse("Impossible d'éditer la table "+element+
-                            ", elle n'est pas reconnue", status=500)
+        return HttpResponse("Impossible d'éditer la table " + element + ", elle n'est pas reconnue", status=400)
 
 
 def details(request):
-    table = request.GET.get("table", None)
-    if table == "payment":
+    if request.user is None:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
+    table_name = request.GET.get("table", None)
+    if table_name == "payment":
         balance, validity = get_payment_details(request)
-        result = {}
-        result["balance"] = balance
-        result["validity"] = validity
+        result = {"balance": balance, "validity": validity}
         return HttpResponse(json.dumps(result))
-    elif table == "water_element":
+    elif table_name == "water_element":
         return get_details_network(request)
     else:
-        return HttpResponse("Impossible d'obtenir des détails pour la table " + table +
-                            ", elle n'est pas reconnue", status=500)
+        return HttpResponse("Impossible d'obtenir des détails pour la table " + table_name +
+                            ", elle n'est pas reconnue", status=400)
 
 
 def outlets(request):
@@ -343,8 +374,8 @@ def outlets(request):
 def compute_logs(request):
     id_val = request.GET.get("id", -1)
     action = request.GET.get("action", None)
-    cache_key = "logs"+request.user.username
-    cache_key2 = "logs_history"+request.user.username
+    cache_key = "logs" + request.user.username
+    cache_key2 = "logs_history" + request.user.username
     if id_val == -1 or action == None:
         return HttpResponse("Impossible de valider/annuler ce changement", status=500)
     transaction = Transaction.objects.filter(id=id_val)
@@ -393,7 +424,7 @@ def parse(request):
     res2 = list(filter(test2.match, dict(request.GET).keys()))
     searchable_cols = []
     for i in range(25):
-        if request.GET.get('columns['+str(i)+'][searchable]', False):
+        if request.GET.get('columns[' + str(i) + '][searchable]', False):
             searchable_cols.append(i)
     d = {"table_name": request.GET.get('name', None),
          "length_max": int(request.GET.get('length', 10)),
