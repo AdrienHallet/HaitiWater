@@ -122,6 +122,7 @@ function validateManagerForm() {
     let lastName = form["input-manager-last-name"].value;
     let firstName = form["input-manager-first-name"].value;
     let email = form["input-manager-email"].value;
+    let phone = form["input-manager-phone"].value;
     let type = form["select-manager-type"].value;
     let zone = form["select-manager-zone"].value;
 
@@ -135,6 +136,7 @@ function validateManagerForm() {
       '#input-manager-first-name' : value => value.trim() !== '',
       '#input-manager-id' : value => value.trim() !== '',
       '#input-manager-email' : value => validateEmail(value),
+      '#input-manager-phone' : value => value.length === 0 ||value.length === 8 || value.length === 10,
       '#select-manager-type' : value => value.trim() !== 'none',
     };
 
@@ -180,6 +182,7 @@ function validateManagerForm() {
             lastName,
             firstName,
             email,
+            phone,
             type,
             zone,
             outlets);
@@ -187,12 +190,13 @@ function validateManagerForm() {
 
 }
 
-function buildManagerRequest(id, lastName, firstName, email, type, zone, outlets){
+function buildManagerRequest(id, lastName, firstName, email, phone, type, zone, outlets){
     let request = "table=manager";
     request += "&id=" + id;
     request += "&lastname=" + lastName;
     request += "&firstname=" + firstName;
     request += "&email=" + email;
+    request += "&phone=" + phone;
     request += "&type=" + type;
     request += "&zone=" + zone;
     request += "&outlets=" + outlets;
@@ -224,6 +228,7 @@ function disableModalElements(bool){
     $('#input-manager-first-name').prop('disabled', bool);
     $('#input-manager-last-name').prop('disabled', bool);
     $('#input-manager-email').prop('disabled', bool);
+    $('#input-manager-phone').prop('disabled', bool);
 }
 
 function setupModalManagerEdit(data){
@@ -243,12 +248,13 @@ function setupModalManagerEdit(data){
     $('#input-manager-last-name').val(data[1]);
     $('#input-manager-first-name').val(data[2]);
     $('#input-manager-email').val(data[3]);
-    if(data[4].includes('zone')) {
+    $('#input-manager-phone').val(data[4]);
+    if(data[5].includes('zone')) {
         $('#select-manager-type option[value="zone-manager"]').prop('selected', true);
-        setupFountainOrZoneManagerDisplay("zone-manager", data[5]);
-    } else if(data[4].includes('fontaine')) {
+        setupFountainOrZoneManagerDisplay("zone-manager", data[6]);
+    } else if(data[5].includes('fontaine')) {
         $('#select-manager-type option[value="fountain-manager"]').prop('selected', true);
-        setupFountainOrZoneManagerDisplay("fountain-manager", data[6]);
+        setupFountainOrZoneManagerDisplay("fountain-manager", data[7]);
 
     }
     showManagerModal();
