@@ -193,7 +193,7 @@ def get_transaction_detail(logs):
 def get_payment_elements(request):
     consumer_id = request.GET.get("user", "none")
     if consumer_id == "none":
-        return success_200
+        return None
 
     result = []
     for elem in Payment.objects.filter(consumer_id=consumer_id):

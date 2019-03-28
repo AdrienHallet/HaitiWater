@@ -121,7 +121,8 @@ def table(request):
     }
 
     cache_key = table_name + request.user.username
-    cache_result = cache.get(cache_key)
+    cache_result = cache.get(cache_key) if table_name != "payment" else None
+
     if cache_result:
         result = json.loads(cache_result)
         cache.touch(cache_key, 60)
@@ -153,6 +154,8 @@ def table(request):
         if is_user_fountain(request):
             json_object["editable"] = False
         result = get_payment_elements(request)
+        if result is None:
+            return success_200
     else:
         return HttpResponse("Impossible de charger la table demandée (" + table_name + ").", status=404)
 
