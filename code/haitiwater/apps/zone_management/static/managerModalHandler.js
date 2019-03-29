@@ -228,7 +228,6 @@ function disableModalElements(bool){
     $('#input-manager-first-name').prop('disabled', bool);
     $('#input-manager-last-name').prop('disabled', bool);
     $('#input-manager-email').prop('disabled', bool);
-    $('#input-manager-phone').prop('disabled', bool);
 }
 
 function setupModalManagerEdit(data){
