@@ -32,9 +32,6 @@ def log_element(elem, request):
 
 
 def add_consumer_element(request):
-    if not request.user:
-        return HttpResponse("Vous n'êtes pas connecté", status=403)
-
     first_name = request.POST.get("firstname", None)
     last_name = request.POST.get("lastname", None)
     gender = request.POST.get("gender", None)
@@ -68,7 +65,7 @@ def add_consumer_element(request):
 
 
 def add_network_element(request):
-    if not request.user or request.user.profile.zone is None:
+    if request.user.profile.zone is None:
         return HttpResponse("Vous n'êtes pas connecté en tant que gestionnaire de zone", status=403)
 
     type = request.POST.get("type", None).upper()
@@ -87,9 +84,6 @@ def add_network_element(request):
 
 
 def add_report_element(request):
-    if not request.user:
-        return HttpResponse("Vous n'êtes pas connecté", status=403)
-
     values = json.loads(request.body.decode("utf-8"))
 
     for index, elem in enumerate(values["selectedOutlets"]):
@@ -135,7 +129,7 @@ def add_report_element(request):
 
 
 def add_zone_element(request):
-    if not request.user or request.user.profile.zone is None:
+    if request.user.profile.zone is None:
         return HttpResponse("Vous n'êtes pas connecté en tant que gestionnaire de zone", status=403)
 
     name = request.POST.get("name", None)
@@ -166,7 +160,7 @@ def add_zone_element(request):
 
 
 def add_collaborator_element(request):
-    if not request.user or request.user.profile.zone is None:
+    if request.user.profile.zone is None:
         return HttpResponse("Vous n'êtes pas connecté en tant que gestionnaire de zone", status=403)
 
     first_name = request.POST.get("firstname", None)
@@ -233,9 +227,6 @@ def add_collaborator_element(request):
 
 
 def add_ticket_element(request):
-    if not request.user:
-        return HttpResponse("Vous n'êtes pas connecté", status=403)
-
     outlet_id = request.POST.get("id_outlet", None)
     type = request.POST.get("type", None).upper()
     comment = request.POST.get("comment", None)
@@ -262,15 +253,14 @@ def add_ticket_element(request):
 
 
 def add_payment_element(request):
-    if not request.user:
-        return HttpResponse("Vous n'êtes pas connecté", status=403)
-
     id_consumer = request.POST.get("id_consumer", None)
     amount = request.POST.get("amount", None)
 
     consumer = Consumer.objects.filter(id=id_consumer).first()
     if not consumer:
         return HttpResponse("Impossible de trouver l'utilisateur", status=400)
+    elif not has_access(consumer.water_outlet, request):
+        return HttpResponse("Vous n'avez pas les droits sur ce consommateur", status=403)
 
     outlet = consumer.water_outlet
     payment = Payment(consumer=consumer, water_outlet=outlet, amount=amount)

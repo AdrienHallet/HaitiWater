@@ -226,87 +226,128 @@ def remove_element(request):
     cache.delete(cache_key)
 
     if element == "water_element":
-        id = request.POST.get("id", None)
-        consumers = Consumer.objects.filter(water_outlet=id)
-        if len(consumers) > 0: #Can't suppress outlets with consummers
+        element_id = request.POST.get("id", None)
+
+        consumers = Consumer.objects.filter(water_outlet=element_id)
+        if len(consumers) > 0:  # Can't suppress outlets with consummers
             return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à " +
                                 "des consommateurs", status=500)
-        elem_delete = Element.objects.filter(id=id)
-        if len(elem_delete) != 1:
-            return HttpResponse("Impossible de supprimer cet élément", status=500)
-        elem_delete = elem_delete[0]
+
+        elem_delete = Element.objects.filter(id=element_id).first()
+        if elem_delete is None:
+            return HttpResponse("Impossible de supprimer cet élément, il n'existe pas", status=400)
+        elif not has_access(elem_delete, request):
+            return HttpResponse("Impossible de supprimer cet élément, vous n'avez pas les droits", status=403)
+
         transaction = Transaction(user=request.user)
         if not is_same(elem_delete, request.user):
             transaction.save()
             elem_delete.log_delete(transaction)
+
         elem_delete.delete()
-        tickets = Ticket.objects.filter(water_outlet=id)
+
+        tickets = Ticket.objects.filter(water_outlet=element_id)
         for t in tickets:
             if not is_same(t, request.user):
                 t.log_delete(transaction)
             t.delete()
-        users = User.objects.filter()
-        for u in users:
-            if len(u.profile.outlets) > 0: #Gestionnaire de fontaine
-                if str(id) in u.profile.outlets:
-                    old = u.profile.infos()
-                    u.profile.outlets.remove(str(id))
-                    u.save()
-                    u.profile.log_edit(old, transaction)
+
+        for user in User.objects.all():
+            if len(user.profile.outlets) > 0:  # Gestionnaire de fontaine
+                if str(element_id) in user.profile.outlets:
+                    old = user.profile.infos()
+                    user.profile.outlets.remove(str(element_id))
+                    user.save()
+                    user.profile.log_edit(old, transaction)
+
         return success_200
+
     elif element == "consumer":
-        id = request.POST.get("id", None)
-        to_delete = Consumer.objects.filter(id=id)
-        if len(to_delete) != 1:
-            return HttpResponse("Impossible de supprimer cet élément", status=500)
-        to_delete = to_delete[0]
+        consumer_id = request.POST.get("id", None)
+        to_delete = Consumer.objects.filter(id=consumer_id).first()
+        if to_delete is None:
+            return HttpResponse("Impossible de supprimer ce consommateur, il n'existe pas", status=400)
+        elif not has_access(to_delete.water_outlet, request):
+            return HttpResponse("Impossible de supprimer ce consommateur, vous n'avez pas les droits", status=403)
+
         log_element(to_delete, request)
         to_delete.delete()
-        return HttpResponse({"draw": request.POST.get("draw", 0)+1}, status=200)
+
+        return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
+
     elif element == "manager":
-        id = request.POST.get("id", None)
-        to_delete = User.objects.filter(username=id)
-        if len(to_delete) != 1:
-            return HttpResponse("Impossible de supprimer cet élément", status=500)
-        to_delete = to_delete[0]
+        if request.user.profile.zone is None:
+            return HttpResponse("Vous n'êtes pas connecté en tant que gestionnaire de zone", status=403)
+
+        manager_id = request.POST.get("id", None)
+        to_delete = User.objects.filter(username=manager_id).first()
+        if to_delete is None:
+            return HttpResponse("Impossible de supprimer cet utilisateur, il n'existe pas", status=400)
+        elif to_delete.profile.zone and to_delete.profile.zone.name not in request.user.profile.zone.subzones:
+            return HttpResponse("Impossible de supprimer cet utilisateur, vous n'avez pas les droits", status=403)
+        # TODO check for fountain managers
+
         log_element(to_delete.profile, request)
         to_delete.delete()
+
         cache_key = "water_element" + request.user.username
         cache.delete(cache_key)
+
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
+
     elif element == "ticket":
-        id = request.POST.get("id", None)
-        to_delete = Ticket.objects.filter(id=id)
-        if len(to_delete) != 1:
-            return HttpResponse("Impossible de supprimer cet élément", status=500)
-        to_delete = to_delete[0]
+        ticket_id = request.POST.get("id", None)
+        to_delete = Ticket.objects.filter(id=ticket_id).first()
+        if to_delete is None:
+            return HttpResponse("Impossible de supprimer ce ticket, il n'existe pas", status=400)
+        elif not has_access(to_delete.water_outlet, request):
+            return HttpResponse("Impossible de supprimer ce ticket, vous n'avez pas les droits", status=403)
+
         log_element(to_delete, request)
         to_delete.delete()
+
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
+
     elif element == "payment":
-        id = request.POST.get("id", None)
-        payement = Payment.objects.get(id=id)
-        log_element(payement, request)
-        payement.delete()
+        payment_id = request.POST.get("id", None)
+        to_delete = Payment.objects.filter(id=payment_id).first()
+        if to_delete is None:
+            return HttpResponse("Impossible de supprimer ce ticket, il n'existe pas", status=400)
+        elif not has_access(to_delete.water_outlet, request):
+            return HttpResponse("Impossible de supprimer ce ticket, vous n'avez pas les droits", status=403)
+
+        log_element(to_delete, request)
+        to_delete.delete()
+
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
+
     elif element == "zone":
-        id = request.POST.get("id", None)
-        to_delete = Zone.objects.filter(id=id)
-        if len(to_delete) == 1:
-            to_delete = to_delete[0]
-        else:
-            return HttpResponse("Impossible de trouver la zone que vous essayez de supprimer."+
-                                " Essayez de recharger la page.", status=404)
+        if request.user.profile.zone is None:
+            return HttpResponse("Vous n'êtes pas connecté en tant que gestionnaire de zone", status=403)
+
+        zone_id = request.POST.get("id", None)
+        to_delete = Zone.objects.filter(id=zone_id).first()
+        if to_delete is None:
+            return HttpResponse("Impossible de supprimer cette zone, elle n'existe pas", status=400)
+        elif to_delete.name not in request.user.profile.zone.subzones:
+            print(to_delete.name)
+            print(request.user.profile.zone.subzones)
+            return HttpResponse("Impossible de supprimer cette zone, vous n'avez pas les droits", status=403)
+
         if len(to_delete.subzones) > 1:
             return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
-                                "d'autres zones", status=500)
-        if len(Element.objects.filter(zone=id)) > 0:
+                                "d'autres zones", status=400)
+
+        elements = Element.objects.filter(zone=zone_id)
+        if len(elements) > 0:
             return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
-                                "des élements du réseau", status=500)
+                                "des élements du réseau", status=400)
+
         for u in User.objects.all():
             if u.profile.zone == to_delete:
                 return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle est encore attribuée à" +
-                                "un gestionnaire de zone", status=500)
+                                    "un gestionnaire de zone", status=400)
+
         transaction = Transaction(user=request.user)
         for z in Zone.objects.all():
             if str(to_delete.name) in z.subzones:
@@ -314,11 +355,14 @@ def remove_element(request):
                 z.subzones.remove(str(to_delete.name))
                 z.save()
                 z.log_edit(old, transaction)
+
         if not is_same(to_delete, request.user):
             to_delete.log_delete(transaction)
         transaction.save()
         to_delete.delete()
+
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
+
     return error_500
 
 
@@ -377,26 +421,28 @@ def outlets(request):
 def compute_logs(request):
     id_val = request.GET.get("id", -1)
     action = request.GET.get("action", None)
+    if id_val == -1 or action is None:
+        return HttpResponse("Impossible de valider/annuler ce changement", status=400)
+
     cache_key = "logs" + request.user.username
     cache_key2 = "logs_history" + request.user.username
-    if id_val == -1 or action == None:
-        return HttpResponse("Impossible de valider/annuler ce changement", status=500)
-    transaction = Transaction.objects.filter(id=id_val)
-    if len(transaction) != 1:
-        return HttpResponse("Impossible d'identifier le changement", status=404)
-    transaction = transaction[0]
+
+    transaction = Transaction.objects.filter(id=id_val).first()
+    if transaction is None:
+        return HttpResponse("Impossible d'identifier le changement", status=400)
+
     if action == "accept":
         log_finished(transaction, "ACCEPT")
         cache.delete(cache_key)
         cache.delete(cache_key2)
-        return HttpResponse(status=200)
+        return success_200
     elif action == "revert":
         roll_back(transaction)
         cache.delete(cache_key)
         cache.delete(cache_key2)
-        return HttpResponse(status=200)
+        return success_200
     else:
-        return HttpResponse("Action non reconnue", status=500)
+        return HttpResponse("Action non reconnue", status=400)
 
 
 def log_element(element, request):
@@ -408,35 +454,43 @@ def log_element(element, request):
 
 def is_same(element, user):
     log = Log.objects.filter(action="ADD", column_name="ID", table_name=element._meta.model_name,
-                             new_value=element.id, transaction__archived=False)
-    if len(log) != 0:  # If we found a log for adding the element removed
-        transaction = log[0].transaction
-        if transaction.user == user and not transaction.archived:
-            all_logs = Log.objects.filter(transaction=transaction)
-            for log in all_logs:
-                log.delete()
-            transaction.delete()
-            return True
-    return False
+                             new_value=element.id, transaction__archived=False).first()
+    if log is None:
+        return False
+
+    transaction = log.transaction
+    if transaction.user != user or transaction.archived:
+        return False
+
+    all_logs = Log.objects.filter(transaction=transaction)
+    for log in all_logs:
+        log.delete()
+
+    transaction.delete()
+    return True
 
 
 def parse(request):
-    test1 = re.compile('order\[\d*\]\[column\]')
-    test2 = re.compile('order\[\d*\]\[dir\]')
-    res1 = list(filter(test1.match, dict(request.GET).keys()))
-    res2 = list(filter(test2.match, dict(request.GET).keys()))
+    column_regex = re.compile('order\[\d*\]\[column\]')
+    dir_regex = re.compile('order\[\d*\]\[dir\]')
+
+    columns = list(filter(column_regex.match, dict(request.GET).keys()))
+    dirs = list(filter(dir_regex.match, dict(request.GET).keys()))
+
     searchable_cols = []
     for i in range(25):
         if request.GET.get('columns[' + str(i) + '][searchable]', False):
             searchable_cols.append(i)
-    d = {"table_name": request.GET.get('name', None),
-         "length_max": int(request.GET.get('length', 10)),
-         "start": int(request.GET.get('start', 0)),
-         "column_ordered": int(request.GET.get(res1[0], 0)),
-         "type_order": request.GET.get(res2[0], 'asc'),
-         "search": request.GET.get('search[value]', ""),
-         "searchable": searchable_cols,
-         "month_wanted": request.GET.get("month", "none")
-         }
 
-    return d
+    params = {
+        "table_name": request.GET.get('name', None),
+        "length_max": int(request.GET.get('length', 10)),
+        "start": int(request.GET.get('start', 0)),
+        "column_ordered": int(request.GET.get(columns[0], 0)),
+        "type_order": request.GET.get(dirs[0], 'asc'),
+        "search": request.GET.get('search[value]', ""),
+        "searchable": searchable_cols,
+        "month_wanted": request.GET.get("month", "none")
+    }
+
+    return params

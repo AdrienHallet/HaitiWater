@@ -52,9 +52,6 @@ def clean_up(element):
 
 
 def edit_water_element(request):
-    if not request.user:
-        return HttpResponse("Vous n'êtes pas connecté", status=403)
-
     elem_id = request.POST.get("id", None)
     elem = Element.objects.filter(id=elem_id).first()
     if elem is None:
@@ -74,9 +71,6 @@ def edit_water_element(request):
 
 
 def edit_consumer(request):
-    if not request.user:
-        return HttpResponse("Vous n'êtes pas connecté", status=403)
-
     consumer_id = request.POST.get("id", None)
     consumer = Consumer.objects.filter(id=consumer_id).first()
     if consumer is None:
@@ -121,7 +115,7 @@ def edit_consumer(request):
 
 
 def edit_zone(request):
-    if not request.user or request.user.profile.zone is None:
+    if request.user.profile.zone is None:
         return HttpResponse("Vous n'êtes pas connecté en tant que gestionnaire de zone", status=403)
 
     zone_id = request.POST.get("id", None)
@@ -153,9 +147,6 @@ def edit_zone(request):
 
 
 def edit_ticket(request):
-    if not request.user:
-        return HttpResponse("Vous n'êtes pas connecté", status=403)
-
     ticket_id = request.POST.get("id", None)
     ticket = Ticket.objects.filter(id=ticket_id).first()
     if ticket is None:
@@ -187,7 +178,7 @@ def edit_ticket(request):
 
 
 def edit_manager(request):
-    if not request.user or request.user.profile.zone is None:
+    if request.user.profile.zone is None:
         return HttpResponse("Vous n'êtes pas connecté en tant que gestionnaire de zone", status=403)
 
     user_id = request.POST.get("id", None)
@@ -262,9 +253,6 @@ def edit_manager(request):
 
 
 def edit_payment(request):
-    if not request.user:
-        return HttpResponse("Vous n'êtes pas connecté", status=403)
-
     payment_id = request.POST.get("id", None)
     payment = Payment.objects.filter(id=payment_id).first()
     if payment is None:
@@ -275,8 +263,10 @@ def edit_payment(request):
     consumer = Consumer.objects.filter(id=id_consumer).first()
     if consumer is None:
         return HttpResponse("Impossible de trouver l'utilisateur", status=400)
-    payment.consumer = consumer
+    elif not has_access(consumer.water_outlet, request):
+        return HttpResponse("Vous n'avez pas les droits sur ce consommateur", status=403)
 
+    payment.consumer = consumer
     payment.water_outlet = consumer.water_outlet
     payment.amount = request.POST.get("amount", None)
 
@@ -285,9 +275,6 @@ def edit_payment(request):
 
 
 def edit_report(request):
-    if not request.user:
-        return HttpResponse("Vous n'êtes pas connecté", status=403)
-
     values = json.loads(request.body.decode("utf-8"))
     year = values["date"].split("-")[0]
     month = values["date"].split("-")[1]
