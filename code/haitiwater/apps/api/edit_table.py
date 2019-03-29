@@ -240,14 +240,14 @@ def edit_manager(request):
         log_element(user.profile, old, request)
 
     elif type == "zone-manager":
-        zone = request.POST.get("zone", None)
-        res = Zone.objects.filter(id=zone).first()
-        if res is None:
+        zone_id = request.POST.get("zone", None)
+        zone = Zone.objects.filter(id=zone_id).first()
+        if zone is None:
             return HttpResponse("Impossible d'assigner cette zone", status=400)
-        if zone not in request.user.profile.zone.subzones:
+        if zone.name not in request.user.profile.zone.subzones:
             return HttpResponse("Vous n'avez pas les droits sur cette zone", status=403)
 
-        user.profile.zone = res
+        user.profile.zone = zone
 
         my_group = Group.objects.get(name='Gestionnaire de zone')
         my_group.user_set.add(user)
