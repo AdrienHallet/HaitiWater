@@ -196,6 +196,8 @@ def edit_manager(request):
         return HttpResponse("Impossible de trouver cet utilisateur", status=400)
 
     old = user.profile.infos()
+    phone = request.POST.get("phone", None)
+    user.profile.phone_number = phone
     type = request.POST.get("type", None)
 
     if type == "fountain-manager":

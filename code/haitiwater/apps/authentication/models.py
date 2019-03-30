@@ -28,6 +28,7 @@ class Profile(models.Model):
         result["Prénom"] = self.user.first_name
         result["Nom de famille"] = self.user.last_name
         result["Email"] = self.user.email
+        result["Numéro de téléphone"] = self.get_phone_number()
         result["Role"] = self.user.groups.values_list('name', flat=True)[0]
         if self.zone:
             result["Zone gérée"] = self.zone.name
