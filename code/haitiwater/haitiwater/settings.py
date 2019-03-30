@@ -15,7 +15,7 @@ import dj_database_url
 from django.utils.deprecation import MiddlewareMixin
 
 # Strings containing build information to pass in context view
-PROJECT_VERSION = 'Alpha 2'
+PROJECT_VERSION = 'Alpha 3'
 PROJECT_NAME = 'HaïtiWater'
 
 COMPRESS_ENABLED = True

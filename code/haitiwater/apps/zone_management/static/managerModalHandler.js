@@ -228,7 +228,6 @@ function disableModalElements(bool){
     $('#input-manager-first-name').prop('disabled', bool);
     $('#input-manager-last-name').prop('disabled', bool);
     $('#input-manager-email').prop('disabled', bool);
-    $('#input-manager-phone').prop('disabled', bool);
 }
 
 function setupModalManagerEdit(data){
@@ -247,8 +246,8 @@ function setupModalManagerEdit(data){
     $('#input-manager-id').val(data[0]);
     $('#input-manager-last-name').val(data[1]);
     $('#input-manager-first-name').val(data[2]);
-    $('#input-manager-email').val(data[3]);
-    $('#input-manager-phone').val(data[4]);
+    $('#input-manager-phone').val(data[3]);
+    $('#input-manager-email').val(data[4]);
     if(data[5].includes('zone')) {
         $('#select-manager-type option[value="zone-manager"]').prop('selected', true);
         setupFountainOrZoneManagerDisplay("zone-manager", data[6]);
