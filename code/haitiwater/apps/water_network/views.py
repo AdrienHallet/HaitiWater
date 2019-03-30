@@ -19,3 +19,11 @@ def index(request):
         'distributed': get_quantity_distributed(request)
     }
     return HttpResponse(template.render(context, request))
+
+def gis(request):
+    template = loader.get_template('water_gis.html')
+    context = {
+        'project_version': PROJECT_VERSION,
+        'project_name': PROJECT_NAME,
+    }
+    return HttpResponse(template.render(context, request))

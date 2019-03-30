@@ -39,13 +39,14 @@ function removeElement(table, id){
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
                 console.log("POST error on remove element");
                 new PNotify({
                     title: 'Échec!',
-                    text: "L'élement n'a pas pu être supprimé",
+                    text: xhttp.responseText,
                     type: 'error'
                 });
             } else {
@@ -66,9 +67,9 @@ function removeElement(table, id){
  * @returns {string} containing edit and remove buttons HTML code
  */
 function getActionButtonsHTML(modalName){
-    return '<div class="center"><a href="#'+ modalName + '" class="modal-with-form edit-row fa fa-pen"></a>' +
+    return '<div class="center"><a href="#'+ modalName + '" class="modal-with-form edit-row fa fa-pen" title="Editer"></a>' +
             '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
-            '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
+            '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash" title="Supprimer"></a></div>'
 }
 
 function hideFormErrorMsg(table){
@@ -130,11 +131,16 @@ function postNewRow(table){
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
                 document.getElementById("form-" + table + "-error").className = "alert alert-danger";
-                document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
+                if(xhttp.responseText !== ''){
+                    document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.responseText;
+                } else {
+                    document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
+                }
             } else {
                 document.getElementById("form-" + table + "-error").className = "alert alert-danger hidden"; // hide old msg
                 dismissModal();
@@ -164,6 +170,7 @@ function postEditRow(table){
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
@@ -217,3 +224,20 @@ function getDataTableFrenchTranslation(){
         },
     }
 }
+
+// Get the cookie of given cookie name cookieName
+function getCookie(cookieName)
+{
+    if (document.cookie.length > 0)
+    {
+        cookieStart = document.cookie.indexOf(cookieName + "=");
+        if (cookieStart != -1)
+        {
+            cookieStart = cookieStart + cookieName.length + 1;
+            cookieEnd = document.cookie.indexOf(";", cookieStart);
+            if (cookieEnd == -1) cookieEnd = document.cookie.length;
+            return unescape(document.cookie.substring(cookieStart,cookieEnd));
+        }
+    }
+    return "";
+ }

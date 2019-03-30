@@ -1,5 +1,7 @@
 from django.contrib.gis.db import models
 from ..water_network.models import Location, Element, ElementType
+from ..log.utils import *
+from ..utils.common_models import *
 
 
 class Person(models.Model):
@@ -23,9 +25,28 @@ class Consumer(Person):
 
     household_size = models.IntegerField("Taille du ménage")
     water_outlet = models.ForeignKey(Element, verbose_name="Sortie d'eau", related_name="consumers", on_delete=models.CASCADE)
+    creation_date = models.DateTimeField(auto_now_add=True)
     #Consumer's zone is infered regarding the water_outlet he uses
 
     def descript(self):
         tab = [self.id, self.last_name, self.first_name, self.get_gender_display(),
                self.location, self.phone_number, self.household_size, self.water_outlet.name, ""]
         return tab
+
+    def infos(self):
+        result = {}
+        for field in Consumer._meta.get_fields():
+            if field.name == "water_outlet":
+                result[field.verbose_name] = self.water_outlet.id
+            else:
+                result[field.verbose_name] = self.__getattribute__(field.name)
+        return result
+
+    def log_add(self, transaction):
+        add(self._meta.model_name, self.infos(), transaction)
+
+    def log_delete(self, transaction):
+        delete(self._meta.model_name, self.infos(), transaction)
+
+    def log_edit(self, old, transaction):
+        edit(self._meta.model_name, self.infos(), old, transaction)

@@ -4,6 +4,7 @@
     <header class="panel-heading">
         <!-- Table block control actions -->
         <div class="panel-actions form-inline">
+            <a href="#" onclick="refresh();" class="fas fa-redo" title="Recharger"></a>
             <a href="#" class="fa fa-caret-down"></a>
         </div>
             <select class="title-selection" id="graphTitle" size="1" onchange="refresh()">
@@ -15,8 +16,7 @@
     <div class="panel-body">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
         <script src="{% static 'javascripts/ui-elements/graph.js' %}"></script>
-        <div id="graph-div">
-            {# Programatically filled #}
+        <div id="graph-div" style="height:300px;">
             <canvas id="graph-canvas"></canvas>
         </div>
     </div>

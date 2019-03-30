@@ -183,6 +183,10 @@ function sendTicket(addOrEdit) {
 
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/" + addOrEdit + "/";
+    $.ajaxSetup({
+        headers:
+        { 'X-CSRFToken': getCookie('csrftoken')}
+    })
     $.ajax({
        url: postURL,
        type: "POST",

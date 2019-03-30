@@ -19,7 +19,10 @@ function showModal(id){
 }
 
 $(document).ready(function() {
-    drawTicketTable();
+    if (location.pathname !== '/offline/') {
+        drawTicketTable();
+        drawReportTable();
+    }
 
     $('#input-picture').on('change', function(){
         readURL(this);

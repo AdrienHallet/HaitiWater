@@ -1,39 +1,75 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block page_import %}
+
+{% endblock %}
+
+
+
 {% block page_name %}
     <script src="{% static "report.js" %}"></script>
+
+    <script src="{% static "vendor/bootstrap-wizard/jquery.bootstrap.wizard.js" %}"></script>
+    <script src="{% static "monthlyReportFormHandler.js" %}"></script>
+    <script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
+
+
     <script src="{% static "problemReportFormHandler.js" %}"></script>
+    <script src="{% static "reportTableHandler.js" %}"></script>
+    <script src="{% static "supportTicketTableHandler.js" %}"></script>
     <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
+    <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
+
+    <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
     Rapports
 {% endblock %}
 
 {% block page_content %}
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Report buttons -->
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
 
-    <!-- Report buttons -->
-    <section class="panel">
-        <header class="panel-heading">
-            <div class="panel-actions">
-                <a href="#" class="fa fa-caret-down"></a>
-                <a href="#" class="fa fa-times"></a>
-            </div>
-
-            <h2 class="panel-title">Envoyer un rapport</h2>
-            <p class="panel-subtitle">Le rapport sera visible pour tous vos gestionnaires.</p>
-        </header>
-        <div class="panel-body">
-            <div class="btn-group-lg btn-group-justified">
-                <a id="show-ticket-modal" class="btn btn-default modal-with-form" role="button" href="#modalProblemReport" onclick="setupTicketModalAdd()">Signaler un problème</a>
-                <a id="show-monthly-report-modal" class="btn btn-default modal-with-form" role="button" href="#modalMonthlyReport" onclick="showModal('#show-monthly-report-modal')">Rapport mensuel</a>
-            </div>
+                    <h2 class="panel-title">Envoyer un rapport</h2>
+                    <p class="panel-subtitle">Le rapport sera visible pour tous vos gestionnaires.</p>
+                </header>
+                <div class="panel-body">
+                    <div class="btn-group-lg btn-group-justified">
+                        <a id="show-ticket-modal" class="btn btn-default modal-with-form" role="button" href="#modalProblemReport" onclick="setupTicketModalAdd()">Signaler un problème</a>
+                        <a id="show-monthly-report-modal" class="btn btn-default modal-with-form" role="button" href="#modalMonthlyReport" onclick="showModal('#show-monthly-report-modal')">Rapport mensuel</a>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
+        <div class="col-md-6">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+
+                    <h2 class="panel-title">Mes rapports récents</h2>
+                    <p class="panel-subtitle">Vous pouvez voir et éditer vos 5 derniers rapports.</p>
+                </header>
+                <div class="panel-body">
+                    {% include "report_table.html" %}
+                </div>
+            </section>
+        </div>
+    </div>
 
     <!-- Support ticket table -->
     <section class="panel">
         <header class="panel-heading">
             <!-- Table block control actions -->
             <div class="panel-actions form-inline">
+                <a id="ticket-options" class="fas fa-cog"></a>
                 <a href="#" class="fa fa-caret-down"></a>
             </div>
             <h2 class="panel-title">Tickets de support</h2>

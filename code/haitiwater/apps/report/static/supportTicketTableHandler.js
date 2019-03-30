@@ -1,19 +1,10 @@
+
+
 function drawTicketTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=ticket";
     console.log("Request data from: " + dataURL);
     $('#datatable-ticket').DataTable(getTicketDatatableConfiguration(dataURL));
-
-    let table = $('#datatable-ticket').DataTable();
-    $('#datatable-ticket tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        }
-        else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-    });
 
     $('#datatable-ticket tbody').on( 'click', '.remove-row', function () {
         let data = $(this).parents('tr')[0].getElementsByTagName('td');
@@ -52,10 +43,6 @@ function getTicketDatatableConfiguration(dataURL){
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
-        fixedColumns:   {
-            leftColumns: 1,
-            rightColumns: 1
-        },
         "columnDefs": [
             {
                 "targets": -1,
@@ -79,21 +66,25 @@ function getTicketDatatableConfiguration(dataURL){
         },
 
         //Callbacks on fetched data
-        "createdRow": function (row, data, index) {
-            $('td', row).eq(5).addClass('text-center');
-            $('td', row).eq(6).addClass('text-center');
-            //Hide actions if column hidden
-            if ($("#datatable-ticket th:last-child, #datatable-ticket td:last-child").hasClass("hidden")){
-                $('td', row).eq(8).addClass('hidden');
-            }
-        },
-        "initComplete": function(settings, json){
-            // Removes the last column (both header and body) if we cannot edit or if required by withAction argument
-            if(!(json.hasOwnProperty('editable') && json['editable'])){
-                $("#datatable-ticket th:last-child, #datatable-ticket td:last-child").addClass("hidden");
-                $("#datatable-ticket_wrapper tr:last-child th:last-child").addClass("hidden");
+        "createdRow": function (row, data, index, cells) {
+            let path = data[7];
+            if (path !== null){
+                let imageURL = '../static/' + data[7];
+                let commentDom = $('td', row).eq(5);
+                let comment = commentDom.text();
+
+                commentDom.html('<i class="far fa-image" title="Cliquez pour voir l\'image"></i>' + comment);
+                commentDom.on('click', function(){
+                    $.magnificPopup.open({
+                        type: 'image',
+                        items: {
+                        src: imageURL
+                        },
+                    });
+                })
             }
         }
     };
+
     return config;
 }

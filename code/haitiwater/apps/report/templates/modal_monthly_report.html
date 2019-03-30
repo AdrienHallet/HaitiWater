@@ -1,9 +1,5 @@
 {% load static %}
 
-<script src="{% static "vendor/bootstrap-wizard/jquery.bootstrap.wizard.js" %}"></script>
-<script src="{% static "monthlyReportFormHandler.js" %}"></script>
-<script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
-
 <div id="modalMonthlyReport" class="modal-block modal-block-lg mfp-hide">
     <section class="panel form-wizard" id="wizardMonthlyReport">
         <header class="panel-heading">
@@ -86,7 +82,7 @@
 
                     <!-- Panel 3 - Billing -->
                     <div id="wizardMonthlyReport-billing" class="tab-pane">
-                        
+
                     </div>
 
                     <!-- Panel 4 - Confirmation -->
@@ -95,9 +91,9 @@
                         <div id="confirmation-generated-content"></div>
 
                         <!-- Error report, filled by server if needed -->
-                        <div id="monthly-report-error" class="alert alert-danger hidden">
-                            <button type="button" class="close" onclick="hideFormErrorMsg()" aria-hidden="true">×</button>
-                            <div id="monthly-report-error-msg"></div>
+                        <div id="form-monthly-report-error" class="alert alert-danger hidden">
+                            <button type="button" class="close" onclick="hideFormErrorMsg('monthly-report');" aria-hidden="true">×</button>
+                            <div id="form-monthly-report-error-msg"></div>
                         </div>
                     </div>
                 </div>
@@ -110,6 +106,9 @@
                 </li>
                 <li class="finish hidden pull-right">
                     <a>Terminer</a>
+                </li>
+                <li class="save hidden pull-right">
+                    <a>Sauvegarder</a>
                 </li>
                 <li class="next">
                     <a>Suivant <i class="fa fa-angle-right"></i></a>

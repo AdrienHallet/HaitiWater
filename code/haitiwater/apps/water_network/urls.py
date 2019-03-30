@@ -5,4 +5,5 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url('gis', views.gis, name='gis'),
 ]

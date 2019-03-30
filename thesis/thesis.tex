@@ -1,37 +1,375 @@
-% EPL master thesis cover template
 \documentclass{eplmastersthesis_FR}
 
-% Compléter les infos ci-dessous
-\title{HaitiWater}	% Titre du TFE
+\title{HaïtiWater}
 \subtitle{Développement d'une application web pour gérer la distribution de l'eau en Haïti}
-\author{Céline \textsc{Deknop}}	% Nom de l'étudiant
-\secondauthor{Adrien \textsc{Hallet}}	% Nom du second étudiant éventuel
-\thirdauthor{Sébastien \textsc{Strebelle}}	% Handcrafted third author :D
-\speciality{Sciences Informatiques}		% Spécialité (mentioner l'une des options suivantes):
-										% ingénieur civil biomédical
-										% ingénieur civil en chimie et science des matériaux
-										% ingénieur civil des constructions
-										% sciences informatiques
-										% ingénieur civil en informatique
-										% ingénieur civil électricien
-										% ingénieur civil électromécanicien
-										% ingénieur civil en mathématiques appliquées
-										% ingénieur civil mécanicien
-										% ingénieur civil physicien
-%\options{Option(s)}		% If required by program commission mention options
-\supervisor{Kim \textsc{Mens}}	% Nom du 1er promoteur
-\cosupervisor{Sandra \textsc{Soares Frazao}}	% Nom de l'éventuel co-promoteur
-\readerone{Benoit \textsc{Duhoux}}		% Nom du 1er lecteur
-\readertwo{ToBe \textsc{Determined}}		% Nom du 2e lecteur
-%\readerthree{Firstname \textsc{Lastname}}	% Nom du 3e lecteur
-\years{2018-2019}	% Année académique
+\author{Céline \textsc{Deknop}}
+\secondauthor{Adrien \textsc{Hallet}}
+\thirdauthor{Sébastien \textsc{Strebelle}} % Handcrafted third author :D
+\speciality{Sciences Informatiques}
+%\options{Option(s)} % If required by program commission mention options
+\supervisor{Kim \textsc{Mens}}
+\cosupervisor{Sandra \textsc{Soares Frazao}}
+\readerone{Benoît \textsc{Duhoux}}
+\readertwo{Olivier \textsc{Carlier}}
+\years{2018-2019}
+
+\usepackage{hyperref}
+\usepackage{cite}
 
 \begin{document}
 
-\maketitle					% To create front cover page
-\thispagestyle{empty}		% To suppress header and footer on the back of the cover page
+	\frontpage
+	\tableofcontents
 
-% Back cover page
-\backcoverpage
+	\setlength{\parskip}{1.5em plus1em minus1em}
+
+	% Total des pages : entre 49 et 75 d'après nos estimations.
+
+	\chapter*{Abstract}
+	\addcontentsline{toc}{chapter}{Abstract}
+
+		Page : 1
+
+	\chapter{Introduction}
+
+		% Pages : 2 à 3
+
+		\subsection*{Contexte}
+
+			Ce mémoire se place dans le cadre d'un projet de développement lancé par l'ONG Protos\footnote{\href{https://www.protos.ngo/fr/}{www.protos.ngo}}. Protos a pour obbjectif, entre autres, d'améliorer l'accès à l'eau potable en milieu rural afin d'aider le développement de plusieurs pays du monde. Un des pays dans lesquels Protos s'est engagée est Haïti.
+
+			Une succession de crises politiques et catastrophes naturelles ces dernières décennies ont rendu l'accès à l'eau potable, entre autres, particulièrement complexe dans ce pays des Antilles. En 2010, un violent séisme a laissé le pays en ruine, détruisant beaucoup d'infrastructures, y compris de distribution d'eau. Des incertitudes politiques entravent la reconstruction de ces installations et les populations ne sont pas toujours aidées par le pouvoir politique pour assurer la distribution de l'eau, particulièrement dans les zones rurales. C'est une des raisons pour lesquelles l'ONG Protos est active dans le pays.
+			% TODO trop chargé politiquement ?
+			% Adrien: Je trouvais aussi, j'ai reformulé d'un point de vue neutre pour quand même rester justes sans prendre parti. Je trouvais "chaos politique" un peu trop et j'ai nuancé la seconde partie du paragraphe
+			% TODO citer l'analyse contextuelle commune
+
+			Protos a contacté l'UCL afin de l'aider dans un projet de développement en Haïti. L'objectif est de réaliser un système pilote pour la gestion de la distribution d'eau potable en zone rurale. En effet, aucune gestion centralisée organisée par l'Etat n'existe pour les zones rurales. Des réseaux existent, constitués de points de prélèvement d'eau, de conduites de distribution d'eau et de fontaines situées dans les villages, mais la gestion publique de ceux-ci n'est pas opérationnelle. Dès lors, les organismes locaux (CAEPA, etc.) en charge de ces réseaux en assurent la gestion de manière indépendante, en se s'appuyant comme ils le peuvent sur les moyens et les acteurs locaux.
+
+			L'ONG Protos intervient dans ce cadre, pour proposer un appui à ces organismes locaux afin de mieux organiser cette distribution. Grâce à une meilleure organisation, il sera possible d'améliorer le taux de recouvrement des factures liées à la distribution d'eau, ce qui permettra d'assurer des rentrées financières à ces organismes qui sont également en charge de la maintenance physique des réseaux, mais sans recevoir de réels moyens de la part de l'Etat.
+
+			Ce projet est prévu sur trois ans, une première année pour la conception d'un prototype, une deuxième année pour finaliser le système et une troisième année pour déployer le système sur place. Ce mémoire constitue la première partie de ce projet.
+
+			% Notre mémoire est un mémoire de développement d'une application web utilisée en Haïti.
+			% Contactés par l'ONG protos
+			% Situation d'haiti problématique (manque de moyens financiers et humains)
+
+		\subsection*{Problématiques}
+
+			La structure hiérarchique des différents acteurs de la distibution de l'eau, gouvernementaux ou non, est assez complexe. Ces acteurs doivent s'organiser, individuellement et en groupes, pour arriver à une gestion efficace des ressources. Dans ce mémoire, nous nous concentrons sur trois axes afin d'améliorer leur coordination.
+
+			\begin{description}
+				\item[Communication] afin de permettre aux différents acteurs de s'informer à partir de la même plateforme.
+				\item[Collaboration] pour uniformiser le format des données et donner un rôle défini à chacun.
+				\item[Stockage] de manière à rassembler l'information sous forme numérique, permettant une meilleure sauvegarde des données, et à terme de les traiter en large volume de manière statistique.
+			\end{description}
+			% Réponse au TODO de Seb. Je pense que c'est plus clair et que la disposition en points permet une identification directe des objectifs.
+
+			% Le problème que nous, en tant que mémoire, on traite : organisation, communication, gestion des données
+
+		\subsection*{Motivation}
+
+			Nous réalisons ce travail dans le cadre de nos études de Master en Sciences Informatiques. Le but de ce travail est de conclure celles-ci, et de nous permettre de mettre tous nos apprentissages en application dans un projet à grande échelle.
+			% Mettre nos apprentissages en application. Huehehe, parce qu'on code une application, huehehehehehe
+
+			De plus, il s'agit d'un projet réel, avec de véritables acteurs, enjeux et un objectif d'utilisation à long terme. Cela entraine de nouvelles problèmatiques pour nous, qui ne sont pas abordées dans le reste de notre formation.
+			%Nos études, nos études. Reformulation ! Par contre je vois pas trop l'intérêt des paragraphes ci-dessus, je pensais plus à la motivation pour bosser à trois dont Kim avait parlé
+
+			Ce mémoire nous permet d'avoir une première expérience de développement d'une application web, partant de rien sauf des attentes de nos clients, et intégrant toutes les parties et les étapes de son développement.
+
+			Non contents de parfaire notre formation, nous avons pour objectif d'être utiles à Haïti. Nous espérons que l'application développée dans le cadre de ce mémoire pourra être utilisée sur place et avoir un réel impact positif, aidant la distribution de l'eau à Haïti et son développement.
+
+			% Pourquoi on le fait, car l'ONG a contacté l'UCL, on développe l'application pour que Haiti se développe
+			% Nos motivations personnelles ; full stack dev ops
+
+		\subsection*{Objectif}
+
+			Le but final de ce mémoire est de délivrer une application à l'ONG Protos et aux acteurs de la distribution de l'eau à Haïti. Nous visons un déploiement de cette base applicative sur le terrain, et que les futures équipes de développement pourront travailler à sa maintenance et évolution.
+			% TODO -> Est-ce que "même si cette application ne sera peut-être pas directement utilisé sur le terrain" n'est pas trop pessimiste ? Est-ce qu'il faudrait retravailler ça en "on vise une utilisation sur le terrain, mais si ça va pas alors xxx"
+			% Céline : Ca me semble pas vraiment problématique avec le "peut-être"
+
+			Nous espérons également que cette application leur permettra d'avoir un bon exemple de solution logicielle. Cela pourrait leur aider à voir comment un logiciel peut les aider dans leur gestion, et les aider à bien repenser leurs besoins lors de projets futurs.
+			% On pourrait expliquer un peu mieux, mais vous voulez peut-être le garder court ?
+
+			% Leur créer une application qui leur permette :
+			% Soit de construire une base applicative sur laquelle ils pourront se développer
+			% Soit de se rendre compte de ce qu'une solution logicielle peut leur apporter, et donc de repenser leurs besoins.
+			% On est une application de transition, pas une multinationale (lien groupe Saur)
+
+		\subsection*{Approche}
+
+			Avant de commencer le développement de l'application, nous avons effectué une longue phase de recherches. Cette phase est séparée en deux.
+
+			Durant la première partie, nous avons observé ce qu'il se faisait dans les systèmes existants de la gestion de l'eau en Europe pour avoir une meilleure vue d'ensemble du travail à accomplir et des possibilités. En seconde partie, nous avons analysé les documents fournis par l'ONG Protos afin d'avoir une idée de la solution actuellement déployée en Haïti et des améliorations possibles.
+
+			La phase de développement suivante fut l'analyse fonctionnelle et la conception. Nous avons établi nos propositions en terme de fonctionnalités pour l'application, ainsi qu'en terme de fenêtres et contrôles pour les présenter à Protos sous forme d'un cahier des charges.
+			% TODO : mettre le cahier des charges en annexes ? <- à voir à la fin du mémoire. On le mettra s'il est utile, pas s'il est redondant
+
+			Après validation de l'interface et des fonctionnalités, nous sommes passés à la phase de réalisation, durant laquelle nous avons implémenté ces fonctionnalités et les systèmes nécessaires à leur bon fonctionnement. Cette phase a été la plus longue étant donné le nombre de fonctionnalités à implémenter et la nécessité de documenter à la fois le code pour les équipes de développement ainsi que l'interface pour nos futurs utilisateurs.
+			%3*Fonctionnalité me trigger tellement mais je trouve pas d'autre mots, TODO
+			%Adrien : voila, j'ai scindé fonctionnalité et les "systèmes nécessaires à leur bon fonctionnement". Comme ça on a la bonne définition de foncitonnalité tout en indiquant au lecteur qu'on a fait les deux (l'ancienne phrase sous-entendait qu'on travaillait sur une application existante).
+
+			Enfin, la validation. Nous avons présenté l'application et les fonctionnalités que nous avons implémentées à des utilisateurs, afin d'obtenir des retours et de nous assurer que l'application que nous avons développé répondait aux attentes. \emph{Note; phase pas encore effectuée}
+			%TODO, potentiellement reformuler parce que pas encore fait x)
+
+			Au cours de la phase de réalisation, nous avons pu collaborer avec un stagière venant d'Haïti. Cela nous a permet de comprendre plus directement les besoins sur place, complétant ainsi les informations plus théoriques que nous avions obtenues des documents de Protos. Cette vision plus pratique nous a permet d'avoir une meilleure idée de la réalité du terrain.
+
+			% Longue phase de requirements, d'abord pour voir ce qui se fait dans le monde
+			% Seconde phase des requirements ; situation actuelle en Haïti, solutions mises en place, leurs limites
+			% Design ; nos propositions
+			% Implémentation ; réalisation
+			% Validation (?) => mise en attente jusqu'à ce qu'on le fasse
+
+		\subsection*{Contribution}
+
+			Grâce à notre travail de fin d'études, nous avons permis à l'ONG Protos ainsi qu'aux acteurs de terrain à Haïti d'avoir un premier contact avec le monde du développement logiciel. Nous espérons que celui-ci les aidera à comprendre les problématiques liées à la création de logiciels informatiques pour leurs projets futurs.
+
+			Nous avons également proposé une application pour la gestion de l'eau potable à Haïti. Nous espérons qu'elle pourra servir de base de travail, permettant aux acteurs de terrain d'avoir un jour un outil les aidant dans leur travail quotidien et apportant une aide au développement national.
+
+			Nous espérons avoir contribué à l'amélioration de la gestion de l'eau en Haïti, mais ce travail a assurément contribué au développement de nos compétences; en tant que développeurs, de par l'utilisatin de librairies et frameworks peu ou pas connus, en tant qu'analystes grâce au problème réel posé et la nécessité de comprendre les besoins. La coordination du groupe, la planification du travail et la communication avec les clients ont également beaucoup apporté à notre développement professionnel.
+
+
+
+			% Par notre biais, protos/haiti a eu premier contact avec le monde du developpement logiciel
+			% Proposer une application pour la gestion de l'eau potable en haiti, qui soit une base de travail pour la suite de leur développement national.
+
+		\subsection*{Plan}
+
+			Dans ce document, nous allons exposer le déroulement de notre travail de fin d'études. Tout d'abord, nous allons revenir sur le contexte de ce travail. Nous allons ensuite détailler notre approche pour sa réalisation. Après cela, nous étayerons notre analyse des besoins de l'ONG Protos et des acteurs haïtiens. Ensuite, nous expliquerons toutes les étapes et décisions de notre implémentation. Nous reviendrons sur les techniques que nous avons utilisées afin de valider notre implémentation. Nous clôturerons ce mémoire par une rétrospective sur le travail et une ouverture aux possibilités futures.
+
+			% Expliquer ce qu'on va expliquer.
+
+	\chapter{Contexte}
+
+		Total des pages : 6 à 10
+
+		\section{Situation de l'eau à Haïti}
+
+			Haïti est un pays qui doit actuellement faire face à une situation difficile. L'éducation, économie, habitat, etc, sont autant de défis que le pays devra relever. L'eau potable, son assainissement, sa gestion et sa distribution font partie de ces défis, en particulier dans les zones rurales. Les zones d'action de l'ONG Protos sont particulièrement touchées. La majorité des familles s'approvisionne en eau à des fontaines publiques (96\% des foyers) et effectue un trajet de plus de 30 minutes (58\% des foyers). Il est de plus extrèmement difficile de maintenir et développer le réseau de distribution d'eau potable dans certaines régions en raison de la pauvreté extrème d'une grande partie de l'île. La zone étudiée de \emph{Passe Catabois} (au nord du pays), par exemple, a un taux de recouvrement des factures de 11\% seulement. Si la situation est complexe, il est toutefois possible d'identifier des facteurs expliquant l'état, entre autres, des infrastructures d'eau potable.
+
+			\subsection*{Problèmes environnementaux}
+				Située dans les Caraïbes au sud-est de la République de Cuba et des \'Etats-Unis d'Amérique, la République d'Haïti occupe un territoire de $27.750km^{2}$ sur la partie ouest de l'île d'Hispaniola. Le pays entier souffre de sa position géographique~\cite{ref:regards_situation_eau_haiti} qui le place dans un risque permanent de catastrophes naturelles. La proximité de failles tectoniques et de courants aériens et marins favorisant la formation de tempêtes tropicales produisent une succession de cataclysmes. De multiples tempêtes et séismes frappent l'île fréquemment. Le tristement célèbre tremblement de terre du 12 janvier 2010, dont le nombre de victimes est approximé à $250.000$ morts et autant de blessés, a, à lui seul, causé des dégâts estimés de 8 à 14 milliards USD.~\cite{ref:estimating_economic_damage_earthquake_haiti}. Ces catastrophes périodiques détruisent les infrastructures et mettent à mal l'économie du pays, empêchant un développement du réseau d'eau potable, entre autres, suffisant pour répondre aux besoins.
+
+				Le climat haïtien n'aide pas la situation. Météorologiquement parlant, Haïti affronte une alternance entre saison très chaude et saison moins chaude, les deux provoquant fréquemment des sècheresses. Les différentes régions du pays ont des climats variés, obligeant l'adoption de plusieurs mesures pour sauvegarder la population et empêchant une politique commune de gestion des ressources. Il convient de noter que l'aridité qui résulte de ce climat est accentuée par les activités humaines. La déforestation massive et rapide du pays, à des fins principalement énergétiques, empêche une rétention correcte des eaux dans les sols. Seuls 2\% à 3\% du territoire sont occupés par des forêts (venant de plus de 60\% il y a un siècle). La sècheresse se trouve ainsi aggravée, et le ruissellement des eaux accélère l'érosion des sols~\cite{ref:desertification_of_haiti}. Les terres sont ainsi progressivement emportées vers la mer. En 2008, un rapport des Nations Unies estimait cette perte à 37 millions de tonnes par an~\cite{ref:impact_degradation_terre}.
+
+			\subsection*{Problèmes politiques}
+				Pays colonisé français devenu indépendant en 1804, la République d'Haïti est passée au travers de profondes réformes politiques. Le pays oscille politiquement jusqu'à une occupation du territoire par les \'Etats-Unis d'Amérique de 1915 à 1936 qui instiguent une industrialisation relative du pays, majoritairement dans les plantations et le commerce maritime, au détriment de la souveraineté démocratique d'Haïti. Un régime totalitaire se met en place en 1957 jusqu'en 1986. Depuis, la démocratie se développe sur le territoire avec de nombreux freins, dont les catastrophes répétées qui affaiblissent autant les infrastructures que la population et l'économie. Une instabilité politique relative (on dénombre 15 présidents et 22 premiers ministres depuis 1986 alors que le mandat est constitutionnellement valable 5 ans) et des tensions internes continuent de perturber le pays. Encore récemment en février 2019, des émeutes dénoncent le pouvoir, la police et la crise politique, économique et humanitaire. Les émeutes évoluent en pillages et sont violemment réprimées par les forces de l'ordre.
+
+				La scène internationale s'est très largement mobilisée pour Haïti et tout particulièrement après le séisme de 2010. De nombreuses organisations humanitaires et non-gouvernementales sont arrivées, mais les aides financières sont soupçonnées de détournement par ces mêmes organisations~\cite{ref:analyse_contextuelle_commune}. Ces aides sont parfois décriées dans la dépendance qu'elles crééent et le manque de vision à long terme. La population s'est également déjà retournée contre les aides et notamment contre les casques bleus venu aider après le séisme. Des soldats népalais des Nations Unies, venus aider après le drame, auraient involontairement déclenché une grave épidémie de choléra en introduisant la maladie en tant que porteurs sains. Le \emph{Center for Disease Control and Prevention (CDC)}, un service du département de la santé des \'Etats-Unis d'amérique, a expliqué cette hypothèse et les Nations Unies ont reconnu leur responsabilité en décembre 2016. L'épidémie a causé $10.000$ morts pour $800.000$ cas dans les Caraïbes, majoritairement en Haïti.
+
+				La République d'Haïti entretient également des relations conflictuelles avec la République Dominicaine, avec laquelle elle partage l'île d'Hispaniola. La prospérité de la République Dominicaine a amené de nombreux Haïtiens à passer la frontière pour travailler ce qui a parfois mené à des répressions sanglantes comme le massacre de $20.000$ Haïtiens en 1937, massacre ordonné par le gouvernement dominicain. Encore aujourd'hui, les travailleurs haïtiens vivent sous la constante menace d'expulsions. Ces expulsions ajoutent à la population désoeuvrée et pauvre d'Haïti.
+
+			\subsection*{Problèmes sociaux}
+				De ces conditions environnementales et politiques émane une population pauvre, voire abandonnée dans les zones rurales où des conseils de village tentent de pallier aux problèmes au quotidien. Là où les villes et principalement la capitale profitent des avantages de la mondialisation, la campagne haïtienne peine à bénéficier de l'aide nationale et repose essentiellement sur les organisations locales et externes au pays. L'éducation y est difficilement accessible et la population est très majoritairement endettée (81\% des foyers haïtiens), situation aggravée depuis 2015 lorsque la monnaie locale, la Gourde (HTG) a cessé d'être maintenue à un taux d'échange fixe avec le Dollar (USD). La Gourde continue depuis sa dépréciation (1 Euro vaut $93,5445$ Gourdes~\footnote{Taux de change du marché au 28 mars 2019}). Les droits des femmes et des enfants ne sont pas égaux à ceux des hommes et on constate un réel clivage entre la campagne et la ville. Par exemple, les enfants de familles pauvres sont parfois utilisés à des fins domestiques frôlant l'esclavage dans de riches familles.
+
+			\subsection*{Problèmes organisationnels}
+				Le modèle politique et organisationnel d'Haïti se calque sur la théorie occidentale. Cependant les profondes différences résultent en une mise en pratique des concepts qui ne sont pas toujours efficaces.
+				On constate notamment un manque de collaboration entre les entités haïtiennes ou même entre villages. Particulièrement dans les zones rurales, les croyances locales (religions, magie) sont parfois consultées pour des décisions importantes au détriment de la rationalité. La communication entre les différentes parties du pays n'est pas optimale. Les entités gouvernementales sont parfois nommées sans moyens financiers ni même bureaux et se retrouvent désoeuvrées. Les fréquentes crises détournent l'attention des problèmes de fond tels que l'éducation, les infrastructures, ...
+
+		\section{Gestion actuelle}
+
+			Pages : 2 à 3
+
+			\subsection*{Organisation du pays}
+			\subsection*{Structure organisationnelle}
+			\subsection*{Procédures actuelles}
+
+		\section{Comparaison avec d'autres pays}
+
+			Pages : 1 à 2
+
+			\subsection*{Gestion de l'eau en Belgique}
+			\subsection*{Visite d'un centre opérationnel en France}
+
+		\section{Comparaison avec des outils existants}
+
+			Pages : 1 à 2
+
+			% TODO find them
+
+
+	\chapter{Approche}
+
+		Total des pages : 3 à 6
+
+		\section{Organisation du travail}
+
+			Pages : 1 à 2
+
+			\subsection*{Planning}
+			\subsection*{Réunions}
+
+		\section{Répartition des tâches}
+
+			Pages : 1 à 2
+
+			\subsection*{Répartition des tâches quotidiennes}
+			\subsection*{Répartition de l'analyse}
+			\subsection*{Répartition de l'implémentation}
+			\subsection*{Répartition de l'écriture}
+
+		\section{Méthodologie}
+
+			Pages : 1 à 2
+
+			\subsection*{Méthodologie agile}
+			\subsection*{Phases de développement}
+
+	\chapter{Analyse des besoins}
+
+		Total des pages : 6 à 10
+
+		\section{Besoins fonctionnels}
+
+			Pages : 1 à 2
+
+			\subsection*{Gestion des données}
+			\subsection*{Simplification des procédures}
+
+		\section{Besoins non-fonctionnels}
+
+			Pages : 1 à 2
+
+			\subsection*{Sécurité des données}
+			\subsection*{Connexions lentes et peu fiables}
+
+		\section{Cahier des charges}
+
+			Pages : 2 à 3
+
+			\subsection*{Complet en annexe ?}
+
+		\section{Structure des données}
+
+			Pages : 2 à 3
+
+			\subsection*{Complet en annexe ?}
+
+	\chapter{Implémentation}
+
+		Total des pages : 16 à 22
+
+		La structure proposée n'est par conséquent pas définitive et dépendra des résultats obtenus.
+
+		\section{Choix technologiques}
+
+			Pages : 3 à 4
+
+			\subsection*{Web}
+			\subsection*{Python}
+			\subsection*{Django}
+			\subsection*{PostGIS}
+			\subsection*{DataTables}
+			\subsection*{ChartJS}
+
+		\section{Structure hiérarchique des utilisateurs}
+
+			Pages : 1 à 2
+
+			\subsection*{Structure}
+			\subsection*{Permissions}
+
+		\section{Interface utilisateur}
+
+			Pages : 2 à 3
+
+			\subsection*{Référence en annexe ?}
+
+		\section{Procédure d'utilisation}
+
+			Pages : 2 à 3
+
+			\subsection*{Référence en annexe ?}
+
+		\section{Client}
+
+			Pages : 4 à 5
+			\subsection*{Modularité et responsiveness}
+			\subsection*{Gabarits}
+			\subsection*{Accessibilité hors-ligne}
+			\subsection*{...}
+
+		\section{Serveur}
+
+			Pages : 4 à 5
+			\subsection*{Authentification}
+			\subsection*{Requêtes}
+			\subsection*{...}
+
+	\chapter{Validation}
+
+		Total des pages : 8 à 11
+
+		\section{Performances}
+
+			Pages : 3 à 4
+
+			\subsection*{Temps}
+			\subsection*{Poids}
+
+		\section{Vérifications automatiques}
+
+			Pages : 2 à 3
+
+			\subsection*{Tests unitaires}
+			\subsection*{Tests fonctionnels}
+
+		\section{Vérifications utilisateurs réels}
+
+			Pages : 3 à 4
+
+			\subsection*{Méthodologie}
+			\subsection*{Résultats obtenus}
+			\subsection*{Modifications apportées}
+
+	\chapter{Améliorations futures}
+
+		Total des pages : 4 à 7
+
+		\section{Suite du projet}
+
+			Pages : 2 à 3
+
+		\section{Défis rencontrés}
+
+			Pages : 1 à 2
+
+		\section{Propositions}
+
+			Pages : 1 à 2
+
+	\chapter{Conclusion}
+
+		Pages : 1 à 2
+
+	\chapter*{Bibliographie}
+	\addcontentsline{toc}{chapter}{Bibliographie}
+
+	\bibliography{bibliography}{}
+	\bibliographystyle{plain}
+
+		Pages : 2 à 3
+
+	\appendix
+
+	\chapter{Cahier des charges complet}
+
+		Pages : beaucoup
+
+	\chapter{Base de données}
+
+		Pages : beaucoup
+
+	\chapter{Wireframes}
+
+		Pages : beaucoup
+
+	\chapter{Diagrammes d'activité}
+
+		Pages : beaucoup
+
+	\chapter{Documents de validation}
+		Pages : 10 à 20
+	\setlength{\parskip}{0em}
+	\backcoverpage
 
 \end{document}

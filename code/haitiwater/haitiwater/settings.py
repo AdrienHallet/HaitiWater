@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import dj_database_url
 from django.utils.deprecation import MiddlewareMixin
 
 # Strings containing build information to pass in context view
@@ -27,14 +28,13 @@ COMPRESS_JS_FILTERS = [
 ]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-
 PROJECT_DIR = os.getcwd()
-APPS_DIR = os.path.join(PROJECT_DIR, 'apps/')
+APPS_DIR = os.path.join(PROJECT_DIR, 'apps')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production secret! # TODO use environment variable
 SECRET_KEY = 'gy@$c!a3r15-#=hy#!$ge%)2i%eaj&v_$g*ww-=kc(d6my=%(q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -48,9 +48,7 @@ ALLOWED_HOSTS = [
     '.ngrok.io',
 ]
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,12 +61,14 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'apps.authentication',
     'apps.dashboard',
+    'apps.log',
     'apps.water_network',
     'apps.zone_management',
     'apps.api',
     'apps.consumers',
     'apps.report',
     'apps.offline',
+    'apps.help',
     'compressor',
     'django_tables2',
     'bootstrap3',
@@ -81,7 +81,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', )
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
 
 MIDDLEWARE = [
@@ -120,25 +121,25 @@ TEMPLATE_LOADERS = (
 
 WSGI_APPLICATION = 'haitiwater.wsgi.application'
 
-
-# Database
+# Database # TODO use environment variable
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-import dj_database_url
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'haitiwater',
         'HOST': 'localhost',
-        'PORT': '5433',
+        'PORT': '5432',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-    }
-
+    },
 }
+
+MEDIA_ROOT = 'static-common/images'
+
+MEDIA_URL = '/images/'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -157,21 +158,20 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = '/accueil'
 LOGOUT_REDIRECT_URL = '/accueil'
 
-# Free email stuff
-EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_PORT=587
-DEFAULT_FROM_EMAIL  = 'haitiwatermails@gmail.com'
-EMAIL_HOST_USER='haitiwatermails@gmail.com'
-EMAIL_HOST_PASSWORD='haitiwater2019'
-EMAIL_USE_TLS=True
+# Free email stuff # TODO use environment variable
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'haitiwatermails@gmail.com'
+EMAIL_HOST_USER = 'haitiwatermails@gmail.com'
+EMAIL_HOST_PASSWORD = 'haitiwater2019'
+EMAIL_USE_TLS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
-
 LANGUAGE_CODE = 'fr'
 
-TIME_ZONE = 'America/Anguilla'  # Haiti time zone
+TIME_ZONE = 'America/Anguilla'  # Haïti time zone
 
 USE_I18N = True
 
@@ -182,13 +182,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-
-STATIC_ROOT = os.path.join(os.getcwd(), 'static/')
+STATIC_ROOT = os.path.join(os.getcwd(), 'static')
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
-    os.path.join(os.getcwd(), 'static-common/'),
+    os.path.join(os.getcwd(), 'static-common'),
 ]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
@@ -196,7 +195,6 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 ]
-
 
 # GDAL library import for Windows
 # Use the installer from https://trac.osgeo.org/osgeo4w/ (32/64 bits according to your python installation)

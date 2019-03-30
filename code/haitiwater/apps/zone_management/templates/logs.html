@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_name %}
+    Historique
+    <script src="{% static "logsTableGenerator.js" %}"></script>
+    <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
+    <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
+    <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
+    <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
+{% endblock %}
+
+{% block page_content %}
+    <p>Cliquez sur une ligne pour afficher les détails ! Validez ou refusez les changements avec les boutons d'action.</p>
+    <div id="datatable-logs_wrapper" class="dataTables_wrapper no-footer">
+        <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-logs" aria-describedby="datatable-logs_info">
+            <thead>
+                <tr>
+                    <th width="2%">Id</th>
+                    <th width="10%">Horodateur</th>
+                    <th width="10%">Type</th>
+                    <th width="10%">Utilisateur</th>
+                    <th width="25%">Modification</th>
+                    <th width="5%">Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+{% endblock %}

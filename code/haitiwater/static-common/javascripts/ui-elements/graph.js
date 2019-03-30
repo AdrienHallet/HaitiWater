@@ -34,7 +34,7 @@ function refresh() {
         case 'none':
             break; // empty case
         default: // error case
-            console.log("Undefined graph type: " + document.getElementById('graphTitle').value)
+            console.log("Undefined graph type: " + document.getElementById('graphTitle').value);
     }
 }
 
@@ -72,6 +72,8 @@ function consumerGenderPie() {
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 tooltips: {
                     callbacks: {
                         label: function (tooltipItem, data) {
@@ -105,7 +107,7 @@ function monthlyVolumePerZone() {
         var data = jsonfile.jsonarray[0].data;
         var gallonData = new Array(data.length);
         for (var i = 0; i < data.length; i++) {
-            gallonData[i] = data[i] * GALLONS_PER_CUBIC;
+            gallonData[i] = (data[i] * GALLONS_PER_CUBIC).toFixed(3);
         }
         var ctx = document.getElementById('graph-canvas').getContext('2d');
         var config = {
@@ -129,6 +131,7 @@ function monthlyVolumePerZone() {
                     mode: 'label'
                 },
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         position: "left",

@@ -2,6 +2,8 @@ var monthlyReport = {
 	// Complete on validation
 };
 
+const CUBICMETER_GALLON_RATIO = 264.172;
+
 
 $(document).ready(function() {
 
@@ -40,6 +42,7 @@ $(document).ready(function() {
 	*	Wizard Controller
 	*/
 	let $wizardMonthlyReportfinish = wizardReport.find('ul.pager li.finish');
+	let $wizardMonthlyReportSave = wizardReport.find('ul.pager li.save');
 
 	$wizardMonthlyReportfinish.on('click', function( ev ) {
 		ev.preventDefault();
@@ -50,6 +53,7 @@ $(document).ready(function() {
 			let postURL = baseURL + "/api/report/";
 			let xhttp = new XMLHttpRequest();
 			xhttp.open("POST", postURL, true);
+			xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
 			xhttp.setRequestHeader('Content-type', 'application/json');
 			xhttp.onreadystatechange = function() {
 				if(xhttp.readyState === 4) {
@@ -59,14 +63,15 @@ $(document).ready(function() {
 							text: "Le rapport mensuel n'a pas pu être envoyé",
 							type: 'error'
 						});
-						$('#monthly-report-error-msg').html(xhttp.responseText);
-						$('#monthly-report-error').removeClass('hidden');
+						$('#form-monthly-report-error-msg').html(xhttp.responseText);
+						$('#form-monthly-report-error').removeClass('hidden');
 					} else {
 						new PNotify({
 							title: 'Succès!',
 							text: 'Le rapport mensuel a été envoyé !',
 							type: 'success'
 						});
+						localStorage.removeItem("monthlyReport");
 						dismissModal();
 					}
 				}
@@ -79,6 +84,26 @@ $(document).ready(function() {
 		}
 	});
 
+	$wizardMonthlyReportSave.on('click', function ( ev ) {
+		ev.preventDefault();
+		const validated = validate();
+		if (validated) {
+			console.log(JSON.stringify(monthlyReport));
+			localStorage.setItem('monthlyReport', JSON.stringify(monthlyReport));
+			new PNotify({
+				title: 'Succès!',
+				text: 'Le rapport mensuel a été sauvegardé !',
+				type: 'success'
+			});
+			dismissModal();
+		} else {
+			return false;
+		}
+    });
+
+	let savedData = JSON.parse(localStorage.getItem('monthlyReport'));
+	setupStepOne(savedData);
+
 	wizardReport.bootstrapWizard({
 		tabClass: 'wizard-steps',
 		nextSelector: 'ul.pager li.next',
@@ -86,7 +111,7 @@ $(document).ready(function() {
 		firstSelector: null,
 		lastSelector: null,
 		onNext: function( tab, navigation, index, newindex ) {
-			var validated = validate(index);
+			var validated = validate(index, savedData);
 			if( !validated ) {
 				return false; // Do not switch tab if form is not valid
 			}
@@ -96,7 +121,9 @@ $(document).ready(function() {
 		},
 		onTabChange: function( tab, navigation, index, newindex ) {
 			var $total = navigation.find('li').size() - 1;
-			$wizardMonthlyReportfinish[ newindex !== $total ? 'addClass' : 'removeClass' ]( 'hidden' );
+			$wizardMonthlyReportfinish[ location.pathname === '/offline/' || newindex !== $total ?
+				'addClass' : 'removeClass' ]( 'hidden' );
+			$wizardMonthlyReportSave[ newindex !== $total ? 'addClass' : 'removeClass' ]( 'hidden' );
 			wizardReport.find(this.nextSelector)[ newindex === $total ? 'addClass' : 'removeClass' ]( 'hidden' );
 		},
 		onTabShow: function( tab, navigation, index ) {
@@ -196,14 +223,14 @@ function hideErrorsMsgs(){
 	});
 }
 
-function validate(step){
+function validate(step, savedData){
     switch(step){
         case 1:
-        	setupStepTwo();
+        	setupStepTwo(savedData);
             return validateStepOne();
         case 2:
         	if (validateStepTwo()){
-             	setupStepThree();
+             	setupStepThree(savedData);
 				return true;
 			}
 			return false;
@@ -249,7 +276,11 @@ function validateStepOne(){
 			$('#input-hours-error').removeClass('hidden');
 			isValid = false;
 		}
-		this.monthlyReport.isActive = true; // Save in report
+
+		// Save in report
+		this.monthlyReport.isActive = true;
+		this.monthlyReport.inputDays = inputDays.val();
+		this.monthlyReport.inputHours = inputHours.val();
 	} else {
 	    this.monthlyReport.isActive = false; // Save in report
 	}
@@ -269,24 +300,29 @@ function validateStepTwo(){
     this.monthlyReport.details = [];
 
     individualReports.each(function(index){
-      	let cubicValue = $(this).find('.cubic input').val();
-      	let gallonValue = $(this).find('.gallon input').val();
+		let cubicValue = 'none';
+		let perCubicValue = 'none';
 		let outletID = $(this).attr('id').replace('volume-', '');
 
-		if ((cubicValue < 0 || cubicValue === '') || (gallonValue < 0 || gallonValue ==='')){
-			isValid = false;
-			$(this).find('label.volume.error').removeClass('hidden');
+		// If we have data, use it, otherwise keep none
+		if($(this).find('.element-activity')[0].checked){
+	      	cubicValue = $(this).find('.cubic input').val();
+	      	let gallonValue = $(this).find('.gallon input').val();
+
+			if ((cubicValue < 0 || cubicValue === '') || (gallonValue < 0 || gallonValue ==='')){
+				isValid = false;
+				$(this).find('label.volume.error').removeClass('hidden');
+			}
+
+			perCubicValue = $(this).find('.per-cubic input').val();
+	      	let perGallonValue = $(this).find('.per-gallon input').val();
+
+			if ((perCubicValue < 0 || perCubicValue === '') || (perGallonValue < 0 || perGallonValue ==='')){
+				isValid = false;
+				$(this).find('label.cost.error').removeClass('hidden');
+			}
 		}
 
-		let perCubicValue = $(this).find('.per-cubic input').val();
-      	let perGallonValue = $(this).find('.per-gallon input').val();
-
-		if ((perCubicValue < 0 || perCubicValue === '') || (perGallonValue < 0 || perGallonValue ==='')){
-			isValid = false;
-			$(this).find('label.cost.error').removeClass('hidden');
-		}
-
-		console.log('pushing detail');
 		monthlyReport.details.push(
 			{
 				id: outletID,
@@ -295,7 +331,6 @@ function validateStepTwo(){
 			}
 		)
     });
-    console.log(this.monthlyReport);
     return isValid;
 }
 
@@ -322,45 +357,96 @@ function validateStepThree(){
 			obj.bill = value;
 		}
 	});
-
 	return valid;
+}
+
+/**
+ * complete form values depending on the saved data
+ */
+function setupStepOne(savedData){
+	const outlets = JSON.parse(localStorage.getItem("outlets"));
+
+	if (location.pathname === '/offline/') {
+		$("#multiselect-outlets").html();
+		for (let i = 0; i < outlets.length; i++) {
+			const outlet = outlets[i];
+			const option = "<option value='" + outlet[0] + "'>" + outlet[1] + "</option>";
+			$("#multiselect-outlets").append(option);
+		}
+	}
+
+	if (savedData) {
+		if (savedData.selectedOutlets) {
+			savedData.selectedOutlets.forEach(function (value) {
+				$("#multiselect-outlets option[value='" + value + "']").prop("selected", true);
+			});
+		}
+
+		if (savedData.isActive) {
+			$('#checkbox-active-service').prop("checked", true);
+			$('#input-days').removeAttr("disabled");
+			$('#input-hours').removeAttr("disabled");
+		}
+
+		if (savedData.inputDays) {
+			$('#input-days').val(savedData.inputDays)
+		}
+
+		if (savedData.inputHours) {
+			$('#input-hours').val(savedData.inputHours)
+		}
+	}
 }
 
 /**
  * Dynamically set the content of step 2 according to selected water outlets in step 1
  */
-function setupStepTwo(){
-
+function setupStepTwo(savedData){
 	// Panel body containing the data
-	let panelBody = '' +
-		'<div class="panel-body">' +
-			'<div class="row">' +
-				'<div class="col-sm-6">' +
-					'<h5>Volume d\'eau distribué</h5>' +
-					'<div class="row">' +
-						'<div class="col-sm-6 cubic">' +
-							'<input class="form-control" type="number">' +
+	function createPanelBody(outlet) {
+		let data;
+		if (savedData) {
+			savedData.details.forEach(function (detail) {
+				if (detail.id == outlet)
+					data = detail;
+			});
+		}
+		return '' +
+			'<div class="panel-body">' +
+			  '<div class="checkbox"><label><input type="checkbox" class="element-activity">' +
+			  'Je dispose de données pour cet élément</label></div>' +
+				'<div class="row">' +
+					'<div class="col-sm-6">' +
+						'<h5>Volume d\'eau distribué</h5>' +
+						'<div class="row">' +
+							'<div class="col-sm-6 cubic">' +
+								'<input class="form-control" type="number"'
+									+ (data ? 'value="' + data.cubic + '"' : '') + '">' +
+							'</div>' +
+							'<div class="col-sm-6 gallon">' +
+								'<input class="form-control" type="number"'
+									+ (data ? 'value="' + (data.cubic * CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '') + '">' +
+							'</div>' +
 						'</div>' +
-						'<div class="col-sm-6 gallon">\n' +
-							'<input class="form-control" type="number">' +
-						'</div>' +
+						'<label class="volume error">Valeurs de volume incorrectes</label>' +
 					'</div>' +
-					'<label class="volume error">Valeurs de volume incorrectes</label>' +
-				'</div>' +
-				'<div class="col-sm-6">' +
-					'<h5>Coût au volume (HTG)</h5>' +
-					'<div class="row">' +
-						'<div class="col-sm-6 per-cubic">' +
-							'<input class="form-control" type="number">' +
+					'<div class="col-sm-6">' +
+						'<h5>Coût au volume (HTG)</h5>' +
+						'<div class="row">' +
+							'<div class="col-sm-6 per-cubic">' +
+								'<input class="form-control" type="number"'
+									+ (data ? 'value="' + data.perCubic + '"' : '') + '">' +
+							'</div>' +
+							'<div class="col-sm-6 per-gallon">' +
+								'<input class="form-control" type="number"'
+									+ (data ? 'value="' + (data.perCubic / CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '') + '">' +
+							'</div>' +
 						'</div>' +
-						'<div class="col-sm-6 per-gallon">' +
-							'<input class="form-control" type="number">' +
-						'</div>' +
+						'<label class="cost error">Valeurs de coût incorrectes</label>' +
 					'</div>' +
-					'<label class="cost error">Valeurs de coût incorrectes</label>' +
 				'</div>' +
-			'</div>' +
-		'</div>';
+			'</div>';
+	}
 
 	// For each selected outlet, setup the data section
 	let selectedOutlets = $('#multiselect-outlets option:selected');
@@ -370,7 +456,7 @@ function setupStepTwo(){
 	let checkboxActiveService = $('#checkbox-active-service');
 	if (checkboxActiveService.is(':checked')){
 		// Service was active, ask user to input details
-		selectedOutlets.each(function(){
+		selectedOutlets.each(function(index){
 			let name = this.text; // Displayed name
 			let id = this.value; // ID of the fountain to send back to server
 
@@ -378,7 +464,7 @@ function setupStepTwo(){
 									'<header class="panel-heading">' +
 										'<h2 class="panel-title">' + name + '</h2>' +
 									'</header>';
-			detailsWindow.append(sectionHeader + panelBody);
+			detailsWindow.append(sectionHeader + createPanelBody(selectedOutlets[index].value));
 			detailsWindow.append('</section>');
 		});
 	} else {
@@ -389,56 +475,83 @@ function setupStepTwo(){
 	}
 
 	/**
-     * Listener to convert cubic to gallons and vice-versa
+     * Listener to convert cubic to gallons and vice-versa, and to check if has data
      */
     $('.water-outlet').each(function(i){
-        const CUBICMETER_GALLON_RATIO = 264.172;
-
+		// Cubic-gallon conversion
         let cubic = $('.cubic input', this);
         let gallon = $('.gallon input', this);
 
         cubic.on('input', function(){
-            gallon.val(cubic.val() * CUBICMETER_GALLON_RATIO);
+            gallon.val((cubic.val() * CUBICMETER_GALLON_RATIO).toFixed(3));
         });
 
         gallon.on('input', function(){
-            cubic.val(gallon.val() / CUBICMETER_GALLON_RATIO);
+            cubic.val((gallon.val() / CUBICMETER_GALLON_RATIO).toFixed(3));
         });
 
         let perCubic = $('.per-cubic input', this);
         let perGallon = $('.per-gallon input', this);
 
         perCubic.on('input', function(){
-            perGallon.val(perCubic.val() / CUBICMETER_GALLON_RATIO);
+            perGallon.val((perCubic.val() / CUBICMETER_GALLON_RATIO).toFixed(3));
         });
 
         perGallon.on('input', function(){
-            perCubic.val(perGallon.val() * CUBICMETER_GALLON_RATIO);
+            perCubic.val((perGallon.val() * CUBICMETER_GALLON_RATIO).toFixed(3));
         });
-    });
 
+		// Has data or not
+		let hasData = $('.element-activity', this);
+		let inputs = [cubic, gallon, perCubic, perGallon];
+		hasData.on('click', function(){
+			if (this.checked){
+				inputs.forEach(function(input){
+					input.prop('disabled', false);
+				})
+			}
+			else {
+				inputs.forEach(function(input){
+					input.prop('disabled', true);
+					input.val('');
+				})
+			}
+		})
+		hasData.prop('checked', true); // Start as checked
+    });
 }
 
 /**
  * Get the volumes distributed by the water network, multiply them by the cost and put the computed total
  * inside the suggestion field for the billing step
  */
-function setupStepThree(){
+function setupStepThree(savedData){
 	// Panel body containing the data
-	let panelBody = '' +
-		'<div class="panel-body">' +
-			'<div class="row">' +
-				'<div class="col-sm-6">' +
-					'<h5>Réelles (HTG)</h5>' +
-					'<input class="real-bill form-control" type="number"></input>' +
-					'<label class="billing error hidden">Valeur incorrecte</label>' +
+	function createPanelBody(outlet) {
+		let data;
+		if (savedData) {
+			savedData.details.forEach(function (detail) {
+				if (detail.id == outlet)
+					data = detail;
+			});
+		}
+		return '' +
+			'<div class="panel-body">' +
+				'<div class="row">' +
+					'<div class="col-sm-6">' +
+						'<h5>Réelles (HTG)</h5>' +
+						'<input class="real-bill form-control" type="number" '
+							+ (data ? 'value="' + data.bill + '"' : '') + '">' +
+						'<label class="billing error hidden">Valeur incorrecte</label>' +
+					'</div>' +
+					'<div class="col-sm-6">' +
+						'<h5>Calculées (HTG)</h5>' +
+						'<input class="computed-bill form-control" type="number" readonly="readonly">' +
+					'</div>' +
 				'</div>' +
-				'<div class="col-sm-6">' +
-					'<h5>Calculées (HTG)</h5>' +
-					'<input class="computed-bill form-control" type="number" readonly="readonly"></input>'
-				'</div>' +
-			'</div>' +
-		'</div>';
+			'</div>';
+	}
+
 
 	// For each selected outlet, setup the data section
 	let selectedOutlets = $('#multiselect-outlets option:selected');
@@ -446,9 +559,10 @@ function setupStepThree(){
 	billingWindow.empty(); // Flush old content
 
 	let checkboxActiveService = $('#checkbox-active-service');
+	console.log($('.water-outlet .bill'));
 	if (checkboxActiveService.is(':checked')){
 		// Service was active, ask user to input details
-		selectedOutlets.each(function(){
+		selectedOutlets.each(function(index){
 			let name = this.text; // Displayed name
 			let id = this.value; // ID of the fountain to send back to server
 
@@ -456,7 +570,7 @@ function setupStepThree(){
 									'<header class="panel-heading">' +
 										'<h2 class="panel-title"> Recettes : ' + name + '</h2>' +
 									'</header>';
-			billingWindow.append(sectionHeader + panelBody);
+			billingWindow.append(sectionHeader + createPanelBody(selectedOutlets[index].value));
 			billingWindow.append('</section>');
 		});
 		console.log(monthlyReport);
@@ -465,13 +579,24 @@ function setupStepThree(){
 			let id = details[i].id;
 			let perCubic = details[i].perCubic;
 			let cubic = details[i].cubic;
-
-			$('#bill-'+id).find('.computed-bill').val(cubic*perCubic);
+			if (cubic === 'none'){
+				$('#bill-' + id).remove(); // Do not display if no volume data
+			} else {
+				$('#bill-'+id).find('.computed-bill').val(cubic*perCubic);
+			}
 		}
 	} else {
 		billingWindow.html("<div class=\"well info text-center\">" +
 			"Vous n'avez aucun détail de recette à entrer puisque le service n'a pas été en activité.<br>" +
 			"Si vous avez des détails à entrer, cochez la case de service à l'étape 1.<br>" +
+			"Si c'est correct, passez à l'étape suivante.</div>");
+	}
+	// Display text if we have no data for any element
+	if ($('.bill').length < 1){
+		console.log("empty");
+		billingWindow.html("<div class=\"well info text-center\">" +
+			"Vous n'avez aucun détail de recette à entrer puisque aucune donnée de volume n'a été collectée.<br>" +
+			"Si vous avez des volumes à entrer, revenez à l'étape 2.<br>" +
 			"Si c'est correct, passez à l'étape suivante.</div>");
 	}
 }
@@ -493,7 +618,9 @@ function setupConfirmation(){
 			"<ul>" +
 			selectionAsHTMLList +
 			"</ul>"+
-			"Cette opération est irréversible, cliquez sur \"Terminer\" pour confirmer l'envoi." +
+			"Cette opération est irréversible, cliquez sur \"Terminer\" pour confirmer l'envoi. <br>" +
+			"Cliquez sur \"Sauvegarder\" pour sauvegarder les informations sans les envoyer. <br>" +
+			"Vous pourrez encore les modifier en revenant sur ce formulaire." +
 			"</div>");
 }
 

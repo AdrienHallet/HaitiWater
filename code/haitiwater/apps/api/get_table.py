@@ -1,12 +1,9 @@
-import json
-
-from decimal import Decimal, ROUND_HALF_UP
-from django.http import HttpResponse
 
 from ..consumers.models import Consumer
 from ..report.models import Report, Ticket
 from ..water_network.models import Element, Zone
-from django.contrib.auth.models import User, Group
+from ..log.models import Transaction, Log
+from django.contrib.auth.models import User
 
 
 def add_with_search(parsed, values):
@@ -55,6 +52,7 @@ def get_water_elements(request, json, parsed):
 
 def get_consumer_elements(request, json, parsed):
     zone = request.user.profile.zone
+    outlets = request.user.profile.outlets
     all = []
     if zone: #Zone manager
         target = Zone.objects.filter(name=zone.name)
@@ -63,34 +61,43 @@ def get_consumer_elements(request, json, parsed):
         else:
             return False
         all_consumers = [elem for elem in Consumer.objects.all() if elem.water_outlet.is_in_subzones(target)]
-        json["recordsTotal"] = len(all_consumers)
-        for elem in all_consumers:
-            if parsed["search"] == "":
-                all.append(elem.descript())
-            else:
-                for cols in parsed["searchable"]:
-                    tab = elem.descript()
-                    if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                        all.append(tab)
-                        break
+    elif len(outlets) > 0:
+        all_consumers = Consumer.objects.filter(water_outlet_id__in=outlets)
+    else:
+        return all
+
+    json["recordsTotal"] = len(all_consumers)
+    for elem in all_consumers:
+        if parsed["search"] == "":
+            all.append(elem.descript())
+        else:
+            for cols in parsed["searchable"]:
+                tab = elem.descript()
+                if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
+                    all.append(tab)
+                    break
     return all
 
 
 def get_zone_elements(request, json, parsed):
     all = []
     if request.user.profile.zone: #Zone manager
-        json["recordsTotal"] = len(request.user.profile.zone.subzones)
+        total = 0
         for z in request.user.profile.zone.subzones:
             zone = Zone.objects.filter(name=z)
             if len(zone) == 1:
                 if parsed["search"] == "":
+                    total += 1
                     all.append(zone[0].descript())
                 else:
                     for cols in parsed["searchable"]:
                         tab = zone[0].descript()
+                        total += 1
                         if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
                             all.append(tab)
                             break
+
+        json["recordsTotal"] = total
     return all
 
 
@@ -108,7 +115,8 @@ def get_manager_elements(request, json, parsed):
         for u in all_collab:
             group = u.groups.values_list('name', flat=True)
             if "Gestionnaire de zone" in group:
-                if type(target) is Zone and u.profile.zone.name in target.subzones:
+                if type(target) is Zone and u.profile.zone and \
+                                u.profile.zone.name in target.subzones:
                     tab = [u.username, u.last_name, u.first_name, u.email,
                            "Gestionnaire de zone", u.profile.zone.name]
                     if parsed["search"] == "":
@@ -125,7 +133,7 @@ def get_manager_elements(request, json, parsed):
                         out = out[0]
                     if type(out) is Element and out.is_in_subzones(target):
                         tab = [u.username, u.last_name, u.first_name, u.email,
-                               "Gestionnaire de fontaine", ""]
+                               "Gestionnaire de fontaine", u.profile.get_zone()]
                         if parsed["search"] == "":
                             all.append(tab)
                         else:
@@ -169,3 +177,47 @@ def get_ticket_elements(request, json, parsed):
                             break
         json["recordsTotal"] = tot
     return all
+
+
+def get_logs_elements(request, json, parsed):
+    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates())
+    all = []
+    tot = 0
+    for t in transactions:
+        logs = Log.objects.filter(transaction=t)
+        details = get_transaction_detail(logs)
+        item = {"id": t.id, "time": str(t.timestamp.date()),
+                "type": logs[0].get_action(), "user": t.user.username,
+                "summary": logs[0].get_table(), "details": details}
+        if parsed["search"] == "":
+            all.append(item)
+            tot += 1
+        else:
+            for cols in parsed["searchable"]:
+                if cols < len(item) and parsed["search"].lower() in item.keys() \
+                        or parsed["search"].lower() in item.values():
+                    all.append(item)
+                    tot += 1
+                    break
+    json["recordsTotal"] = tot
+    return all
+
+def get_transaction_detail(logs):
+    detail = ""
+    for indiv in logs:
+        if indiv.action == "ADD":
+            if indiv.new_value and indiv.new_value != "[]":
+                detail += indiv.column_name+" : "+indiv.new_value + "<br>"
+        elif indiv.action == "DELETE":
+            if indiv.old_value and indiv.old_value != "[]":
+                detail += indiv.column_name+" : "+indiv.old_value + "<br>"
+        else:
+            if indiv.old_value and indiv.new_value:
+                if indiv.column_name == "ID":
+                    detail += "Id : " + indiv.old_value
+                else:
+                    detail += indiv.column_name+" : "+indiv.old_value +" -> "+\
+                          indiv.new_value+"<br>"
+
+
+    return detail
