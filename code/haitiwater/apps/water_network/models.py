@@ -188,7 +188,7 @@ class Element(models.Model):
                     result[field.verbose_name] = self.zone.name
                     result["_zone"] = self.zone.id
                 if field.name == "type":
-                    result["Type"] = ElementType[self.type].value #Not working wtf
+                    result["Type"] = ElementType[self.type].value  # TODO find why it doesn't work
                     result["_type"] = self.type
                 if field.name == "status":
                     result[field.verbose_name] = self.get_status()
