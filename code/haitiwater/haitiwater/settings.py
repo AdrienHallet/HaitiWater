@@ -15,7 +15,7 @@ import dj_database_url
 from django.utils.deprecation import MiddlewareMixin
 
 # Strings containing build information to pass in context view
-PROJECT_VERSION = 'Alpha 3'
+PROJECT_VERSION = 'Beta 1'
 PROJECT_NAME = 'HaïtiWater'
 
 COMPRESS_ENABLED = True
@@ -130,7 +130,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'haitiwater',
         'HOST': 'localhost',
-        'PORT': '5433',
+        'PORT': '5432',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
     },
