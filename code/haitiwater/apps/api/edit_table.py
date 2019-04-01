@@ -136,11 +136,10 @@ def edit_zone(request):
 
     zone.subzones.remove(old_name)
     zone.subzones.append(zone.name)
-    for z in Zone.objects.all():
-        if old_name in z.subzones:
-            z.subzones.remove(old_name)
-            z.subzones.append(zone.name)
-            z.save()
+    for superzone in Zone.objects.filter(subzones__contains=[old_name]):
+        superzone.subzones.remove(old_name)
+        superzone.subzones.append(zone.name)
+        superzone.save()
 
     log_element(zone, old, request)
     return success_200

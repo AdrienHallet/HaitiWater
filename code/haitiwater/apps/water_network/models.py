@@ -153,12 +153,9 @@ class Element(models.Model):
         return total, total/len(reports)
 
     def get_managers(self):
-        all_managers = User.objects.all()
         result = ""
-        for user in all_managers:
-            if user.profile.outlets:
-                if str(self.id) in user.profile.outlets:
-                    result += user.first_name + " " + user.last_name + ", "
+        for user in User.objects.filter(profile__outlets__contains=[self.id]):
+            result += user.first_name + " " + user.last_name + ", "
         if result == "":
             result = "Pas de gestionnaire  "
         return result[:-2]

@@ -159,6 +159,6 @@ def get_higher_zone(outlets):
 
 def has_access(outlet, request):
     if is_user_fountain(request):
-        return outlet.id in request.user.profile.outlets
+        return str(outlet.id) in request.user.profile.outlets
     elif is_user_zone(request):
         return outlet.zone.name in request.user.profile.zone.subzones
