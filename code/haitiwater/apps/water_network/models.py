@@ -158,7 +158,7 @@ class Element(models.Model):
         for user in all_managers:
             if user.profile.outlets:
                 if str(self.id) in user.profile.outlets:
-                    result += user.username+", "
+                    result += user.first_name + " " + user.last_name + ", "
         if result == "":
             result = "Pas de gestionnaire  "
         return result[:-2]
