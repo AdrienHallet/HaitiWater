@@ -23,6 +23,12 @@ function validateZoneForm() {
         $('#form-zone-error').removeClass('hidden');
         valid = false;
     }
+    if (fountainPrice === ""){
+        fountainPrice = 0
+    }
+    if (kioskPrice === ""){
+        kioskPrice = 0
+    }
 
     if(valid){
         return buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice, kioskDuration);
