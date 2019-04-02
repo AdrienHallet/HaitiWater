@@ -4,6 +4,22 @@ from ..report.models import Report
 import datetime
 
 
+def is_int(i):
+    try:
+        int(i)
+        return True
+    except ValueError:
+        return False
+
+
+def is_float(i):
+    try:
+        float(i)
+        return True
+    except ValueError:
+        return False
+
+
 def is_user_fountain(request):
     groups = request.user.groups.values_list('name', flat=True)
     return "Gestionnaire de fontaine" in groups

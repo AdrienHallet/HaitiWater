@@ -1,24 +1,12 @@
 import re
-import json
 
-from django.http import HttpResponse
 from django.core.cache import cache
 
-from django.contrib.auth.models import User, Group
-from django.contrib.gis.geos import GEOSGeometry
-
-from ..water_network.models import Element, ElementType, Zone, Location
-from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
-from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
-from ..utils.get_data import is_user_zone, is_user_fountain, get_outlets
-from ..log.models import Transaction, Log
 from ..log.utils import *
+from ..utils.get_data import is_user_zone, is_user_fountain, get_outlets
 
-error_500 = HttpResponse(False, status=500)
-error_404 = HttpResponse(False, status=404)
 success_200 = HttpResponse(status=200)
 
 
@@ -377,7 +365,7 @@ def remove_element(request):
                                 "un gestionnaire de zone", status=400)
 
         transaction = Transaction(user=request.user)
-        for zone in Zone.objects.filter(zone__contains=[to_delete.name]):
+        for zone in Zone.objects.filter(subzones__contains=[to_delete.name]):
             old = zone.infos()
             zone.subzones.remove(str(to_delete.name))
             zone.save()
@@ -390,7 +378,8 @@ def remove_element(request):
 
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
 
-    return error_500
+    else:
+        return HttpResponse("Impossible de trouver l'élement " + element, status=400)
 
 
 def edit_element(request):

@@ -1,19 +1,15 @@
-import re
 import json
-from datetime import date, timedelta
+from datetime import date
 
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
-from django.db.models import Field
+from django.http import HttpResponse
 
-from ..utils.get_data import has_access
-from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
 from ..financial.models import Invoice, Payment
 from ..log.models import Transaction, Log
 from ..report.models import Ticket, Report
+from ..utils.get_data import has_access
+from ..water_network.models import Element, ElementType, Zone
 
 success_200 = HttpResponse(status=200)
 
@@ -64,7 +60,7 @@ def edit_water_element(request):
     elem.type = request.POST.get("type", None).upper()
     elem.location = request.POST.get("localization", None)
     elem.status = request.POST.get("state", None).upper()
-    elem.name = elem.get_type()+" "+elem.location
+    elem.name = elem.get_type() + " " + elem.location
 
     log_element(elem, old, request)
     return success_200

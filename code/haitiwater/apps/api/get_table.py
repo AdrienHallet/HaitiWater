@@ -1,15 +1,14 @@
 import json
-from decimal import Decimal, ROUND_HALF_UP
 
+from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.contrib.auth.models import User, Group
 
 from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
-from ..water_network.models import Element, Zone, Location
 from ..financial.models import Invoice, Payment
-from ..utils.get_data import is_user_fountain, is_user_zone, has_access
 from ..log.models import Transaction, Log
+from ..report.models import Report, Ticket
+from ..utils.get_data import is_user_fountain, is_user_zone
+from ..water_network.models import Element, Zone, Location
 
 
 def filter_search(params, values):

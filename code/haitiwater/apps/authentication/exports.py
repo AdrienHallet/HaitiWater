@@ -1,67 +1,48 @@
 import json
 
-from django.http import HttpResponse
-
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import Group
-from django.contrib.contenttypes.models import ContentType
-from ..authentication.models import Profile
-from ..water_network.models import Zone
+from django.http import HttpResponse
+from rest_framework.authtoken.models import Token
+
 from .views import conf_change
 
 
 def edit(request):
-    print(request.POST)
-    last_name = request.POST.get("last-name", None)
-    first_name = request.POST.get("first-name", None)
-    email = request.POST.get("email", None)
-    request.user.last_name = last_name
-    request.user.first_name = first_name
-    request.user.email = email
+    request.user.first_name = request.POST.get("first-name", None)
+    request.user.last_name = request.POST.get("last-name", None)
+    request.user.email = request.POST.get("email", None)
     request.user.save()
-
     return conf_change(request)
 
 
-@csrf_exempt #TODO : this is a hot fix for something I don't understand, remove to debug
 def connect(request):
-    print("Connection !")
-    print(request.POST)
     username = request.POST.get("username", None)
     password = request.POST.get("pwd", None)
-    #print(username + " " + password)
+
     user = authenticate(username=username, password=password)
+    if user is None:
+        return HttpResponse("Erreur de connexion", status=403)
 
-    if user is not None:
-        print("User found")
-        token, _ = Token.objects.get_or_create(user=user)
-        print(token)
-        data = {"token": token.key}
-        # filter the Group model for current logged in user instance
-        query_set = Group.objects.filter(user=user)
-        if len(query_set) == 1:
-            user_group = query_set[0].name
-            data["group"] = user_group
-            data["zone_name"] = user.profile.zone.name
-            data["zone_id"] = user.profile.zone.id
-            data["user_name"] = user.first_name+" "+user.last_name
-            return HttpResponse(json.dumps(data), content_type="application/json",
-                                status=200)
-        else:
-            return HttpResponse(status=404)
-    else:
-        print("User not found")
-        return HttpResponse(status=404)
+    token, _ = Token.objects.get_or_create(user=user)
+    data = {"token": token.key}
+
+    # filter the Group model for current logged in user instance
+    user_group = Group.objects.filter(user=user).first()
+    if user_group is None:
+        return HttpResponse("Problème à la connexion", status=400)
+
+    data["group"] = user_group.name
+    data["zone_name"] = user.profile.zone.name
+    data["zone_id"] = user.profile.zone.id
+    data["user_name"] = user.first_name + " " + user.last_name
+    return HttpResponse(json.dumps(data), status=200)
 
 
-def create(request): #TODO : creation form, create a person
-    print("Creation !")
-    username = request.POST.get("username", None)
-    password = request.POST.get("password", None)
-    user = User.objects.create_user(username, '', password)
-    user.save()
-    print(username+" "+password)
-    return HttpResponse(status=200)
+# No creation form, users will be created from other users in manager datatable
+# def create(request):
+#     username = request.POST.get("username", None)
+#     password = request.POST.get("password", None)
+#     user = User.objects.create_user(username, '', password)
+#     user.save()
+#     return HttpResponse(status=200)

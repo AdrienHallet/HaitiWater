@@ -49,8 +49,10 @@ class Zone(models.Model):
     fountain_duration = models.IntegerField("Durée en mois de la souscription à une fontaine")
     kiosk_price = models.FloatField("Prix de la souscription à un kiosque")
     kiosk_duration = models.IntegerField("Durée en mois de la souscription à un kiosque")
-    superzone = models.ForeignKey('self', verbose_name="Superzone", related_name='sub', null=True, on_delete=models.CASCADE)
+    superzone = models.ForeignKey('self', verbose_name="Superzone", related_name='sub',
+                                  null=True, on_delete=models.CASCADE)
     subzones = ArrayField(models.CharField(max_length=30), blank=True, default=list)
+    # Should be a ManyToMany Field on Zone, but this refactor would break DB
 
     # Generated : subzones, locations
 
@@ -104,7 +106,8 @@ class Element(models.Model):
     name = models.CharField("Nom", max_length=50)
     type = models.CharField("Type", max_length=20, choices=[(i.name, i.value) for i in ElementType])
     status = models.CharField("État", max_length=20, choices=[(i.name, i.value) for i in ElementStatus])
-    zone = models.ForeignKey(Zone, verbose_name="Zone de l'élément", related_name="elements", on_delete=models.CASCADE, default=1)
+    zone = models.ForeignKey(Zone, verbose_name="Zone de l'élément", related_name="elements",
+                             on_delete=models.CASCADE, default=1)
     location = models.CharField("Localisation", max_length=500)
     manager_names = models.CharField("Nom des gestionnaires", max_length=300, default="Pas de gestionnaire")
 
