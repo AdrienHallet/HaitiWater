@@ -2,6 +2,10 @@
 Installation
 ============
 
+Les systèmes d'exploitation suivants ont été testés fonctionnels :
+  * Windows 7, 10
+  * Ubuntu 16.04, 18.04
+
 Prérequis
 ---------
 Python 3.x
@@ -111,12 +115,20 @@ En vous positionnant au chemin (dernier laissé précédemment) ``../HaitiWater/
   
     $ pip install -r requirements.txt
     
+    *Note: sous Windows, il est possible que la dépendance GDAL ne puisse s'installer. Il suffit de la supprimer de la liste et de l'installer manuellement (voir ci-dessus).*
+    
   * Exporter le schéma de la base de données ::
   
     $ python3 manage.py makemigrations
     $ python3 manage.py migrate
     
+  * Importer des données d'exemple (optionnel) ::
+  
+    $ python3 manage.py loaddata initial_data.json
+    
   * Lancer le serveur ::
   
     $ python3 manage.py runserver
+    
+    *Note: sous Windows, supprimez les '/' (slash) après 'static-common/images', 'static' et 'static-common' aux lignes 140, 186 et 191 du fichier settings.py.*
  
