@@ -52,10 +52,6 @@
 
 			Ce projet est prévu sur trois ans, une première année pour la conception d'un prototype, une deuxième année pour finaliser le système et une troisième année pour déployer le système sur place. Ce mémoire constitue la première partie de ce projet.
 
-			% Notre mémoire est un mémoire de développement d'une application web utilisée en Haïti.
-			% Contactés par l'ONG protos
-			% Situation d'haiti problématique (manque de moyens financiers et humains)
-
 		\subsection*{Problématiques}
 
 			La structure hiérarchique des différents acteurs de la distibution de l'eau, gouvernementaux ou non, est assez complexe. Ces acteurs doivent s'organiser, individuellement et en groupes, pour arriver à une gestion efficace des ressources. Dans ce mémoire, nous nous concentrons sur trois axes afin d'améliorer leur coordination.
@@ -66,8 +62,6 @@
 				\item[Stockage] de manière à rassembler l'information sous forme numérique, permettant une meilleure sauvegarde des données, et à terme de les traiter en large volume de manière statistique.
 			\end{description}
 			% Réponse au TODO de Seb. Je pense que c'est plus clair et que la disposition en points permet une identification directe des objectifs.
-
-			% Le problème que nous, en tant que mémoire, on traite : organisation, communication, gestion des données
 
 		\subsection*{Motivation}
 
@@ -81,9 +75,6 @@
 
 			Non contents de parfaire notre formation, nous avons pour objectif d'être utiles à Haïti. Nous espérons que l'application développée dans le cadre de ce mémoire pourra être utilisée sur place et avoir un réel impact positif, aidant la distribution de l'eau à Haïti et son développement.
 
-			% Pourquoi on le fait, car l'ONG a contacté l'UCL, on développe l'application pour que Haiti se développe
-			% Nos motivations personnelles ; full stack dev ops
-
 		\subsection*{Objectif}
 
 			Le but final de ce mémoire est de délivrer une application à l'ONG Protos et aux acteurs de la distribution de l'eau à Haïti. Nous visons un déploiement de cette base applicative sur le terrain, et que les futures équipes de développement pourront travailler à sa maintenance et évolution.
@@ -92,11 +83,6 @@
 
 			Nous espérons également que cette application leur permettra d'avoir un bon exemple de solution logicielle. Cela pourrait leur aider à voir comment un logiciel peut les aider dans leur gestion, et les aider à bien repenser leurs besoins lors de projets futurs.
 			% On pourrait expliquer un peu mieux, mais vous voulez peut-être le garder court ?
-
-			% Leur créer une application qui leur permette :
-			% Soit de construire une base applicative sur laquelle ils pourront se développer
-			% Soit de se rendre compte de ce qu'une solution logicielle peut leur apporter, et donc de repenser leurs besoins.
-			% On est une application de transition, pas une multinationale (lien groupe Saur)
 
 		\subsection*{Approche}
 
@@ -116,12 +102,6 @@
 
 			Au cours de la phase de réalisation, nous avons pu collaborer avec un stagière venant d'Haïti. Cela nous a permet de comprendre plus directement les besoins sur place, complétant ainsi les informations plus théoriques que nous avions obtenues des documents de Protos. Cette vision plus pratique nous a permet d'avoir une meilleure idée de la réalité du terrain.
 
-			% Longue phase de requirements, d'abord pour voir ce qui se fait dans le monde
-			% Seconde phase des requirements ; situation actuelle en Haïti, solutions mises en place, leurs limites
-			% Design ; nos propositions
-			% Implémentation ; réalisation
-			% Validation (?) => mise en attente jusqu'à ce qu'on le fasse
-
 		\subsection*{Contribution}
 
 			Grâce à notre travail de fin d'études, nous avons permis à l'ONG Protos ainsi qu'aux acteurs de terrain à Haïti d'avoir un premier contact avec le monde du développement logiciel. Nous espérons que celui-ci les aidera à comprendre les problématiques liées à la création de logiciels informatiques pour leurs projets futurs.
@@ -130,22 +110,16 @@
 
 			Nous espérons avoir contribué à l'amélioration de la gestion de l'eau en Haïti, mais ce travail a assurément contribué au développement de nos compétences; en tant que développeurs, de par l'utilisatin de librairies et frameworks peu ou pas connus, en tant qu'analystes grâce au problème réel posé et la nécessité de comprendre les besoins. La coordination du groupe, la planification du travail et la communication avec les clients ont également beaucoup apporté à notre développement professionnel.
 
-
-
-			% Par notre biais, protos/haiti a eu premier contact avec le monde du developpement logiciel
-			% Proposer une application pour la gestion de l'eau potable en haiti, qui soit une base de travail pour la suite de leur développement national.
-
 		\subsection*{Plan}
 
 			Dans ce document, nous allons exposer le déroulement de notre travail de fin d'études. Tout d'abord, nous allons revenir sur le contexte de ce travail. Nous allons ensuite détailler notre approche pour sa réalisation. Après cela, nous étayerons notre analyse des besoins de l'ONG Protos et des acteurs haïtiens. Ensuite, nous expliquerons toutes les étapes et décisions de notre implémentation. Nous reviendrons sur les techniques que nous avons utilisées afin de valider notre implémentation. Nous clôturerons ce mémoire par une rétrospective sur le travail et une ouverture aux possibilités futures.
 
-			% Expliquer ce qu'on va expliquer.
-
 	\chapter{Contexte}
 
-		Total des pages : 6 à 10
+		% Pages : 6 à 10
 
 		\section{Situation de l'eau à Haïti}
+
 			% Auteur: Adrien
 			% Relu: Céline, Sébastien
 
@@ -234,14 +208,15 @@
 			% Auteur: Sébastien
 			% Relu: Adrien
 
-			La situation de l'eau dans d'autres pays, en particulier ceux aux économies fortes et établies , est différente. Le contexte d'Haïti est évidemment particulier, comme nous avons pu le voir dans les sections précédents. Ces circonstances nécessitent des solutions adaptées pour gérer la distribution d'eau. Néanmoins, une analyse de la situation d'autres pays a été utile afin de découvrir d'autres idées, identifier les bonnes pratiques du milieu ainsi que les différences avec la situation haïtienne afin de bénéficier de l'expérience des organismes existants.
 
 			\subsection*{Gestion de l'eau en Belgique}
 
 				Nous avons d'abord étudié la situation de l'eau en Belgique, choix naturel de par la localisation de nos études et du développement de ce mémoire. La première chose importante est que l'eau est une compétence régionale en Belgique, ce qui signifie que chaque région (Flandre, Wallonie et Bruxelles) développe sa propre politique à propos de l'eau.
 
 				En Wallonie, la gestion de l'eau est déléguée par le gouvernement wallon à la SPGE, Société Publique de la Gestion de l'Eau. Il s'agit d'une société publique, dont le fonctionnement est décrit par un contrat de gestion établi par le gouvernement. Elle travaille avec différentes intercommunales, sociétés également publiques, pour s'assurer de la distribution d'eau potable, ainsi que de l'égouttage et l'assainissement des eaux usées. Ces différentes intercommunales sont mandatées par la SPGE via des contrats de gestions sur des parties spécifiques du territoire wallon.
+
 				% (Adrien) Un lien avec Haïti ?
+				On peut voir que contrairement à Haïti, la gestion de l'eau en Belgique est beaucoup plus liée au secteur public. Ceci n'est pas possible en Haïti, étant donné les problème politiques discutés plus tôt dans ce chapitre.
 
 			\subsection*{Visite d'un centre opérationnel en France}
 
@@ -265,7 +240,7 @@
 
 			On peut remarquer que tous ces logiciels proposent une modélisation géographique du réseau de distribution. Celle-ci permet un affichage du réseau sous forme de graphe avec de liens pour les conduites et des nœuds pour les différents points de traitement, ainsi qu'une superposition sur une carte géographique pour une meilleure visualisation. Un autre module commun à tous ces logiciels permet d'effectuer des analyses formelles sur le réseau. Les modèles mathématiques sont utilisés pour poser une évaluation (quantitative, relative, etc) du système. Ces analyses permettent d'étudier les flux, les dépôts, la pression, etc, que ce soit en un point ou sur toute une partie du réseau. Un dernier module commun à ces logiciels permet d'obtenir des rapports sur l'état en temps réel du réseau de distribution.
 
-			La majeure différence entre ces différents logiciels est le modèle tarifaire. On passe d'un logiciel gratuit à d'autres dont le prix peut s'élever à 14.000 \$. Les autres différences sont plus d'ordre visuel, avec des interfaces plus travaillées que d'autres et des représentations du réseau et des données plus modernes. 
+			La majeure différence entre ces différents logiciels est le modèle tarifaire. On passe d'un logiciel gratuit à d'autres dont le prix peut s'élever à 14.000 \$. Les autres différences sont plus d'ordre visuel, avec des interfaces plus travaillées que d'autres et des représentations du réseau et des données plus modernes.
 
 	\chapter{Approche}
 
