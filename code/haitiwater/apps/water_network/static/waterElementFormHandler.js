@@ -19,10 +19,6 @@ function validateForm() {
         document.getElementById("input-localization-error").className = "error";
         missing = true;
     }
-    if (state === "none") {
-        document.getElementById("select-state-error").className = "error";
-        missing = true;
-    }
 
     if(missing){
         return false
