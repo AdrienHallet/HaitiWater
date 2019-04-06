@@ -106,7 +106,7 @@ def add_report_element(request):
 
                 if outlet.type == ElementType.INDIVIDUAL.name:  # Create an invoice for individual outlets
                     consumer = Consumer.objects.filter(water_outlet=outlet).first()
-                    if consumer and data:
+                    if consumer is not None:
                         amount = int(meters_distr) * int(value_meter)
                         creation = date.today()
                         expiration = creation + relativedelta(months=1)
@@ -116,6 +116,16 @@ def add_report_element(request):
             else:
                 report_line = Report(water_outlet=outlet, was_active=active, has_data=data,
                                      hours_active=hour_activity, days_active=day_activity)
+                if outlet.type == ElementType.INDIVIDUAL.name:
+                    consumer = Consumer.objects.filter(water_outlet=outlet).first()
+                    if consumer is not None:
+                        amount = outlet.zone.indiv_base_price
+                        creation = date.today()
+                        expiration = creation + relativedelta(months=1)
+                        invoice = Invoice(consumer=consumer, water_outlet=outlet, creation=creation,
+                                          expiration=expiration, amount=amount)
+                        invoice.save()
+
         else:
             report_line = Report(water_outlet=outlet, was_active=active)
 
@@ -133,9 +143,11 @@ def add_zone_element(request):
     fountain_duration = request.POST.get("fountain-duration", 1)
     kiosk_price = request.POST.get("kiosk-price", 0)
     kiosk_duration = request.POST.get("kiosk-duration", 1)
+    indiv_base_price = request.POST.get("indiv-base-price", 0)
 
     if not is_int(fountain_price) or not is_int(fountain_duration) \
-            or not is_int(kiosk_price) or not is_int(kiosk_duration):
+            or not is_int(kiosk_price) or not is_int(kiosk_duration) \
+            or not is_int(indiv_base_price):
         return HttpResponse("Impossible, certains champs devraient être des entiers", status=400)
 
     if Zone.objects.filter(name=name).first() is not None:
@@ -148,7 +160,8 @@ def add_zone_element(request):
 
     zone = Zone(name=name, superzone=superzone, subzones=[name],
                 fountain_price=fountain_price, fountain_duration=fountain_duration,
-                kiosk_price=kiosk_price, kiosk_duration=kiosk_duration)
+                kiosk_price=kiosk_price, kiosk_duration=kiosk_duration,
+                indiv_base_price=indiv_base_price)
 
     while superzone is not None:
         superzone.subzones.append(name)

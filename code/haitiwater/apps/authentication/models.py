@@ -79,7 +79,7 @@ class Profile(models.Model):
             if len(outlet) != 1:
                 return ""
             outlet = outlet[0]
-            higher_zone =  outlet.zone
+            higher_zone = outlet.zone
             for elem in self.outlets[1:]:
                 outlet = Element.objects.filter(id=elem)
                 if len(outlet) != 1:

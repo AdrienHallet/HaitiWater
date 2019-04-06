@@ -129,6 +129,7 @@ def edit_zone(request):
     zone.fountain_duration = request.POST.get("fountain-duration", 1)
     zone.kiosk_price = request.POST.get("kiosk-price", 0)
     zone.kiosk_duration = request.POST.get("kiosk-duration", 1)
+    zone.indiv_base_price = request.POST.get("indiv-base-price", 0)
 
     zone.subzones.remove(old_name)
     zone.subzones.append(zone.name)
@@ -286,5 +287,6 @@ def edit_report(request):
                 report.quantity_distributed = elem["volume"]
                 report.price = elem["price"]
                 report.recette = elem["revenue"]
+                # TODO change invoice ?
         log_element(report, old, request)
     return success_200
