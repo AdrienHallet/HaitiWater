@@ -41,14 +41,7 @@ def get_water_elements(request):
 def get_consumer_elements(request):
     consumers = []
     if is_user_zone(request):
-        zone_id = request.GET.get("zone", None)
-        zone = Zone.objects.filter(id=zone_id).first() if zone_id is not None else request.user.profile.zone
-        if zone is None:
-            return None
-        elif zone.name not in request.user.profile.zone.subzones:
-            return None
-
-        consumers = [elem for elem in Consumer.objects.filter(water_outlet__zone__name__in=zone.subzones)]
+        consumers = Consumer.objects.filter(water_outlet__zone__name__in=request.user.profile.zone.subzones)
     elif is_user_fountain(request):
         consumers = Consumer.objects.filter(water_outlet_id__in=request.user.profile.outlets)
 
