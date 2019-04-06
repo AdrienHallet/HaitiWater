@@ -218,6 +218,10 @@ function postEditRow(table, callback){
     xhttp.send(request)
 }
 
+/**
+ * French translation of DataTable functions
+ * @returns config object
+ */
 function getDataTableFrenchTranslation(){
     return {
         "sProcessing": "Chargement...",
@@ -249,17 +253,31 @@ function getDataTableFrenchTranslation(){
     }
 }
 
+/**
+ * Executed before a send. Acts as a modal lock to prevent multi-sending and let user know it's loading
+ */
 function beforeModalRequest(){
     //Disable the button to avoid multiple send and put loading spinner
     let button = $('.modal-confirm');
-    button.prop('disabled', true);
+    if (button.is('li')){ // Wizard Modal
+        button.addClass('disabled');
+    } else { // Classic modal
+        button.prop('disabled', true);
+    }
     button.append('<i class="loader fas fa-spinner fa-spin"></i>');
     button.addClass('loading');
 }
 
+/**
+ * Restore modal to origin state
+ */
 function afterModalRequest(){
     let button = $('.modal-confirm');
-    button.prop('disabled', false);
+    if (button.is('li')){ // Wizard Modal
+        button.removeClass('disabled');
+    } else { // Classic modal
+        button.prop('disabled', false);
+    }
     button.find('.loader').remove();
 }
 
