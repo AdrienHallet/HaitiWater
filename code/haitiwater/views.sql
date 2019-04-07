@@ -45,5 +45,8 @@ CREATE OR REPLACE VIEW public.consumer_virtualtotalbalance AS
     c.id AS "relevant_model",
     ( SELECT COALESCE(SUM(p.amount), 0)
       FROM financial_payment p
-      WHERE p.consumer_id = c.id) AS "balance"
+      WHERE p.consumer_id = c.id) AS "payed",
+    ( SELECT COALESCE(SUM(i.amount), 0)
+      FROM financial_invoice i
+      WHERE i.consumer_id = c.id) AS "due"
   FROM consumers_consumer c;

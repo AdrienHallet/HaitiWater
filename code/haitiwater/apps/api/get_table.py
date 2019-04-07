@@ -187,14 +187,13 @@ def get_payment_elements(request):
 
 def get_payment_details(request):
     consumer_id = request.GET.get("id", None)
-    balance = 0  # TODO balance in view to optimize
+    from ..consumers.models import Consumer
+    consumer = Consumer.objects.filter(id=consumer_id).first()
+    balance = consumer.get_balance()
     validity = None
     for elem in Invoice.objects.filter(consumer_id=consumer_id):
-        balance -= elem.amount
         if not validity or elem.expiration > validity:
             validity = elem.expiration
-    for elem in Payment.objects.filter(consumer_id=consumer_id):
-        balance += elem.amount
 
     return balance, str(validity)
 

@@ -22,11 +22,14 @@ class Consumer(models.Model):
         return self.first_name + " " + self.last_name
 
     def descript(self):
-        view = VirtualConsumersBalance.objects.filter(relevant_model=self.id).first()
         tab = [self.id, self.last_name, self.first_name, self.get_gender_display(),
                self.location, self.get_phone_number(),
-               self.household_size, self.water_outlet.name, view.balance, self.water_outlet.zone.name]
+               self.household_size, self.water_outlet.name, self.get_balance(), self.water_outlet.zone.name]
         return tab
+
+    def get_balance(self):
+        view = VirtualConsumersBalance.objects.filter(relevant_model=self.id).first()
+        return view.payed - view.due
 
     def get_phone_number(self):
         return self.phone_number if self.phone_number != "0" else "Non spécifié"
@@ -61,7 +64,9 @@ class Consumer(models.Model):
 
 class VirtualConsumersBalance(models.Model):
     relevant_model = models.BigIntegerField("Id", primary_key=True)
-    balance = models.FloatField("Balance", null=False, default=0)
+    payed = models.FloatField("Total payé", null=False, default=0)
+    due = models.FloatField("Total dû", null=False, default=0)
+
 
     class Meta:
         managed = False
