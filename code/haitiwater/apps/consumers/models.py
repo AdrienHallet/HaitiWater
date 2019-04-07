@@ -22,10 +22,10 @@ class Consumer(models.Model):
         return self.first_name + " " + self.last_name
 
     def descript(self):
-        # TODO view for balance
+        view = VirtualConsumersBalance.objects.filter(relevant_model=self.id).first()
         tab = [self.id, self.last_name, self.first_name, self.get_gender_display(),
                self.location, self.get_phone_number(),
-               self.household_size, self.water_outlet.name, "balance", self.water_outlet.zone.name]
+               self.household_size, self.water_outlet.name, view.balance, self.water_outlet.zone.name]
         return tab
 
     def get_phone_number(self):
@@ -44,7 +44,6 @@ class Consumer(models.Model):
                 elif field.name == "phone_number":
                     result[field.verbose_name] = self.get_phone_number()
                 elif field.name == "creation_date":
-                    print(self.creation_date)
                     result[field.verbose_name] = str(self.creation_date.date())
                 else:
                     result[field.verbose_name] = self.__getattribute__(field.name)
@@ -58,3 +57,12 @@ class Consumer(models.Model):
 
     def log_edit(self, old, transaction):
         edit(self._meta.model_name, self.infos(), old, transaction)
+
+
+class VirtualConsumersBalance(models.Model):
+    relevant_model = models.BigIntegerField("Id", primary_key=True)
+    balance = models.FloatField("Balance", null=False, default=0)
+
+    class Meta:
+        managed = False
+        db_table = 'consumer_virtualtotalbalance'

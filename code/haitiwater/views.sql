@@ -39,3 +39,11 @@ CREATE OR REPLACE VIEW public.water_network_virtualzonetotal AS
       WHERE e.zone_id = sub.id AND sub.name = ANY(z.subzones) AND e.type = 'TANK') AS "tanks"
 
 FROM water_network_zone z;
+
+CREATE OR REPLACE VIEW public.consumer_virtualtotalbalance AS
+  SELECT
+    c.id AS "relevant_model",
+    ( SELECT COALESCE(SUM(p.amount), 0)
+      FROM financial_payment p
+      WHERE p.consumer_id = c.id) AS "balance"
+  FROM consumers_consumer c;
