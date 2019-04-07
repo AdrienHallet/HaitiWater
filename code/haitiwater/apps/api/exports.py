@@ -1,24 +1,12 @@
 import re
-import json
 
-from django.http import HttpResponse
 from django.core.cache import cache
 
-from django.contrib.auth.models import User, Group
-from django.contrib.gis.geos import GEOSGeometry
-
-from ..water_network.models import Element, ElementType, Zone, Location
-from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
-from ..api.get_table import *
 from ..api.add_table import *
 from ..api.edit_table import *
-from ..utils.get_data import is_user_zone, is_user_fountain, get_outlets
-from ..log.models import Transaction, Log
 from ..log.utils import *
+from ..utils.get_data import is_user_zone, is_user_fountain, get_outlets
 
-error_500 = HttpResponse(False, status=500)
-error_404 = HttpResponse(False, status=404)
 success_200 = HttpResponse(status=200)
 
 
@@ -54,15 +42,39 @@ def graph(request):
                 json_object['jsonarray'][2]['data'] += 1  # One more other
 
     if export_format == "average_monthly_volume_per_zone":
-        # Todo backend : fill "label" with list of zones and "data" with their average output volume in cubic meters.
-        # Note that they obviously have to be in the same order
-        # Note that the conversion and use of galleons is done in front-end
-        # For the formula, I think it would be better to differentiate zones with no data and zones with volume = 0. So
-        # that "new" zones aren't left behind for lack of data.
+        elements = []
+        data = []
+
+        if is_user_fountain(request):
+            for outlet in Element.objects.filter(id__in=request.user.profile.outlets):
+                elements.append(outlet.name)
+
+                total = 0
+                no_data = True
+                for report in Report.objects.filter(water_outlet=outlet):
+                    if report.was_active and report.has_data:
+                        no_data = False
+                        total += report.quantity_distributed
+
+                data.append(total if not no_data else None)
+
+        elif is_user_zone(request):
+            for zone in Zone.objects.filter(name__in=request.user.profile.zone.subzones):
+                elements.append(zone.name)
+
+                total = 0
+                no_data = True
+                for report in Report.objects.filter(water_outlet__zone__name__in=zone.subzones):
+                    if report.was_active and report.has_data:
+                        no_data = False
+                        total += report.quantity_distributed
+
+                data.append(total if not no_data else None)
+
         json_object["jsonarray"] = [
             {
-                "label": ["Nom zone 1", "Nom zone 2"],
-                "data": [10, 20]
+                "label": elements,
+                "data": data
             }
         ]
 
@@ -285,7 +297,15 @@ def remove_element(request):
             return HttpResponse("Impossible de supprimer cet utilisateur, il n'existe pas", status=400)
         elif to_delete.profile.zone and to_delete.profile.zone.name not in request.user.profile.zone.subzones:
             return HttpResponse("Impossible de supprimer cet utilisateur, vous n'avez pas les droits", status=403)
-        # TODO check for fountain managers
+        else:
+            for outlet_id in to_delete.profile.outlets:
+                outlet = Element.objects.filter(id=outlet_id).first()
+                if outlet is None:
+                    return HttpResponse("Impossible de supprimer cet utilisateur, " +
+                                        "il est lié à une fontaine dont la zone n'existe pas", status=400)
+                elif outlet.zone.name not in request.user.profile.zone.subzones:
+                    return HttpResponse("Impossible de supprimer cet utilisateur, vous n'avez pas les droits",
+                                        status=403)
 
         log_element(to_delete.profile, request)
         to_delete.delete()
@@ -330,31 +350,26 @@ def remove_element(request):
         if to_delete is None:
             return HttpResponse("Impossible de supprimer cette zone, elle n'existe pas", status=400)
         elif to_delete.name not in request.user.profile.zone.subzones:
-            print(to_delete.name)
-            print(request.user.profile.zone.subzones)
             return HttpResponse("Impossible de supprimer cette zone, vous n'avez pas les droits", status=403)
 
         if len(to_delete.subzones) > 1:
             return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
                                 "d'autres zones", status=400)
-
         elements = Element.objects.filter(zone=zone_id)
         if len(elements) > 0:
             return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
                                 "des élements du réseau", status=400)
-
-        for u in User.objects.all():
-            if u.profile.zone == to_delete:
-                return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle est encore attribuée à" +
-                                    "un gestionnaire de zone", status=400)
+        users = User.objects.filter(profile__zone=to_delete)
+        if len(users) > 0:
+            return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle est encore attribuée à" +
+                                "un gestionnaire de zone", status=400)
 
         transaction = Transaction(user=request.user)
-        for z in Zone.objects.all():
-            if str(to_delete.name) in z.subzones:
-                old = z.infos()
-                z.subzones.remove(str(to_delete.name))
-                z.save()
-                z.log_edit(old, transaction)
+        for zone in Zone.objects.filter(subzones__contains=[to_delete.name]):
+            old = zone.infos()
+            zone.subzones.remove(str(to_delete.name))
+            zone.save()
+            zone.log_edit(old, transaction)
 
         if not is_same(to_delete, request.user):
             to_delete.log_delete(transaction)
@@ -363,7 +378,8 @@ def remove_element(request):
 
         return HttpResponse({"draw": request.POST.get("draw", 0) + 1}, status=200)
 
-    return error_500
+    else:
+        return HttpResponse("Impossible de trouver l'élement " + element, status=400)
 
 
 def edit_element(request):

@@ -39,12 +39,12 @@ function filterWaterElementFromManager(managerTable){
         $('#datatable-water_element').DataTable().search("").draw();
         return;
     }
-    let managerType = data[4];
-    let managerZone = data[5];
-    let managerId = data[0];
+    let managerType = data[5];
+    let managerZone = data[6];
+    let managerName = data[1] + " " + data[2];
     if (managerType.includes('fontaine')){
         // Filter on the manager if he's a fountain manager
-        $('#datatable-water_element').DataTable().search(managerId).draw();
+        $('#datatable-water_element').DataTable().search(managerName).draw();
     } else {
         // Filter on the zone if he's a zone manager
         $('#datatable-water_element').DataTable().search(managerZone).draw();

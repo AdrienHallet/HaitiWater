@@ -48,7 +48,7 @@ $(document).ready(function() {
 		ev.preventDefault();
 		var validated = validate();
 		if ( validated ) {
-
+			beforeModalRequest();
 			let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
 			let postURL = baseURL + "/api/report/";
 			let xhttp = new XMLHttpRequest();
@@ -65,6 +65,7 @@ $(document).ready(function() {
 						});
 						$('#form-monthly-report-error-msg').html(xhttp.responseText);
 						$('#form-monthly-report-error').removeClass('hidden');
+						afterModalRequest();
 					} else {
 						new PNotify({
 							title: 'Succès!',
@@ -74,6 +75,7 @@ $(document).ready(function() {
 						localStorage.removeItem("monthlyReport");
 						drawDataTable('report');
 						dismissModal();
+						afterModalRequest();
 					}
 				}
 			};

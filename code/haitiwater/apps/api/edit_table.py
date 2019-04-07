@@ -1,19 +1,15 @@
-import re
 import json
-from datetime import date, timedelta
+from datetime import date
 
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
-from django.db.models import Field
+from django.http import HttpResponse
 
-from ..utils.get_data import has_access
-from ..water_network.models import Element, ElementType, Zone
 from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
 from ..financial.models import Invoice, Payment
 from ..log.models import Transaction, Log
 from ..report.models import Ticket, Report
+from ..utils.get_data import has_access
+from ..water_network.models import Element, ElementType, Zone
 
 success_200 = HttpResponse(status=200)
 
@@ -64,7 +60,7 @@ def edit_water_element(request):
     elem.type = request.POST.get("type", None).upper()
     elem.location = request.POST.get("localization", None)
     elem.status = request.POST.get("state", None).upper()
-    elem.name = elem.get_type()+" "+elem.location
+    elem.name = elem.get_type() + " " + elem.location
 
     log_element(elem, old, request)
     return success_200
@@ -133,14 +129,14 @@ def edit_zone(request):
     zone.fountain_duration = request.POST.get("fountain-duration", 1)
     zone.kiosk_price = request.POST.get("kiosk-price", 0)
     zone.kiosk_duration = request.POST.get("kiosk-duration", 1)
+    zone.indiv_base_price = request.POST.get("indiv-base-price", 0)
 
     zone.subzones.remove(old_name)
     zone.subzones.append(zone.name)
-    for z in Zone.objects.all():
-        if old_name in z.subzones:
-            z.subzones.remove(old_name)
-            z.subzones.append(zone.name)
-            z.save()
+    for superzone in Zone.objects.filter(subzones__contains=[old_name]):
+        superzone.subzones.remove(old_name)
+        superzone.subzones.append(zone.name)
+        superzone.save()
 
     log_element(zone, old, request)
     return success_200
@@ -293,5 +289,6 @@ def edit_report(request):
                 report.quantity_distributed = elem["volume"]
                 report.price = elem["price"]
                 report.recette = elem["revenue"]
+                # TODO change invoice ?
         log_element(report, old, request)
     return success_200

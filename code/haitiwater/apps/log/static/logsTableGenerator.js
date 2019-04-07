@@ -14,13 +14,11 @@ function drawLogTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=logs";
     console.log("Request data from: " + dataURL);
-    $('#datatable-logs').DataTable(getLogsTableConfiguration(dataURL));
-    let table = $('#datatable-logs').DataTable();
+    let table = $('#datatable-logs').DataTable(getLogsTableConfiguration(dataURL));
 
     $('#datatable-logs tbody').on( 'click', 'tr td:not(:last-child)', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
-        console.log(row.data());
 
         if (row.child.isShown()) {
             // This row is already open - close it
@@ -29,7 +27,6 @@ function drawLogTable(){
         }
         else {
             // Open this row
-            console.log(row.data());
             row.child( format(row.data()) ).show();
             tr.addClass('shown');
         }

@@ -5,8 +5,10 @@ from ..consumers.models import Consumer
 from ..report.models import Report
 from haitiwater.settings import PROJECT_VERSION, PROJECT_NAME
 from ..utils.get_data import *
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='/login/')
 def index(request):
     template = loader.get_template('water_network.html')
     context = {
@@ -21,6 +23,7 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+@login_required(login_url='/login/')
 def gis(request):
     template = loader.get_template('water_gis.html')
     context = {

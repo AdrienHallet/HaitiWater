@@ -1,15 +1,14 @@
 import json
-from decimal import Decimal, ROUND_HALF_UP
 
+from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.contrib.auth.models import User, Group
 
 from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
-from ..water_network.models import Element, Zone, Location
 from ..financial.models import Invoice, Payment
-from ..utils.get_data import is_user_fountain, is_user_zone, has_access
 from ..log.models import Transaction, Log
+from ..report.models import Report, Ticket
+from ..utils.get_data import is_user_fountain, is_user_zone
+from ..water_network.models import Element, Zone, Location
 
 
 def filter_search(params, values):
@@ -42,15 +41,7 @@ def get_water_elements(request):
 def get_consumer_elements(request):
     consumers = []
     if is_user_zone(request):
-        zone_id = request.GET.get("zone", None)
-        zone = Zone.objects.filter(id=zone_id).first() if zone_id is not None else request.user.profile.zone
-        if zone is None:
-            return None
-        elif zone.name not in request.user.profile.zone.subzones:
-            return None
-
-        # TODO optimize this
-        consumers = [elem for elem in Consumer.objects.all() if elem.water_outlet.is_in_subzones(zone)]
+        consumers = Consumer.objects.filter(water_outlet__zone__name__in=request.user.profile.zone.subzones)
     elif is_user_fountain(request):
         consumers = Consumer.objects.filter(water_outlet_id__in=request.user.profile.outlets)
 
@@ -63,10 +54,8 @@ def get_consumer_elements(request):
 
 def get_zone_elements(request):
     result = []
-    for zone_name in request.user.profile.zone.subzones:
-        zone = Zone.objects.filter(name=zone_name).first()
-        if zone is None:
-            return None
+
+    for zone in Zone.objects.filter(name__in=request.user.profile.zone.subzones):
         result.append(zone.descript())
 
     return result
@@ -101,24 +90,18 @@ def get_manager_elements(request):
 def get_ticket_elements(request):
     result = []
     if is_user_zone(request):
-        for elem in Ticket.objects.all():
-            if elem.water_outlet.zone.name in request.user.profile.zone.subzones:
-                result.append(elem.descript())
+        for elem in Ticket.objects.filter(water_outlet__zone__name__in=request.user.profile.zone.subzones):
+            result.append(elem.descript())
     elif is_user_fountain(request):
-        for elem in Ticket.objects.all():
-            if str(elem.water_outlet.id) in request.user.profile.outlets:
-                result.append(elem.descript())
+        for elem in Ticket.objects.filter(water_outlet_id__in=request.user.profile.outlets):
+            result.append(elem.descript())
 
     return result
 
 
 def get_last_reports(request):
     all_reports = []
-    for outlet_id in request.user.profile.outlets:
-        outlet = Element.objects.filter(id=outlet_id).first()
-        if outlet is None:
-            return None
-
+    for outlet in Element.objects.filter(id__in=request.user.profile.outlets):
         reports = Report.objects.filter(water_outlet=outlet).order_by("timestamp")[:5]
         for report in reports:
             all_reports.append(report)
@@ -204,7 +187,7 @@ def get_payment_elements(request):
 
 def get_payment_details(request):
     consumer_id = request.GET.get("id", None)
-    balance = 0  # TODO balance in view to optimize ?
+    balance = 0  # TODO balance in view to optimize
     validity = None
     for elem in Invoice.objects.filter(consumer_id=consumer_id):
         balance -= elem.amount

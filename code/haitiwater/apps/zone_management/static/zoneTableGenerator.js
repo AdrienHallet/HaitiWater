@@ -2,21 +2,31 @@ function drawZoneTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=zone";
     console.log("Request data from: " + dataURL);
-    $('#datatable-zone').DataTable(getZoneTableConfiguration(dataURL));
+    let table = $('#datatable-zone').DataTable(getZoneTableConfiguration(dataURL));
 
-    let table = $('#datatable-zone').DataTable();
     $('#datatable-zone tbody').on( 'click', 'tr td:not(:last-child)', function () {
-        row = $(this).closest('tr');
-        if ( row.hasClass('selected') ) {
-            row.removeClass('selected');
+        let tr = $(this).closest('tr');
+        let row = table.row(tr);
+        if ( tr.hasClass('selected') ) {
+            tr.removeClass('selected');
             filterManagerFromZone(table);
             filterWaterElementFromZone(table);
         }
         else {
             table.$('.selected').removeClass('selected');
-            row.addClass('selected');
+            tr.addClass('selected');
             filterManagerFromZone(table);
             filterWaterElementFromZone(table);
+        }
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
         }
     });
 
@@ -33,6 +43,13 @@ function drawZoneTable(){
     prettifyHeader('zone');
 
     return table;
+}
+
+//Formatting function for row details
+function format ( d ) {
+    // d is the original data object for the row
+    return "Fontaines : " + d[2] + " Gourdes tous les " + d[3] + " mois<br>" +
+        "Kiosques : " + d[4] + " Gourdes tous les " + d[5] + " mois";
 }
 
 /**

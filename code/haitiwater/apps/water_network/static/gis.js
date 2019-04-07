@@ -92,6 +92,7 @@ function requestAllElementsPosition(){
         }
     };
     xhttp.open('GET', requestURL, true);
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.send();
 }
 
@@ -212,6 +213,7 @@ function requestWaterElementDetails(elementID){
     };
 
     xhttp.open('GET', requestURL, true);
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.send();
 
 }
@@ -444,6 +446,7 @@ function sendDrawToServer(geoJSON){
 
     xhttp.open('POST', requestURL, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.send(JSON.stringify(geoJSON));
 }
 
@@ -474,6 +477,7 @@ function removeHandler(e){
     };
 
     xhttp.open('POST', requestURL, true);
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.send();
 }
 

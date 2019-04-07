@@ -1,27 +1,13 @@
-import re
-import json
 from datetime import date
+
 from dateutil.relativedelta import relativedelta
-
+from django.contrib.auth.models import Group
 from django.contrib.gis.geos import GEOSGeometry
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
-from django.contrib.auth.models import Group
 
-from django.contrib.auth.models import User, Group
-from django.contrib.auth.models import Group
-
-from ..log.models import Transaction
-from ..water_network.models import Element, ElementType, Zone
-from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
-from ..financial.models import Invoice, Payment
-from ..water_network.models import ElementType, Location
 from ..api.get_table import *
-from ..utils.get_data import has_access
-
-success_200 = HttpResponse(status=200)
+from ..utils.get_data import has_access, is_int, is_float
+from ..water_network.models import ElementType
 
 
 def log_element(elem, request):
@@ -39,6 +25,9 @@ def add_consumer_element(request):
     sub = request.POST.get("subconsumer", None)
     phone = request.POST.get("phone", None)
     outlet_id = request.POST.get("mainOutlet", None)
+
+    if not is_int(sub):
+        return HttpResponse("Impossible, certains champs devraient être des entiers", status=400)
 
     outlet = Element.objects.filter(id=outlet_id).first()
     if outlet is None:
@@ -98,11 +87,18 @@ def add_report_element(request):
         if active:
             hour_activity = values["inputHours"]
             day_activity = values["inputDays"]
+
+            if not is_int(hour_activity) or not is_int(day_activity):
+                return HttpResponse("Impossible, certains champs devraient être des entiers", status=400)
+
             data = values["details"][index]["perCubic"] != "none"
             if data:
                 meters_distr = values["details"][index]["cubic"]
                 value_meter = values["details"][index]["perCubic"]
                 recette = values["details"][index]["bill"]
+
+                if not is_float(meters_distr) or not is_float(value_meter) or not is_float(recette):
+                    return HttpResponse("Impossible, certains champs devraient être des entiers", status=400)
 
                 report_line = Report(water_outlet=outlet, was_active=active, has_data=data,
                                      hours_active=hour_activity, days_active=day_activity,
@@ -110,7 +106,7 @@ def add_report_element(request):
 
                 if outlet.type == ElementType.INDIVIDUAL.name:  # Create an invoice for individual outlets
                     consumer = Consumer.objects.filter(water_outlet=outlet).first()
-                    if consumer and data:
+                    if consumer is not None:
                         amount = int(meters_distr) * int(value_meter)
                         creation = date.today()
                         expiration = creation + relativedelta(months=1)
@@ -120,12 +116,22 @@ def add_report_element(request):
             else:
                 report_line = Report(water_outlet=outlet, was_active=active, has_data=data,
                                      hours_active=hour_activity, days_active=day_activity)
+                if outlet.type == ElementType.INDIVIDUAL.name:
+                    consumer = Consumer.objects.filter(water_outlet=outlet).first()
+                    if consumer is not None:
+                        amount = outlet.zone.indiv_base_price
+                        creation = date.today()
+                        expiration = creation + relativedelta(months=1)
+                        invoice = Invoice(consumer=consumer, water_outlet=outlet, creation=creation,
+                                          expiration=expiration, amount=amount)
+                        invoice.save()
+
         else:
             report_line = Report(water_outlet=outlet, was_active=active)
 
         log_element(report_line, request)
 
-    return success_200
+    return HttpResponse(status=200)
 
 
 def add_zone_element(request):
@@ -137,6 +143,12 @@ def add_zone_element(request):
     fountain_duration = request.POST.get("fountain-duration", 1)
     kiosk_price = request.POST.get("kiosk-price", 0)
     kiosk_duration = request.POST.get("kiosk-duration", 1)
+    indiv_base_price = request.POST.get("indiv-base-price", 0)
+
+    if not is_int(fountain_price) or not is_int(fountain_duration) \
+            or not is_int(kiosk_price) or not is_int(kiosk_duration) \
+            or not is_int(indiv_base_price):
+        return HttpResponse("Impossible, certains champs devraient être des entiers", status=400)
 
     if Zone.objects.filter(name=name).first() is not None:
         return HttpResponse("Une zone avec ce nom existe déjà dans l'application, "
@@ -148,7 +160,8 @@ def add_zone_element(request):
 
     zone = Zone(name=name, superzone=superzone, subzones=[name],
                 fountain_price=fountain_price, fountain_duration=fountain_duration,
-                kiosk_price=kiosk_price, kiosk_duration=kiosk_duration)
+                kiosk_price=kiosk_price, kiosk_duration=kiosk_duration,
+                indiv_base_price=indiv_base_price)
 
     while superzone is not None:
         superzone.subzones.append(name)
@@ -179,20 +192,19 @@ def add_collaborator_element(request):
     user.profile.phone_number = phone
 
     if type == "fountain-manager":
-        outlets = request.POST.get("outlets", None).split(',')
-        if len(outlets) < 1:
+        outlet_ids = request.POST.get("outlets", None).split(',')
+        if len(outlet_ids) < 1:
             user.delete()
             return HttpResponse("Vous n'avez pas choisi de fontaine a attribuer !", status=400)
-        elif len(outlets) > 1:
-            res = Element.objects.filter(id__in=outlets)
-        else:
-            res = Element.objects.filter(id=outlets[0])
 
-        if len(res) < 1:
+        outlets = Element.objects.filter(id__in=outlet_ids) if len(outlet_ids) > 1 else \
+            Element.objects.filter(id=outlet_ids[0])
+
+        if len(outlets) < 1:
             user.delete()
             return HttpResponse("Impossible d'attribuer cette fontaine au gestionnaire", status=400)
 
-        for outlet in res:
+        for outlet in outlets:
             if not has_access(outlet, request):
                 return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
             outlet.manager_names = outlet.get_managers()
@@ -255,6 +267,9 @@ def add_ticket_element(request):
 def add_payment_element(request):
     id_consumer = request.POST.get("id_consumer", None)
     amount = request.POST.get("amount", None)
+
+    if not is_float(amount):
+        return HttpResponse("Impossible, certains champs devraient être des entiers", status=400)
 
     consumer = Consumer.objects.filter(id=id_consumer).first()
     if not consumer:

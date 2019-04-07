@@ -56,7 +56,7 @@ function getConsumerDatatableConfiguration(dataURL, fullView){
             'pageLength'
         ],
         "sortable": true,
-        "processing": false,
+        "processing": true,
         "serverSide": true,
         "responsive": true,
         "autoWidth": true,

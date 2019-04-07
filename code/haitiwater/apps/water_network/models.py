@@ -44,21 +44,27 @@ class ElementStatus(Enum):
 
 class Zone(models.Model):
 
-    name = models.CharField("Nom", max_length=50)
+    name = models.CharField("Nom", max_length=50)  # Should be unique
     fountain_price = models.FloatField("Prix de la souscription à une fontaine")
     fountain_duration = models.IntegerField("Durée en mois de la souscription à une fontaine")
     kiosk_price = models.FloatField("Prix de la souscription à un kiosque")
     kiosk_duration = models.IntegerField("Durée en mois de la souscription à un kiosque")
-    superzone = models.ForeignKey('self', verbose_name="Superzone", related_name='sub', null=True, on_delete=models.CASCADE)
+    indiv_base_price = models.IntegerField("Prix mensuel d'une prise individuelle en cas de manque de données")
+    superzone = models.ForeignKey('self', verbose_name="Superzone", related_name='sub',
+                                  null=True, on_delete=models.CASCADE)
     subzones = ArrayField(models.CharField(max_length=30), blank=True, default=list)
-
-    # Generated : subzones, locations
+    # Should be a ManyToMany Field on self, but this refactor would break DB
+    # Or use MPTT TreeForeignKey, but again would break DB
+    # https://buildmedia.readthedocs.org/media/pdf/django-mptt/latest/django-mptt.pdf
 
     def __str__(self):
         return self.name
 
     def descript(self):
-        return [self.id, self.name, self.fountain_price, self.fountain_duration, self.kiosk_price, self.kiosk_duration]
+        return [self.id, self.name,
+                self.fountain_price, self.fountain_duration,
+                self.kiosk_price, self.kiosk_duration,
+                self.indiv_base_price]
 
     def infos(self):
         result = {
@@ -104,9 +110,11 @@ class Element(models.Model):
     name = models.CharField("Nom", max_length=50)
     type = models.CharField("Type", max_length=20, choices=[(i.name, i.value) for i in ElementType])
     status = models.CharField("État", max_length=20, choices=[(i.name, i.value) for i in ElementStatus])
-    zone = models.ForeignKey(Zone, verbose_name="Zone de l'élément", related_name="elements", on_delete=models.CASCADE, default=1)
+    zone = models.ForeignKey(Zone, verbose_name="Zone de l'élément", related_name="elements",
+                             on_delete=models.CASCADE, default=1)
     location = models.CharField("Localisation", max_length=500)
     manager_names = models.CharField("Nom des gestionnaires", max_length=300, default="Pas de gestionnaire")
+    # TODO if refactored manager outlet ManyToMany relation, can be found there
 
     def __str__(self):
         return self.name
@@ -153,12 +161,9 @@ class Element(models.Model):
         return total, total/len(reports)
 
     def get_managers(self):
-        all_managers = User.objects.all()
         result = ""
-        for user in all_managers:
-            if user.profile.outlets:
-                if str(self.id) in user.profile.outlets:
-                    result += user.username+", "
+        for user in User.objects.filter(profile__outlets__contains=[self.id]):
+            result += user.first_name + " " + user.last_name + ", "
         if result == "":
             result = "Pas de gestionnaire  "
         return result[:-2]
@@ -191,7 +196,7 @@ class Element(models.Model):
                     result[field.verbose_name] = self.zone.name
                     result["_zone"] = self.zone.id
                 if field.name == "type":
-                    result["Type"] = ElementType[self.type].value #Not working wtf
+                    result["Type"] = ElementType[self.type].value  # TODO find why it doesn't work
                     result["_type"] = self.type
                 if field.name == "status":
                     result[field.verbose_name] = self.get_status()
@@ -208,7 +213,6 @@ class Element(models.Model):
 
     def log_edit(self, old, transaction):
         edit(self._meta.model_name, self.infos(), old, transaction)
-
 
 
 class VirtualElementTotal(models.Model):
