@@ -295,6 +295,9 @@ def remove_element(request):
         to_delete = User.objects.filter(username=manager_id).first()
         if to_delete is None:
             return HttpResponse("Impossible de supprimer cet utilisateur, il n'existe pas", status=400)
+        if to_delete.id == 1 or to_delete.id == 2: #IDs 1 and 2 are superuser and admin, should not be removed
+            return HttpResponse("Impossible de supprimer cet utilisateur, il est nécéssaire au fonctionnement de"
+                                " l'application. Vous pouvez cependant le modifier", status=400)
         elif to_delete.profile.zone and to_delete.profile.zone.name not in request.user.profile.zone.subzones:
             return HttpResponse("Impossible de supprimer cet utilisateur, vous n'avez pas les droits", status=403)
         else:
@@ -349,20 +352,23 @@ def remove_element(request):
         to_delete = Zone.objects.filter(id=zone_id).first()
         if to_delete is None:
             return HttpResponse("Impossible de supprimer cette zone, elle n'existe pas", status=400)
+        if to_delete.id == 1:
+            return HttpResponse("Impossible de supprimer cette zone, elle est essentielle au fonctionnement de "
+                                "l'application. Vous pouvez cependant la modifier.", status=400)
         elif to_delete.name not in request.user.profile.zone.subzones:
             return HttpResponse("Impossible de supprimer cette zone, vous n'avez pas les droits", status=403)
 
         if len(to_delete.subzones) > 1:
             return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
-                                "d'autres zones", status=400)
+                                " d'autres zones", status=400)
         elements = Element.objects.filter(zone=zone_id)
         if len(elements) > 0:
             return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle contient encore" +
-                                "des élements du réseau", status=400)
+                                " des élements du réseau", status=400)
         users = User.objects.filter(profile__zone=to_delete)
         if len(users) > 0:
             return HttpResponse("Vous ne pouvez pas supprimer cette zone, elle est encore attribuée à" +
-                                "un gestionnaire de zone", status=400)
+                                " un gestionnaire de zone", status=400)
 
         transaction = Transaction(user=request.user)
         for zone in Zone.objects.filter(subzones__contains=[to_delete.name]):
