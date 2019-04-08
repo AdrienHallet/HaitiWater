@@ -56,16 +56,9 @@
                     </div>
                 </div>
                 <div id="form-zone-indiv-component" class="form-group mt-lg">
-                    <label class="col-sm-4 control-label">Coût par défaut des prises individuelles (HTG)</label>
-                    <div class="col-sm-4">
+                    <label class="col-sm-4 control-label">Coût mensuel par défaut des prises individuelles (HTG)</label>
+                    <div class="col-sm-8">
                         <input id="input-indiv-price-value" name="name" class="form-control" type="number" min=0>
-                    </div>
-                    <div class="col-sm-4">
-                        <select class="form-control" id="select-indiv-price-duration">
-                            {% for value in 13|range_from_one %}
-                                <option value="{{ value }}">Tous les {{ value }} mois</option>
-                            {% endfor %}
-                        </select>
                     </div>
                 </div>
             </form>
