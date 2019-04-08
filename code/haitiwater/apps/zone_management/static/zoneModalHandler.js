@@ -18,7 +18,7 @@ function validateZoneForm() {
         document.getElementById("input-zone-name-error").className = "error";
         valid = false;
     }
-    console.log(fountainPrice);
+
     if (fountainPrice < 0 || kioskPrice < 0){
         $('#form-zone-error-msg').html("Vous ne pouvez entrer un coût négaif");
         $('#form-zone-error').removeClass('hidden');
@@ -45,7 +45,6 @@ function validateZoneForm() {
         );
     }
     return false;
-
 }
 
 /**
