@@ -187,15 +187,15 @@ def get_payment_elements(request):
 
 def get_payment_details(request):
     consumer_id = request.GET.get("id", None)
-    from ..consumers.models import Consumer
     consumer = Consumer.objects.filter(id=consumer_id).first()
-    balance = consumer.get_balance()
-    validity = None
-    for elem in Invoice.objects.filter(consumer_id=consumer_id):
-        if not validity or elem.expiration > validity:
-            validity = elem.expiration
+    if consumer is None:
+        return None
 
-    return balance, str(validity)
+    balance = consumer.get_balance()
+    invoice = Invoice.objects.filter(consumer_id=consumer_id).order_by('-expiration').first()
+    validity = str(invoice.expiration) if invoice is not None else "Pas de prochaine facturation"
+
+    return balance, validity
 
 
 def get_details_network(request):
