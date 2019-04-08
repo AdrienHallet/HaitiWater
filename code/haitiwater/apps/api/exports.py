@@ -6,6 +6,7 @@ from ..api.add_table import *
 from ..api.edit_table import *
 from ..log.utils import *
 from ..utils.get_data import is_user_zone, is_user_fountain, get_outlets
+from ..water_network.models import ElementType, ElementStatus
 
 success_200 = HttpResponse(status=200)
 
@@ -86,21 +87,26 @@ def gis_infos(request):
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     if request.method == "GET":
-        result = {}
+        locations = None
+        if is_user_fountain(request):
+            locations = Location.objects.filter(elem_id__in=request.user.profile.outlets)
+        elif is_user_zone(request):
+            locations = Location.objects.filter(elem__zone__name__in=request.user.profile.zone.subzones)
 
         markers = request.GET.get("marker", None)
-        if markers == "all":
-            for location in Location.objects.all():
-                result[location.elem.id] = [location.elem.name, location.json_representation]
-        else:
-            if is_user_zone(request):
-                for location in Location.objects.filter(elem__zone__name__in=request.user.profile.zone.subzones):
-                    result[location.elem.id] = [location.elem.name, location.json_representation]
-            elif is_user_fountain(request):
-                for location in Location.objects.filter(elem_id__in=request.user.profile.outlets):
-                    result[location.elem.id] = [location.elem.name, location.json_representation]
+        if markers == "fountain":
+            locations = locations.filter(elem__type=ElementType.FOUNTAIN.name)
+        elif markers == "kiosk":
+            locations = locations.filter(elem__type=ElementType.KIOSK.name)
+        elif markers == "individual":
+            locations = locations.filter(elem__type=ElementType.INDIVIDUAL.name)
+        elif markers == "not in service":
+            locations = locations.exclude(elem__status=ElementStatus.OK.name)
 
-        return HttpResponse(json.dumps(result))
+        results = {}
+        for location in locations:
+            results[location.elem.id] = [location.elem.name, location.json_representation]
+        return HttpResponse(json.dumps(results))
 
     elif request.method == "POST":
         elem_id = request.GET.get("id", None)
