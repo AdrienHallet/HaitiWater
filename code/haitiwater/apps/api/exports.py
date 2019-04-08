@@ -90,10 +90,15 @@ def gis_infos(request):
 
         markers = request.GET.get("marker", None)
         if markers == "all":
-            for loc in Location.objects.all():
-                result[loc.elem.id] = [loc.elem.name, loc.json_representation]
-        else:  # TODO : be mindfull of the connected user
-            return HttpResponse("not implemented", status=500)
+            for location in Location.objects.all():
+                result[location.elem.id] = [location.elem.name, location.json_representation]
+        else:
+            if is_user_zone(request):
+                for location in Location.objects.filter(elem__zone__name__in=request.user.profile.zone.subzones):
+                    result[location.elem.id] = [location.elem.name, location.json_representation]
+            elif is_user_fountain(request):
+                for location in Location.objects.filter(elem_id__in=request.user.profile.outlets):
+                    result[location.elem.id] = [location.elem.name, location.json_representation]
 
         return HttpResponse(json.dumps(result))
 
