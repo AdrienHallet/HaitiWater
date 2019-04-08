@@ -143,7 +143,7 @@ def add_zone_element(request):
     fountain_duration = request.POST.get("fountain-duration", 1)
     kiosk_price = request.POST.get("kiosk-price", 0)
     kiosk_duration = request.POST.get("kiosk-duration", 1)
-    indiv_base_price = request.POST.get("indiv-base-price", 0)
+    indiv_base_price = request.POST.get("indiv-price", 0)
 
     if not is_int(fountain_price) or not is_int(fountain_duration) \
             or not is_int(kiosk_price) or not is_int(kiosk_duration) \
