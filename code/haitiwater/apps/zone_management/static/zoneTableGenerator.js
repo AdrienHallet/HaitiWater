@@ -49,7 +49,8 @@ function drawZoneTable(){
 function format ( d ) {
     // d is the original data object for the row
     return "Fontaines : " + d[2] + " Gourdes tous les " + d[3] + " mois<br>" +
-        "Kiosques : " + d[4] + " Gourdes tous les " + d[5] + " mois";
+        "Kiosques : " + d[4] + " Gourdes tous les " + d[5] + " mois<br>" +
+        "Prises individuelles : " + d[6] + " Gourdes tous les " + d[7] + " mois";
 }
 
 /**

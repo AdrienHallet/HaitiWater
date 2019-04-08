@@ -11,6 +11,8 @@ function validateZoneForm() {
     let fountainDuration = form["select-fountain-price-duration"].value;
     let kioskPrice = form["input-kiosk-price-value"].value;
     let kioskDuration = form["select-kiosk-price-duration"].value;
+    let indivPrice = form["input-indiv-price-value"].value;
+    let indivDuration = form["select-indiv-price-duration"].value;
 
     let valid = true;
     if (name.trim() === "") {
@@ -29,9 +31,20 @@ function validateZoneForm() {
     if (kioskPrice === ""){
         kioskPrice = 0
     }
-
+    if (indivPrice === ""){
+        indivPrice = 0
+    }
     if(valid){
-        return buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice, kioskDuration);
+        return buildZoneRequest(
+            id,
+            name,
+            fountainPrice,
+            fountainDuration,
+            kioskPrice,
+            kioskDuration,
+            indivPrice,
+            indivDuration
+        );
     }
     return false;
 
@@ -45,9 +58,11 @@ function validateZoneForm() {
  * @param fountainDuration duration of the bill for fountains
  * @param kioskPrice price for kiosks
  * @param kioskDuration duration of the bill for kiosks
+ * @param indivPrice price for individual outlets
+ * @param indivDuration duration of the bill for individual outlets
  * @returns {string} the request
  */
-function buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice, kioskDuration){
+function buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice, kioskDuration, indivPrice, indivDuration){
     let request = "table=zone";
     request += "&id=" + id;
     request += "&name=" + name;
@@ -55,6 +70,8 @@ function buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice,
     request += "&fountain-duration=" + fountainDuration;
     request += "&kiosk-price=" + kioskPrice;
     request += "&kiosk-duration=" + kioskDuration;
+    request += "&indiv-price=" + indivPrice;
+    request += "&indiv-duration=" + indivDuration;
 
     return request;
 }
@@ -95,6 +112,9 @@ function setupModalZoneEdit(data){
 
     $('#input-kiosk-price-value').val(data[4]);
     $('#select-kiosk-price-duration').val(data[5]);
+
+    $('#input-indiv-price-value').val(data[6]);
+    $('#select-indiv-price-duration').val(data[7]);
 
     showZoneModal();
 }
