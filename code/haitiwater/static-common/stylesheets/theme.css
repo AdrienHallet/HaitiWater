@@ -12227,6 +12227,10 @@ html.dark .simple-compose-box .compose-box-footer {
 	background: transparent;
 }
 
+.table td {
+	cursor: pointer;
+}
+
 /* Bootstrap uses important, we need to force it here */
 .table.mb-none {
 	margin-bottom: 0 !important;
