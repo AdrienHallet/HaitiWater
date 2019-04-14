@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <hr>
-                <div id="form-zone-name-component" class="form-group mt-lg">
+                <div id="form-zone-fountain-component" class="form-group mt-lg">
                     <label class="col-sm-4 control-label">Coût des fontaines (HTG)</label>
                     <div class="col-sm-4">
                         <input id="input-fountain-price-value" name="name" class="form-control" type="number" min=0>
@@ -42,7 +42,7 @@
                         </select>
                     </div>
                 </div>
-                <div id="form-zone-name-component" class="form-group mt-lg">
+                <div id="form-zone-kiosk-component" class="form-group mt-lg">
                     <label class="col-sm-4 control-label">Coût des kiosques (HTG)</label>
                     <div class="col-sm-4">
                         <input id="input-kiosk-price-value" name="name" class="form-control" type="number" min=0>
@@ -53,6 +53,12 @@
                                 <option value="{{ value }}">Tous les {{ value }} mois</option>
                             {% endfor %}
                         </select>
+                    </div>
+                </div>
+                <div id="form-zone-indiv-component" class="form-group mt-lg">
+                    <label class="col-sm-4 control-label">Coût mensuel par défaut des prises individuelles (HTG)</label>
+                    <div class="col-sm-8">
+                        <input id="input-indiv-price-value" name="name" class="form-control" type="number" min=0>
                     </div>
                 </div>
             </form>

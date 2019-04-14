@@ -21,14 +21,14 @@ class Profile(models.Model):
         return self.phone_number if self.phone_number is not None and self.phone_number != "0" else "Non spécifié"
 
     def infos(self):
-        result = {
-            "ID": self.id,
-            "Identifiant": self.user.username,
-            "Prénom": self.user.first_name,
-            "Nom de famille": self.user.last_name,
-            "Email": self.user.email,
-            "Role": self.user.groups.values_list('name', flat=True)[0],
-        }
+        result = {}
+        result["ID"] = self.id
+        result["Identifiant"] = self.user.username
+        result["Prénom"] = self.user.first_name
+        result["Nom de famille"] = self.user.last_name
+        result["Email"] = self.user.email
+        result["Numéro de téléphone"] = self.get_phone_number()
+        result["Role"] = self.user.groups.values_list('name', flat=True)[0]
 
         if self.zone:
             result["Zone gérée"] = self.zone.name
@@ -79,7 +79,7 @@ class Profile(models.Model):
             if len(outlet) != 1:
                 return ""
             outlet = outlet[0]
-            higher_zone =  outlet.zone
+            higher_zone = outlet.zone
             for elem in self.outlets[1:]:
                 outlet = Element.objects.filter(id=elem)
                 if len(outlet) != 1:

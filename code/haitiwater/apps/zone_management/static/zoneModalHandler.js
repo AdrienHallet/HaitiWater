@@ -11,13 +11,14 @@ function validateZoneForm() {
     let fountainDuration = form["select-fountain-price-duration"].value;
     let kioskPrice = form["input-kiosk-price-value"].value;
     let kioskDuration = form["select-kiosk-price-duration"].value;
+    let indivPrice = form["input-indiv-price-value"].value;
 
     let valid = true;
     if (name.trim() === "") {
         document.getElementById("input-zone-name-error").className = "error";
         valid = false;
     }
-    console.log(fountainPrice);
+
     if (fountainPrice < 0 || kioskPrice < 0){
         $('#form-zone-error-msg').html("Vous ne pouvez entrer un coût négaif");
         $('#form-zone-error').removeClass('hidden');
@@ -29,12 +30,21 @@ function validateZoneForm() {
     if (kioskPrice === ""){
         kioskPrice = 0
     }
-
+    if (indivPrice === ""){
+        indivPrice = 0
+    }
     if(valid){
-        return buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice, kioskDuration);
+        return buildZoneRequest(
+            id,
+            name,
+            fountainPrice,
+            fountainDuration,
+            kioskPrice,
+            kioskDuration,
+            indivPrice,
+        );
     }
     return false;
-
 }
 
 /**
@@ -45,9 +55,10 @@ function validateZoneForm() {
  * @param fountainDuration duration of the bill for fountains
  * @param kioskPrice price for kiosks
  * @param kioskDuration duration of the bill for kiosks
+ * @param indivPrice price for individual outlets
  * @returns {string} the request
  */
-function buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice, kioskDuration){
+function buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice, kioskDuration, indivPrice){
     let request = "table=zone";
     request += "&id=" + id;
     request += "&name=" + name;
@@ -55,6 +66,7 @@ function buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice,
     request += "&fountain-duration=" + fountainDuration;
     request += "&kiosk-price=" + kioskPrice;
     request += "&kiosk-duration=" + kioskDuration;
+    request += "&indiv-price=" + indivPrice;
 
     return request;
 }
@@ -95,6 +107,8 @@ function setupModalZoneEdit(data){
 
     $('#input-kiosk-price-value').val(data[4]);
     $('#select-kiosk-price-duration').val(data[5]);
+
+    $('#input-indiv-price-value').val(data[6]);
 
     showZoneModal();
 }

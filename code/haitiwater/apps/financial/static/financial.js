@@ -21,14 +21,26 @@ function attachHandlers(zoneTable, consumerTable){
 
     $('#datatable-zone').first('tbody').on('click', 'tr td:not(:last-child)', function(){
         let row = ($(this).closest('tr'));
-        console.log(row);
-        if (row.hasClass('selected')) {
-            let zoneID = (zoneTable.row(row).data())[0];
-            setTableURL('consumer', '&zone=' + zoneID);
-        } else {
-            setTableURL('consumer', "");
-        }
+        filterConsumersFromZone(zoneTable);
     });
+}
+
+/**
+ * Automatically fill the field on the manager table from the selected zone
+ * (Takes the data from the first tr.selected)
+ *
+ * @param zoneTable the table zone datatable object
+ */
+function filterConsumersFromZone(zoneTable){
+    let data = zoneTable.row('tr.selected').data();
+    let consumerTable = $('#datatable-consumer').DataTable();
+    if  (data == null){ // If nothing selected
+        consumerTable.search("").draw();
+        return;
+    }
+    let zoneName = data[1];
+    consumerTable.search(zoneName).draw();
+
 }
 
 /**

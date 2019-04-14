@@ -44,23 +44,27 @@ class ElementStatus(Enum):
 
 class Zone(models.Model):
 
-    name = models.CharField("Nom", max_length=50)
+    name = models.CharField("Nom", max_length=50)  # Should be unique
     fountain_price = models.FloatField("Prix de la souscription à une fontaine")
     fountain_duration = models.IntegerField("Durée en mois de la souscription à une fontaine")
     kiosk_price = models.FloatField("Prix de la souscription à un kiosque")
     kiosk_duration = models.IntegerField("Durée en mois de la souscription à un kiosque")
+    indiv_base_price = models.IntegerField("Prix mensuel d'une prise individuelle en cas de manque de données")
     superzone = models.ForeignKey('self', verbose_name="Superzone", related_name='sub',
                                   null=True, on_delete=models.CASCADE)
     subzones = ArrayField(models.CharField(max_length=30), blank=True, default=list)
-    # Should be a ManyToMany Field on Zone, but this refactor would break DB
-
-    # Generated : subzones, locations
+    # Should be a ManyToMany Field on self, but this refactor would break DB
+    # Or use MPTT TreeForeignKey, but again would break DB
+    # https://buildmedia.readthedocs.org/media/pdf/django-mptt/latest/django-mptt.pdf
 
     def __str__(self):
         return self.name
 
     def descript(self):
-        return [self.id, self.name, self.fountain_price, self.fountain_duration, self.kiosk_price, self.kiosk_duration]
+        return [self.id, self.name,
+                self.fountain_price, self.fountain_duration,
+                self.kiosk_price, self.kiosk_duration,
+                self.indiv_base_price]
 
     def infos(self):
         result = {
@@ -110,6 +114,7 @@ class Element(models.Model):
                              on_delete=models.CASCADE, default=1)
     location = models.CharField("Localisation", max_length=500)
     manager_names = models.CharField("Nom des gestionnaires", max_length=300, default="Pas de gestionnaire")
+    # TODO if refactored manager outlet ManyToMany relation, can be found there
 
     def __str__(self):
         return self.name
@@ -208,7 +213,6 @@ class Element(models.Model):
 
     def log_edit(self, old, transaction):
         edit(self._meta.model_name, self.infos(), old, transaction)
-
 
 
 class VirtualElementTotal(models.Model):

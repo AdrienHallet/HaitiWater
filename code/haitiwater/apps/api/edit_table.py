@@ -129,6 +129,7 @@ def edit_zone(request):
     zone.fountain_duration = request.POST.get("fountain-duration", 1)
     zone.kiosk_price = request.POST.get("kiosk-price", 0)
     zone.kiosk_duration = request.POST.get("kiosk-duration", 1)
+    zone.indiv_base_price = request.POST.get("indiv-price", 0)
 
     zone.subzones.remove(old_name)
     zone.subzones.append(zone.name)
@@ -182,6 +183,8 @@ def edit_manager(request):
         return HttpResponse("Impossible de trouver cet utilisateur", status=400)
 
     old = user.profile.infos()
+    phone = request.POST.get("phone", None)
+    user.profile.phone_number = phone
     type = request.POST.get("type", None)
 
     if type == "fountain-manager":
@@ -286,5 +289,6 @@ def edit_report(request):
                 report.quantity_distributed = elem["volume"]
                 report.price = elem["price"]
                 report.recette = elem["revenue"]
+                # TODO change invoice ?
         log_element(report, old, request)
     return success_200
