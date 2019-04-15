@@ -119,6 +119,7 @@
 		% Pages : 6 à 10
 
 		\section{Situation de l'eau à Haïti}
+			\label{sec:situation}
 
 			% Auteur: Adrien
 			% Relu: Céline, Sébastien
@@ -188,6 +189,7 @@
 
 
 			\subsection*{Procédures actuelles}
+				\label{sec:procedures_actuelles}
 
     			On peut remarquer qu'il n'y a pas vraiment de standardisation dans les procédures en place. En effet, un comité de gestion de l'eau existe à Poste Métier depuis plus de 20 ans, mais il n'est présent que grâce à l'implication du Pasteur Chrisbon Fraïs et à l'aide de Protos. Cet effort s'étant montré efficace, le système établi a Poste-Métier a été appliqué dans d'autres zones, avec plus ou moins de succès.
 
@@ -232,7 +234,8 @@
 				Tout le centre fonctionne de manière informatisée. Le système informatique se base sur EPANET (voir section suivante) et propose un véritable ERP~\footnote{Enterprise Resource Planning, progiciel de gestion intégrée} intégrant toutes les activités du centre, afin d'en augmenter la productivité. Dans ce logiciel, l'eau n'est au final plus qu'une ressource de l'entreprise et l'important est la gestion au quotidien de celle-ci.
 
 				Ce système informatique ne détermine pas le réseau de distribution. Celui-ci s'est développé historiquement et le système informatique s'est greffé par dessus. Il permet une collecte des données de ce réseau et de déterminer les opérations à effectuer en fonction de ces données.
-				% (Adrien) expliciter ce qu'on en retire pour notre mémoire ? est-ce que ça a changé quelque chose ? explique-t-on le fait qu'on est tout petits à côté de ça ? % (Seb) je sais pas trop en fait :O
+				% (Adrien) expliciter ce qu'on en retire pour notre mémoire ? est-ce que ça a changé quelque chose ? explique-t-on le fait qu'on est tout petits à côté de ça ?
+				% (Seb) je sais pas trop en fait :O
 				% Todo : voir si on met la photo du grand tableau d'affichage de Saur
 
 		\section{Comparaison avec des outils existants}
@@ -245,16 +248,51 @@
 
 			La majeure différence entre ces solutions est le modèle tarifaire. On passe d'un logiciel gratuit à d'autres dont le prix peut s'élever jusqu'à 14.000 \$. Les autres variations sont plus d'ordre visuel, avec des interfaces plus ou moins stylisées ainsi que des représentations du réseau et des données plus ou moins modernes.
 
-	\chapter{Approche}
+	\chapter{Organisation}
+		%Work In Progress
+		%Auteur : Adrien
+		%Relu :
 
-		Total des pages : 3 à 6
+		Tout au long de l'année académique, la réalisation du mémoire a été impactée par la composition particulière du groupe. Trois mémorants, deux promoteurs et un client, Protos. Autant de points de vue, horaires, désirs et apports à intégrer dans ce travail. Afin de conserver un cap commun et de pouvoir concilier les objectifs de chacun, il a été nécessaire de définir, planifier et attribuer des tâches.
 
-		\section{Organisation du travail}
+		\section{Approche de travail}
+
+			Comprendre les problématiques liées au mémoire a été notre première tâche. En tant qu'étudiants en sciences informatiques, notre formation n'inclut pas de cours sur la gestion de l'eau et le contexte haïtien. L'idéal aurait été d'inclure dans l'équipe des consultants sur les domaines méconnus et d'envisager une visite en Haïti pour rencontrer les acteurs locaux et appréhender la situation.
+
+			Pour des raisons évidentes de budget et de temps, se rendre sur place et engager plus de partenaires a immédiatement été écarté. Pour comprendre la situation et relever les défis posés par le contexte, nous avons pu compter sur l'expertise de nos promoteurs et les 700 pages de documentation qui nous ont été fournies en préambule. Cette première documentation, orientée sur le contexte, a apporté des éclaircissements sur les défis de la gestion de l'eau potable en Haïti (ci-avant présentés en section~\ref{sec:situation}).
+
+			Tandis que les besoins non-fonctionnels de l'application étaient établis par ce contexte et les vues de Protos, le contenu fonctionnel s'est basé sur les outils actuellement en place. Nous avons vu en section~\ref{sec:procedures_actuelles} que des solutions locales ont été mises en place. En croisant ces solutions pour identifier les récurrences, nous avons établi un cahier des charges (voir chapitre~\ref{sec:analyse_besoins}).
+
+			L'arrivée en Belgique de plusieurs acteurs haïtiens impliqués dans la gestion de l'eau potable a modifié notre approche. A partir de janvier 2019, des réunions régulières avec des utilisateurs potentiels de l'application ont été mises en place. Cette modification d'approche a permis d'orienter le développement vers un but bien plus précis qu'auparavant. Nous avons ainsi pu bénéficier de nouvelles expertises et nouveaux points de vue.
+
+			\subsection*{Planification}
+
+				L'organisation d'un groupe, même réduit à trois personnes, est nécessaire pour orienter le travail dans un but commun. La planification de la réalisation du mémoire, qui est constitué en vaste majorité de l'application web produite, s'est effectuée sur trois plans :
+
+				\begin{description}
+					\item[Mensuel] Au départ du mémoire, un plan général a été dressé. Au début, les inconnues (\emph{e.g.,} étendue du projet, fonctionnalités à implémenter) ont empêché de définir avec précision les productions et les dates butoires. Avec l'avancée du mémoire, nous avons pu estimer l'avancement et notre vitesse de travail. Les réunions avec Protos pour présenter nos deux plus grandes échéances, à savoir les versions alpha et beta de l'application internet, ont été l'occasion de refaire le point et reformuler les objectifs.
+
+					\item[Hebdomadaire] Chaque semaine en alternance, nous rencontrions un de nos promoteurs. Dans la continuité de la planification mensuelle, ces réunions permettaient de présenter les productions, rapporter les tâches en cours et leur avancement, et enfin de projeter le futur du travail. Ces présentations étaient également l'occasion de rassembler les productions et d'avoir, chaque semaine, des documents ou démonstrations pouvant être comprises par des acteurs étrangers à l'équipe de développement. C'était donc autant un médium d'information que l'occasion de nous recentrer sur le travail, sans compter les précieux retours de nos promoteurs.
+
+					\item[Quotidien] Après une période d'expérimentation avec plusieurs outils de suivi, la gestion au quotidien des tâches à accomplir s'est ancrée sur Trello~\footnote{\url{https://trello.com}}, un tableau en ligne composé de cartes amovibles réparties dans des colonnes. Dans notre organisation, une carte représente une tâche plus ou moins atomique semblable à un \emph{récit utilisateur}~\footnote{Un récit utilisateur est une phrase ou texte court décrivant une fonctionnalité à développer}. Nous utilisons les colonnes pour classer les cartes selon l'état de la tâche associée. Nous avons ainsi défini les colonnes : \emph{à faire, a faire urgemment, en cours, problématique} et \emph{fini}. Nous avons également utilisé des messageries instantanées et canaux vocaux pour organiser les tâches.
+					%TODO voir l'utilité d'un tableau de métriques sur Trello
+
+				\end{description}
+
+				%TODO changement de la planification, adaptation blablabla
+				%TODO ligne du temps (gantt simplifié)
+
+
+			%\subsection*{Réunions}
+			%(Adrien) Finalement je vois pas l'utilité de cette section "réunions"
+
+		\section{Méthodologie}
 
 			Pages : 1 à 2
 
-			\subsection*{Planning}
-			\subsection*{Réunions}
+			\subsection*{Méthodologie agile}
+			\subsection*{Phases de développement}
+
 
 		\section{Répartition des tâches}
 
@@ -265,15 +303,8 @@
 			\subsection*{Répartition de l'implémentation}
 			\subsection*{Répartition de l'écriture}
 
-		\section{Méthodologie}
-
-			Pages : 1 à 2
-
-			\subsection*{Méthodologie agile}
-			\subsection*{Phases de développement}
-
 	\chapter{Analyse des besoins}
-
+		\label{sec:analyse_besoins}
 		Total des pages : 6 à 10
 
 		\section{Besoins fonctionnels}
