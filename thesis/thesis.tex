@@ -265,6 +265,7 @@
 			L'arrivée en Belgique de plusieurs acteurs haïtiens impliqués dans la gestion de l'eau potable a modifié notre approche. A partir de janvier 2019, des réunions régulières avec des utilisateurs potentiels de l'application ont été mises en place. Cette modification d'approche a permis d'orienter le développement vers un but bien plus précis qu'auparavant. Nous avons ainsi pu bénéficier de nouvelles expertises et nouveaux points de vue.
 
 			\subsection*{Planification}
+				\label{sec:planification}
 
 				L'organisation d'un groupe, même réduit à trois personnes, est nécessaire pour orienter le travail dans un but commun. La planification de la réalisation du mémoire, qui est constitué en vaste majorité de l'application web produite, s'est effectuée sur trois plans :
 
@@ -277,13 +278,21 @@
 				\end{description}
 
 				Etablir un plan et s'y tenir n'était cependant pas suffisant. Le projet a connu de nombreuses modifications dans ses objectifs et contraintes. Différents facteurs viennent expliquer ces modifications :
+
 				\begin{itemize}
 					\item La présentation de prototypes aux partenaires et aux promoteurs ont souvent amené de nouvelles idées pour l'application, ou suggéré la modification de fonctionnalités existantes.
 					\item L'arrivée de nouveaux acteurs, principalement aux mois de février et mars. Plusieurs haïtiens ont pu apporter des éclaircissements sur la situation qui ont modifié l'application et l'orientation de son développement.
 					\item Certaines fonctionnalités se sont révélées plus complexes à implémenter que prévu.
 				\end{itemize}
 
-				La figure~\ref{fig:simplified_gantt} présente une vue simplifiée du diagramme de Gantt sur lequel les modules implémentés (voir section~\ref{sec:cahier_des_charges}) sont placés sur une ligne temporelle en dessous de laquelle les grandes phases du mémoire ont été placées, ainsi que les deux versions majeures, \emph{alpha} et \emph{beta}, déployées et présentées à tous les acteurs du projet.
+				La figure~\ref{fig:simplified_gantt} présente une vue simplifiée du diagramme de Gantt final sur lequel les modules implémentés (voir section~\ref{sec:cahier_des_charges}) sont placés sur une ligne temporelle en dessous de laquelle les grandes phases du mémoire ont été placées, ainsi que les deux versions majeures, \emph{alpha} et \emph{beta}, présentées à tous les acteurs du projet.
+
+				Les phases d'\emph{analyse} et \emph{architecture} se sont également clôturées par des réunions de taille plus importante afin qu'un maximum de personnes puissent donner leur avis sur les artefacts (cahier des charges, ébauches d'interface graphique, etc). C'est notamment après ces réunions que les changements de planification étaient décidés pour répondre aux nouveaux besoins du client.
+
+				Le diagramme en figure~\ref{fig:simplified_gantt} est donc la version finale. Comparé au plan final, on constate une augmentation de la phase d'implémentation en raison de l'augmentation de la charge de travail, le module \emph{historique} et \emph{finances} étaient en effet imprévus. De nombreuses autres fonctionnalités ajoutées à posteriori ont allongé cette phase.
+				Il était également prévu de passer plus de temps sur l'analyse et la conception du système. Or le cahier des charges et les ébauches n'étaient pas assez concrèts pour avoir des retours précis sur l'outil. Devant ce fait et l'ampleur du projet, nous avons démarré l'implémentation plus tôt que prévu, et s'est également allongée sur le mois d'avril (pour un total d'environ 6 semaines).
+
+				Ces imprévus n'ont heureusement pas eu d'impact sur la production. Le démarrage anticipé de l'analyse en août, l'ajout d'une semaine de travail imprévue durant la session d'examen de janvier ainsi qu'une zone tampon de deux semaines prévue dans l'horaire initial ont permis d'accomplir la totalité des tâches initialement prévues, ainsi qu'une part appréciable des suggestions apportées au cours de l'année.
 
 				\begin{figure}[H]
 					\includegraphics[width=\textwidth]{images/planning_timeline.png}
@@ -296,24 +305,38 @@
 			%(Adrien) Finalement je vois pas l'utilité de cette section "réunions"
 
 		\section{Méthodologie}
-			Garantir l'avancement, sans variation indésirable, de tout projet se fait par le biais d'une méthodologie. Il est important que cette méthodologie soit connue de chacun pour garantir un rôle et un suivi dans le travail. %TODO justifier apport méthodologie
+
+			Garantir l'avancement, sans variation indésirable, de tout projet se fait par le biais d'une méthodologie. Il est important que cette méthode de travail soit connue de chacun pour garantir un rôle fixe et un suivi efficace du travail. Cette notion de méthode est une caractéristique bien connue de la gestion de projet. Le but est de partir d'un besoin et d'apporter une solution informatisée. La méthode lie ces deux états et définit un système de communication, échéances, tâches, etc. De nombreuses méthodes déjà établies existent et sont prêtes à l'emploi par n'importe quelle équipe.
 
 			\subsection*{Agile}
-				%TODO explication de notre variation
-				% Scrum-like
-				% sprint 1 semaine, venant de la réunion avec promoteurs, organisation autour de ça, rétrospective, planification, retours
 
-			\subsection*{Phases de développement}
+				Dans la section précédente, nous avons évoqué les changements constants dans la planification et les tâches. C'est donc tout naturellement que nous avons opté pour une \emph{méthode agile}, en opposition aux méthodes traditionnelles qui se montrent plus rigides et réfractaires au changement.
+
+				Nous n'avons pas suivi une méthode agile fixe, préférant une version plus relaxée, adaptée aux variations de disponibilité inhérentes à notre statut d'étudiant. On peut cependant relever des grands principes inspirés de méthodes existantes.
+
+				\begin{description}
+					\item[Développement dirigé par les fonctionnalités] \emph{Feature Driven Development} en anglais, ce type de développement focalise les ressources sur la création. Tout d'abord création d'un prototype général et d'une liste de fonctionnalités. Ensuite création de ces fonctionnalités, ajoutées à l'application en impliquant le client à chaque fois qu'une fonctionnalité est créée. C'est également le client qui définit la priorité des fonctionnalités. Ce dernier point fut très utile dans notre mémoire où les acteurs haïtiens ont souhaité orienter le développement vers l'aspect financier de l'application, en opposition à Protos qui accentuait principalement le réseau de distribution.
+
+					\item[Itérations courtes] Une itération est une étape indépendante du développement. Chaque itération a sa propre planification et rétrospective. En méthode agile, les itérations sont courtes. Puisque nous voyions nos promoteurs toutes les semaines en alternance, nos itérations se sont naturellement calquées sur ce rythme. Nous avons évoqué l'intérêt de recentrer le développement en section~\ref{sec:planification}. C'est également une excellente manière de détecter rapidement les risques (tant au niveau de la planification que de l'application produite) et d'agir en conséquence.
+
+					\item[Livraison continue] A partir de février, un acteur haïtien arrivé en Belgique a utilisé intensivement l'application. Grâce à ses retours nous avons pu modifier l'application. Durant trois mois nous avons déployé de nouvelles versions de l'application toutes les deux ou trois itérations afin qu'il puisse essayer les fonctionnalités ajoutées. Cela a nécessité un peu plus de travail, pour déployer l'application et garantir l'intégrité des données entre les différentes versions. Effort récompensé par des retours fréquents de la part d'un utilisateur impliqué dont le point de vue extérieur s'est avéré extrèmement utile.
+				\end{description}
+
+			\subsection*{Phases du mémoire}
 				%TODO variations autour de l'implémentation agile
 
 		\section{Répartition des tâches}
 
 			Pages : 1 à 2
 
-			\subsection*{Répartition des tâches quotidiennes}
-			\subsection*{Répartition de l'analyse}
-			\subsection*{Répartition de l'implémentation}
-			\subsection*{Répartition de l'écriture}
+			\subsection*{Durant l'analyse}
+				%TODO FIFO pour les documents, résumé et lecture complète
+			\subsection*{Durant l'implémentation}
+				%TODO Separation of concerns, impact négatif sur l'apprentissage individuel, impact positif sur la puissance de travail,
+			\subsection*{Durant la rédaction}
+				%TODO Intérêt, relecture multiple, drafts communs
+			\subsection*{Au quotidien}
+				%TODO Trello, evolution des cartes, interdépendance des cartes, priorité des cartes (colonnes bug et need this)
 
 	\chapter{Analyse des besoins}
 		\label{sec:analyse_besoins}
