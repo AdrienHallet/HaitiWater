@@ -15,6 +15,7 @@
 
 \usepackage{hyperref}
 \usepackage{cite}
+\usepackage{float}
 
 \begin{document}
 
@@ -78,8 +79,6 @@
 		\subsection*{Objectif}
 
 			Le but final de ce mémoire est de délivrer une application à l'ONG Protos et aux acteurs de la distribution de l'eau à Haïti. Nous visons un déploiement de cette base applicative sur le terrain, et que les futures équipes de développement pourront travailler à sa maintenance et évolution.
-			% TODO -> Est-ce que "même si cette application ne sera peut-être pas directement utilisé sur le terrain" n'est pas trop pessimiste ? Est-ce qu'il faudrait retravailler ça en "on vise une utilisation sur le terrain, mais si ça va pas alors xxx"
-			% Céline : Ca me semble pas vraiment problématique avec le "peut-être"
 
 			Nous espérons également que cette application leur permettra d'avoir un bon exemple de solution logicielle. Cela pourrait leur aider à voir comment un logiciel peut les aider dans leur gestion, et les aider à bien repenser leurs besoins lors de projets futurs.
 			% On pourrait expliquer un peu mieux, mais vous voulez peut-être le garder court ?
@@ -270,29 +269,42 @@
 				L'organisation d'un groupe, même réduit à trois personnes, est nécessaire pour orienter le travail dans un but commun. La planification de la réalisation du mémoire, qui est constitué en vaste majorité de l'application web produite, s'est effectuée sur trois plans :
 
 				\begin{description}
-					\item[Mensuel] Au départ du mémoire, un plan général a été dressé. Au début, les inconnues (\emph{e.g.,} étendue du projet, fonctionnalités à implémenter) ont empêché de définir avec précision les productions et les dates butoires. Avec l'avancée du mémoire, nous avons pu estimer l'avancement et notre vitesse de travail. Les réunions avec Protos pour présenter nos deux plus grandes échéances, à savoir les versions alpha et beta de l'application internet, ont été l'occasion de refaire le point et reformuler les objectifs.
+					\item[Mensuel] Au départ du mémoire, un plan général a été dressé. Au début, les inconnues (e.g., étendue du projet, fonctionnalités à implémenter) ont empêché de définir avec précision les productions et les dates butoires. Avec l'avancée du mémoire, nous avons pu estimer l'état et notre vitesse de travail. Les réunions avec Protos pour présenter nos deux plus grandes échéances, à savoir les versions alpha et beta de l'application internet, ont été l'occasion de refaire le point et reformuler les objectifs.
 
 					\item[Hebdomadaire] Chaque semaine en alternance, nous rencontrions un de nos promoteurs. Dans la continuité de la planification mensuelle, ces réunions permettaient de présenter les productions, rapporter les tâches en cours et leur avancement, et enfin de projeter le futur du travail. Ces présentations étaient également l'occasion de rassembler les productions et d'avoir, chaque semaine, des documents ou démonstrations pouvant être comprises par des acteurs étrangers à l'équipe de développement. C'était donc autant un médium d'information que l'occasion de nous recentrer sur le travail, sans compter les précieux retours de nos promoteurs.
 
 					\item[Quotidien] Après une période d'expérimentation avec plusieurs outils de suivi, la gestion au quotidien des tâches à accomplir s'est ancrée sur Trello~\footnote{\url{https://trello.com}}, un tableau en ligne composé de cartes amovibles réparties dans des colonnes. Dans notre organisation, une carte représente une tâche plus ou moins atomique semblable à un \emph{récit utilisateur}~\footnote{Un récit utilisateur est une phrase ou texte court décrivant une fonctionnalité à développer}. Nous utilisons les colonnes pour classer les cartes selon l'état de la tâche associée. Nous avons ainsi défini les colonnes : \emph{à faire, a faire urgemment, en cours, problématique} et \emph{fini}. Nous avons également utilisé des messageries instantanées et canaux vocaux pour organiser les tâches.
-					%TODO voir l'utilité d'un tableau de métriques sur Trello
-
 				\end{description}
 
-				%TODO changement de la planification, adaptation blablabla
-				%TODO ligne du temps (gantt simplifié)
+				Etablir un plan et s'y tenir n'était cependant pas suffisant. Le projet a connu de nombreuses modifications dans ses objectifs et contraintes. Différents facteurs viennent expliquer ces modifications :
+				\begin{itemize}
+					\item La présentation de prototypes aux partenaires et aux promoteurs ont souvent amené de nouvelles idées pour l'application, ou suggéré la modification de fonctionnalités existantes.
+					\item L'arrivée de nouveaux acteurs, principalement aux mois de février et mars. Plusieurs haïtiens ont pu apporter des éclaircissements sur la situation qui ont modifié l'application et l'orientation de son développement.
+					\item Certaines fonctionnalités se sont révélées plus complexes à implémenter que prévu.
+				\end{itemize}
+
+				La figure~\ref{fig:simplified_gantt} présente une vue simplifiée du diagramme de Gantt sur lequel les modules implémentés (voir section~\ref{sec:cahier_des_charges}) sont placés sur une ligne temporelle en dessous de laquelle les grandes phases du mémoire ont été placées, ainsi que les deux versions majeures, \emph{alpha} et \emph{beta}, déployées et présentées à tous les acteurs du projet.
+
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth]{images/planning_timeline.png}
+					\caption{Représentation simplifiée du diagramme de Gantt final}
+					\label{fig:simplified_gantt}
+				\end{figure}
 
 
 			%\subsection*{Réunions}
 			%(Adrien) Finalement je vois pas l'utilité de cette section "réunions"
 
 		\section{Méthodologie}
+			Garantir l'avancement, sans variation indésirable, de tout projet se fait par le biais d'une méthodologie. Il est important que cette méthodologie soit connue de chacun pour garantir un rôle et un suivi dans le travail. %TODO justifier apport méthodologie
 
-			Pages : 1 à 2
+			\subsection*{Agile}
+				%TODO explication de notre variation
+				% Scrum-like
+				% sprint 1 semaine, venant de la réunion avec promoteurs, organisation autour de ça, rétrospective, planification, retours
 
-			\subsection*{Méthodologie agile}
 			\subsection*{Phases de développement}
-
+				%TODO variations autour de l'implémentation agile
 
 		\section{Répartition des tâches}
 
@@ -322,7 +334,11 @@
 			\subsection*{Connexions lentes et peu fiables}
 
 		\section{Cahier des charges}
+			\label{sec:cahier_des_charges}
 
+			% Important : dans cette section, il faut impérativement parler des modules.
+			% Expliquer que le besoin non-fonctionnel d'évolutivité de l'application justifie l'utilisation de "modules". Expliquer comment ils s'intègrent en un seul système, et puis donner un résumé, pour chaque module, de ce qu'il permet de faire.
+			% Et en fait c'est le seul endroit où on peut parler de tout ça, donc ça doit être fait ici.
 			Pages : 2 à 3
 
 			\subsection*{Complet en annexe ?}
