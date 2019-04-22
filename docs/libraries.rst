@@ -5,6 +5,7 @@ Librairies
 HaïtiWater utilise plusieurs librairies pour gérer, traiter et afficher les données utilisées par l'application. Cette section
 vous décrit les librairies utilisées et leur(s) rôle(s) dans l'application.
 
+
 =========
 Front-End
 =========
@@ -61,8 +62,32 @@ Magnific Popup
 `Magnific Popup <http://dimsemenov.com/plugins/magnific-popup/>`_ TODO
 
 
-
-
 ========
 Back-End
 ========
+
+Django
+------
+`Django <https://www.djangoproject.com>`_ est la librairie principale de l'application. Elle donne la structure du serveur et son fonctionnement principal. Nous utilisons plusieurs extensions à django :
+
+- *auth* nous permet de gérer des groupes d'utilisateurs et leurs permissions.
+- *sessions* nous permet de gérer des sessions d'utilisation de l'application.
+- *messages* nous permet d'afficher des notifications à l'utilisateur.
+- *staticfiles* nous permet de renvoyer des fichiers statiques par le serveur.
+- *gis* nous permet de gérer des données géographiques.
+
+Django REST framework
+---------------------
+`Django REST framework <https://www.django-rest-framework.org>`_ est une librairie permettant de créer une API web au sein de notre serveur.
+
+Django compressor
+-----------------
+`Django compressor <https://django-compressor.readthedocs.io/en/stable/>`_ est une librairie permettant de compresser plusieurs fichiers statiques comme des scripts javascripts en un seul fichier.
+
+Django Bootstrap 3
+------------------
+`Django Bootstrap 3 <https://django-bootstrap3.readthedocs.io/en/latest/quickstart.html>`_ est une librairie permettant d'utiliser des fonctionnalités de bootstrap dans des templates django.
+
+DateUtil
+--------
+`DateUtil <https://dateutil.readthedocs.io/en/stable/>`_ est une librairie rajoutant plusieurs fonctions utiles sur les dates. Elle est utilisée ici pour sa fonction relativedelta qui permet de faire des calculs avancés sur les dates.
