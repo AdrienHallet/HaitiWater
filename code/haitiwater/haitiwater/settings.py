@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import dj_database_url
+
 from django.utils.deprecation import MiddlewareMixin
 
 # Strings containing build information to pass in context view
@@ -50,11 +50,11 @@ ALLOWED_HOSTS = [
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'django.contrib.admin',  # not used
     'django.contrib.auth',
-    'django.contrib.contenttypes',
+    'django.contrib.contenttypes',  # not used
     'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.messages',  # is it used now ? not sure
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'rest_framework',
@@ -72,10 +72,10 @@ INSTALLED_APPS = [
     'apps.help',
     'apps.financial',
     'compressor',
-    'django_tables2',
+    'django_tables2',  # not used anymore
     'bootstrap3',
-    'widget_tweaks',
-    'chartjs'
+    'widget_tweaks',  # not used ?
+    'chartjs'  # I don't find it unexpectedly
 ]
 
 REST_FRAMEWORK = {

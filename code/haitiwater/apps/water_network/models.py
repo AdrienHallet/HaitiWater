@@ -1,13 +1,12 @@
+from enum import Enum
+
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
-from django.contrib.postgres.fields import JSONField
-from enum import Enum
 from django.contrib.postgres.fields import ArrayField
-from django.db.models import ManyToOneRel
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.contrib.postgres.fields import JSONField
 
 from ..utils.common_models import *
+
 
 #########
 # Enums #

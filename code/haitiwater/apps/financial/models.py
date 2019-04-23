@@ -1,9 +1,8 @@
 from django.db import models
-from django.db.models import ManyToOneRel
-from ..log.utils import *
-from ..utils.common_models import *
 
 from ..consumers.models import Consumer
+from ..log.utils import *
+from ..utils.common_models import *
 from ..water_network.models import Element
 
 

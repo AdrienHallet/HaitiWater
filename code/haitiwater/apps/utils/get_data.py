@@ -1,7 +1,8 @@
-from ..water_network.models import Element, VirtualElementTotal, VirtualZoneTotal
+import datetime
+
 from ..consumers.models import Consumer
 from ..report.models import Report
-import datetime
+from ..water_network.models import Element, VirtualElementTotal, VirtualZoneTotal
 
 
 def is_int(i):

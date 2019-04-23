@@ -1,11 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.template import loader
-from ..water_network.models import Element
-from ..consumers.models import Consumer
-from ..report.models import Report
+
 from haitiwater.settings import PROJECT_VERSION, PROJECT_NAME
 from ..utils.get_data import *
-from django.contrib.auth.decorators import login_required
 
 
 @login_required(login_url='/login/')
