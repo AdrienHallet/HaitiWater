@@ -9,7 +9,8 @@
       "fountain_price": 0,
       "fountain_duration": 1,
       "kiosk_price": 0,
-      "kiosk_duration": 1
+      "kiosk_duration": 1,
+      "indiv_base_price": 0
     }
   },
   {

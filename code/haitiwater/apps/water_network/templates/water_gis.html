@@ -28,6 +28,7 @@
                         <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
                     </div>
                     <h2 class="panel-title">Éléments du réseau</h2>
+                    <h2 class="panel-subtitle">Cliquez sur un élément pour afficher ses détails (panneau de droite)</h2>
                 </header>
                 <div class="panel-body">
                     {% include "water_element_table.html" %}
@@ -40,11 +41,12 @@
                     <!-- Table block control actions -->
                     <div class="panel-actions form-inline">
                         {% if user|has_group:"Gestionnaire de zone" %}
-                            <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus" data-toggle="tooltip" title="Ajouter"></a>
+                            <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus" data-toggle="tooltip" title="Ajouter un élément"></a>
                         {% endif %}
-                        <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
+                        <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser"></a>
                     </div>
                     <h2 class="panel-title">Carte interactive</h2>
+                    <h2 class="panel-subtitle">Utilisez le panneau de la carte pour placer les éléments</h2>
                 </header>
                 <div class="panel-body">
                     <div class="row">
