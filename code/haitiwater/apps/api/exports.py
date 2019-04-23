@@ -12,7 +12,7 @@ success_200 = HttpResponse(status=200)
 
 
 def graph(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     json_object = {}
@@ -83,7 +83,7 @@ def graph(request):
 
 
 def gis_infos(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     if request.method == "GET":
@@ -131,7 +131,7 @@ def gis_infos(request):
 
 # https://datatables.net/manual/server-side
 def table(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     params = parse(request)
@@ -213,7 +213,7 @@ def table(request):
 
 
 def add_element(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     element = request.POST.get("table", "")
@@ -240,7 +240,7 @@ def add_element(request):
 
 
 def remove_element(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     element = request.POST.get("table", "")
@@ -400,7 +400,7 @@ def remove_element(request):
 
 
 def edit_element(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     element = request.POST.get("table", "")
@@ -431,7 +431,7 @@ def edit_element(request):
 
 
 def details(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     table_name = request.GET.get("table", None)
