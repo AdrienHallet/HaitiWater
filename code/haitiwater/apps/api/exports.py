@@ -113,6 +113,8 @@ def gis_infos(request):
         elem = Element.objects.filter(id=elem_id).first()
         if elem is None:
             return HttpResponse("Impossible de trouver l'élément demandé", status=400)
+        elif not has_access(elem, request):
+            return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
 
         action = request.GET.get("action", None)
         if action == "add":
