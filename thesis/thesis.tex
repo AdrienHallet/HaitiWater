@@ -425,29 +425,72 @@
 
 		Total des pages : 16 à 22
 
-		La structure proposée n'est par conséquent pas définitive et dépendra des résultats obtenus.
+		% L'implémentation suit les principes du cahier des charges. Intègrer les fonctionnalités demandées et respecter les besoins du client.
 
 		\section{Choix technologiques}
 
 			Pages : 3 à 4
+			% Outils informatiques, plusieurs choix, le notre n'est pas le meilleur mais celui qui nous a semblé le plus adapté.
+			% Ici on détaille les choix majeurs. Les bibliothèques plus petites sont détaillées dans la documentation.
+			% Ici, donc, uniquement ce qui est soit réellement gros, soit souvent utilisé
 
 			\subsection*{Web}
-			\subsection*{Python}
+				% Requis du client. Avantage de la portabilité, installation, données décentralisées directement, donc communes à tous les utilisateurs
+				% Désavantage support des navigateurs multiples, perte en performances d'opérations complexes, nécessite plus de bande passante, rend plus difficile l'accès hors-ligne aux fonctionnalités
 			\subsection*{Django}
-			\subsection*{PostGIS}
+				% Framework éprouvé (ancien, maintenu, communauté, documentation), adapté à de larges applications (scalable), permet l'utilisation facilité de PostgreSQL (modèles), gabarits pour du HTML 'importé' sans besoin d'angular/whatever (moins de techs, reste simple).
+			\subsection*{Python}
+				% Obligé par Django, quand même un bon choix. Pas le plus répandu (PHP et ASP.NET bien plus utilisés) mais permet une bonne gestion des objets intégrée directement au serveur, car langage OO.
+			\subsection*{PostreSQL et PostGIS}
+				% Autre obligation de Django, mais une décision consciente de l'utiliser pour PostGIS. Manipulation géographique facilitée, un apport positif pour la suite du module GIS.
+				% Petit comparatif d'utilisation des SGBD avec MySQL, etc ?
+				% Pourquoi BDD relationnelle et non-relationnelle ?
+
+			\subsection*{Bootstrap}
+				% Conventions connues (largement utilisées) pour le Front, beaucoup de choses pré-faites pour accélérer le développement.
+				% Responsivité facilité grâce aux systèmes de base
+				% Désavantage; un peu lourd en raison des fonctions non-utilisées, mais solution (lier la section améliorations futures où on va parler du cleanup des vendeurs)
+
 			\subsection*{DataTables}
+				% Un constat ; les tables Django ne permettent pas de contrôler l'information à 100%
+				% Second constat ; on veut une API (référence serveur)
+				% DataTable, librairie connue, avec un gros support, grosse documentation, beaucoup de modules pour gérer les tables, AJAX pour 100% séparer les données de leur présentation
+
 			\subsection*{ChartJS}
+			  % Présenter l'information visuellement.
+				% Même avantage que DataTables, on envoie uniquement des données, tout se fait en front. Une des plus utilisées, mais pas la numéro 1 car D3.JS est un monstre, plus difficile à comprendre et utilise un système d'objets qui alourdissent considérablement la page, difficile de savoir si les périphériques haïtiens vont supporter. ChartJS utilise des canevas, plus légers. Moins dynamiques mais quand même certaines possibilités
 
 		\section{Structure hiérarchique des utilisateurs}
+			%TODO schéma de la hiérarchie permettant d'être utilisé comme "running example" dans la section
 
 			Pages : 1 à 2
+			% La base du foncitonnement d'HaïtiWater.
+			% Deux types d'utilisateurs :
+				% Gestionnaire de fontaine, le plus proche des consommateurs.
+				% Gestionnaire de zone, supervision
 
 			\subsection*{Structure}
-			\subsection*{Permissions}
+				% Les utilisateurs s'organisent dans un système en arbre.
+				% Noeuds : éléments du réseau, gestionnaires
+				% Edges : lien de hiérarchie.
+				% Seul le gestionnaire de zone peut avoir des enfants.
+				% Aucune limite sur le facteur de branchement ou la profondeur de l'arbre
 
+				% Système utilisé pour s'adapter partout à la configuration d'Haïti (exemple de DINEPA super-zone, OREPA zone lvl1, CAEPA zone lvl2, Comité fontaine a un gestionnaire de fontaine lvl3).
+				% Permet d'avoir plusieurs niveaux de granularité. Par exemple si une région a besoin de plus de hiérarchie (si plus développée), on peut avoir plus de niveaux qu'une région qui en nécessite moins
+				% Permet d'être réutilisée dans d'autres pays, structure simple à responsabilités définies
+
+				% Point négatif qu'on repose entièrement sur les gestionnaires de fontaine pour avoir l'information (paiements, état du réseau, volumes). Mais c'est la seule possibilité vu que l'info ne peut pas être récupérée automatiquement.
+			\subsection*{Permissions}
+				% Gestionnaire de zone; tout, dans sa zone et enfants.
+				% Gestionnaire de fontaine; tous les droits sur la gestion des consommateurs et des paiements. Ne peut pas modifier le réseau ou les utilisateurs de l'application
+				% On dispose quand même d'un garde-fou, le module d'historique
 		\section{Interface utilisateur}
+			% A fusionner avec "Client" ?
 
 			Pages : 2 à 3
+			% La GUI n'est qu'une manière d'utiliser l'application. Pour l'instant la seule, mais on différencie vraiment le serveur et l'application car au final la webapp n'est qu'une GUI pour l'API.
+			% Les fonctionnalités
 
 			\subsection*{Référence en annexe ?}
 
@@ -458,14 +501,22 @@
 			\subsection*{Référence en annexe ?}
 
 		\section{Client}
+			% Le client est la partie visible de l'iceberg. Quand même un gros morceau mais totalement inutile sans le back. Il y a des calculs et conversions effectuées pour alléger la connexion, mais aucun calcul n'est enregistré en back (don't trust the user).
 
 			Pages : 4 à 5
 			\subsection*{Modularité et responsiveness}
+				% Interface construite en blocs (screen?)
 			\subsection*{Gabarits}
+				% Ce qui permet d'implémenter la modularité dans l'app. Les blocs individuels sont construits et on les ajoute dans les pages selon le désir
 			\subsection*{Accessibilité hors-ligne}
+			  % TODO @Sébastien
+				% Expliquer le Service Worker, ses avantages et inconvénients, et les évolutions possibles pour appliquer le service worker partout, peut-être aussi le problème de la consistance de la DB ?
 			\subsection*{...}
 
 		\section{Serveur}
+			\label{sec:serveur}
+
+			% Parler de l'API, pourquoi c'est bien à la place d'utiliser du django classique et comment on l'a faite
 
 			Pages : 4 à 5
 			\subsection*{Authentification}
@@ -503,6 +554,7 @@
 		Total des pages : 4 à 7
 
 		\section{Suite du projet}
+			% Lors du déploiement, même si le site est pas hyper lourd, on peut encore l'alléger en faisant du coverage par les navigateurs (quelques stats), pas une bonne idée de le faire maintenant vu que développement pas fini.
 
 			Pages : 2 à 3
 
