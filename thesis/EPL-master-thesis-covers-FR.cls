@@ -6,7 +6,7 @@
 
 % Usefull packages
 \usepackage[utf8x]{inputenc}
-\usepackage[english]{babel}
+\usepackage[french]{babel}
 \RequirePackage{microtype}   % Improves typography
 \RequirePackage[T1]{fontenc}
 \RequirePackage{lmodern}
