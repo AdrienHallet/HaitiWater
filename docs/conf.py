@@ -24,9 +24,9 @@ copyright = u'2018, Céline Deknop, Adrien Hallet, Sébastien Strebelle'
 author = u'Céline Deknop, Adrien Hallet, Sébastien Strebelle'
 
 # The short X.Y version
-version = u''
+version = u'v3'
 # The full version, including alpha/beta/rc tags
-release = u''
+release = u'beta 1'
 
 
 # -- General configuration ---------------------------------------------------

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .vega-actions a {
+        margin-right: 12px;
+        color: #757575;
+        font-weight: normal;
+        font-size: 13px;
+    }
+    .error {
+        color: red;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega@4"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-lite@2.6.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-embed@3"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+      var spec = {"config": {"view": {"width": 400, "height": 300}}, "vconcat": [{"layer": [{"data": {"name": "data-3c35397d50ec7b6385b6305c1c11cd97"}, "mark": "bar", "encoding": {"x": {"type": "quantitative", "axis": {"labels": false, "ticks": false, "title": null}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}, {"data": {"name": "data-3c35397d50ec7b6385b6305c1c11cd97"}, "mark": {"type": "text", "align": "left", "baseline": "top", "dx": 5, "dy": 1}, "encoding": {"text": {"type": "quantitative", "field": "frequencies"}, "x": {"type": "quantitative", "axis": {"labels": false, "ticks": false, "title": null}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}]}, {"vconcat": [{"layer": [{"data": {"name": "data-f23da6f30a6f6b4d89256dd9aa3d96c8"}, "mark": "bar", "encoding": {"x": {"type": "quantitative", "axis": {"labels": false, "ticks": false, "title": null}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}, {"data": {"name": "data-f23da6f30a6f6b4d89256dd9aa3d96c8"}, "mark": {"type": "text", "align": "left", "baseline": "top", "dx": 5, "dy": 1}, "encoding": {"text": {"type": "quantitative", "field": "frequencies"}, "x": {"type": "quantitative", "axis": {"labels": false, "ticks": false, "title": null}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}]}, {"vconcat": [{"layer": [{"data": {"name": "data-aead13264d3edd6c4caebbcb4aa8768c"}, "mark": "bar", "encoding": {"x": {"type": "quantitative", "axis": {"labels": false, "ticks": false, "title": null}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}, {"data": {"name": "data-aead13264d3edd6c4caebbcb4aa8768c"}, "mark": {"type": "text", "align": "left", "baseline": "top", "dx": 5, "dy": 1}, "encoding": {"text": {"type": "quantitative", "field": "frequencies"}, "x": {"type": "quantitative", "axis": {"labels": false, "ticks": false, "title": null}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}]}, {"vconcat": [{"layer": [{"data": {"name": "data-d12fa41eb83d08112af3e9b30efd8b01"}, "mark": "bar", "encoding": {"x": {"type": "quantitative", "axis": {"labels": false, "ticks": false, "title": null}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}, {"data": {"name": "data-d12fa41eb83d08112af3e9b30efd8b01"}, "mark": {"type": "text", "align": "left", "baseline": "top", "dx": 5, "dy": 1}, "encoding": {"text": {"type": "quantitative", "field": "frequencies"}, "x": {"type": "quantitative", "axis": {"labels": false, "ticks": false, "title": null}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}]}, {"vconcat": [{"layer": [{"data": {"name": "data-569b4685614aea6ee2ca952cd1abb8fb"}, "mark": "bar", "encoding": {"x": {"type": "quantitative", "axis": {"labels": false, "ticks": false, "title": null}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}, {"data": {"name": "data-569b4685614aea6ee2ca952cd1abb8fb"}, "mark": {"type": "text", "align": "left", "baseline": "top", "dx": 5, "dy": 1}, "encoding": {"text": {"type": "quantitative", "field": "frequencies"}, "x": {"type": "quantitative", "axis": {"labels": false, "ticks": false, "title": null}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}]}, {"layer": [{"data": {"name": "data-27fe9d9fe54129b2707ec5b105f18918"}, "mark": "bar", "encoding": {"x": {"type": "quantitative", "axis": {}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}, {"data": {"name": "data-27fe9d9fe54129b2707ec5b105f18918"}, "mark": {"type": "text", "align": "left", "baseline": "top", "dx": 5, "dy": 1}, "encoding": {"text": {"type": "quantitative", "field": "frequencies"}, "x": {"type": "quantitative", "axis": {}, "field": "rating", "scale": {"domain": [1, 5]}}, "y": {"type": "quantitative", "axis": null, "field": "frequencies"}}, "height": 38, "width": 200}]}]}]}]}]}], "$schema": "https://vega.github.io/schema/vega-lite/v2.6.0.json", "datasets": {"data-3c35397d50ec7b6385b6305c1c11cd97": [{"rating": 1, "frequencies": 0}, {"rating": 2, "frequencies": 5}, {"rating": 3, "frequencies": 12}, {"rating": 4, "frequencies": 13}, {"rating": 5, "frequencies": 3}], "data-f23da6f30a6f6b4d89256dd9aa3d96c8": [{"rating": 1, "frequencies": 0}, {"rating": 2, "frequencies": 4}, {"rating": 3, "frequencies": 11}, {"rating": 4, "frequencies": 15}, {"rating": 5, "frequencies": 3}], "data-aead13264d3edd6c4caebbcb4aa8768c": [{"rating": 1, "frequencies": 2}, {"rating": 2, "frequencies": 19}, {"rating": 3, "frequencies": 8}, {"rating": 4, "frequencies": 4}, {"rating": 5, "frequencies": 0}], "data-d12fa41eb83d08112af3e9b30efd8b01": [{"rating": 1, "frequencies": 23}, {"rating": 2, "frequencies": 8}, {"rating": 3, "frequencies": 1}, {"rating": 4, "frequencies": 1}, {"rating": 5, "frequencies": 0}], "data-569b4685614aea6ee2ca952cd1abb8fb": [{"rating": 1, "frequencies": 13}, {"rating": 2, "frequencies": 10}, {"rating": 3, "frequencies": 6}, {"rating": 4, "frequencies": 4}, {"rating": 5, "frequencies": 0}], "data-27fe9d9fe54129b2707ec5b105f18918": [{"rating": 1, "frequencies": 9}, {"rating": 2, "frequencies": 15}, {"rating": 3, "frequencies": 7}, {"rating": 4, "frequencies": 2}, {"rating": 5, "frequencies": 0}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div class="error" style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+
+  </script>
+</body>
+</html>
