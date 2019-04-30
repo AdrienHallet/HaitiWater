@@ -72,7 +72,7 @@ def edit_consumer(request):
     if consumer is None:
         return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=400)
 
-    if not has_access(consumer.water_outlet, request):  # TODO check if good heuristic
+    if not has_access(consumer.water_outlet, request):
         return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
 
     old = consumer.infos()
@@ -147,6 +147,8 @@ def edit_ticket(request):
     ticket = Ticket.objects.filter(id=ticket_id).first()
     if ticket is None:
         return HttpResponse("Impossible de trouver l'élément que vous voulez éditer", status=400)
+    if not has_access(ticket.water_outlet, request):
+        return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
 
     old = ticket.infos()
     id_outlet = request.POST.get("id_outlet", None)

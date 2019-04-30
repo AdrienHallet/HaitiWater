@@ -2,33 +2,10 @@ from django.test import TestCase
 from django.test.client import Client
 
 from django.contrib.auth.models import User, Group
-from ..water_network.models import Zone, Location, Element, ElementType, ElementStatus
-from ..consumers.models import Consumer
-from ..report.models import Report, Ticket, BreakType, StatusType, UrgencyType
-from ..financial.models import Payment
-
-
-class GeneralTests(TestCase):
-    fixtures = ["initial_data"]
-
-    def setUp(self):
-        self.client = Client()
-
-    def test_fixture(self):
-        zone = Zone.objects.filter(name="Haiti").first()
-        self.assertIsNotNone(zone)
-
-    def test_connect(self):
-        response = self.client.get("/api/graph/", {"type": "consumer_gender_pie"})
-        self.assertEqual(response.status_code, 403)
-
-        connected = self.client.login(username="Protos", password="Protos")
-        self.assertTrue(connected)
-
-        response = self.client.get("/api/graph/", {"type": "consumer_gender_pie"})
-        self.assertEqual(response.status_code, 200)
-
-        self.client.logout()
+from ...water_network.models import Zone, Location, Element, ElementType, ElementStatus
+from ...consumers.models import Consumer
+from ...report.models import Report, Ticket, BreakType, StatusType, UrgencyType
+from ...financial.models import Payment, Invoice
 
 
 class AddTests(TestCase):
@@ -48,29 +25,37 @@ class AddTests(TestCase):
         superzone.subzones.append(zone.name)
         superzone.save()
 
-        outlet = Element(name="fountain", type=ElementType.FOUNTAIN,
-                         status=ElementStatus.OK, location="fountain", zone=superzone)
-        outlet.save()
+        fountain = Element(name="fountain", type=ElementType.FOUNTAIN.name,
+                           status=ElementStatus.OK, location="fountain", zone=superzone)
+        fountain.save()
+
+        indiv = Element(name="indiv", type=ElementType.INDIVIDUAL.name,
+                        status=ElementStatus.OK, location="indiv", zone=superzone)
+        indiv.save()
 
         user = User.objects.create_user(username="user_zone", email="test@gmail.com", password="test",
                                         first_name="test", last_name="test")
         user.profile.phone_number = None
         user.profile.zone = zone
-        user.profile.save()  # Why do I need to save now ??
+        user.profile.save()
         my_group = Group.objects.get(name='Gestionnaire de zone')
         my_group.user_set.add(user)
 
         user = User.objects.create_user(username="user_fountain", email="test@gmail.com", password="test",
                                         first_name="test", last_name="test")
         user.profile.phone_number = None
-        user.profile.outlets.append(outlet.id)
-        user.profile.save()  # Why do I need to save now ??
+        user.profile.outlets.append(fountain.id)
+        user.profile.save()
         my_group = Group.objects.get(name='Gestionnaire de fontaine')
         my_group.user_set.add(user)
 
-        consumer = Consumer(first_name="consumer", last_name="test", gender="M",
-                            location="test", household_size=1, water_outlet=outlet)
-        consumer.save()
+        consumer_fountain = Consumer(first_name="consumer", last_name="fountain", gender="M",
+                                     location="test", household_size=1, water_outlet=fountain)
+        consumer_fountain.save()
+
+        consumer_indiv = Consumer(first_name="consumer", last_name="indiv", gender="M",
+                                  location="test", household_size=1, water_outlet=indiv)
+        consumer_indiv.save()
 
     def tearDown(self):
         self.client.logout()
@@ -210,6 +195,29 @@ class AddTests(TestCase):
         test_consumer = Consumer.objects.filter(first_name="test", last_name="test").first()
         self.assertIsNotNone(test_consumer)
 
+        test_invoice = Invoice.objects.filter(consumer=test_consumer).first()
+        self.assertIsNotNone(test_invoice)
+
+    def test_add_consumer_indiv(self):
+        indiv = Element.objects.get(name="indiv")
+        response = self.client.post("/api/add/", {
+            "table": "consumer",
+            "firstname": "test",
+            "lastname": "test",
+            "gender": "M",
+            "address": "test",
+            "subconsumer": 0,
+            "phone": "",
+            "mainOutlet": indiv.id
+        })
+        self.assertEqual(response.status_code, 200)
+
+        test_consumer = Consumer.objects.filter(first_name="test", last_name="test").first()
+        self.assertIsNotNone(test_consumer)
+
+        test_invoice = Invoice.objects.filter(consumer=test_consumer).first()
+        self.assertIsNone(test_invoice)
+
     def test_add_consumer_no_fountain(self):
         response = self.client.post("/api/add/", {
             "table": "consumer",
@@ -281,6 +289,9 @@ class AddTests(TestCase):
         test_consumer = Consumer.objects.filter(first_name="test", last_name="test").first()
         self.assertIsNotNone(test_consumer)
 
+        test_invoice = Invoice.objects.filter(consumer=test_consumer).first()
+        self.assertIsNotNone(test_invoice)
+
     # Report
 
     def test_add_report(self):
@@ -302,6 +313,63 @@ class AddTests(TestCase):
 
         test_report_line = Report.objects.filter(water_outlet=fountain).first()
         self.assertIsNotNone(test_report_line)
+
+        consumer = Consumer.objects.get(first_name="consumer", last_name="fountain")
+        invoice = Invoice.objects.filter(consumer=consumer).first()
+        self.assertIsNone(invoice)
+
+    def test_add_report_indiv(self):
+        indiv = Element.objects.get(name="indiv")
+        response = self.client.post("/api/report/", {
+            "selectedOutlets": [indiv.id],
+            "isActive": True,
+            "inputHours": 12,
+            "inputDays": 20,
+            "details": [
+                {
+                    "perCubic": 100,
+                    "cubic": 100,
+                    "bill": 10000
+                }
+            ]
+        }, content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+
+        test_report_line = Report.objects.filter(water_outlet=indiv).first()
+        self.assertIsNotNone(test_report_line)
+
+        consumer = Consumer.objects.get(first_name="consumer", last_name="indiv")
+        invoice = Invoice.objects.filter(consumer=consumer).first()
+        self.assertIsNotNone(invoice)
+
+    def test_add_report_multiple_outlet(self):
+        fountain = Element.objects.get(name="fountain")
+        indiv = Element.objects.get(name="indiv")
+        response = self.client.post("/api/report/", {
+            "selectedOutlets": [fountain.id, indiv.id],
+            "isActive": True,
+            "inputHours": 12,
+            "inputDays": 20,
+            "details": [
+                {
+                    "perCubic": 100,
+                    "cubic": 100,
+                    "bill": 10000
+                },
+                {
+                    "perCubic": 100,
+                    "cubic": 100,
+                    "bill": 10000
+                }
+            ]
+        }, content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+
+        test_report_line_fountain = Report.objects.filter(water_outlet=fountain).first()
+        self.assertIsNotNone(test_report_line_fountain)
+
+        test_report_line_indiv = Report.objects.filter(water_outlet=indiv).first()
+        self.assertIsNotNone(test_report_line_indiv)
 
     def test_add_report_no_fountain(self):
         response = self.client.post("/api/report/", {
@@ -379,6 +447,8 @@ class AddTests(TestCase):
 
         test_user = User.objects.filter(username="user_test").first()
         self.assertIsNotNone(test_user)
+
+        self.assertIn(test_user.first_name + " " + test_user.last_name, fountain.get_managers())
 
     def test_add_user_twice(self):
         zone = Zone.objects.get(name="zone")
@@ -482,21 +552,6 @@ class AddTests(TestCase):
         test_ticket = Ticket.objects.filter(comment="test").first()
         self.assertIsNotNone(test_ticket)
 
-    def test_add_ticket_image(self):
-        fountain = Element.objects.get(name="fountain")
-        response = self.client.post("/api/add/", {
-            "table": "ticket",
-            "id_outlet": fountain.id,
-            "type": BreakType.MECHANICAL.name,
-            "comment": "test",
-            "urgency": UrgencyType.LOW.name,
-            "image": "http://i.imgur.com/ChYwfMq.jpg"
-        })
-        self.assertEqual(response.status_code, 200)
-
-        test_ticket = Ticket.objects.filter(comment="test").first()
-        self.assertIsNotNone(test_ticket)
-
     def test_add_ticket_unauthorized(self):
         self.client.login(username="user_zone", password="test")
 
@@ -516,7 +571,7 @@ class AddTests(TestCase):
     # Payment
 
     def test_add_payment(self):
-        consumer = Consumer.objects.get(first_name="consumer", last_name="test")
+        consumer = Consumer.objects.get(first_name="consumer", last_name="fountain")
         response = self.client.post("/api/add/", {
             "table": "payment",
             "id_consumer": consumer.id,
@@ -541,7 +596,7 @@ class AddTests(TestCase):
     def test_add_payment_unauthorized(self):
         self.client.login(username="user_zone", password="test")
 
-        consumer = Consumer.objects.get(first_name="consumer", last_name="test")
+        consumer = Consumer.objects.get(first_name="consumer", last_name="fountain")
         response = self.client.post("/api/add/", {
             "table": "payment",
             "id_consumer": consumer.id,
