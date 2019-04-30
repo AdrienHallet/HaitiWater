@@ -159,15 +159,15 @@ def table(request):
         result = get_consumer_elements(request)
     elif table_name == "zone":
         if is_user_fountain(request):
-            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 403)
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", status=403)
         result = get_zone_elements(request)
     elif table_name == "manager":
         if is_user_fountain(request):
-            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 403)
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", status=403)
         result = get_manager_elements(request)
     elif table_name == "report":
         if is_user_zone(request):
-            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 403)
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", status=403)
         result = get_last_reports(request)
     elif table_name == "ticket":
         result = get_ticket_elements(request)
@@ -211,7 +211,7 @@ def table(request):
         json_object["data"] = final[start:stop]
 
     json_object["recordsFiltered"] = len(final)
-    return HttpResponse(json.dumps(json_object))
+    return HttpResponse(json.dumps(json_object), status=200)
 
 
 def add_element(request):

@@ -1,11 +1,11 @@
+from django.contrib.auth.models import User, Group
 from django.test import TestCase
 from django.test.client import Client
 
-from django.contrib.auth.models import User, Group
-from apps.water_network.models import Zone, Location, Element, ElementType, ElementStatus
 from apps.consumers.models import Consumer
-from apps.report.models import Report, Ticket, BreakType, StatusType, UrgencyType
-from apps.financial.models import Payment, Invoice
+from apps.financial.models import Payment
+from apps.report.models import Ticket, BreakType, UrgencyType
+from apps.water_network.models import Zone, Location, Element, ElementType, ElementStatus
 
 
 class DeleteTests(TestCase):

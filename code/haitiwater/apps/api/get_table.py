@@ -7,7 +7,7 @@ from ..consumers.models import Consumer
 from ..financial.models import Invoice, Payment
 from ..log.models import Transaction, Log
 from ..report.models import Report, Ticket
-from ..utils.get_data import is_user_fountain, is_user_zone
+from ..utils.get_data import is_user_fountain, is_user_zone, has_access
 from ..water_network.models import Element, Zone, Location
 
 
@@ -179,6 +179,13 @@ def get_payment_elements(request):
         return None
 
     result = []
+
+    consumer = Consumer.objects.filter(id=consumer_id).first()
+    if consumer is None:
+        return result
+    if not has_access(consumer.water_outlet, request):
+        return result
+
     for elem in Payment.objects.filter(consumer_id=consumer_id):
         result.append(elem.descript())
 

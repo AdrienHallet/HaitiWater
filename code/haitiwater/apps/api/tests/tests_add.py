@@ -26,11 +26,11 @@ class AddTests(TestCase):
         superzone.save()
 
         fountain = Element(name="fountain", type=ElementType.FOUNTAIN.name,
-                           status=ElementStatus.OK, location="fountain", zone=superzone)
+                           status=ElementStatus.OK.name, location="fountain", zone=superzone)
         fountain.save()
 
         indiv = Element(name="indiv", type=ElementType.INDIVIDUAL.name,
-                        status=ElementStatus.OK, location="indiv", zone=superzone)
+                        status=ElementStatus.OK.name, location="indiv", zone=superzone)
         indiv.save()
 
         user = User.objects.create_user(username="user_zone", email="test@gmail.com", password="test",

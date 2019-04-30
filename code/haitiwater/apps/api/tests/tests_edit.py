@@ -30,7 +30,7 @@ class EditTests(TestCase):
         fountain.save()
 
         indiv = Element(name="indiv", type=ElementType.INDIVIDUAL.name,
-                        status=ElementStatus.OK, location="indiv", zone=superzone)
+                        status=ElementStatus.OK.name, location="indiv", zone=superzone)
         indiv.save()
 
         user = User.objects.create_user(username="user_zone", email="test@gmail.com", password="test",
