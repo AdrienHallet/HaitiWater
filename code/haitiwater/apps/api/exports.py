@@ -254,9 +254,9 @@ def remove_element(request):
         element_id = request.POST.get("id", None)
 
         consumers = Consumer.objects.filter(water_outlet=element_id)
-        if len(consumers) > 0:  # Can't suppress outlets with consummers
+        if len(consumers) > 0:
             return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à " +
-                                "des consommateurs", status=500)
+                                "des consommateurs", status=400)
 
         elem_delete = Element.objects.filter(id=element_id).first()
         if elem_delete is None:
@@ -277,13 +277,11 @@ def remove_element(request):
                 t.log_delete(transaction)
             t.delete()
 
-        for user in User.objects.all():
-            if len(user.profile.outlets) > 0:  # Gestionnaire de fontaine
-                if str(element_id) in user.profile.outlets:
-                    old = user.profile.infos()
-                    user.profile.outlets.remove(str(element_id))
-                    user.save()
-                    user.profile.log_edit(old, transaction)
+        for user in User.objects.filter(profile__outlets__contains=[str(element_id)]):
+            old = user.profile.infos()
+            user.profile.outlets.remove(str(element_id))
+            user.save()
+            user.profile.log_edit(old, transaction)
 
         return success_200
 
@@ -308,7 +306,7 @@ def remove_element(request):
         to_delete = User.objects.filter(username=manager_id).first()
         if to_delete is None:
             return HttpResponse("Impossible de supprimer cet utilisateur, il n'existe pas", status=400)
-        if to_delete.id == 1 or to_delete.id == 2: #IDs 1 and 2 are superuser and admin, should not be removed
+        if to_delete.id == 1 or to_delete.id == 2:  # IDs 1 and 2 are superuser and admin, should not be removed
             return HttpResponse("Impossible de supprimer cet utilisateur, il est nécéssaire au fonctionnement de"
                                 " l'application. Vous pouvez cependant le modifier", status=400)
         elif to_delete.profile.zone and to_delete.profile.zone.name not in request.user.profile.zone.subzones:

@@ -1,11 +1,11 @@
+from django.contrib.auth.models import User, Group
 from django.test import TestCase
 from django.test.client import Client
 
-from django.contrib.auth.models import User, Group
-from ...water_network.models import Zone, Location, Element, ElementType, ElementStatus
 from ...consumers.models import Consumer
-from ...report.models import Report, Ticket, BreakType, StatusType, UrgencyType
-from ...financial.models import Payment, Invoice
+from ...financial.models import Payment
+from ...report.models import Ticket, BreakType, StatusType, UrgencyType
+from ...water_network.models import Zone, Element, ElementType, ElementStatus
 
 
 class EditTests(TestCase):
