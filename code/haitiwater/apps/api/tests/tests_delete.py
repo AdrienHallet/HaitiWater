@@ -91,6 +91,12 @@ class DeleteTests(TestCase):
     def tearDown(self):
         self.client.logout()
 
+    def test_add_not_connected(self):
+        self.client.logout()
+
+        response = self.client.post("/api/remove/")
+        self.assertEqual(response.status_code, 403)
+
     # Zone
 
     def test_delete_zone(self):
@@ -123,11 +129,11 @@ class DeleteTests(TestCase):
     def test_delete_zone_not_exists(self):
         response = self.client.post("/api/remove/", {
             "table": "zone",
-            "id": 100
+            "id": 1000
         })
         self.assertEqual(response.status_code, 400)
 
-        test_zone = Zone.objects.filter(id=100).first()
+        test_zone = Zone.objects.filter(id=1000).first()
         self.assertIsNone(test_zone)
 
     def test_delete_zone_used(self):
@@ -157,11 +163,11 @@ class DeleteTests(TestCase):
     def test_delete_elem_not_exists(self):
         response = self.client.post("/api/remove/", {
             "table": "water_element",
-            "id": 100
+            "id": 1000
         })
         self.assertEqual(response.status_code, 400)
 
-        test_elem = Element.objects.filter(id=100).first()
+        test_elem = Element.objects.filter(id=1000).first()
         self.assertIsNone(test_elem)
 
     def test_delete_elem_unauthorized(self):
@@ -222,11 +228,11 @@ class DeleteTests(TestCase):
     def test_delete_consumer_not_exists(self):
         response = self.client.post("/api/remove/", {
             "table": "consumer",
-            "id": 100
+            "id": 1000
         })
         self.assertEqual(response.status_code, 400)
 
-        test_consumer = Consumer.objects.filter(id=100).first()
+        test_consumer = Consumer.objects.filter(id=1000).first()
         self.assertIsNone(test_consumer)
 
     def test_delete_consumer_unauthorized(self):
@@ -307,11 +313,11 @@ class DeleteTests(TestCase):
     def test_delete_ticket_not_exists(self):
         response = self.client.post("/api/remove/", {
             "table": "ticket",
-            "id": 100
+            "id": 1000
         })
         self.assertEqual(response.status_code, 400)
 
-        test_ticket = Ticket.objects.filter(id=100).first()
+        test_ticket = Ticket.objects.filter(id=1000).first()
         self.assertIsNone(test_ticket)
 
     def test_delete_ticket_unauthorized(self):
@@ -343,11 +349,11 @@ class DeleteTests(TestCase):
     def test_delete_payment_not_exists(self):
         response = self.client.post("/api/remove/", {
             "table": "payment",
-            "id": 100
+            "id": 1000
         })
         self.assertEqual(response.status_code, 400)
 
-        test_payment = Payment.objects.filter(id=100).first()
+        test_payment = Payment.objects.filter(id=1000).first()
         self.assertIsNone(test_payment)
 
     def test_delete_payment_unauthorized(self):
@@ -374,10 +380,10 @@ class DeleteTests(TestCase):
         self.assertIsNone(test_location)
 
     def test_delete_location_not_exists(self):
-        response = self.client.post("/api/gis/?id=100&action=remove")
+        response = self.client.post("/api/gis/?id=1000&action=remove")
         self.assertEqual(response.status_code, 400)
 
-        test_location = Location.objects.filter(elem__id=100).first()
+        test_location = Location.objects.filter(elem__id=1000).first()
         self.assertIsNone(test_location)
 
     def test_delete_location_unauthorized(self):

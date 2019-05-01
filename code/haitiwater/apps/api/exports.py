@@ -15,29 +15,24 @@ def graph(request):
     if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
-    json_object = {}
+    json_object = {"jsonarray": []}
 
     export_format = request.GET.get('type', None)
     if export_format == "consumer_gender_pie":
-        json_object["jsonarray"] = [
-            {
-                "label": "Femmes",
-                "data": 0
-            },
-            {
-                "label": "Hommes",
-                "data": 0
-            },
-            {
-                "label": "Autres",
-                "data": 0
-            }
-        ]
+        json_object["jsonarray"].append({'label': "Femmes", 'data': 0})
+        json_object["jsonarray"].append({'label': "Hommes", 'data': 0})
+        json_object["jsonarray"].append({'label': "Autres", 'data': 0})
 
-        for elem in Consumer.objects.all():
-            if elem.gender == "F" or elem.gender == "Femme":
+        consumers = None
+        if is_user_fountain(request):
+            consumers = Consumer.objects.filter(water_outlet__id__in=request.user.profile.outlets)
+        elif is_user_zone(request):
+            consumers = Consumer.objects.filter(water_outlet__zone__name__in=request.user.profile.zone.subzones)
+
+        for consumer in consumers:
+            if consumer.gender == "F" or consumer.gender == "Femme":
                 json_object['jsonarray'][0]['data'] += 1  # One more women
-            elif elem.gender == "M" or elem.gender == "Homme":
+            elif consumer.gender == "M" or consumer.gender == "Homme":
                 json_object['jsonarray'][1]['data'] += 1  # One more man
             else:
                 json_object['jsonarray'][2]['data'] += 1  # One more other
@@ -72,12 +67,7 @@ def graph(request):
 
                 data.append(total if not no_data else None)
 
-        json_object["jsonarray"] = [
-            {
-                "label": elements,
-                "data": data
-            }
-        ]
+        json_object["jsonarray"].append({"label": elements, "data": data})
 
     return HttpResponse(json.dumps(json_object))
 
@@ -436,9 +426,7 @@ def details(request):
 
     table_name = request.GET.get("table", None)
     if table_name == "payment":
-        balance, validity = get_payment_details(request)
-        result = {"balance": balance, "validity": validity}
-        return HttpResponse(json.dumps(result))
+        return get_payment_details(request)
     elif table_name == "water_element":
         return get_details_network(request)
     else:
@@ -447,6 +435,9 @@ def details(request):
 
 
 def outlets(request):
+    if not request.user.is_authenticated:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
     result = {"data": get_outlets(request)}
     return HttpResponse(json.dumps(result))
 

@@ -67,6 +67,12 @@ class EditTests(TestCase):
     def tearDown(self):
         self.client.logout()
 
+    def test_add_not_connected(self):
+        self.client.logout()
+
+        response = self.client.post("/api/edit/")
+        self.assertEqual(response.status_code, 403)
+
     # Zone
 
     def test_edit_zone(self):
@@ -98,7 +104,7 @@ class EditTests(TestCase):
     def test_edit_zone_not_exists(self):
         response = self.client.post("/api/edit/", {
             "table": "zone",
-            "id": 100,
+            "id": 1000,
             "name": "test",
             "fountain-price": 100,
             "fountain-duration": 10,
@@ -157,7 +163,7 @@ class EditTests(TestCase):
     def test_edit_element_not_exists(self):
         response = self.client.post("/api/edit/", {
             "table": "water_element",
-            "id": 100,
+            "id": 1000,
             "type": ElementType.FOUNTAIN.name,
             "localization": "test",
             "state": ElementStatus.OK.name
@@ -233,7 +239,7 @@ class EditTests(TestCase):
         fountain = Element.objects.get(name="fountain")
         response = self.client.post("/api/edit/", {
             "table": "consumer",
-            "id": 100,
+            "id": 1000,
             "firstname": "test",
             "lastname": "test",
             "gender": "M",
@@ -337,7 +343,7 @@ class EditTests(TestCase):
         fountain = Element.objects.get(name="fountain")
         response = self.client.post("/api/edit/", {
             "table": "ticket",
-            "id": 100,
+            "id": 1000,
             "id_outlet": fountain.id,
             "urgency": UrgencyType.LOW.name,
             "type": BreakType.MECHANICAL.name,
@@ -477,7 +483,7 @@ class EditTests(TestCase):
         consumer = Consumer.objects.get(first_name="consumer", last_name="indiv")
         response = self.client.post("/api/edit/", {
             "table": "payment",
-            "id": 100,
+            "id": 1000,
             "id_consumer": consumer.id,
             "amount": 100
         })

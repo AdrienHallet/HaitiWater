@@ -60,7 +60,13 @@ class AddTests(TestCase):
     def tearDown(self):
         self.client.logout()
 
-    # Add Zone
+    def test_add_not_connected(self):
+        self.client.logout()
+
+        response = self.client.post("/api/add/")
+        self.assertEqual(response.status_code, 403)
+
+    # Zone
 
     def test_add_zone(self):
         response = self.client.post("/api/add/", {
@@ -148,7 +154,7 @@ class AddTests(TestCase):
         self.assertIsNotNone(test_zone)
         self.assertEqual(test_zone.superzone, superzone)
 
-    # Add element
+    # Element
 
     def test_add_element(self):
         response = self.client.post("/api/add/", {
@@ -176,7 +182,7 @@ class AddTests(TestCase):
         test_element = Element.objects.filter(location="test").first()
         self.assertIsNone(test_element)
 
-    # Add consumer
+    # Consumer
 
     def test_add_consumer(self):
         fountain = Element.objects.get(name="fountain")

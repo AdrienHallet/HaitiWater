@@ -196,13 +196,17 @@ def get_payment_details(request):
     consumer_id = request.GET.get("id", None)
     consumer = Consumer.objects.filter(id=consumer_id).first()
     if consumer is None:
-        return None
+        return HttpResponse("Impossible de charger cet élément", status=400)
+    if not has_access(consumer.water_outlet, request):
+        return HttpResponse("Vous n'avez pas les droits sur cet élément", status=403)
 
     balance = consumer.get_balance()
     invoice = Invoice.objects.filter(consumer_id=consumer_id).order_by('-expiration').first()
     validity = str(invoice.expiration) if invoice is not None else "Pas de prochaine facturation"
 
-    return balance, validity
+    result = {"balance": balance, "validity": validity}
+
+    return HttpResponse(json.dumps(result))
 
 
 def get_details_network(request):
@@ -210,10 +214,11 @@ def get_details_network(request):
     outlet = Element.objects.filter(id=id_outlet).first()
     if outlet is None:
         return HttpResponse("Impossible de charger cet élément", status=400)
+    if not has_access(outlet, request):
+        return HttpResponse("Vous n'avez pas les droits sur cet élément", status=403)
 
     location = Location.objects.filter(elem=id_outlet).first()
-    if location is not None:
-        location = location.json_representation
+    geo_json = location.json_representation if location is not None else None
 
     infos = {
         "id": id_outlet,
@@ -225,7 +230,7 @@ def get_details_network(request):
         "currentMonthCubic": outlet.get_current_output(),
         "averageMonthCubic": outlet.get_all_output()[1],
         "totalCubic": outlet.get_all_output()[0],
-        "geoJSON": location
+        "geoJSON": geo_json
     }
 
     return HttpResponse(json.dumps(infos))

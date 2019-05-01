@@ -81,8 +81,21 @@ class TableTests(TestCase):
         payment = Payment(consumer=consumer_fountain, water_outlet=fountain, amount=100)
         payment.save()
 
+        self.client.post("/api/gis/?id={}&action=add".format(fountain.id), {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-72.331783, 19.394068]
+            }
+        }, content_type="application/json")
+
     def tearDown(self):
         self.client.logout()
+
+    def test_get_table_not_connected(self):
+        self.client.logout()
+
+        response = self.client.get("/api/table/")
+        self.assertEqual(response.status_code, 403)
 
     # Zone
 
@@ -471,3 +484,209 @@ class TableTests(TestCase):
         self.assertEqual(result["recordsTotal"], 20)
         self.assertEqual(result["recordsFiltered"], 20)
         self.assertEqual(len(result["data"]), 10)
+
+    # Graph
+
+    def test_get_graph_not_connected(self):
+        self.client.logout()
+
+        response = self.client.get("/api/graph/")
+        self.assertEqual(response.status_code, 403)
+
+    def test_get_graph_gender(self):
+        response = self.client.get("/api/graph/", {"type": "consumer_gender_pie"})
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result["jsonarray"]), 3)
+        self.assertEqual(result["jsonarray"][1]["data"], 2)
+
+    def test_get_graph_gender_sub(self):
+        self.client.login(username="user_zone", password="test")
+
+        response = self.client.get("/api/graph/", {"type": "consumer_gender_pie"})
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result["jsonarray"]), 3)
+        self.assertEqual(result["jsonarray"][1]["data"], 0)
+
+    def test_get_graph_gender_fountain(self):
+        self.client.login(username="user_fountain", password="test")
+
+        response = self.client.get("/api/graph/", {"type": "consumer_gender_pie"})
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result["jsonarray"]), 3)
+        self.assertEqual(result["jsonarray"][1]["data"], 1)
+
+    def test_get_graph_volume(self):
+        response = self.client.get("/api/graph/", {"type": "average_monthly_volume_per_zone"})
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result["jsonarray"][0]["label"]), 2)
+
+    def test_get_graph_volume_sub(self):
+        self.client.login(username="user_zone", password="test")
+
+        response = self.client.get("/api/graph/", {"type": "average_monthly_volume_per_zone"})
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result["jsonarray"][0]["label"]), 1)
+
+    def test_get_graph_volume_fountain(self):
+        self.client.login(username="user_fountain", password="test")
+
+        response = self.client.get("/api/graph/", {"type": "average_monthly_volume_per_zone"})
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result["jsonarray"][0]["label"]), 1)
+
+    # GIS
+
+    def test_get_gis_not_connected(self):
+        self.client.logout()
+
+        response = self.client.get("/api/gis/")
+        self.assertEqual(response.status_code, 403)
+
+    def test_get_gis(self):
+        response = self.client.get("/api/gis/")
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result), 1)
+
+    def test_get_gis_sub(self):
+        self.client.login(username="user_zone", password="test")
+
+        response = self.client.get("/api/gis/")
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result), 0)
+
+    def test_get_gis_fountain(self):
+        self.client.login(username="user_fountain", password="test")
+
+        response = self.client.get("/api/gis/")
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result), 1)
+
+    def test_get_gis_marker(self):
+        response = self.client.get("/api/gis/", {"marker": "fountain"})
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result), 1)
+
+    def test_get_gis_no_marker(self):
+        response = self.client.get("/api/gis/", {"marker": "kiosk"})
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result), 0)
+
+    # Details
+
+    def test_get_details_not_connected(self):
+        self.client.logout()
+
+        response = self.client.get("/api/details/")
+        self.assertEqual(response.status_code, 403)
+
+    def test_get_details_payment(self):
+        consumer = Consumer.objects.get(last_name="fountain")
+        response = self.client.get("/api/details/", {
+            "table": "payment",
+            "id": consumer.id
+        })
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(result["balance"], 100)
+
+    def test_get_details_payment_not_exists(self):
+        response = self.client.get("/api/details/", {
+            "table": "payment",
+            "id": 1000
+        })
+        self.assertEqual(response.status_code, 400)
+
+    def test_get_details_payment_unauthorized(self):
+        self.client.login(username="user_zone", password="test")
+
+        consumer = Consumer.objects.get(last_name="fountain")
+        response = self.client.get("/api/details/", {
+            "table": "payment",
+            "id": consumer.id
+        })
+        self.assertEqual(response.status_code, 403)
+
+    def test_get_details_location(self):
+        fountain = Element.objects.get(name="fountain")
+        response = self.client.get("/api/details/", {
+            "table": "water_element",
+            "id": fountain.id
+        })
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(result["localization"], "fountain")
+        self.assertIsNotNone(result["geoJSON"])
+
+    def test_get_details_location_not_exists(self):
+        response = self.client.get("/api/details/", {
+            "table": "water_element",
+            "id": 1000
+        })
+        self.assertEqual(response.status_code, 400)
+
+    def test_get_details_location_unauthorized(self):
+        self.client.login(username="user_zone", password="test")
+
+        fountain = Element.objects.get(name="fountain")
+        response = self.client.get("/api/details/", {
+            "table": "water_element",
+            "id": fountain.id
+        })
+        self.assertEqual(response.status_code, 403)
+
+    # Outlets
+
+    def test_get_outlets_not_connected(self):
+        self.client.logout()
+
+        response = self.client.get("/api/outlets/")
+        self.assertEqual(response.status_code, 403)
+
+    def test_get_outlets(self):
+        response = self.client.get("/api/outlets/")
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result["data"]), 2)
+
+    def test_get_outlets_sub(self):
+        self.client.login(username="user_zone", password="test")
+
+        response = self.client.get("/api/outlets/")
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result["data"]), 0)
+
+    def test_get_outlets_fountain(self):
+        self.client.login(username="user_fountain", password="test")
+
+        response = self.client.get("/api/outlets/")
+        self.assertEqual(response.status_code, 200)
+
+        result = json.loads(response.content)
+        self.assertEqual(len(result["data"]), 1)
