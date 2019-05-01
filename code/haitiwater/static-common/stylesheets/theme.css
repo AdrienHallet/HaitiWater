@@ -87,7 +87,7 @@ a:active {
 	display: table-cell;
 	position: relative;
 	vertical-align: top;
-	width: 300px;
+	width: 200px;
 	z-index: 1010;
 }
 
@@ -101,23 +101,23 @@ a:active {
 .sidebar-right {
 	background: #171717;
 	bottom: 0;
-	margin-right: -300px;
+	margin-right: -200px;
 	min-height: 100vh;
 	position: fixed;
 	right: 0;
 	top: 0;
-	width: 300px;
+	width: 200px;
 }
 
 /* Layout Base - Sidebar Right Opened ( Larger than mobile ) */
 @media only screen and (min-width: 768px) {
 	html.sidebar-right-opened .header {
-		margin-left: -300px;
-		margin-right: 300px;
+		margin-left: -200px;
+		margin-right: 200px;
 	}
 
 	html.sidebar-right-opened .inner-wrapper {
-		margin-left: -300px;
+		margin-left: -200px;
 	}
 
 	html.sidebar-right-opened .sidebar-right {
@@ -181,7 +181,7 @@ a:active {
 
 	/* Layout Fixed - Content Body */
 	html.fixed .content-body {
-		margin-left: 300px;
+		margin-left: 200px;
 	}
 
 	html.fixed .content-body.has-toolbar {
@@ -190,7 +190,7 @@ a:active {
 
 	/* Layout Fixed - Page header */
 	html.fixed .page-header {
-		left: 300px;
+		left: 200px;
 		margin: 0;
 		position: fixed;
 		right: 0;
@@ -222,16 +222,16 @@ a:active {
 	/* Layout Fixed - Sidebar Right Opened */
 	html.fixed.sidebar-right-opened .page-header {
 		left: 0;
-		margin-right: 300px;
+		margin-right: 200px;
 	}
 
 	html.fixed.sidebar-right-opened .sidebar-left {
-		left: -300px;
+		left: -200px;
 	}
 
 	/* Layout Fixed - Sidebar Left Collapsed & Sidebar Right Opened */
 	html.fixed.sidebar-left-collapsed.sidebar-right-opened .page-header {
-		left: -300px;
+		left: -200px;
 	}
 }
 /* Layout Boxed - small than min-width */
@@ -490,7 +490,7 @@ a:active {
 
 	/* Layout Mobile - Sidebar Left Collapsed & Sidebar Right Opened */
 	html.sidebar-left-collapsed.sidebar-right-opened .sidebar-left {
-		margin-left: -300px;
+		margin-left: -200px;
 	}
 }
 /* Content With Menu - Boxed Layout Fixing Spacement on Bottom */
@@ -517,7 +517,7 @@ a:active {
 		left: 0;
 		position: absolute;
 		top: 54px;
-		width: 300px;
+		width: 200px;
 	}
 
 	html.scroll .content-with-menu:after,
@@ -645,11 +645,11 @@ a:active {
 	html.fixed .inner-menu {
 		bottom: 0;
 		display: block;
-		left: 300px;
+		left: 200px;
 		position: fixed;
 		margin: 0;
 		top: 114px;
-		width: 300px;
+		width: 200px;
 		padding: 35px;
 		z-index: 1002;
 	}
@@ -659,7 +659,7 @@ a:active {
 	}
 
 	html.fixed .inner-body {
-		margin-left: 300px;
+		margin-left: 200px;
 		border-top: 113px solid transparent;
 		margin-top: -110px;
 		min-height: 100vh;
@@ -698,7 +698,7 @@ a:active {
 		display: block;
 		position: relative;
 		margin: 0;
-		width: 300px;
+		width: 200px;
 		padding: 35px;
 	}
 
@@ -748,12 +748,12 @@ a:active {
 	}
 
 	html.fixed.sidebar-right-opened .inner-toolbar {
-		margin-right: 300px;
+		margin-right: 200px;
 	}
 
 	html.fixed.sidebar-right-opened.inner-menu-opened .inner-menu-toggle,
 	html.fixed.sidebar-right-opened.inner-menu-opened .inner-toolbar {
-		left: -300px;
+		left: -200px;
 	}
 }
 /* Content With Menu + Layout Fixed + Sidebar Left Collapsed + Sidebar Right Opened */
@@ -810,7 +810,7 @@ a:active {
 	html.fixed.inner-menu-opened .inner-body,
 	html.scroll.inner-menu-opened .inner-body,
 	html.boxed.inner-menu-opened .inner-body {
-		margin-right: -300px;
+		margin-right: -200px;
 	}
 
 	html.fixed.inner-menu-opened .content-with-menu-has-toolbar .inner-toolbar,
@@ -820,7 +820,7 @@ a:active {
 	}
 
 	html.fixed.inner-menu-opened .inner-body {
-		margin-left: 300px;
+		margin-left: 200px;
 	}
 
 	html.scroll .content-with-menu:before,
@@ -863,7 +863,7 @@ a:active {
 	}
 
 	html.fixed.inner-menu-opened .inner-body {
-		margin-left: 300px;
+		margin-left: 200px;
 	}
 
 	html.fixed .content-with-menu .inner-toolbar,
@@ -875,11 +875,11 @@ a:active {
 	html.fixed .inner-menu,
 	html.fixed.inner-menu-opened .inner-menu-toggle,
 	html.fixed.inner-menu-opened .inner-menu {
-		left: 300px;
+		left: 200px;
 	}
 
 	html.fixed.sidebar-right-opened .content-with-menu .inner-toolbar {
-		left: 300px;
+		left: 200px;
 	}
 
 	html.fixed.sidebar-right-opened .inner-menu,
@@ -1600,7 +1600,7 @@ html.header-dark .header .input-search .input-group-btn .btn-default {
 
 @media only screen and (min-width: 768px) {
 	html.sidebar-left-collapsed .sidebar-left .sidebar-title {
-		margin-left: -300px;
+		margin-left: -200px;
 		opacity: 0;
 	}
 
@@ -1654,7 +1654,7 @@ html.header-dark .header .input-search .input-group-btn .btn-default {
 	}
 
 	html.sidebar-left-collapsed.scroll .sidebar-left .nav-main > li:hover, html.sidebar-left-collapsed.boxed .sidebar-left .nav-main > li:hover {
-		width: 300px;
+		width: 200px;
 		background: #191c21;
 	}
 
@@ -1690,7 +1690,7 @@ html.header-dark .header .input-search .input-group-btn .btn-default {
 	}
 
 	html.sidebar-left-collapsed.fixed .sidebar-left .nano:hover {
-		width: 300px;
+		width: 200px;
 	}
 
 	html.sidebar-left-collapsed.fixed .sidebar-left .nano:hover .nav-main .nav-expanded ul.nav-children {
@@ -2310,7 +2310,7 @@ html.inner-menu-opened .inner-menu-content {
 
 	html.fixed .inner-menu-toggle {
 		position: fixed;
-		left: 300px;
+		left: 200px;
 	}
 }
 
@@ -2492,7 +2492,7 @@ ul.nav-main li .nav-children .nav-children .nav-children li a {
 .page-header .breadcrumbs li {
 	color: #c3c3c3;
 	display: inline-block;
-	font-weight: 300;
+	font-weight: 200;
 }
 
 .page-header .breadcrumbs li:after {
@@ -3789,6 +3789,10 @@ html.dark .form-bordered .form-group {
 	pointer-events: none;
 }
 
+.allow-pointer-events {
+	pointer-events: auto;
+}
+
 .input-group-icon .input-group-addon span.icon.icon-lg,
 .input-search .input-group-addon span.icon.icon-lg {
 	padding: 10px 14px;
@@ -4449,7 +4453,7 @@ html.no-overflowscrolling.custom-scroll .nano > .nano-content {
 /* Toolbar + Layout Fixed */
 @media only screen and (min-width: 768px) {
 	html.fixed .inner-toolbar {
-		left: 300px;
+		left: 200px;
 		right: 0;
 		margin: 0;
 		padding: 0;
@@ -7281,7 +7285,7 @@ html.dark .ui-slider.ui-widget-content {
 /* Notification */
 .ui-pnotify {
 	right: 15px;
-	top: 15px;
+	top: 120px;
 }
 
 .ui-pnotify .notification {
@@ -12221,6 +12225,10 @@ html.dark .simple-compose-box .compose-box-footer {
 
 .table .table {
 	background: transparent;
+}
+
+.table td {
+	cursor: pointer;
 }
 
 /* Bootstrap uses important, we need to force it here */

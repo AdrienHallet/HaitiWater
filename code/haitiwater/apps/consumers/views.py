@@ -1,9 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.template import loader
-from ..utils.get_data import *
+
 from haitiwater.settings import PROJECT_VERSION, PROJECT_NAME
+from ..utils.get_data import *
 
 
+@login_required(login_url='/login/')
 def index(request):
     template = loader.get_template('consumers.html')
     context = {

@@ -19,9 +19,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 		<!-- Web Fonts  -->
-		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
-
-		<!-- Uncompessed (minified) Vendor CSS -->
+        <link rel="stylesheet" href="{% static "vendor/fonts-google/open-sans.css" %}"/>
+		<!-- Vendor CSS -->
 		<link rel="stylesheet" href="{% static "vendor/fontawesome/css/all.min.css" %}"/>
 		<link rel="stylesheet" href="{% static "vendor/intro/intro.min.css" %}"/>
 
@@ -69,6 +68,7 @@
 
             {# Scripts often needed, requested in main template for preload #}
             <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
+            <script src="{% static "javascripts/tables/genericModalHandler.js" %}"></script>
 
             {# Service worker installation #}
             <script src="{% static "javascripts/sw.install.js" %}"></script>
@@ -174,9 +174,7 @@
 						        <h2>{% block page_name %}{% endblock %}</h2>
                             </div>
                             <div class="col-sm-1">
-                                {% if request.path != '/accueil/' %}
-                                    <i class="fas fa-info-circle fa-2x" title="Aide rapide" onclick="startPageTour();"></i>
-                                {% endif %}
+                                <i id="quick-help" class="fas fa-info-circle fa-2x clickable" data-toggle="tooltip" data-placement="left" title="Aide rapide" onclick="startPageTour();"></i>
                             </div>
                         </div>
 					</header>

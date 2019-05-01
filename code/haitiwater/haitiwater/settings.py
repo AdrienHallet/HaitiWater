@@ -11,11 +11,11 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import dj_database_url
+
 from django.utils.deprecation import MiddlewareMixin
 
 # Strings containing build information to pass in context view
-PROJECT_VERSION = 'Alpha 1'
+PROJECT_VERSION = 'Beta 1'
 PROJECT_NAME = 'HaïtiWater'
 
 COMPRESS_ENABLED = True
@@ -50,11 +50,11 @@ ALLOWED_HOSTS = [
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'django.contrib.admin',  # not used
     'django.contrib.auth',
-    'django.contrib.contenttypes',
+    'django.contrib.contenttypes',  # not used
     'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.messages',  # is it used now ? not sure
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'rest_framework',
@@ -65,15 +65,17 @@ INSTALLED_APPS = [
     'apps.water_network',
     'apps.zone_management',
     'apps.api',
+    'apps.utils',
     'apps.consumers',
     'apps.report',
     'apps.offline',
     'apps.help',
+    'apps.financial',
     'compressor',
-    'django_tables2',
+    'django_tables2',  # not used anymore
     'bootstrap3',
-    'widget_tweaks',
-    'chartjs'
+    'widget_tweaks',  # not used ?
+    'chartjs'  # I don't find it unexpectedly
 ]
 
 REST_FRAMEWORK = {
@@ -128,13 +130,13 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'haitiwater',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
     },
 }
 
-MEDIA_ROOT = 'static-common/images'
+MEDIA_ROOT = 'static-common/images/'
 
 MEDIA_URL = '/images/'
 

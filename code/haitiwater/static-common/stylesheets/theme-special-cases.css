@@ -1,6 +1,8 @@
 /* Leaflet CSS */
+
 .leaflet-container{
     height: 500px;
+    z-index: 0;
 }
 
 .leaflet-drawer-control{
@@ -8,8 +10,10 @@
     font-size: 20px;
     background-color:black;
     color:black;
-    text-align: center;
-    vertical-align: center;
+}
+
+.leaflet-control.clickable {
+    cursor: pointer;
 }
 
 /* Force center whatever happens */
@@ -75,14 +79,18 @@
      padding-right: 28px;
 }
 
-.fa {
+a .fa {
     cursor: pointer;
 }
 
-.fas {
+a .fas {
     cursor: pointer;
+}
+
+.clickable {
+    cursor: pointer; !important
 }
 
 .selected {
-     font-weight: bold;
+     background-color: lightgrey !important;
 }

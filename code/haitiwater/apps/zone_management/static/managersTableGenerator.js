@@ -5,13 +5,16 @@ function drawManagerTable(){
     $('#datatable-manager').DataTable(getManagerDatatableConfiguration(dataURL));
 
     let table = $('#datatable-manager').DataTable();
-    $('#datatable-manager tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
+    $('#datatable-manager tbody').on( 'click', 'tr td:not(:last-child)', function () {
+        let row = $(this).closest('tr');
+        if ( row.hasClass('selected') ) {
+            row.removeClass('selected');
+            filterWaterElementFromManager(table);
         }
         else {
             table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
+            row.addClass('selected');
+            filterWaterElementFromManager(table);
         }
     });
 
@@ -22,11 +25,31 @@ function drawManagerTable(){
         } else {}
     } );
     $('#datatable-manager tbody').on( 'click', '.edit-row', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
+        let data = table.row($(this).closest('tr')).data();
         setupModalManagerEdit(data);
     } );
 
     prettifyHeader('manager');
+}
+
+function filterWaterElementFromManager(managerTable){
+    let data = managerTable.row('tr.selected').data();
+
+    if  (data == null){ // If nothing selected
+        $('#datatable-water_element').DataTable().search("").draw();
+        return;
+    }
+    let managerType = data[5];
+    let managerZone = data[6];
+    let managerName = data[1] + " " + data[2];
+    if (managerType.includes('fontaine')){
+        // Filter on the manager if he's a fountain manager
+        $('#datatable-water_element').DataTable().search(managerName).draw();
+    } else {
+        // Filter on the zone if he's a zone manager
+        $('#datatable-water_element').DataTable().search(managerZone).draw();
+    }
+
 }
 
 function getManagerDatatableConfiguration(dataURL){
@@ -53,6 +76,7 @@ function getManagerDatatableConfiguration(dataURL){
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
+        pagingType: 'full_numbers',
         fixedColumns:   {
             leftColumns: 1,
             rightColumns: 1
@@ -65,9 +89,7 @@ function getManagerDatatableConfiguration(dataURL){
             },
             ],
         "language": getDataTableFrenchTranslation(),
-        "ajax": {
-            url: dataURL
-        },
+        "ajax": getAjaxController(dataURL),
 
         //Callbacks on fetched data
         "createdRow": function (row, data, index) {

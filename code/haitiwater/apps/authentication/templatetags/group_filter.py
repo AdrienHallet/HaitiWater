@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group
 
 register = template.Library()
 
+
 @register.filter(name='has_group')
 def has_group(user, group_name):
     try:
@@ -11,14 +12,14 @@ def has_group(user, group_name):
         return False
     return group in user.groups.all()
 
+
 @register.filter(name='get_group')
 def get_group(user):
-    query_set = Group.objects.filter(user=user)
-    if len(query_set) == 1:
-        user_group = query_set[0].name
-        return user_group
-    else:
+    group = Group.objects.filter(user=user).first()
+    if group is None:
         return ""
+    return group.name
+
 
 @register.filter(name='get_zone')
 def get_zone(user):

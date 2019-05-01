@@ -2,19 +2,31 @@ function drawZoneTable(){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let dataURL = baseURL + "/api/table/?name=zone";
     console.log("Request data from: " + dataURL);
-    $('#datatable-zone').DataTable(getZoneTableConfiguration(dataURL));
+    let table = $('#datatable-zone').DataTable(getZoneTableConfiguration(dataURL));
 
-    let table = $('#datatable-zone').DataTable();
     $('#datatable-zone tbody').on( 'click', 'tr td:not(:last-child)', function () {
-        row = $(this).closest('tr');
-        if ( row.hasClass('selected') ) {
-            row.removeClass('selected');
+        let tr = $(this).closest('tr');
+        let row = table.row(tr);
+        if ( tr.hasClass('selected') ) {
+            tr.removeClass('selected');
             filterManagerFromZone(table);
+            filterWaterElementFromZone(table);
         }
         else {
-            row.removeClass('selected');
-            row.addClass('selected');
+            table.$('.selected').removeClass('selected');
+            tr.addClass('selected');
             filterManagerFromZone(table);
+            filterWaterElementFromZone(table);
+        }
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
         }
     });
 
@@ -25,14 +37,25 @@ function drawZoneTable(){
         } else {}
     } );
     $('#datatable-zone tbody').on( 'click', '.edit-row', function () {
-        let data = $(this).parents('tr')[0].getElementsByTagName('td');
+        let data = table.row($(this).closest('tr')).data();
         setupModalZoneEdit(data);
     } );
     prettifyHeader('zone');
+
+    return table;
+}
+
+//Formatting function for row details
+function format ( d ) {
+    // d is the original data object for the row
+    return "Fontaines : " + d[2] + " Gourdes tous les " + d[3] + " mois<br>" +
+        "Kiosques : " + d[4] + " Gourdes tous les " + d[5] + " mois<br>" +
+        "Prises individuelles : " + d[6] + " Gourdes tous les mois";
 }
 
 /**
  * Automatically fill the field on the manager table from the selected zone
+ * (Takes the data from the first tr.selected)
  *
  * @param zoneTable the table zone datatable object
  */
@@ -43,9 +66,20 @@ function filterManagerFromZone(zoneTable){
         $('#datatable-manager').DataTable().search("").draw();
         return;
     }
-
     let zoneName = data[1];
     $('#datatable-manager').DataTable().search(zoneName).draw();
+
+}
+
+function filterWaterElementFromZone(zoneTable){
+    let data = zoneTable.row('tr.selected').data();
+
+    if  (data == null){ // If nothing selected
+        $('#datatable-water_element').DataTable().search("").draw();
+        return;
+    }
+    let zoneName = data[1];
+    $('#datatable-water_element').DataTable().search(zoneName).draw();
 }
 
 function getZoneTableConfiguration(dataURL){
@@ -72,6 +106,7 @@ function getZoneTableConfiguration(dataURL){
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
+        pagingType: 'full_numbers',
         fixedColumns:   {
             leftColumns: 1,
             rightColumns: 1
@@ -84,9 +119,7 @@ function getZoneTableConfiguration(dataURL){
             },
             ],
         "language": getDataTableFrenchTranslation(),
-        "ajax": {
-            url: dataURL
-        },
+        "ajax": getAjaxController(dataURL),
 
         //Callbacks on fetched data
         "createdRow": function (row, data, index) {

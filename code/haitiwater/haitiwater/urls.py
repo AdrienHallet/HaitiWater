@@ -28,11 +28,14 @@ urlpatterns = [
     path('consommateurs/', include('apps.consumers.urls')),
     path('rapport/', include('apps.report.urls')),
     path('gestion/', include('apps.zone_management.urls')),
+    path('historique/', include('apps.log.urls')),
     path('api/', include('apps.api.urls')),
     path('profil/', include('apps.authentication.urls')),
     path('user/', include('apps.authentication.urls')),
     path('offline/', include('apps.offline.urls')),
     path('aide/', include('apps.help.urls')),
+    path('finances/', include('apps.financial.urls')),
+    url(r'^sw.js', TemplateView.as_view(template_name="sw.js", content_type='application/javascript'), name='sw.js')
 ]
 
 # Add Django site authentication urls (for login, logout, password management)
@@ -59,5 +62,5 @@ urlpatterns += [
 
 # https://stackoverflow.com/questions/38696595/django-and-service-workers-serve-sw-js-at-applications-root-url
 urlpatterns += [
-    path('sw.js/', TemplateView.as_view(template_name="sw.js", content_type='application/javascript'), name='sw.js'),
+    path('sw.js', TemplateView.as_view(template_name="sw.js", content_type='application/javascript'), name='sw.js'),
 ]

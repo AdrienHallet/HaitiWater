@@ -7,32 +7,66 @@ function validateZoneForm() {
 
     let id = form["input-zone-id"].value;
     let name = form["input-zone-name"].value;
+    let fountainPrice = form["input-fountain-price-value"].value;
+    let fountainDuration = form["select-fountain-price-duration"].value;
+    let kioskPrice = form["input-kiosk-price-value"].value;
+    let kioskDuration = form["select-kiosk-price-duration"].value;
+    let indivPrice = form["input-indiv-price-value"].value;
 
-    let missing = false;
+    let valid = true;
     if (name.trim() === "") {
         document.getElementById("input-zone-name-error").className = "error";
-        missing = true;
+        valid = false;
     }
 
-    if(missing){
-        console.log("missing zone element");
-        return false
-    } else {
-        return buildZoneRequest(id, name);
+    if (fountainPrice < 0 || kioskPrice < 0){
+        $('#form-zone-error-msg').html("Vous ne pouvez entrer un coût négaif");
+        $('#form-zone-error').removeClass('hidden');
+        valid = false;
     }
-
+    if (fountainPrice === ""){
+        fountainPrice = 0
+    }
+    if (kioskPrice === ""){
+        kioskPrice = 0
+    }
+    if (indivPrice === ""){
+        indivPrice = 0
+    }
+    if(valid){
+        return buildZoneRequest(
+            id,
+            name,
+            fountainPrice,
+            fountainDuration,
+            kioskPrice,
+            kioskDuration,
+            indivPrice,
+        );
+    }
+    return false;
 }
 
 /**
  * Build the request
- * @param id
- * @param name
- * @returns {string}
+ * @param id id of the zone (if edition, empty otherwise)
+ * @param name of the zone
+ * @param fountainPrice price for fountains
+ * @param fountainDuration duration of the bill for fountains
+ * @param kioskPrice price for kiosks
+ * @param kioskDuration duration of the bill for kiosks
+ * @param indivPrice price for individual outlets
+ * @returns {string} the request
  */
-function buildZoneRequest(id, name){
+function buildZoneRequest(id, name, fountainPrice, fountainDuration, kioskPrice, kioskDuration, indivPrice){
     let request = "table=zone";
     request += "&id=" + id;
     request += "&name=" + name;
+    request += "&fountain-price=" + fountainPrice;
+    request += "&fountain-duration=" + fountainDuration;
+    request += "&kiosk-price=" + kioskPrice;
+    request += "&kiosk-duration=" + kioskDuration;
+    request += "&indiv-price=" + indivPrice;
 
     return request;
 }
@@ -46,6 +80,10 @@ function setupModalZoneAdd(){
     $('#modal-zone-title-edit').addClass("hidden");
     $('#modal-zone-submit-edit').addClass("hidden");
     $('#form-zone-id-component').addClass("hidden");
+
+    //Empty inputs
+    $('#input-zone-id').val("");
+    $('#input-zone-name').val("");
 
     showZoneModal();
 }
@@ -61,14 +99,21 @@ function setupModalZoneEdit(data){
     $('#form-zone-id-component').removeClass("hidden");
 
     //Fill with existing data
-    $('#input-zone-id').val(data[0].innerText);
-    $('#input-zone-name').val(data[1].innerText);
+    $('#input-zone-id').val(data[0]);
+    $('#input-zone-name').val(data[1]);
+
+    $('#input-fountain-price-value').val(data[2]);
+    $('#select-fountain-price-duration').val(data[3]);
+
+    $('#input-kiosk-price-value').val(data[4]);
+    $('#select-kiosk-price-duration').val(data[5]);
+
+    $('#input-indiv-price-value').val(data[6]);
 
     showZoneModal();
 }
 
 function showZoneModal(){
-    $('#form-add-zone').find('input').val('');
     $('#plus-zone').magnificPopup({
         type: 'inline',
         preloader: false,
@@ -93,4 +138,6 @@ function showZoneModal(){
  */
 function dismissZoneModal() {
     $.magnificPopup.close();
+    $('form').find('input').val('');
+    $('form').find('select').val(1);
 }

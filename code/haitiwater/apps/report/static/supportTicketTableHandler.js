@@ -43,6 +43,7 @@ function getTicketDatatableConfiguration(dataURL){
         scrollX:        true,
         scrollCollapse: true,
         paging:         true,
+        pagingType: 'full_numbers',
         "columnDefs": [
             {
                 "targets": -1,
@@ -52,28 +53,17 @@ function getTicketDatatableConfiguration(dataURL){
             },
             ],
         "language": getDataTableFrenchTranslation(),
-        "ajax": {
-            url: dataURL,
-            error: function (xhr, error, thrown) {
-                console.log(xhr + '\n' + error + '\n' + thrown);
-                $('#datatable-ticket_wrapper').hide();
-                new PNotify({
-                    title: 'Échec du téléchargement!',
-                    text: "Les données de la table n'ont pas pu être téléchargées",
-                    type: 'failure'
-                });
-            }
-        },
+        "ajax": getAjaxController(dataURL),
 
         //Callbacks on fetched data
         "createdRow": function (row, data, index, cells) {
-            let path = data[7];
+            let path = data[6];
             if (path !== null){
-                let imageURL = '../static/' + data[7];
-                let commentDom = $('td', row).eq(5);
+                let imageURL = '../static' + path;
+                let commentDom = $('td', row).eq(4);
                 let comment = commentDom.text();
 
-                commentDom.html('<i class="far fa-image" title="Cliquez pour voir l\'image"></i>' + comment);
+                commentDom.html('<i class="far fa-image clickable" title="Cliquez pour voir l\'image"></i>&nbsp' + comment);
                 commentDom.on('click', function(){
                     $.magnificPopup.open({
                         type: 'image',

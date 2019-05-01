@@ -16,7 +16,7 @@ let currentElementID = 'undefined';
 
 $(document).ready(function() {
     //Setup water tables first
-    drawWaterElementTable(false, true);
+    drawWaterElementTable(false, true, true);
     waterElementTable = $("#datatable-water_element").DataTable();
     detailTable = $("#detail-table");
     errorDetailTable = $('#error-detail-table');
@@ -37,7 +37,7 @@ $(document).ready(function() {
     );
 
     displayDetailTableError('Sélectionnez un élément du réseau dans la table ou sur la carte.');
-    if(localStorage.getItem('mapDrawer')==='open'){
+    if(localStorage.getItem('mapDrawer')!=='closed'){
         toggleDrawer();
     }
 
@@ -92,6 +92,7 @@ function requestAllElementsPosition(){
         }
     };
     xhttp.open('GET', requestURL, true);
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.send();
 }
 
@@ -112,11 +113,11 @@ function waterGISInit(map) {
     }).addTo(map);
 
     // Open Street maps layer
-    let osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    let osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     let osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: 'Open Street Maps' });
 
     // Google sattelite layer
-    let googleUrl = 'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}';
+    let googleUrl = 'https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}';
     let google = L.tileLayer(googleUrl, {attribution: 'Google'});
 
     // Draw layer
@@ -151,10 +152,12 @@ var drawerControl = L.Control.extend({
     },
 
     onAdd: function (map) {
-        var container = L.DomUtil.create('i', 'leaflet-bar leaflet-control leaflet-drawer-control fas fa-question');
+        var container = L.DomUtil.create('div', 'leaflet-bar clickable leaflet-drawer-control fas fa-question');
         container.style.backgroundColor = 'white';
-        container.style.width = '26px';
-        container.style.height = '26px';
+        container.style.width = '35px';
+        container.style.height = '35px';
+        container.style.paddingLeft = '9px';
+        container.style.paddingTop = '5px';
         container.onclick = function(){
             toggleDrawer();
         };
@@ -170,16 +173,16 @@ function toggleDrawer(){
     let mapContainer = $('#map-container');
     let controlContainer = $('.leaflet-drawer-control');
 
-    if (mapContainer.hasClass('col-md-9')){
-        localStorage.removeItem('mapDrawer'); // Local storage to retain drawer position
-        mapContainer.removeClass('col-md-9');
+    if (mapContainer.hasClass('col-md-8')){
+        localStorage.setItem('mapDrawer','closed'); // Local storage to retain drawer position
+        mapContainer.removeClass('col-md-8');
         mapContainer.addClass('col-md-12');
         controlContainer.addClass('fa-question');
         controlContainer.removeClass('fa-times');
     }
     else {
-        localStorage.setItem('mapDrawer','open');
-        mapContainer.addClass('col-md-9');
+        localStorage.removeItem('mapDrawer');
+        mapContainer.addClass('col-md-8');
         mapContainer.removeClass('col-md-12');
         controlContainer.removeClass('fa-question');
         controlContainer.addClass('fa-times');
@@ -197,18 +200,20 @@ function requestWaterElementDetails(elementID){
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200) {
-            $('.selected').removeClass('selected'); //de-select row as to not confuse in case of map selection (element click)
-            setupWaterElementDetails(JSON.parse(this.response));
-        }
-        else if (this.readyState == 4){
-            console.log(this);
-            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText;
-            displayDetailTableError(msg);
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                $('.selected').removeClass('selected'); //de-select row as to not confuse in case of map selection (element click)
+                setupWaterElementDetails(JSON.parse(this.response));
+            } else {
+                console.log(this);
+                let msg = "Une erreur est survenue:<br>" + this.status + ": " + this.statusText;
+                displayDetailTableError(msg);
+            }
         }
     };
 
     xhttp.open('GET', requestURL, true);
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.send();
 
 }
@@ -383,8 +388,10 @@ function editHandler( e ){
     let draw = marker.toGeoJSON().features[0];
     let latlng = L.latLng(draw.geometry.coordinates[1], draw.geometry.coordinates[0]);
     gisMap.flyTo(latlng);
+    marker.id = currentElementID;
     sendDrawToServer(draw); //Default type is collection (feature array)
     readyMapDrawButtons(currentElementType, true);
+    latLongDetail.html(coords.lat + "," + coords.lon);
 }
 
 /**
@@ -425,19 +432,21 @@ function sendDrawToServer(geoJSON){
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this);
-        }
-        else if (this.readyState == 4){
-            console.log(this);
-            let msg = "Une erreur est survenue:<br>"+ this.status + ": " + this.statusText;
-            errorDetailTable.html(msg);
-            return this;
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                console.log(this);
+            } else {
+                console.log(this);
+                let msg = "Une erreur est survenue:<br>" + this.status + ": " + this.statusText;
+                errorDetailTable.html(msg);
+                return this;
+            }
         }
     };
 
     xhttp.open('POST', requestURL, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.send(JSON.stringify(geoJSON));
 }
 
@@ -446,27 +455,29 @@ function removeHandler(e){
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200) {
-            drawLayer.eachLayer(function (draw){
-                if (draw.id === currentElementID){
-                    drawLayer.removeLayer(draw);
-                    $('#element-details-lat-lon').html("N/A");
-                }
-            });
-            readyMapDrawButtons(currentElementType, false);
-        }
-        else if (this.readyState == 4){
-            console.log(this);
-            new PNotify({
-                title: 'Erreur',
-                text: "L'élément ne peut être supprimé: " + this.statusText,
-                type: 'error'
-            });
-            return this;
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                drawLayer.eachLayer(function (draw) {
+                    console.log(draw);
+                    if (draw.id === currentElementID) {
+                        drawLayer.removeLayer(draw);
+                        $('#element-details-lat-lon').html("N/A");
+                    }
+                });
+                readyMapDrawButtons(currentElementType, false);
+            } else {
+                new PNotify({
+                    title: 'Erreur',
+                    text: "L'élément ne peut être supprimé: " + this.statusText,
+                    type: 'error'
+                });
+                return this;
+            }
         }
     };
 
     xhttp.open('POST', requestURL, true);
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.send();
 }
 
@@ -478,4 +489,51 @@ function isMarker(type){
 function isLine(type){
     let lineElements = ['conduite'];
     return lineElements.indexOf(type.toLowerCase()) > -1;
+}
+
+function startPageTour(){
+    if (!$('#details').hasClass('in')){
+        console.log("collapsed");
+        toggleDrawer();
+    }
+    let intro = introJs();
+    intro.setOptions({
+        nextLabel: 'Suivant',
+        prevLabel: 'Précédent',
+        skipLabel: 'Passer',
+        doneLabel: 'Terminer',
+        steps: [
+            {
+                element: document.getElementById('map-container'),
+                position: "bottom",
+                intro: "Voici une carte interactive. Vous pouvez visualiser les données de l'application géographiquement"
+            },
+            {
+                element: document.querySelector('.leaflet-left'),
+                position: "right",
+                intro: "Vous pouvez zoomer sur la carte (aussi avec la molette de la souris), modifier le type de vue et afficher ou masquer le réseau."
+            },
+            {
+                element: document.querySelector('.leaflet-right'),
+                position: "left",
+                intro: "Déroulez le panneau de détails pour en apprendre plus sur une fontaine et la placer sur la carte (manuellement ou via ses coordonnées)"
+            },
+            {
+                element: document.getElementById('button-draw'),
+                position: "left",
+                intro: "Placez l'élément manuellement sur la carte.",
+            },
+            {
+                element: document.getElementById('button-edit'),
+                position: "left",
+                intro: "Placez l'élément à l'aide de ses coordonnées géographiques.",
+            },
+            {
+                element: document.getElementById('button-remove'),
+                position: "left",
+                intro: "Supprimez la position géographique de l'élément.",
+            },
+        ].filter(function(obj) { return $(obj.element).length; }) // Only show step if element exists (multi-menu)
+    });
+    intro.start();
 }

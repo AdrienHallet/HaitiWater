@@ -1,223 +1,224 @@
+import json
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 
 from ..consumers.models import Consumer
-from ..report.models import Report, Ticket
-from ..water_network.models import Element, Zone
+from ..financial.models import Invoice, Payment
 from ..log.models import Transaction, Log
-from django.contrib.auth.models import User
+from ..report.models import Report, Ticket
+from ..utils.get_data import is_user_fountain, is_user_zone
+from ..water_network.models import Element, Zone, Location
 
 
-def add_with_search(parsed, values):
+def filter_search(params, values):
     result = []
-    if parsed["search"] == "" and len(values) > 0:
-        for elem in values:
+    for elem in values:
+        if params["search"] != "":
+            for cols in params["searchable"]:
+                if cols < len(elem) and params["search"].lower() in str(elem[cols]).lower():
+                    result.append(elem)
+                    break
+        else:
             result.append(elem)
-    else:
-        for cols in parsed["searchable"]:
-            if cols < len(values) and parsed["search"].lower() in str(values[cols]).lower():
-                result.append(values)
-                break
     return result
 
 
-def get_water_elements(request, json, parsed):
+def get_water_elements(request):
+    elements = []
+    if is_user_zone(request):
+        elements = Element.objects.filter(zone__name__in=request.user.profile.zone.subzones)
+    elif is_user_fountain(request):
+        elements = Element.objects.filter(id__in=request.user.profile.outlets)
+
+    result = []
+    for element in elements:
+        result.append(element.network_descript())
+
+    return result
+
+
+def get_consumer_elements(request):
+    consumers = []
+    if is_user_zone(request):
+        consumers = Consumer.objects.filter(water_outlet__zone__name__in=request.user.profile.zone.subzones)
+    elif is_user_fountain(request):
+        consumers = Consumer.objects.filter(water_outlet_id__in=request.user.profile.outlets)
+
+    result = []
+    for elem in consumers:
+        result.append(elem.descript())
+
+    return result
+
+
+def get_zone_elements(request):
+    result = []
+
+    for zone in Zone.objects.filter(name__in=request.user.profile.zone.subzones):
+        result.append(zone.descript())
+
+    return result
+
+
+def get_manager_elements(request):
+    result = []
     zone = request.user.profile.zone
-    outlets = request.user.profile.outlets
-    if zone: #If there is a zone, we have a zone manager
-        target = Zone.objects.filter(name=zone.name)
-        if len(target) == 1:
-            target = target[0]
-        else:
-            return False
-        all_water_element = [elem for elem in Element.objects.all() if elem.is_in_subzones(target)]
-    else: #We have a fountain manager
-        all_water_element = [elem for elem in Element.objects.all() if str(elem.id) in outlets]
-    json["recordsTotal"] = len(all_water_element)
-    all = []
-    for elem in all_water_element:
-        cust = Consumer.objects.filter(water_outlet=elem)
-        distributed = Report.objects.filter(water_outlet=elem)
-        quantity = 0
-        for report in distributed:
-            quantity += report.quantity_distributed
-        tab = elem.network_descript()
-        tab.insert(4, round(quantity, 2))
-        tab.insert(5, round(quantity * 264.17, 2))  # TODO make sure this is correct
-        total_consumers = 0
-        for c in cust:
-            total_consumers += c.household_size
-        tab.insert(3, total_consumers)
-        all.append(tab)
-    return add_with_search(parsed, all)
 
-
-def get_consumer_elements(request, json, parsed):
-    zone = request.user.profile.zone
-    outlets = request.user.profile.outlets
-    all = []
-    if zone: #Zone manager
-        target = Zone.objects.filter(name=zone.name)
-        if len(target) == 1:
-            target = target[0]
-        else:
-            return False
-        all_consumers = [elem for elem in Consumer.objects.all() if elem.water_outlet.is_in_subzones(target)]
-    elif len(outlets) > 0:
-        all_consumers = Consumer.objects.filter(water_outlet_id__in=outlets)
-    else:
-        return all
-
-    json["recordsTotal"] = len(all_consumers)
-    for elem in all_consumers:
-        if parsed["search"] == "":
-            all.append(elem.descript())
-        else:
-            for cols in parsed["searchable"]:
-                tab = elem.descript()
-                if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                    all.append(tab)
+    for user in User.objects.all():  # TODO optimize
+        group = user.groups.values_list('name', flat=True)
+        if 'Gestionnaire de zone' in group:
+            if type(zone) is Zone and user.profile.zone and \
+                    user.profile.zone.name in zone.subzones:  # TODO clean
+                tab = [user.username, user.last_name, user.first_name, user.profile.get_phone_number(),
+                       user.email, "Gestionnaire de zone", user.profile.zone.name, user.profile.outlets]
+                result.append(tab)
+        if "Gestionnaire de fontaine" in group:
+            for elem in user.profile.outlets:
+                out = Element.objects.filter(id=elem)
+                if len(out) == 1:
+                    out = out[0]
+                if type(out) is Element and out.is_in_subzones(zone):
+                    tab = [user.username, user.last_name, user.first_name, user.profile.get_phone_number(),
+                           user.email, "Gestionnaire de fontaine", user.profile.get_zone(), user.profile.outlets]
+                    result.append(tab)
                     break
-    return all
+
+    return result
 
 
-def get_zone_elements(request, json, parsed):
-    all = []
-    if request.user.profile.zone: #Zone manager
-        total = 0
-        for z in request.user.profile.zone.subzones:
-            zone = Zone.objects.filter(name=z)
-            if len(zone) == 1:
-                if parsed["search"] == "":
-                    total += 1
-                    all.append(zone[0].descript())
-                else:
-                    for cols in parsed["searchable"]:
-                        tab = zone[0].descript()
-                        total += 1
-                        if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                            all.append(tab)
-                            break
+def get_ticket_elements(request):
+    result = []
+    if is_user_zone(request):
+        for elem in Ticket.objects.filter(water_outlet__zone__name__in=request.user.profile.zone.subzones):
+            result.append(elem.descript())
+    elif is_user_fountain(request):
+        for elem in Ticket.objects.filter(water_outlet_id__in=request.user.profile.outlets):
+            result.append(elem.descript())
 
-        json["recordsTotal"] = total
-    return all
+    return result
 
 
-def get_manager_elements(request, json, parsed):
-    all = []
-    if request.user.profile.zone:#Zone manager
-        zone = request.user.profile.zone
-        target = Zone.objects.filter(name=zone.name)
-        if len(target) == 1:
-            target = target[0]
-        else:
-            return False
-        all_collab = User.objects.all()
-        json["recordsTotal"] = len(all_collab) -1 #Remove the admin account
-        for u in all_collab:
-            group = u.groups.values_list('name', flat=True)
-            if "Gestionnaire de zone" in group:
-                if type(target) is Zone and u.profile.zone and \
-                                u.profile.zone.name in target.subzones:
-                    tab = [u.username, u.last_name, u.first_name, u.email,
-                           "Gestionnaire de zone", u.profile.zone.name]
-                    if parsed["search"] == "":
-                        all.append(tab)
-                    else:
-                        for cols in parsed["searchable"]:
-                            if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                                all.append(tab)
-                                break
-            if "Gestionnaire de fontaine" in group:
-                for elem in u.profile.outlets:
-                    out = Element.objects.filter(id=elem)
-                    if len(out) == 1:
-                        out = out[0]
-                    if type(out) is Element and out.is_in_subzones(target):
-                        tab = [u.username, u.last_name, u.first_name, u.email,
-                               "Gestionnaire de fontaine", u.profile.get_zone()]
-                        if parsed["search"] == "":
-                            all.append(tab)
-                        else:
-                            for cols in parsed["searchable"]:
-                                if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                                    all.append(tab)
-                                    break
+def get_last_reports(request):
+    all_reports = []
+    for outlet in Element.objects.filter(id__in=request.user.profile.outlets):
+        reports = Report.objects.filter(water_outlet=outlet).order_by("timestamp")[:5]
+        for report in reports:
+            all_reports.append(report)
 
-    return all
+    result = []
+    for report in all_reports:
+        detail = {
+            "id": report.water_outlet_id,
+            "name": report.water_outlet.name,
+            "has_data": report.has_data,
+            "was_active": report.was_active,
+            "days_active": report.days_active,
+            "hours_active": report.hours_active,
+            "volume": report.quantity_distributed,
+            "price": report.price,
+            "revenue": report.recette
+        }
+        new = True
+        for elem in result:
+            if str(report.timestamp.date().month) in elem["date"]:
+                elem["details"].append(detail)
+                new = False
+        if new:
+            infos = {
+                "id": report.id,
+                "date": str(report.timestamp.date()),
+                "details": [detail]
+            }
+            result.append(infos)
+
+    return result
 
 
-def get_ticket_elements(request, json, parsed):
-    all = []
-    if request.user.profile.zone: #Zone manager
-        tot = 0
-        for elem in Ticket.objects.all():
-            if elem.water_outlet.zone.name in request.user.profile.zone.subzones:
-                if parsed["search"] == "":
-                    all.append(elem.descript())
-                    tot += 1
-                else:
-                    for cols in parsed["searchable"]:
-                        tab = elem.descript()
-                        if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                            all.append(tab)
-                            tot += 1
-                            break
-        json["recordsTotal"] = tot
-    else: #Fountain manager
-        tot = 0
-        for elem in Ticket.objects.all():
-            if str(elem.water_outlet.id) in request.user.profile.outlets:
-                tot += 1
-                if parsed["search"] == "":
-                    all.append(elem.descript())
-                else:
-                    for cols in parsed["searchable"]:
-                        tab = elem.descript()
-                        if cols < len(tab) and parsed["search"].lower() in str(tab[cols]).lower():
-                            all.append(tab)
-                            break
-        json["recordsTotal"] = tot
-    return all
-
-
-def get_logs_elements(request, json, parsed):
-    transactions = Transaction.objects.filter(user__in=request.user.profile.get_subordinates())
-    all = []
-    tot = 0
-    for t in transactions:
-        logs = Log.objects.filter(transaction=t)
+def get_logs_elements(request, archived):
+    result = []
+    for transaction in Transaction.objects.filter(user__in=request.user.profile.get_subordinates(), archived=archived):
+        logs = Log.objects.filter(transaction=transaction)
         details = get_transaction_detail(logs)
-        item = {"id": t.id, "time": str(t.timestamp.date()),
-                "type": logs[0].get_action(), "user": t.user.username,
-                "summary": logs[0].get_table(), "details": details}
-        if parsed["search"] == "":
-            all.append(item)
-            tot += 1
-        else:
-            for cols in parsed["searchable"]:
-                if cols < len(item) and parsed["search"].lower() in item.keys() \
-                        or parsed["search"].lower() in item.values():
-                    all.append(item)
-                    tot += 1
-                    break
-    json["recordsTotal"] = tot
-    return all
+        item = {
+            "id": transaction.id,
+            "time": str(transaction.timestamp.date()),
+            "type": logs[0].get_action(),
+            "user": transaction.user.username,
+            "summary": logs[0].get_table(),
+            "details": details
+        }
+        if archived:
+            item["action"] = transaction.get_action()
+        result.append(item)
+
+    return result
+
 
 def get_transaction_detail(logs):
     detail = ""
     for indiv in logs:
         if indiv.action == "ADD":
-            if indiv.new_value and indiv.new_value != "[]":
-                detail += indiv.column_name+" : "+indiv.new_value + "<br>"
-        elif indiv.action == "DELETE":
+            if indiv.new_value and indiv.new_value != "[]" and "_" not in indiv.column_name:
+                detail += indiv.column_name + " : " + indiv.new_value + "<br>"
+        elif indiv.action == "DELETE" and "_" not in indiv.column_name:
             if indiv.old_value and indiv.old_value != "[]":
-                detail += indiv.column_name+" : "+indiv.old_value + "<br>"
+                detail += indiv.column_name + " : " + indiv.old_value + "<br>"
         else:
-            if indiv.old_value and indiv.new_value:
+            if indiv.old_value and indiv.new_value and "_" not in indiv.column_name:
                 if indiv.column_name == "ID":
-                    detail += "Id : " + indiv.old_value
+                    detail += "Id : " + indiv.old_value + "<br>"
                 else:
-                    detail += indiv.column_name+" : "+indiv.old_value +" -> "+\
-                          indiv.new_value+"<br>"
-
-
+                    detail += indiv.column_name + " : " + indiv.old_value + " -> " + indiv.new_value + "<br>"
     return detail
+
+
+def get_payment_elements(request):
+    consumer_id = request.GET.get("user", "none")
+    if consumer_id == "none":
+        return None
+
+    result = []
+    for elem in Payment.objects.filter(consumer_id=consumer_id):
+        result.append(elem.descript())
+
+    return result
+
+
+def get_payment_details(request):
+    consumer_id = request.GET.get("id", None)
+    consumer = Consumer.objects.filter(id=consumer_id).first()
+    if consumer is None:
+        return None
+
+    balance = consumer.get_balance()
+    invoice = Invoice.objects.filter(consumer_id=consumer_id).order_by('-expiration').first()
+    validity = str(invoice.expiration) if invoice is not None else "Pas de prochaine facturation"
+
+    return balance, validity
+
+
+def get_details_network(request):
+    id_outlet = request.GET.get("id", None)
+    outlet = Element.objects.filter(id=id_outlet).first()
+    if outlet is None:
+        return HttpResponse("Impossible de charger cet élément", status=400)
+
+    location = Location.objects.filter(elem=id_outlet).first()
+    if location is not None:
+        location = location.json_representation
+
+    infos = {
+        "id": id_outlet,
+        "type": outlet.get_type(),
+        "localization": outlet.location,
+        "manager": outlet.manager_names,
+        "users": outlet.get_consumers(),
+        "state": outlet.get_status(),
+        "currentMonthCubic": outlet.get_current_output(),
+        "averageMonthCubic": outlet.get_all_output()[1],
+        "totalCubic": outlet.get_all_output()[0],
+        "geoJSON": location
+    }
+
+    return HttpResponse(json.dumps(infos))

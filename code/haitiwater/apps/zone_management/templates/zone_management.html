@@ -4,6 +4,7 @@
 
 {% block page_import %}
     <script src="{% static "zoneManagement.js"%}"></script>
+    <script src="{% static "zoneTableGenerator.js" %}"></script>
     <script src="{% static "vendor/select2/select2.js" %}"></script>
     <link href="{% static "vendor/select2/select2.css" %}" rel="stylesheet">
 {% endblock %}
@@ -20,11 +21,12 @@
                 <header class="panel-heading">
                     <!-- Table block control actions -->
                     <div class="panel-actions form-inline">
-                        <a href="#modalZone" onclick="setupModalZoneAdd()" class="modal-with-form fa fa-plus" title="Ajouter" id="plus-zone"></a>
-                        <a id="zone-options" class="fas fa-cog" title="Options avancées"></a>
-                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#modalZone" onclick="setupModalZoneAdd()" class="modal-with-form fa fa-plus" data-toggle="tooltip" title="Ajouter" id="plus-zone"></a>
+                        <a id="zone-options" class="fas fa-cog clickable" data-toggle="tooltip" title="Options" data-toggle="tooltip" title="Options avancées"></a>
+                        <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
                     </div>
                     <h2 class="panel-title">Zones</h2>
+                    <h2 class="panel-subtitle">Cliquez sur une zone pour filtrer les gestionnaires et éléments</h2>
                 </header>
                 <div class="panel-body">
                     {% include 'zones_table.html' %}
@@ -36,12 +38,13 @@
                 <header class="panel-heading">
                     <!-- Table block control actions -->
                     <div class="panel-actions form-inline">
-                        <a href="#modalManager" onclick="setupModalManagerAdd()" class="modal-with-form fa fa-plus" title="Ajouter" id="plus-manager"></a>
-                        <a id="print-manager" class="fa fa-print" title="Imprimer"></a>
-                        <a id="manager-options" class="fas fa-cog" title="Options avancées"></a>
-                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#modalManager" onclick="setupModalManagerAdd()" class="modal-with-form fa fa-plus" data-toggle="tooltip" title="Ajouter" id="plus-manager"></a>
+                        <a id="print-manager" class="fa fa-print clickable" data-toggle="tooltip" title="Imprimer la table" data-toggle="tooltip" title="Imprimer"></a>
+                        <a id="manager-options" class="fas fa-cog clickable" data-toggle="tooltip" title="Options" data-toggle="tooltip" title="Options avancées"></a>
+                        <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
                     </div>
                     <h2 class="panel-title">Gestionnaires et Techniciens</h2>
+                    <h2 class="panel-subtitle">Cliquez sur un gestionnaire pour filtrer les éléments</h2>
                 </header>
                 <div class="panel-body">
                     {% include 'managers_table.html' %}
@@ -51,13 +54,13 @@
     </div>
 
     <section class="panel" data-intro="Et voici les éléments du réseau.">
-        <header class="panel-heading" data-intro="Chaque table possède les mêmes contrôles pour interagir avec les éléments">
+        <header class="panel-heading">
             <!-- Table block control actions -->
             <div class="panel-actions form-inline">
-                <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus" title="Ajouter" data-intro="Ajouter une nouvelle ligne" data-position="left"></a>
-                <a id="print-water_element" class="fa fa-print" title="Imprimer" data-intro="Imprimer la table actuellement affichée" data-position="left"></a>
-                <a id="water_element-options" class="fas fa-cog" title="Options avancées" data-intro="Afficher les options avancées de la table (périodicité, nombre de lignes)" data-position="left"></a>
-                <a href="#" class="fa fa-caret-down"></a>
+                <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus" data-toggle="tooltip" title="Ajouter"></a>
+                <a id="print-water_element" class="fa fa-print clickable" data-toggle="tooltip" title="Imprimer la table" data-toggle="tooltip" title="Imprimer"></a>
+                <a id="water_element-options" class="fas fa-cog clickable" data-toggle="tooltip" title="Options" data-toggle="tooltip" title="Options avancées"></a>
+                <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
             </div>
             <h2 class="panel-title">Éléments du réseau</h2>
         </header>

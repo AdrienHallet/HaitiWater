@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block page_name %}
+{% block page_import %}
     <script src="{% static "report.js" %}"></script>
+    <script src="{% static "monthlyReportFormHandler.js" %}"></script>
+    <script src="{% static "monthlyReportEditFormHandler.js" %}"></script>
+    <script src="{% static "vendor/bootstrap-wizard/jquery.bootstrap.wizard.js" %}"></script>
+    <script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
     <script>
         $(document).ready(function () {
             $('span.username').html(localStorage.getItem("username"));
         });
     </script>
+{% endblock %}
+
+{% block page_name %}
     Page hors-connexion
 {% endblock %}
 

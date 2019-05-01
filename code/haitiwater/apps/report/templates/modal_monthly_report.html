@@ -1,10 +1,8 @@
-{% load static %}
-
 <div id="modalMonthlyReport" class="modal-block modal-block-lg mfp-hide">
     <section class="panel form-wizard" id="wizardMonthlyReport">
         <header class="panel-heading">
             <div class="panel-actions">
-                <button onclick="dismissModal()" class="btn">Annuler</button>
+                <button onclick="$.magnificPopup.close();" class="btn">Annuler</button>
             </div>
 
             <h2 class="panel-title">Rapport mensuel : {{ current_period }}</h2>
@@ -104,8 +102,8 @@
                 <li class="previous disabled">
                     <a><i class="fa fa-angle-left"></i> Précédent</a>
                 </li>
-                <li class="finish hidden pull-right">
-                    <a>Terminer</a>
+                <li class="finish hidden pull-right modal-confirm">
+                    <a>Envoyer</a>
                 </li>
                 <li class="save hidden pull-right">
                     <a>Sauvegarder</a>

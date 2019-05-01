@@ -48,7 +48,7 @@ $(document).ready(function() {
 		ev.preventDefault();
 		var validated = validate();
 		if ( validated ) {
-
+			beforeModalRequest();
 			let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
 			let postURL = baseURL + "/api/report/";
 			let xhttp = new XMLHttpRequest();
@@ -65,6 +65,7 @@ $(document).ready(function() {
 						});
 						$('#form-monthly-report-error-msg').html(xhttp.responseText);
 						$('#form-monthly-report-error').removeClass('hidden');
+						afterModalRequest();
 					} else {
 						new PNotify({
 							title: 'Succès!',
@@ -72,7 +73,9 @@ $(document).ready(function() {
 							type: 'success'
 						});
 						localStorage.removeItem("monthlyReport");
+						drawDataTable('report');
 						dismissModal();
+						afterModalRequest();
 					}
 				}
 			};
@@ -343,8 +346,12 @@ function validateStepThree(){
 	let billValues = $('#wizardMonthlyReport-billing');
 	billValues.find('.error').addClass('hidden');
 	billValues.find('.bill').each(function(e){
+		if (monthlyReport.details[e].cubic === "none"){
+			//Skip the current loop if we are in a fountain without data
+			return true; // Equal to "continue"
+		}
 		let id = $(this).attr('id').replace('bill-','');
-		let value = $(this).find('.real-bill').val()
+		let value = $(this).find('.real-bill').val();
 		console.log("value : " + value);
 		console.log("id : " + id);
 		if (value < 0 || value === ''){
@@ -352,8 +359,9 @@ function validateStepThree(){
 			valid = false;
 		} else{
 			let obj = monthlyReport.details[e];
-			if(obj.id != id)
-				throw new Exception('Something really bad happened');
+
+			if(obj.id !== id)
+				throw 'Something really bad happened';
 			obj.bill = value;
 		}
 	});
@@ -368,10 +376,12 @@ function setupStepOne(savedData){
 
 	if (location.pathname === '/offline/') {
 		$("#multiselect-outlets").html();
-		for (let i = 0; i < outlets.length; i++) {
-			const outlet = outlets[i];
-			const option = "<option value='" + outlet[0] + "'>" + outlet[1] + "</option>";
-			$("#multiselect-outlets").append(option);
+		if (outlets) {
+			for (let i = 0; i < outlets.length; i++) {
+				const outlet = outlets[i];
+				const option = "<option value='" + outlet[0] + "'>" + outlet[1] + "</option>";
+				$("#multiselect-outlets").append(option);
+			}
 		}
 	}
 
@@ -413,7 +423,8 @@ function setupStepTwo(savedData){
 		}
 		return '' +
 			'<div class="panel-body">' +
-			  '<div class="checkbox"><label><input type="checkbox" class="element-activity">' +
+			  '<div class="checkbox"><label>' +
+			  '<input type="checkbox" class="element-activity" ' + (data && data.cubic === 'none' && data.perCubic === 'none' ? '' : 'checked') + '>' +
 			  'Je dispose de données pour cet élément</label></div>' +
 				'<div class="row">' +
 					'<div class="col-sm-6">' +
@@ -421,11 +432,13 @@ function setupStepTwo(savedData){
 						'<div class="row">' +
 							'<div class="col-sm-6 cubic">' +
 								'<input class="form-control" type="number"'
-									+ (data ? 'value="' + data.cubic + '"' : '') + '">' +
+									+ (data && data.cubic !== 'none' ? 'value="' + data.cubic + '"' : '')
+									+ (data && data.cubic === 'none' && data.perCubic === 'none' ? 'disabled' : 'enabled') + '>' +
 							'</div>' +
 							'<div class="col-sm-6 gallon">' +
 								'<input class="form-control" type="number"'
-									+ (data ? 'value="' + (data.cubic * CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '') + '">' +
+									+ (data && data.cubic !== 'none' ? 'value="' + (data.cubic * CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '')
+									+ (data && data.cubic === 'none' && data.perCubic === 'none' ? 'disabled' : 'enabled') + '>' +
 							'</div>' +
 						'</div>' +
 						'<label class="volume error">Valeurs de volume incorrectes</label>' +
@@ -435,11 +448,13 @@ function setupStepTwo(savedData){
 						'<div class="row">' +
 							'<div class="col-sm-6 per-cubic">' +
 								'<input class="form-control" type="number"'
-									+ (data ? 'value="' + data.perCubic + '"' : '') + '">' +
+									+ (data && data.perCubic !== 'none' ? 'value="' + data.perCubic + '"' : '')
+									+ (data && data.cubic === 'none' && data.perCubic === 'none' ? 'disabled' : 'enabled') + '>' +
 							'</div>' +
 							'<div class="col-sm-6 per-gallon">' +
 								'<input class="form-control" type="number"'
-									+ (data ? 'value="' + (data.perCubic / CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '') + '">' +
+									+ (data && data.perCubic !== 'none' ? 'value="' + (data.perCubic / CUBICMETER_GALLON_RATIO).toFixed(3) + '"' : '')
+									+ (data && data.cubic === 'none' && data.perCubic === 'none' ? 'disabled' : 'enabled') + '>' +
 							'</div>' +
 						'</div>' +
 						'<label class="cost error">Valeurs de coût incorrectes</label>' +
@@ -473,52 +488,7 @@ function setupStepTwo(savedData){
 			"Si vous avez des détails à entrer, cochez la case de service à l'étape 1.<br>" +
 			"Si c'est correct, passez à l'étape suivante.</div>");
 	}
-
-	/**
-     * Listener to convert cubic to gallons and vice-versa, and to check if has data
-     */
-    $('.water-outlet').each(function(i){
-		// Cubic-gallon conversion
-        let cubic = $('.cubic input', this);
-        let gallon = $('.gallon input', this);
-
-        cubic.on('input', function(){
-            gallon.val((cubic.val() * CUBICMETER_GALLON_RATIO).toFixed(3));
-        });
-
-        gallon.on('input', function(){
-            cubic.val((gallon.val() / CUBICMETER_GALLON_RATIO).toFixed(3));
-        });
-
-        let perCubic = $('.per-cubic input', this);
-        let perGallon = $('.per-gallon input', this);
-
-        perCubic.on('input', function(){
-            perGallon.val((perCubic.val() / CUBICMETER_GALLON_RATIO).toFixed(3));
-        });
-
-        perGallon.on('input', function(){
-            perCubic.val((perGallon.val() * CUBICMETER_GALLON_RATIO).toFixed(3));
-        });
-
-		// Has data or not
-		let hasData = $('.element-activity', this);
-		let inputs = [cubic, gallon, perCubic, perGallon];
-		hasData.on('click', function(){
-			if (this.checked){
-				inputs.forEach(function(input){
-					input.prop('disabled', false);
-				})
-			}
-			else {
-				inputs.forEach(function(input){
-					input.prop('disabled', true);
-					input.val('');
-				})
-			}
-		})
-		hasData.prop('checked', true); // Start as checked
-    });
+	attachCubicGallonConverter();
 }
 
 /**
@@ -618,7 +588,7 @@ function setupConfirmation(){
 			"<ul>" +
 			selectionAsHTMLList +
 			"</ul>"+
-			"Cette opération est irréversible, cliquez sur \"Terminer\" pour confirmer l'envoi. <br>" +
+			"Cette opération est irréversible, cliquez sur \"Envoyer\" pour confirmer l'envoi. <br>" +
 			"Cliquez sur \"Sauvegarder\" pour sauvegarder les informations sans les envoyer. <br>" +
 			"Vous pourrez encore les modifier en revenant sur ce formulaire." +
 			"</div>");
@@ -629,4 +599,52 @@ function setupConfirmation(){
  */
 function dismissModal() {
     $.magnificPopup.close();
+}
+
+function attachCubicGallonConverter(){
+	/**
+     * Listener to convert cubic to gallons and vice-versa, and to check if has data
+     */
+    $('.water-outlet').each(function(i){
+		// Cubic-gallon conversion
+        let cubic = $('.cubic input', this);
+        let gallon = $('.gallon input', this);
+
+        cubic.on('input', function(){
+            gallon.val((cubic.val() * CUBICMETER_GALLON_RATIO).toFixed(3));
+        });
+
+        gallon.on('input', function(){
+            cubic.val((gallon.val() / CUBICMETER_GALLON_RATIO).toFixed(3));
+        });
+
+        let perCubic = $('.per-cubic input', this);
+        let perGallon = $('.per-gallon input', this);
+
+        perCubic.on('input', function(){
+            perGallon.val((perCubic.val() / CUBICMETER_GALLON_RATIO).toFixed(3));
+        });
+
+        perGallon.on('input', function(){
+            perCubic.val((perGallon.val() * CUBICMETER_GALLON_RATIO).toFixed(3));
+        });
+
+		// Has data or not
+		let hasData = $('.element-activity', this);
+		let inputs = [cubic, gallon, perCubic, perGallon, $('.real-gains input', $(this))];
+		hasData.on('click', function(){
+			if (this.checked){
+				inputs.forEach(function(input){
+					input.prop('disabled', false);
+				})
+			}
+			else {
+				inputs.forEach(function(input){
+					input.prop('disabled', true);
+					input.val('');
+				})
+			}
+		});
+		//hasData.prop('checked', true); // Start as checked
+    });
 }

@@ -85,7 +85,7 @@
 									<input id="id_password" name="password" type="password" class="form-control input-lg" required=""/>
 									<span class="input-group-addon">
 										<span class="icon icon-lg">
-											<i class="fa fa-lock"></i>
+                                            <i id="password-visibility-toggle" class="fas fa-eye allow-pointer-events" onclick="togglePasswordVisibility()"></i>
 										</span>
 									</span>
 								</div>
@@ -129,8 +129,7 @@
             <!-- Theme Initialization Files -->
             <script src="{% static "javascripts/theme.init.js" %}"></script>
 
-            <!-- Scripts often needed, requested in main template for preload !-->
-            <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
+            <script src="{% static "authentication.js" %}"></script>
         {% endcompress %}
 	</body>
 </html>
