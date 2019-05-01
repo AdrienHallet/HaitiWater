@@ -20,6 +20,7 @@
 \usepackage{hyperref}
 \usepackage{cite}
 \usepackage{float}
+\usepackage{multirow}
 
 \begin{document}
 
@@ -433,17 +434,116 @@
 			% Ici on détaille les choix majeurs. Les bibliothèques plus petites sont détaillées dans la documentation.
 			% Ici, donc, uniquement ce qui est soit réellement gros, soit souvent utilisé
 
+			% Expliquer le trade-off constant entre les techs choisies
+
+			% TODO figure montrant un visuel sur l'architecture choisie
+
 			\subsection*{Web}
 				% Requis du client. Avantage de la portabilité, installation, données décentralisées directement, donc communes à tous les utilisateurs
 				% Désavantage support des navigateurs multiples, perte en performances d'opérations complexes, nécessite plus de bande passante, rend plus difficile l'accès hors-ligne aux fonctionnalités
-			\subsection*{Django}
+
+				\'Etablie dès le premier jour, l'exigence du support web pour ce travail a formé la totalité du mémoire. Nous n'avons pas eu de réel choix à ce niveau, il nous est néanmoins possible de trouver des avantages à ce type de développement :
+				\begin{itemize}
+					\item L'application ne nécessite aucune installation. Il n'y a aucun prérequis d'installation et la seule nécessité est de disposer d'un navigateur internet (préférentiellement majeur et relaivement récent). C'est une facilité pour l'utilisateur, qui ne pourrait avoir plus de facilités à atteindre l'application puisqu'il suffit d'accéder au site internet. L'avantage est également étendu au développement qui ne doit pas se préoccuper du système d'exploitation de l'utilisateur.
+					\item Le déploiement des mises à jour et la manière dont l'application fonctionne en général est uniforme à travers les utilisateurs et les conflits de version, bien que devant toujours être gérés notamment par le biais du cache (voir section~\ref{sec:sec:cache_client}), sont moindres que sur une application locale. D'éventuels conflits de données peuvent être réglés directement via le serveur et les outils de développement disponibles à l'équipe, ce qui est plus rapide et moins complexe que de créer des automatisations pour gérer ces mises à jour individuellement pour chaque utilisateur.
+					\item
+				\end{itemize}
+
+				Ne présentant pas que des avantages, le développement web apporte son lot de problématiques nouvelles :
+				\begin{itemize}
+					\item Utiliser une application en ligne nécessite une connexion internet, et même si cette dernière n'est pas requise en permanence (voir section~\ref{sec:service_worker}), il est impératif qu'elle soit présente ponctuellement pour charger l'application et envoyer/recevoir les données lors de son utilisation.
+					\item La diversité des navigateurs internet (Firefox, Chrome, Edge, etc) entraîne la nécessité de gérer ces environnements différents pour que l'application fonctionne sur un maximum de navigateurs et de manière similaire.
+					\item
+				\end{itemize}
+
+			\subsection*{Choix du framework - Django}
 				% Framework éprouvé (ancien, maintenu, communauté, documentation), adapté à de larges applications (scalable), permet l'utilisation facilité de PostgreSQL (modèles), gabarits pour du HTML 'importé' sans besoin d'angular/whatever (moins de techs, reste simple).
+
+				Un framework est une infrastructure logicielle dans laquelle l'application est développée. On peut argumenter, avec raison, qu'un framework ajoute une certaine quantité d'outils qui ont pour effet de complexifier l'application et d'en augmenter la taille. Dans une application aussi large que la nôtre cependant, l'apport bénéfique qu'ont ces outils supplante largement ces inconvénients. Parmi ces apports bénéfique on citera surtout :
+				\begin{itemize}
+					\item L'environnement de travail d'un framework impose certaines contraintes qui répandent des bonnes pratiques. Par exemple une structure des fichiers du code source qui permet à long terme une meilleure maintenance, surtout dans de larges applications.
+					\item Les outils fournis sont testés, utilisés et éprouvés. Il n'est pas nécessaire de devoir créer nous-même des fonctionnalités déjà présentes dans un framework, et même si recréer ces fonctionnalités est une expérience enrichissante, elle reste moins efficace. De plus, les fonctionnalités existantes sont de meilleure qualité, offrent de meilleures performances et surtout ne sont pas à maintenir par l'équipe de développement de l'application, mais par l'organisme en charge de la publication du framework. Ces avantages seront d'autant plus importants que le framework est populaire et maintenu à jour.
+					\item Un framework aura beaucoup de fonctionnalités par défaut qui rendront le développement plus aisé. Messages d'erreur, outils de mesures, etc.
+					\item La documentation et l'aide sont de meilleure qualité. Les framework ont généralement une communauté et une équipe de développement dont les capacité et l'expérience permettent une production de documentation rendant très facile la compréhension du projet et la recherche d'aide. Avantages qu'il est impossible d'égaler dans une équipe de trois personnes sur dix mois.
+				\end{itemize}
+
+				La table~\ref{table:comparatif_framework} reprend une liste non-exhaustive de frameworks qui ont été envisagés pour ce projet. Afin de pouvoir développer une application compatible, nous avons évalué les possibilités et arrêté un choix durant la phase d'analyse du développement. Ci-après sont exposées les motivations de ce choix.
+
+				\begin{table}[H]
+				    \centering
+				    \begin{tabular}{|c|c||c|c|c|c|c||c|}
+				        \hline
+				        \textbf{Langage} & \textbf{Framework} & \textbf{C} & \textbf{M} & \textbf{Pe} & \textbf{Po} & \textbf{T} & \textbf{Total} \\
+				        \hline
+				        \multirow{4}{*}{\textbf{JavaScript}} & Express & M & M & B & B & M &3.5 \\
+				         & MeteorJS & B & B & M & N & B & 3.5\\
+				         & NodeJS & M & M & M & B & N & 3.5\\
+				        \hline
+				        \multirow{3}{*}{\textbf{Python}} & Django & M & M & B & B & M& 3.5\\
+				         & Flask & B & B & B & B & B & 5\\
+				         & Pyramid & B & B & B & N & B & 4\\
+				        \hline
+				        \multirow{1}{*}{\textbf{Ruby}} & Rails & N & M & B & B & B & 3 \\
+				        \hline
+				    \end{tabular}
+						\label{table:comparatif_framework}
+						\caption{Comparatif de quelques frameworks connus}
+				\end{table}
+
+				\subsubsection*{Critères - [B]on, [M]oyen, [N]égatif}
+
+					\begin{description}
+						\item[C] Complexité - Difficulté d'utilisation / apprentissage. \hfill \\
+							\'Evaluer la complexité est hautement subjective en fonction des préférences et habitudes du développeur. Nous pouvons néanmoins comparer les langages utilisés et la structure du framework.
+
+							Une mesure de la complexité se base sur l'imbrication des blocs de code. Un code comportant beaucoup de structures imbriquées sera moins lisible, et donc plus complexe. Les résultats\footnote{\'Etude de Seerene~\copyright, 2015} en figure~\ref{fig:complexity} montrent que cette mesure favorise le langage Python dans nos options.
+
+							\begin{figure}
+									\centering
+									\includegraphics[width=.6\textwidth]{images/complexity}
+									\caption{Pourcentage de code imbriqué}
+									\label{fig:complexity}
+							\end{figure}
+
+				    \item[M] Maintenabilité - Aisance et possibilités de maintenance. \hfill \\
+							L'aisance avec laquelle un code est maintenu à jour est inversement lié à la complexité. A cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long terme.
+
+				    \item[Pe] Performance - Capacités du framework. \hfill \\
+							Bien que moins importantes que dans une application critique (e.g.: aérospatial, banque), les performances sont mesurées en termes de temps de réponse pour une requête du client au serveur.
+
+				    \item[Po] Popularité - Popularité du langage à travers le monde. \hfill \\
+							La popularité est sans doute la plus importante des mesures de ce comparatif. Un langage populaire dispose de plus de tutoriels et aide en ligne que d'obscurs langages / frameworks peu ou pas utilisés.
+
+							La figure~\ref{fig:hotframework}~\footnote{https://hotframeworks.com/} montre une évolution de la popularité des frameworks les plus courants.
+
+							\begin{figure}
+							    \centering
+							    \includegraphics[width=\textwidth]{images/hotframework.png}
+							    \caption{Popularité des frameworks de novembre 2014 à août 2018}
+							    \label{fig:hotframework}
+							\end{figure}
+
+				    \item[T] Taille - Espace de stockage requis
+							Un framework léger sera plus intéressant pour ce projet. D'une part pour la complexité, car moins il est nécessaire de modifier/ajouter des fichier, plus l'utilisation est aisée. D'autre part car le serveur de destination nous est inconnu et nous ne savons donc pas quel espace de stockage sera mis à disposition.
+				\end{description}
+
+				\subsection*{Django}
+					Le choix d'un framework repose sur de nombreux critères dont plusieurs sont subjectifs. En l'absence d'une ligne directrice, le choix se fait souvent selon l'expérience et les désirs de l'équipe. Notre comparatif terminé, il est devenu clair que nous favorisions un framework utilisant le langage de programmation Python.
+
+					Flask a été envisagé, cependant les facilités offertes par Django dans la gestion de la base de données, particulièrement pour les données géographiques, a été le facteur décisif. Parmi les sites populaires utilisant Django, on citera Instagram, DropBox, Disqus~\footnote{https://djangostars.com/blog/10-popular-sites-made-on-django/}.
+
 			\subsection*{Python}
 				% Obligé par Django, quand même un bon choix. Pas le plus répandu (PHP et ASP.NET bien plus utilisés) mais permet une bonne gestion des objets intégrée directement au serveur, car langage OO.
+				Le langage Python est un langage de programmation populaire principalement grâce à sa syntaxe légère permettant un code compréhensible et généralement plus court (voir figure~\ref{fig:complexity}). Il n'est pas le plus utilisé, ce sont PHP (79\% d'utilisation), ASP.NET (11.3\%) et Java (4\%) qui constituent le trio de tête~\cite{ref:popular_programming_languages}. Toutefois, nous pensons que Python s'adapte parfaitement aux besoins de l'application demandée. C'est un langage relativement simple et compréhensible dont la popularité croît ces dernières années. Les bibliothèques logicielles et la documentation, toutes deux disponibles à foison sur internet, en font un langage particulièrement ouvert aux débutants. Un dernier argument, et non des moindres, est l'expérience déjà acquise dans la programmation en Python durant nos années d'études.
+
 			\subsection*{PostreSQL et PostGIS}
 				% Autre obligation de Django, mais une décision consciente de l'utiliser pour PostGIS. Manipulation géographique facilitée, un apport positif pour la suite du module GIS.
 				% Petit comparatif d'utilisation des SGBD avec MySQL, etc ?
 				% Pourquoi BDD relationnelle et non-relationnelle ?
+
+				Si l'utilisation du langage Python était imposée dès lors que Django fut choisi en tant qu'environnement logiciel, le système de gestion de base de données, dont le rôle est de lier l'application web et la base de données, a pu être choisi un peu plus librement.
+
+				Nous avons tout de suite écarté les systèmes non-relationnels
 
 			\subsection*{Bootstrap}
 				% Conventions connues (largement utilisées) pour le Front, beaucoup de choses pré-faites pour accélérer le développement.
@@ -500,7 +600,11 @@
 			\subsection*{Référence en annexe ?}
 
 		\section{Client}
+
 			% Le client est la partie visible de l'iceberg. Quand même un gros morceau mais totalement inutile sans le back. Il y a des calculs et conversions effectuées pour alléger la connexion, mais aucun calcul n'est enregistré en back (don't trust the user).
+
+			\subsection{Mise en cache}
+				\label{sec:cache_client}
 
 			Pages : 4 à 5
 			\subsection*{Modularité et responsiveness}
@@ -508,6 +612,7 @@
 			\subsection*{Gabarits}
 				% Ce qui permet d'implémenter la modularité dans l'app. Les blocs individuels sont construits et on les ajoute dans les pages selon le désir
 			\subsection*{Accessibilité hors-ligne}
+				\label{sec:service_worker}
 			  % TODO @Sébastien
 				% Expliquer le Service Worker, ses avantages et inconvénients, et les évolutions possibles pour appliquer le service worker partout, peut-être aussi le problème de la consistance de la DB ?
 			\subsection*{...}
