@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import Group
 from django.http import HttpResponse
@@ -8,6 +9,7 @@ from rest_framework.authtoken.models import Token
 from .views import conf_change
 
 
+@login_required(login_url='/login/')
 def edit(request):
     request.user.first_name = request.POST.get("first-name", None)
     request.user.last_name = request.POST.get("last-name", None)
