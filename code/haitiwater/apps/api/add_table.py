@@ -26,7 +26,7 @@ def add_consumer_element(request):
     phone = request.POST.get("phone", None)
     outlet_id = request.POST.get("mainOutlet", None)
 
-    if not is_int(sub):
+    if sub is None or not is_int(sub):
         return HttpResponse("Impossible, certains champs devraient être des entiers", status=400)
 
     outlet = Element.objects.filter(id=outlet_id).first()
@@ -206,6 +206,7 @@ def add_collaborator_element(request):
 
         for outlet in outlets:
             if not has_access(outlet, request):
+                user.delete()
                 return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
             outlet.manager_names = outlet.get_managers()
             outlet.save()
@@ -219,6 +220,9 @@ def add_collaborator_element(request):
         if zone is None:
             user.delete()
             return HttpResponse("Impossible d'attribuer cette zone au gestionnaire", status=400)
+        if zone.name not in request.user.profile.zone.subzones:
+            user.delete()
+            return HttpResponse("Vous n'avez pas les droits sur cette zone", status=403)
 
         user.profile.zone = zone
 

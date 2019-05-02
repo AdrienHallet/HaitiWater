@@ -12,32 +12,27 @@ success_200 = HttpResponse(status=200)
 
 
 def graph(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
-    json_object = {}
+    json_object = {"jsonarray": []}
 
     export_format = request.GET.get('type', None)
     if export_format == "consumer_gender_pie":
-        json_object["jsonarray"] = [
-            {
-                "label": "Femmes",
-                "data": 0
-            },
-            {
-                "label": "Hommes",
-                "data": 0
-            },
-            {
-                "label": "Autres",
-                "data": 0
-            }
-        ]
+        json_object["jsonarray"].append({'label': "Femmes", 'data': 0})
+        json_object["jsonarray"].append({'label': "Hommes", 'data': 0})
+        json_object["jsonarray"].append({'label': "Autres", 'data': 0})
 
-        for elem in Consumer.objects.all():
-            if elem.gender == "F" or elem.gender == "Femme":
+        consumers = None
+        if is_user_fountain(request):
+            consumers = Consumer.objects.filter(water_outlet__id__in=request.user.profile.outlets)
+        elif is_user_zone(request):
+            consumers = Consumer.objects.filter(water_outlet__zone__name__in=request.user.profile.zone.subzones)
+
+        for consumer in consumers:
+            if consumer.gender == "F" or consumer.gender == "Femme":
                 json_object['jsonarray'][0]['data'] += 1  # One more women
-            elif elem.gender == "M" or elem.gender == "Homme":
+            elif consumer.gender == "M" or consumer.gender == "Homme":
                 json_object['jsonarray'][1]['data'] += 1  # One more man
             else:
                 json_object['jsonarray'][2]['data'] += 1  # One more other
@@ -72,18 +67,13 @@ def graph(request):
 
                 data.append(total if not no_data else None)
 
-        json_object["jsonarray"] = [
-            {
-                "label": elements,
-                "data": data
-            }
-        ]
+        json_object["jsonarray"].append({"label": elements, "data": data})
 
     return HttpResponse(json.dumps(json_object))
 
 
 def gis_infos(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     if request.method == "GET":
@@ -113,6 +103,8 @@ def gis_infos(request):
         elem = Element.objects.filter(id=elem_id).first()
         if elem is None:
             return HttpResponse("Impossible de trouver l'élément demandé", status=400)
+        elif not has_access(elem, request):
+            return HttpResponse("Vous n'avez pas les droits sur cet élément de réseau", status=403)
 
         action = request.GET.get("action", None)
         if action == "add":
@@ -131,7 +123,7 @@ def gis_infos(request):
 
 # https://datatables.net/manual/server-side
 def table(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     params = parse(request)
@@ -157,15 +149,15 @@ def table(request):
         result = get_consumer_elements(request)
     elif table_name == "zone":
         if is_user_fountain(request):
-            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 403)
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", status=403)
         result = get_zone_elements(request)
     elif table_name == "manager":
         if is_user_fountain(request):
-            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 403)
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", status=403)
         result = get_manager_elements(request)
     elif table_name == "report":
         if is_user_zone(request):
-            return HttpResponse("Vous ne pouvez pas accéder à ces informations", 403)
+            return HttpResponse("Vous ne pouvez pas accéder à ces informations", status=403)
         result = get_last_reports(request)
     elif table_name == "ticket":
         result = get_ticket_elements(request)
@@ -209,11 +201,11 @@ def table(request):
         json_object["data"] = final[start:stop]
 
     json_object["recordsFiltered"] = len(final)
-    return HttpResponse(json.dumps(json_object))
+    return HttpResponse(json.dumps(json_object), status=200)
 
 
 def add_element(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     element = request.POST.get("table", "")
@@ -240,7 +232,7 @@ def add_element(request):
 
 
 def remove_element(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     element = request.POST.get("table", "")
@@ -252,9 +244,9 @@ def remove_element(request):
         element_id = request.POST.get("id", None)
 
         consumers = Consumer.objects.filter(water_outlet=element_id)
-        if len(consumers) > 0:  # Can't suppress outlets with consummers
+        if len(consumers) > 0:
             return HttpResponse("Vous ne pouvez pas supprimer cet élément, il est encore attribué à " +
-                                "des consommateurs", status=500)
+                                "des consommateurs", status=400)
 
         elem_delete = Element.objects.filter(id=element_id).first()
         if elem_delete is None:
@@ -275,13 +267,11 @@ def remove_element(request):
                 t.log_delete(transaction)
             t.delete()
 
-        for user in User.objects.all():
-            if len(user.profile.outlets) > 0:  # Gestionnaire de fontaine
-                if str(element_id) in user.profile.outlets:
-                    old = user.profile.infos()
-                    user.profile.outlets.remove(str(element_id))
-                    user.save()
-                    user.profile.log_edit(old, transaction)
+        for user in User.objects.filter(profile__outlets__contains=[str(element_id)]):
+            old = user.profile.infos()
+            user.profile.outlets.remove(str(element_id))
+            user.save()
+            user.profile.log_edit(old, transaction)
 
         return success_200
 
@@ -306,7 +296,7 @@ def remove_element(request):
         to_delete = User.objects.filter(username=manager_id).first()
         if to_delete is None:
             return HttpResponse("Impossible de supprimer cet utilisateur, il n'existe pas", status=400)
-        if to_delete.id == 1 or to_delete.id == 2: #IDs 1 and 2 are superuser and admin, should not be removed
+        if to_delete.id == 1 or to_delete.id == 2:  # IDs 1 and 2 are superuser and admin, should not be removed
             return HttpResponse("Impossible de supprimer cet utilisateur, il est nécéssaire au fonctionnement de"
                                 " l'application. Vous pouvez cependant le modifier", status=400)
         elif to_delete.profile.zone and to_delete.profile.zone.name not in request.user.profile.zone.subzones:
@@ -400,7 +390,7 @@ def remove_element(request):
 
 
 def edit_element(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     element = request.POST.get("table", "")
@@ -431,14 +421,12 @@ def edit_element(request):
 
 
 def details(request):
-    if request.user is None:
+    if not request.user.is_authenticated:
         return HttpResponse("Vous n'êtes pas connecté", status=403)
 
     table_name = request.GET.get("table", None)
     if table_name == "payment":
-        balance, validity = get_payment_details(request)
-        result = {"balance": balance, "validity": validity}
-        return HttpResponse(json.dumps(result))
+        return get_payment_details(request)
     elif table_name == "water_element":
         return get_details_network(request)
     else:
@@ -447,6 +435,9 @@ def details(request):
 
 
 def outlets(request):
+    if not request.user.is_authenticated:
+        return HttpResponse("Vous n'êtes pas connecté", status=403)
+
     result = {"data": get_outlets(request)}
     return HttpResponse(json.dumps(result))
 
