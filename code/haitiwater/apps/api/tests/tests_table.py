@@ -610,7 +610,7 @@ class TableTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
         result = json.loads(response.content)
-        self.assertEqual(result["balance"], 100)
+        self.assertEqual(result["amount_due"], -100)
 
     def test_get_details_payment_not_exists(self):
         response = self.client.get("/api/details/", {
