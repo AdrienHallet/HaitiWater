@@ -84,7 +84,7 @@ function requestFinancialDetails(userID){
         if (this.readyState === 4) {
             if (this.status === 200) {
                 let financialDetails = JSON.parse(this.response);
-                $('#consumer-details-balance').html('(HTG) ' + financialDetails.balance);
+                $('#consumer-details-amount-due').html('(HTG) ' + financialDetails.amount_due);
                 $('#consumer-details-next-bill').html(financialDetails.validity);
             }
             else{

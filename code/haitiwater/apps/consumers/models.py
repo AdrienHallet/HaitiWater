@@ -24,12 +24,12 @@ class Consumer(models.Model):
     def descript(self):
         tab = [self.id, self.last_name, self.first_name, self.get_gender_display(),
                self.location, self.get_phone_number(),
-               self.household_size, self.water_outlet.name, self.get_balance(), self.water_outlet.zone.name]
+               self.household_size, self.water_outlet.name, self.get_amount_due(), self.water_outlet.zone.name]
         return tab
 
-    def get_balance(self):
+    def get_amount_due(self):
         view = VirtualConsumersBalance.objects.filter(relevant_model=self.id).first()
-        return view.payed - view.due
+        return view.due - view.payed
 
     def get_phone_number(self):
         return self.phone_number if self.phone_number != "0" else "Non spécifié"

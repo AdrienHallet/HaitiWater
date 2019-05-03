@@ -200,11 +200,11 @@ def get_payment_details(request):
     if not has_access(consumer.water_outlet, request):
         return HttpResponse("Vous n'avez pas les droits sur cet élément", status=403)
 
-    balance = consumer.get_balance()
+    amount_due = consumer.get_amount_due()
     invoice = Invoice.objects.filter(consumer_id=consumer_id).order_by('-expiration').first()
     validity = str(invoice.expiration) if invoice is not None else "Pas de prochaine facturation"
 
-    result = {"balance": balance, "validity": validity}
+    result = {"amount_due": amount_due, "validity": validity}
 
     return HttpResponse(json.dumps(result))
 
