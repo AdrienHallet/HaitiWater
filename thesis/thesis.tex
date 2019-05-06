@@ -528,7 +528,7 @@
 							    \label{fig:hotframework}
 							\end{figure}
 
-				    \item[T] Taille - Espace de stockage requis
+				    \item[T] Taille - Espace de stockage requis \hfill \\
 							Un framework léger sera plus intéressant pour ce projet. D'une part pour la complexité, car moins il est nécessaire de modifier/ajouter des fichier, plus l'utilisation est aisée. D'autre part car le serveur de destination nous est inconnu et nous ne savons donc pas quel espace de stockage sera mis à disposition.
 				\end{description}
 
@@ -585,7 +585,7 @@
 				La bibliothèque Chart.JS est utilisée pour générer les représentations visuelles de l'application. Les bibliothèques permettant de créer des graphiques sont nombreuses et Chart.JS a de nombreux concurrents qui offrent parfois plus de fonctionnalités. Chart.JS a une bonne réputation dans ce domaine et est réputée pour ne pas être trop complexe à utiliser, toujours dans le but de respecter les exigences technologiques.
 				De plus, Chart.JS génère des canvas là où un de ses concurrents majeurs, la bibliothèque D3.JS, génère des images vectorielles ou des éléments du domaine, plus gourmands en performances en particulier avec de larges ensembles de données.
 
-		\section{Structure hiérarchique des utilisateurs}
+		\section{La hiérarchie dans l'application}
 			% Pages : 1 à 2
 			% La base du foncitonnement d'HaïtiWater.
 			% Deux types d'utilisateurs :
@@ -619,7 +619,7 @@
 					\item[Zone] \hfill \\
 						Une zone est un partitionnement des données de l'application. A la base de l'application se situe la zone racine dans laquelle toutes les données sont enregistrées. Une zone peut être composée d'autres zones. Une zone parente rassemble la totalité des données des zones filles. En revanche une zone fille ne rassemble que les données qui lui sont rattachées et ne voit pas le contenu des zones soeurs. On peut ainsi se servir des zones pour diviser géographiquement le réseau de distribution d'eau selon le principe de la hiérarchie haïtienne existante (DINEPA, OREPA, CAEPA) exposée en section~\ref{sec:structure_haiti}. Chacun a donc ses propres responsabilités et ne vient pas empiéter sur le territoire de l'autre.
 					\item[Elément du réseau] \hfill \\
-						Un élément du réseau peut être une conduite, un réservoir, une fontaine, un kiosque ou une prise individuelle. Ces cinq éléments constituent le réseau de distribution d'eau potable haïtien et sont enregistrés dans une zone.
+						Un élément du réseau peut être une conduite, un réservoir, une source, une fontaine, un kiosque ou une prise individuelle. Ces six éléments constituent le réseau de distribution d'eau potable haïtien et sont enregistrés dans une zone.
 					\item[Consommateur] \hfill \\
 						Un consommateur est un habitant qui utilise le réseau de distribution d'eau potable. Dès son enregistrement dans l'application, le consommateur est rattaché à un élément de sortie (fontaine, kiosque ou prise individuelle) du réseau, ce qui permet de gérer sa facturation et, de manière plus générale, de consulter la densité des consommateurs.
 				\end{description}
@@ -659,11 +659,34 @@
 		\section{Interface utilisateur}
 			% A fusionner avec "Client" ?
 
-			Pages : 2 à 3
+			% Pages : 2 à 3
 			% La GUI n'est qu'une manière d'utiliser l'application. Pour l'instant la seule, mais on différencie vraiment le serveur et l'application car au final la webapp n'est qu'une GUI pour l'API.
 			% Les fonctionnalités
 
-			Partie visible de notre application, l'interface graphique permet d'utiliser les fonctionnalités d'HaïtiWater. En réalité, l'interface graphique n'est qu'un moyen de faciliter l'utilisation de l'application et de rendre les données accessibles et lisibles par un humain. L'application est entièrement contrôlée par l'API qui requiert les données à afficher ou modifier. Somme toute, n'importe quelle autre interface (application locale, mobile, etc) pourrait envoyer les mêmes requêtes. Cela permet donc de décentraliser la logique de l'application dans le serveur tandis que l'interface permet de présenter l'information à un humain (tableaux, graphiques), le guider dans son utilisation et faciliter la saisie de données via les formulaires. Non content de permettre, dans le futur, la création de nouvelles interfaces, cette séparation des rôles améliore la sécurité de l'application, nous y reviendrons en section~\ref{sec:serveur}.
+			Partie visible de notre application, l'interface graphique permet d'utiliser les fonctionnalités d'HaïtiWater. En réalité, l'interface graphique n'est qu'un moyen de faciliter l'utilisation de l'application et de rendre les données accessibles et lisibles par un humain. L'application est entièrement contrôlée par l'API qui requiert les données à afficher ou modifier. Somme toute, n'importe quelle autre interface (application locale, mobile, etc) pourrait envoyer les mêmes requêtes. Cela permet donc de décentraliser la logique de l'application dans le serveur tandis que l'interface permet de présenter l'information à un humain (tableaux, graphiques), le guider dans son utilisation et faciliter la saisie de données via les formulaires. Non content de permettre, dans le futur, la création de nouvelles interfaces, cette séparation des rôles améliorer le développement et la maintenance de l'application, nous y reviendrons en section~\ref{sec:serveur}.
+
+			Se voulant simple, l'interface est composée de blocs de contrôle permettant de gérer les données dans une zone de travail commune à toute les pages permettant de naviguer à travers l'application.
+
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{images/screen_gis_numbered.png}
+				\caption{Capture d'écran du module géographique d'HaïtiWater}
+				\label{fig:capture_gis}
+			\end{figure}
+
+			Une capture d'écran de l'application vous est présentée en figure~\ref{fig:capture_gis}. Les contrôles communs incluent :
+			\begin{enumerate}
+				\item Le menu déroulant permettant d'accéder aux modules de l'application.
+				\item La zone utilisateur qui affiche ses notifications et le nom de compte qui lie à la déconnexion ou modification des informations personnelles dans son menu déroulant.
+				\item L'aide rapide, permettant de déclencher une visite virtuelle de la page ouverte, visite textuelle qui présente brièvement les contrôles et leur utilité.
+			\end{enumerate}
+
+			Les contrôles spécifiques à cette page sont :
+			\begin{enumerate}\setcounter{enumi}{3} % Reprendre à 3 pour suivre les labels du screen "fig:capture_gis"
+				\item La table est un bloc de contrôle récurrent dans notre application. Ici listant les différents éléments du réseau de distribution, chaque table possède un champ de recherche, un système de tri et des contrôles permettant d'ajouter, supprimer et modifier les éléments contenus. Remarquez que pour augmenter la lisibilité, les tables disposent d'une pagination permettant de limiter l'affichage à 10 (valeur par défaut), 25, 50 éléments ou de tout afficher.
+				\item Un bloc de contrôle plus complexe, ici la carte interactive. Sur celle-ci, il est possible de placer des marqueurs (fontaines, kiosques, prises individuelles, sources et réservoirs) ou des lignes polygonales (conduites). Supportant les habituels contrôles de zoom (molette ou boutons) et déplacement (en cliquer/glisser), il est également possible de basculer entre une vue cartographique d'OpenStreetMap~\footnote{\url{https://www.openstreetmap.org/}} et une vue sattelite de Google~\footnote{\url{https://www.google.com/maps}}
+			\end{enumerate}
+
+			% Todo énumération des modules GUI
 
 			\subsection*{Référence en annexe ?}
 
@@ -677,7 +700,7 @@
 
 			% Le client est la partie visible de l'iceberg. Quand même un gros morceau mais totalement inutile sans le back. Il y a des calculs et conversions effectuées pour alléger la connexion, mais aucun calcul n'est enregistré en back (don't trust the user).
 
-			\subsection{Mise en cache}
+			\subsection*{Mise en cache}
 				\label{sec:cache_client}
 
 			Pages : 4 à 5
@@ -687,7 +710,7 @@
 				% Ce qui permet d'implémenter la modularité dans l'app. Les blocs individuels sont construits et on les ajoute dans les pages selon le désir
 			\subsection*{Accessibilité hors-ligne}
 				\label{sec:service_worker}
-			  % TODO @Sébastien
+			  	% TODO @Sébastien
 				% Expliquer le Service Worker, ses avantages et inconvénients, et les évolutions possibles pour appliquer le service worker partout, peut-être aussi le problème de la consistance de la DB ?
 			\subsection*{...}
 
