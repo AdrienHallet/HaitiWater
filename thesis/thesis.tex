@@ -112,7 +112,7 @@
 
 			Nous avons également proposé une application pour la gestion de l'eau potable à Haïti. Nous espérons qu'elle pourra servir de base de travail, permettant aux acteurs de terrain d'avoir un jour un outil les aidant dans leur travail quotidien et apportant une aide au développement national.
 
-			Nous espérons avoir contribué à l'amélioration de la gestion de l'eau en Haïti, mais ce travail a assurément contribué au développement de nos compétences; en tant que développeurs, de par l'utilisatin de librairies et frameworks peu ou pas connus, en tant qu'analystes grâce au problème réel posé et la nécessité de comprendre les besoins. La coordination du groupe, la planification du travail et la communication avec les clients ont également beaucoup apporté à notre développement professionnel.
+			Nous espérons avoir contribué à l'amélioration de la gestion de l'eau en Haïti, mais ce travail a assurément contribué au développement de nos compétences; en tant que développeurs, de par l'utilisation de bibliothèques et frameworks peu ou pas connus, en tant qu'analystes grâce au problème réel posé et la nécessité de comprendre les besoins. La coordination du groupe, la planification du travail et la communication avec les clients ont également beaucoup apporté à notre développement professionnel.
 
 		\subsection*{Plan}
 
@@ -180,6 +180,7 @@
     			Actuellement, Protos agit dans deux zones du pays : Nord-Est (région dite "Moustiques") et Centre-Est (région dite "Onde Verte"). Celles-ci font partie des plus rurales, et ont été choisies car ce sont celles qui ont le plus besoin d'aide.
 
 			\subsection*{Structure organisationnelle}
+				\label{sec:structure_haiti}
 
     			%DINEPA, OREPA, CAEPAS,...
     			En plus de l'aide fournie par l'ONG Protos, il existe en Haïti plusieurs structures dédiées à la gestion de l'eau. Premièrement, la DINEPA (DIrection Nationale de l'Eau Potable et de l'Assainissement), qui a pour mission d’exécuter la politique de l’état dans le secteur de l’eau potable et de l’assainissement autour de 3 grands axes : le développement du secteur au niveau national, la régulation du secteur et le contrôle des acteurs~\cite{ref:dinepa}. La DINEPA est sous contrôle direct du Ministère de Travaux Publics, Transports et Communication.
@@ -544,30 +545,58 @@
 
 				Si l'utilisation du langage Python était imposée dès lors que Django fut choisi en tant qu'environnement logiciel, le système de gestion de base de données, dont le rôle est de lier l'application web et la base de données, a pu être choisi un peu plus librement.
 
-				Nous avons tout de suite écarté les systèmes non-relationnels
+				Nous avons tout de suite écarté les systèmes non-relationnels. Bien que présentant des avantages, principalement dans l'agilité avec laquelle la structure des données peut évoluer, ces derniers ne sont pas adaptés à une application comme celle développée dans le cadre de ce mémoire. En effet les données ont de fortes dépendances, les éléments du réseau étant rattachés à des gestionnaires faisant parties de zones géographiques elle-même gérées, etc. Les outils offerts par les bases de données relationnelles pour joindre différents groupes de données (par exemple pour croiser les consommateurs avec leurs paiements afin d'obtenir un détail financier), sont tout simplement mieux adaptés au fonctionnement de l'application.
+
+				Restent donc les systèmes de gestion de base de données (SGBD) relationnels, dans lequels nous avons opté pour PostgreSQL, classé quatrième système de gestion de bases de données le plus utilisé au monde~\footnote{\url{https://db-engines.com/en/ranking}, 1 mai 2019}. La première motivation de ce choix est la recommandation du framework Django, lequel s'adapte mieux à ce SGBD via son système de \emph{mapping objet-relationnel} (voire section~\ref{sec:serveur}). La seconde motivation est l'existence de l'extension PostGIS~\cite{ref:postgis}, une extension du SGBD permettant de traiter aisément les données géographiques.
 
 			\subsection*{Bootstrap}
 				% Conventions connues (largement utilisées) pour le Front, beaucoup de choses pré-faites pour accélérer le développement.
 				% Responsivité facilité grâce aux systèmes de base
 				% Désavantage; un peu lourd en raison des fonctions non-utilisées, mais solution (lier la section améliorations futures où on va parler du cleanup des vendeurs)
 
+				Bien que l'utilisation de frameworks \emph{front-end} soit de plus en plus répandue, nous n'en avons pas intégré dans le client de l'application. Les choix sont pourtant nombreux et tant Angular, React que Vue ont été envisagés. Nous avons décidé de n'en utiliser aucun pour ne pas ajouter de technologie supplémentaire et pour limiter le nombre de dépendances du projet afin d'en garantir la perrenité sur le long terme.
+
+				Néanmoins, la version 3 (plus documentée, éprouvée et ayant de meilleures compatibilités avec les autres frameworks et bibliothèques que la version 4) de Bootstrap est présente dans l'application. Bootstrap est une bibliothèque implémentant une large quantité de fonctionnalités que nous utilisons majoritairement pour agencer visuellement les blocs de l'interface graphique en fonction de la taille de l'affichage disponible, afficher des composants avancés (multisélection, sélection de date, menus) et styliser les composants de l'interface.
+
+				Bootstrap ajoute l'avantage non-négligeable d'implémenter un bon nombre de fonctionnalités nous permettant d'accélerer le développement, tout en étant une bibliothèque assez connue que pour être extensivement testée et documentée, la rendant une meilleure alternative à une création personnalisée qui aurait sans doute été moins performante.
+
+				Le désavantage majeur est son poids. Accompagnée de nombreuses fonctionnalités qui n'ont pas été utilisées dans ce projet, Bootstrap est lourde (approximativement 400 KB), d'autant plus en considérant la lenteur des connexions haïtiennes, cependant il est tout à fait possible de nettoyer la bibliothèque (voir section~\ref{ref:suite_projet}) pour n'en conserver que les fonctionnalités utilisées, et ainsi optimiser les téléchargements.
+
 			\subsection*{DataTables}
 				% Un constat ; les tables Django ne permettent pas de contrôler l'information à 100%
 				% Second constat ; on veut une API (référence serveur)
 				% DataTable, librairie connue, avec un gros support, grosse documentation, beaucoup de modules pour gérer les tables, AJAX pour 100% séparer les données de leur présentation
 
-			\subsection*{ChartJS}
+				DataTables~\cite{ref:datatables} est la seconde plus grosse bibliothèque du projet, gérant l'affichage des données sous forme de tables. A nouveau sélectionnée de par son ancienneté permettant une documentation et des tutoriels efficaces, DataTables était très loin d'être la seule option. Nous avons envisagé, et débuté la première version avec, la bibliothèque \emph{Django-Tables2} qui causait un ralentissement du chargement des pages contenant les données, et une perte de contrôle de l'information au niveau du serveur car les tables étaient directement rattachées aux modèles de la base de données.
+
+				Dans notre volonté d'offrir une API pour communiquer avec le serveur (voir section~\ref{sec:serveur}), nous avons migré vers DataTables. En utilisant la technologie AJAX (Asynchronous Javascript And XML) de DataTables, nous pouvons exploiter pleinement l'asynchronicité du navigateur et charger une page de l'application en totale indépendance des données ce qui augmente la vitesse de chargement des contrôles, permettant d'utiliser directement une fonctionnalité de l'application sans attendre le téléchargement des données (par exemple pour ajouter un élément).
+
+				Les capacités offertes par DataTables sur le contrôle des données nous permettent également de gérer les données à l'envoi et/ou à la réception et de contrôler leur affichage, tout en bénéficiant des fonctionnalités implémentées par la bibliothèque (champ de recherche, tri dynamique, pagination).
+
+				Outre son poids conséquent auquel nous pouvons à nouveau opposer la solution évoquée dans la bibliothèque Bootstrap, DataTables requiert d'implémenter les fonctionnalités de l'API et de gérer le transfert et traitement des requêtes en envoi et réponse du client et du serveur, ce qui représente une charge de travail non-négligeable.
+
+			\subsection*{Chart.JS}
 			  % Présenter l'information visuellement.
 				% Même avantage que DataTables, on envoie uniquement des données, tout se fait en front. Une des plus utilisées, mais pas la numéro 1 car D3.JS est un monstre, plus difficile à comprendre et utilise un système d'objets qui alourdissent considérablement la page, difficile de savoir si les périphériques haïtiens vont supporter. ChartJS utilise des canevas, plus légers. Moins dynamiques mais quand même certaines possibilités
 
-		\section{Structure hiérarchique des utilisateurs}
-			%TODO schéma de la hiérarchie permettant d'être utilisé comme "running example" dans la section
+				La bibliothèque Chart.JS est utilisée pour générer les représentations visuelles de l'application. Les bibliothèques permettant de créer des graphiques sont nombreuses et Chart.JS a de nombreux concurrents qui offrent parfois plus de fonctionnalités. Chart.JS a une bonne réputation dans ce domaine et est réputée pour ne pas être trop complexe à utiliser, toujours dans le but de respecter les exigences technologiques.
+				De plus, Chart.JS génère des canvas là où un de ses concurrents majeurs, la bibliothèque D3.JS, génère des images vectorielles ou des éléments du domaine, plus gourmands en performances en particulier avec de larges ensembles de données.
 
-			Pages : 1 à 2
+		\section{Structure hiérarchique des utilisateurs}
+			% Pages : 1 à 2
 			% La base du foncitonnement d'HaïtiWater.
 			% Deux types d'utilisateurs :
 				% Gestionnaire de fontaine, le plus proche des consommateurs.
 				% Gestionnaire de zone, supervision
+
+			Le bon fonctionnement de l'application repose sur le principe hiérarchique de la récolte des informations venant de la saisie de données par les utilisateurs de l'application puisque le manque de financement et l'état actuel du réseau ne permet pas une récolte en temps réel des données via des capteurs. Une représentation de la structure hiérarchique vous est présentée en figure~\ref{fig:principe_hierarchique}.
+
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.45]{images/principe_hierarchique}
+				\caption{Représentation du principe hiérarchique des utilisateurs, éléments et consommateurs}
+				\label{fig:principe_hierarchique}
+			\end{figure}
 
 			\subsection*{Structure}
 				% Les utilisateurs s'organisent dans un système en arbre.
@@ -581,16 +610,57 @@
 				% Permet d'être réutilisée dans d'autres pays, structure simple à responsabilités définies
 
 				% Point négatif qu'on repose entièrement sur les gestionnaires de fontaine pour avoir l'information (paiements, état du réseau, volumes). Mais c'est la seule possibilité vu que l'info ne peut pas être récupérée automatiquement.
+
+				Rappelons que l'application a trois concepts clefs :
+				\begin{description}
+					\item[Zone] \hfill \\
+						Une zone est un partitionnement des données de l'application. A la base de l'application se situe la zone racine dans laquelle toutes les données sont enregistrées. Une zone peut être composée d'autres zones. Une zone parente rassemble la totalité des données des zones filles. En revanche une zone fille ne rassemble que les données qui lui sont rattachées et ne voit pas le contenu des zones soeurs. On peut ainsi se servir des zones pour diviser géographiquement le réseau de distribution d'eau selon le principe de la hiérarchie haïtienne existante (DINEPA, OREPA, CAEPA) exposée en section~\ref{sec:structure_haiti}. Chacun a donc ses propres responsabilités et ne vient pas empiéter sur le territoire de l'autre.
+					\item[Elément du réseau] \hfill \\
+						Un élément du réseau peut être une conduite, un réservoir, une fontaine, un kiosque ou une prise individuelle. Ces cinq éléments constituent le réseau de distribution d'eau potable haïtien et sont enregistrés dans une zone.
+					\item[Consommateur] \hfill \\
+						Un consommateur est un habitant qui utilise le réseau de distribution d'eau potable. Dès son enregistrement dans l'application, le consommateur est rattaché à un élément de sortie (fontaine, kiosque ou prise individuelle) du réseau, ce qui permet de gérer sa facturation et, de manière plus générale, de consulter la densité des consommateurs.
+				\end{description}
+
+				Deux types d'utilisateurs sont amenés à se connecter à l'application :
+				\begin{description}
+					\item[Gestionnaire de Fontaine] \hfill \\
+						Ce gestionnaire est un noeud terminal dans un chemin de la hiérarchie des utilisateurs. Son rôle est simple; au plus proche du consommateur, il est chargé de gérer (et donc assigné à) un ou plusieurs éléments de sortie du réseau, c'est-à-dire qu'il s'occupe du bon fonctionnement de la distribution aux consommateurs. Il a quatre charges relatives aux éléments du réseau de distribution d'eau qui lui sont assignés :
+							\begin{enumerate}
+								\item Rapporter l'utilisation, sous forme des volumes distribués.
+								\item Signaler les problèmes avec la pompe ou avec la qualité de l'eau.
+								\item Ajouter, modifier ou supprimer les consommateurs.
+								\item Rapporter les paiements des consommateurs.
+							\end{enumerate}
+						Le gestionnaire de fontaine est donc une entité locale similaires aux \emph{comités fontaines} vus en section~\ref{sec:procedures_actuelles}.
+					\item[Gestionnaire de Zone] \hfill \\
+						Le gestionnaire de zone est un rôle plus complexe. Il est un administrateur local ou global, dépendamment de sa position dans la hiérarchie. Un gestionnaire de zone peut superviser d'autres gestionnaires, de zone ou de fontaine, et ce en nombre illimité. Un gestionnaire de zone peut effectuer les mêmes actions qu'un gestionnaire de fontaine, mais ses charges sont plutôt orientées dans l'administration  de sa zone:
+							\begin{enumerate}
+								\item Ajouter, modifier ou supprimer des zones.
+								\item Ajouter, modifier ou supprimer des gestionnaires.
+								\item Assigner des gestionnaires de zone à une zone, et des gestionnaires de fontaine à un ou plusieurs éléments de sortie du réseau.
+								\item Gérer ses gestionnaires et leurs actions via l'historique.
+								\item Utiliser les données récoltées par ses gestionnaires pour gérer le réseau de distribution.
+							\end{enumerate}
+				\end{description}
+
 			\subsection*{Permissions}
 				% Gestionnaire de zone; tout, dans sa zone et enfants.
 				% Gestionnaire de fontaine; tous les droits sur la gestion des consommateurs et des paiements. Ne peut pas modifier le réseau ou les utilisateurs de l'application
 				% On dispose quand même d'un garde-fou, le module d'historique
+				Bien entendu, une hiérarchie implique un système de permissions. Dans notre application, ce dernier se calque exactement sur la structure exposée ci-avant. En toute normalité, les utilisateurs ne peuvent effectuer que les actions qui sont assignées à leur rôle. L'interface propose des contrôles réduits aux gestionnaires de fontaine, en opposition aux gestionnaires de zone qui doivent assumer leurs responsabilités supplémentaires.
+
+				De plus, les données sont fortement liées à la hiérarchie et empêchent une quelconque utilisation, ajout, modification ou suppression par un utilisateur non-autorisé. Lorsqu'une donnée, peu importe son type (une zone, un consommateur, un rapport mensuel, etc), est ajoutée dans l'application, elle n'est visible que par l'utilisateur qui l'a créée et les utilisateurs qui lui sont supérieurs dans la hiérarchie (utilisateurs parents).
+
+				En somme, plus un utilisateur est haut dans la hiérarchie, plus il a de pouvoir sur les données de l'application, la zone racine étant donc la somme de toutes les données, faisant des gestionnaires de cette zone les utilisateurs ayant le plus d'impact sur le système.
+
 		\section{Interface utilisateur}
 			% A fusionner avec "Client" ?
 
 			Pages : 2 à 3
 			% La GUI n'est qu'une manière d'utiliser l'application. Pour l'instant la seule, mais on différencie vraiment le serveur et l'application car au final la webapp n'est qu'une GUI pour l'API.
 			% Les fonctionnalités
+
+			Partie visible de notre application, l'interface graphique permet d'utiliser les fonctionnalités d'HaïtiWater. En réalité, l'interface graphique n'est qu'un moyen de faciliter l'utilisation de l'application et de rendre les données accessibles et lisibles par un humain. L'application est entièrement contrôlée par l'API qui requiert les données à afficher ou modifier. Somme toute, n'importe quelle autre interface (application locale, mobile, etc) pourrait envoyer les mêmes requêtes. Cela permet donc de décentraliser la logique de l'application dans le serveur tandis que l'interface permet de présenter l'information à un humain (tableaux, graphiques), le guider dans son utilisation et faciliter la saisie de données via les formulaires. Non content de permettre, dans le futur, la création de nouvelles interfaces, cette séparation des rôles améliore la sécurité de l'application, nous y reviendrons en section~\ref{sec:serveur}. 
 
 			\subsection*{Référence en annexe ?}
 
@@ -622,6 +692,7 @@
 			\label{sec:serveur}
 
 			% Parler de l'API, pourquoi c'est bien à la place d'utiliser du django classique et comment on l'a faite
+			% Parler de l'ORM de Django
 
 			Pages : 4 à 5
 			\subsection*{Authentification}
@@ -656,9 +727,11 @@
 
 	\chapter{Améliorations futures}
 
+
 		Total des pages : 4 à 7
 
 		\section{Suite du projet}
+			\label{ref:suite_projet}
 			% Lors du déploiement, même si le site est pas hyper lourd, on peut encore l'alléger en faisant du coverage par les navigateurs (quelques stats), pas une bonne idée de le faire maintenant vu que développement pas fini.
 
 			Pages : 2 à 3
