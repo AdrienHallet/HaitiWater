@@ -451,7 +451,7 @@
 				\'Etablie dès le premier jour, l'exigence du support web pour ce travail a formé la totalité du mémoire. Nous n'avons pas eu de réel choix à ce niveau, il nous est néanmoins possible de trouver des avantages à ce type de développement :
 				\begin{itemize}
 					\item L'application ne nécessite aucune installation. Il n'y a aucun prérequis d'installation et la seule nécessité est de disposer d'un navigateur internet (préférentiellement majeur et relaivement récent). C'est une facilité pour l'utilisateur, qui ne pourrait avoir plus de facilités à atteindre l'application puisqu'il suffit d'accéder au site internet. L'avantage est également étendu au développement qui ne doit pas se préoccuper du système d'exploitation de l'utilisateur.
-					\item Le déploiement des mises à jour et la manière dont l'application fonctionne en général est uniforme à travers les utilisateurs et les conflits de version, bien que devant toujours être gérés notamment par le biais du cache (voir section~\ref{sec:sec:cache_client}), sont moindres que sur une application locale. D'éventuels conflits de données peuvent être réglés directement via le serveur et les outils de développement disponibles à l'équipe, ce qui est plus rapide et moins complexe que de créer des automatisations pour gérer ces mises à jour individuellement pour chaque utilisateur.
+					\item Le déploiement des mises à jour et la manière dont l'application fonctionne en général est uniforme à travers les utilisateurs et les conflits de version, bien que devant toujours être gérés notamment par le biais du cache (voir section~\ref{sec:cache_client}), sont moindres que sur une application locale. D'éventuels conflits de données peuvent être réglés directement via le serveur et les outils de développement disponibles à l'équipe, ce qui est plus rapide et moins complexe que de créer des automatisations pour gérer ces mises à jour individuellement pour chaque utilisateur.
 					\item
 				\end{itemize}
 
@@ -722,13 +722,13 @@
 				% Interface construite en blocs (screen?)
 				Nous avons vu plus tôt que l'application est constituée d'une zone de travail dans laquelle des blocs de contrôles sont placés pour former les différents modules de l'application. Ces blocs de contrôle reflètent l'architecture logicielle de l'interface.
 
-				Pour implémenter ces contrôles, nous utilisons les gabarits Django qui sont des blocs de code HTML établissant la structure de la page web. Ces différents blocs de structure sont ensuite utilisés dans l'application :
+				Pour implémenter ces contrôles, nous utilisons les gabarits Django qui sont des blocs de code HTML établissant la structure de la page web. Ces différents blocs de structure sont ensuite utilisés dans l'application pour créer les différentes pages :
 				\begin{itemize}
-					\item En \emph{extension}, c'est-à-dire que nous crééons une nouvelle page à partir d'un gabarit existant. Les contrôles communs (figure~\ref{fig:fig:capture_gis}.1-3) de l'application sont ainsi définis une seule fois et réutilisés à travers les modules.
+					\item En \emph{extension}, c'est-à-dire que nous crééons une nouvelle page à partir d'un gabarit existant. Les contrôles communs (figure~\ref{fig:capture_gis}.1-3) de l'application sont ainsi définis une seule fois et réutilisés à travers les modules.
 					\item En \emph{inclusion}, dans laquelle un bloc de contrôle est défini indépendamment d'une page, lui permettant de conserver le même fonctionnement en une seule implémentation à travers plusieurs pages web. Les tables et formulaires sont des exemples typiques.
 				\end{itemize}
 
-				
+
 
 			\subsection*{Accessibilité hors-ligne}
 				\label{sec:service_worker}
