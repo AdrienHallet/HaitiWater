@@ -21,6 +21,7 @@
 \usepackage{cite}
 \usepackage{float}
 \usepackage{multirow}
+\usepackage[final]{pdfpages}
 
 \begin{document}
 
@@ -686,28 +687,49 @@
 				\item Un bloc de contrôle plus complexe, ici la carte interactive. Sur celle-ci, il est possible de placer des marqueurs (fontaines, kiosques, prises individuelles, sources et réservoirs) ou des lignes polygonales (conduites). Supportant les habituels contrôles de zoom (molette ou boutons) et déplacement (en cliquer/glisser), il est également possible de basculer entre une vue cartographique d'OpenStreetMap~\footnote{\url{https://www.openstreetmap.org/}} et une vue sattelite de Google~\footnote{\url{https://www.google.com/maps}}
 			\end{enumerate}
 
-			% Todo énumération des modules GUI
+			Tant pour accélérer le développement que pour permettre à l'utilisateur de s'habituer à l'utilisation de l'interface en se familiarisant avec les contrôles, les blocs de l'interface graphique sont réutilisés à travers les différentes pages de l'application.
 
-			\subsection*{Référence en annexe ?}
+			La saisie des données occupe également une grande importance dans l'application. Pour ajouter et modifier les données, nous utilisons des fenêtres modales contenant des formulaires
+
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{images/screen_rapport_mensuel.png}
+				\caption{Capture d'écran du formulaire de rapport mensuel d'HaïtiWater}
+				\label{fig:screen_rapport_mensuel}
+			\end{figure}
+
+			Ces formulaires ont pour objectif d'accompagner l'utilisateur dans ses tâches. En figure~\ref{fig:screen_rapport_mensuel}, vous observez que pour atteindre cet accompagnement nous mettons en place un formulaire qui se consulte de haut en bas et de droite à gauche, où chaque information entrée est une information qui ne nécessite aucun retour en arrière. Sur ce formulaire en particulier, l'utilisateur peut entrer des données dans l'unité de volume de son choix (mètres cubes, gallons), la conversion est faite automatiquement. On trouve un autre exemple de cet accompagnement dans ce formulaire avec la séparation en 4 parties distinctes successives qui évitent un bloc formulaire trop grand et permettent une transition entre différentes parties logiques du rapport mensuel.
+
+			%TODO voir si on met les screens de toute l'application en annexe
 
 		\section{Procédure d'utilisation}
 
-			Pages : 2 à 3
+			%Pages : 2 à 3
 
-			\subsection*{Référence en annexe ?}
+			%TODO que mettre en contenu ? à voir avec le CdC
 
 		\section{Client}
 
 			% Le client est la partie visible de l'iceberg. Quand même un gros morceau mais totalement inutile sans le back. Il y a des calculs et conversions effectuées pour alléger la connexion, mais aucun calcul n'est enregistré en back (don't trust the user).
+			L'interface et sa facilité d'utilisation n'a pas été le seul axe du développement du client. C'est au niveau technologique que nous trouvons deux contraintes importantes : l'allégement de l'utilisation de la connexion et la simplification du code source derrière l'application.
 
 			\subsection*{Mise en cache}
 				\label{sec:cache_client}
 
-			Pages : 4 à 5
-			\subsection*{Modularité et responsiveness}
+				La mise en cache est un système natif commun à la vaste majorité des navigateurs modernes. Le concept est simple; conserver l'ancienne version d'un fichier pour la réutiliser la prochaine fois si elle n'a pas changé. HaïtiWater utilise pleinement ce concept pour alléger le poids des téléchargements. Nous avons poursuivi un objectif de généricité dans le code source afin d'éliminer la redondance et de permettre une forte réutilisation des composants. Grâce à cette mise en cache, les pages de l'application qui font en moyenne $1,2$MB lors de la première visite ne requierent qu'approximativement $10$KB de téléchargement pour les suivantes. Une exception peut être notée; le module d'information géographique est plus gourmand en ressources réseau en raison du téléchargement des images composant la carte.
+
+			%Pages : 4 à 5
+			\subsection*{Gabarits, modularité et responsiveness}
 				% Interface construite en blocs (screen?)
-			\subsection*{Gabarits}
-				% Ce qui permet d'implémenter la modularité dans l'app. Les blocs individuels sont construits et on les ajoute dans les pages selon le désir
+				Nous avons vu plus tôt que l'application est constituée d'une zone de travail dans laquelle des blocs de contrôles sont placés pour former les différents modules de l'application. Ces blocs de contrôle reflètent l'architecture logicielle de l'interface.
+
+				Pour implémenter ces contrôles, nous utilisons les gabarits Django qui sont des blocs de code HTML établissant la structure de la page web. Ces différents blocs de structure sont ensuite utilisés dans l'application :
+				\begin{itemize}
+					\item En \emph{extension}, c'est-à-dire que nous crééons une nouvelle page à partir d'un gabarit existant. Les contrôles communs (figure~\ref{fig:fig:capture_gis}.1-3) de l'application sont ainsi définis une seule fois et réutilisés à travers les modules.
+					\item En \emph{inclusion}, dans laquelle un bloc de contrôle est défini indépendamment d'une page, lui permettant de conserver le même fonctionnement en une seule implémentation à travers plusieurs pages web. Les tables et formulaires sont des exemples typiques.
+				\end{itemize}
+
+				
+
 			\subsection*{Accessibilité hors-ligne}
 				\label{sec:service_worker}
 			  	% TODO @Sébastien
@@ -793,8 +815,8 @@
 		Pages : beaucoup
 
 	\chapter{Wireframes}
-
-		Pages : beaucoup
+		\label{sec:wireframes}
+		\includepdf[pages=-,nup=1x2,pagecommand={},width=\textwidth]{../documents/design/wireframes/hi-fi/wireframes_hifi_pencil.pdf}
 
 	\chapter{Diagrammes d'activité}
 
