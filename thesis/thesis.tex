@@ -208,7 +208,7 @@
 				Concrètement, si la zone de Poste Métier a un taux de recouvrement satisfaisant (89\%), les autres zones comme Passe Catabois sont bien en deça (11\%). Ceci est dû à plusieurs éléments : les habitants sont mieux informés sur la problématique de l'eau, mais les gestionnaires de fontaines ont aussi le pouvoir de couper l'accès à l'eau (à l'aide de cadenas) quand les factures ne sont pas payées. On remarque également que les modes de fonctionnements des différentes zones ne sont pas toujours les mêmes (pas toujours de bureau pour les réunions, règlements plus ou moins stricts).
 				%TODO : taille des comités etc, voir commentaire Sandra
 
-				En pratique, un comité de l'eau (\emph{Komite Dlo} en Créole haïtien) est composé d'un président, un vice-président, un secrétaire, un trésorier et un conseiller, élus par les consommateurs locaux pour cinq ans. Ils se réunissent tous les mois pour parler des affaires courantes, et organisent une fois par an une assemblée générale où sont conviés les usagers du réseau. Ils sont en charge du bon fonctionnement du réseau, de la gestion du budget et des fonds amenés par les utilisateurs, de superviser les \emph{comités fontaines} et de rendre des comptes à la population.
+				En pratique, un comité de l'eau (\emph{Komité Dlo} en Créole haïtien) est composé d'un président, un vice-président, un secrétaire, un trésorier et un conseiller, élus par les consommateurs locaux pour cinq ans. Ils se réunissent tous les mois pour parler des affaires courantes, et organisent une fois par an une assemblée générale où sont conviés les usagers du réseau. Ils sont en charge du bon fonctionnement du réseau, de la gestion du budget et des fonds amenés par les utilisateurs, de superviser les \emph{comités fontaines} et de rendre des comptes à la population.
 
 				Les comités fontaines, eux, sont composés d'un responsable fontaine, un secrétaire et un trésorier. Il sont en charge du bon fonctionnement et de la qualité du point d'eau, d'apporter les fonds au comité d'eau et de gérer les éventuels conflits entre usagers ou les réparations nécéssaires.
 
@@ -404,56 +404,60 @@
 	\chapter{Analyse des besoins}
 		\label{sec:analyse_besoins}
 		%Total des pages : 6 à 10
-		La phase d'analyse des besoins est, dans tout projet, l'une des plus importante. Elle se doit d'être méticuleuse, afin que tous les partis soient d'accord sur ce qu'ils souhaitent. Cependant, nous devions rester conscient que le temps accordé à un mémoire est assez court par rapport à ce qui se fait dans l'industrie. Nous ne pouvions donc pas passer trop de temps sur cette phase, sous peine de ne plus en avoir assez pour implémenter les fonctionnalités établies.
+		La phase d'analyse des besoins est, dans tout projet, l'une des plus importantes. Elle se doit d'être méticuleuse, afin que tous les partis soient d'accord sur ce qu'ils souhaitent. Cependant, nous devions rester conscients que le temps accordé à un mémoire est assez court par rapport à ce qui se fait dans l'industrie pour un projet de cette taille. Nous ne pouvions donc pas passer trop de temps sur cette phase, sous peine de ne plus en avoir assez pour implémenter les fonctionnalités établies.
 
-		Nous pensons avoir trouvé un bon entre-deux, prenant avantage des conseils glanés au cours de nos études : nous avons présenté au plus vite des visuels de la future application, et avons organisé une réunion Skype pour pouvoir échanger en direct avec nos clients. %TODO: référencer HCI/COO/... ?
+		Nous pensons avoir trouvé un bon entre-deux, prenant avantage des conseils glanés au cours de nos études~\cite{ref:kim_coo} : nous avons présenté au plus vite des visuels de la future application, et avons organisé une réunion Skype pour pouvoir échanger en direct avec nos clients malgré le déclage horaire.
 
-		Le cahier des charges résultant de ces interactions nous semble complet, et a été assez peu modifié au cours du projet. Deux éléments s'y sont cependant ajoutés, l'un pour répondre aux besoins non-fonctionnels et l'un suggéré par Louis Fritzno, un étudiant haïtien venu pour apporter un point de vue concret.
+		Le cahier des charges résultant de ces interactions nous semble complet, et a été assez peu modifié au cours du projet. Deux éléments s'y sont cependant ajoutés, l'un pour répondre aux besoins non-fonctionnels et l'autre suggéré par Louis Fritzno, un acteur haïtien venu pour apporter un point de vue concret.
 
 		\section{Besoins fonctionnels}
 
 			%Pages : 1 à 2
-			Le terme "besoins fonctionnels" décrit les besoins précis d'un client, les non-négociales dans le cadre d'un projet. Ce sont les points qui ont été mis en avant par Protos et les Haïtiens comme étant essentiels, nécessaire afin que notre application leur soit utile. Ce sont les choses sur lesquelles nous nous sommes focalisés.
+			Le terme \emph{besoins fonctionnels} décrit les besoins précis d'un client, les non-négociables dans le cadre d'un projet. Ce sont les points qui ont été mis en avant par Protos et les Haïtiens comme étant essentiels, nécessaires afin que notre application leur soit utile.
 
 			\subsection*{Gestion des données}
-				La chose la plus évidente dont ont besoin les acteurs sur place est une aide à la gestion de leurs données. La technique papier-crayon décrite plus tôt s'est démontrée inefficace, il faut donc un système permettant à la fois de centraliser les données et d'éviter les pertes, tout en ne s'éloignant pas trop de ce que les Haïtiens connaissent et font aujourd'hui, afin qu'ils ne peine pas trop lors de la transition.
+				La chose la plus évidente dont ont besoin les acteurs sur place est une aide à la gestion de leurs données. La technique papier-crayon décrite plus tôt s'est montrée inefficace, il faut donc un système permettant à la fois de centraliser les données et d'éviter les pertes, tout en ne s'éloignant pas trop de ce que les Haïtiens connaissent et font aujourd'hui, afin que la transition vers le nouveau système informatisé soit facilitée par une certaine familiarité.
 
-				Pour comprendre mieux la nature exacte des données en question, nous avons étudié des fichiers Excel fournis par l'ONG Protos, qui servent à ce jour de premier pas vers une informatisation de la gestion du réseau de distribution d'eau. %TODO, référencer l'Excel ?
+				Pour mieux comprendre la nature exacte des données en question, nous avons étudié des fichiers Excel~\cite{ref:resumes_documents}, qui servent à ce jour de premier pas vers une informatisation de la gestion du réseau de distribution d'eau.
 
-				Ces documents nous ont été d'une très grande utilité, puisqu'il nous ont permis de lister toutes les données nécessaires à notre application, nous donnant un solide point de départ pour notre base de données. Il nous ont également permis de mieux comprendre quelles étaient les responsabilités des différents acteurs, ce qui nous a donné la structure de l'application elle-même. %Schéma bdd ?
+				Ces documents nous ont été d'une très grande utilité, puisqu'ils nous ont permis de lister toutes les données nécessaires à notre application, nous donnant un solide point de départ pour notre base de données. Ils nous ont également permis de mieux comprendre quelles étaient les responsabilités des différents acteurs, ce qui nous a donné la structure de l'application elle-même.
 
-				En nous inspirant directement des \emph{Comité Dlo} décrit dans le chapitre \ref{sec:structure_haiti}, nous avons décidé de créer deux types de gestionnaires : ceux dits "de zone", avec peu d'interaction avec les usagers du réseau, qui ont une vision plus globale de celui-ci. Ils collaborent avec des gestionnaires dits "de fontaine(s)", qui gèrent directement un point d'eau, et sont en contact avec les usagers.
+				%TODO Sébastien : voir la possibilité de mettre le schéma BDD s'il est encore lisible  ici(sinon référence et annexe)
 
-				Cette division permets à chacun d'avoir un rôle clair et précis, les gestionnaires de fontaines apportant les données "au jour le jour" (payements, nouveaux usagers,...), tandis que les gestionnaires de zones s'occupent du réseau en lui-même.
+				En nous inspirant directement des \emph{Komité Dlo} décrit dans le chapitre \ref{sec:structure_haiti}, nous avons décidé de créer deux types de gestionnaires : ceux dits \emph{de zone}, avec peu d'interaction avec les usagers du réseau, qui ont une vision plus globale de celui-ci. Ils collaborent avec des gestionnaires dits \emph{de fontaine(s)}, qui gèrent directement un ou plusieurs points d'eau, et sont en contact avec les consommateurs.
+
+				Cette division permet à chacun d'avoir un rôle clair et précis, les gestionnaires de fontaines apportant les données au jour le jour (paiements, nouveaux usagers,etc), tandis que les gestionnaires de zones s'occupent du réseau en lui-même.
 
 
 			\subsection*{Simplification des procédures}
-				La seconde chose que nous avons pu mettre en avant en lisant les documents fournis par Protos et en parlant aux Haïtiens est que les procédures en place sont à la fois trop compliquées et peu standardisées. Il est souvent nécessaire de se déplacer physiquement jusqu'à un point d'eau ou chez la personne qui en est responsable pour avoir l'information nécessaire, ce qui est une cause directe de l'absence de centralisation.
+				La seconde observation que nous avons pu mettre en avant en lisant les documents fournis par Protos et en parlant aux Haïtiens est que les procédures en place sont à la fois trop compliquées et peu standardisées. Il est souvent nécessaire de se déplacer physiquement jusqu'à un point d'eau ou chez la personne qui en est responsable pour avoir l'information nécessaire, ce qui est à la fois une cause directe et un résultat de l'absence de centralisation.
 
-				La division en différents rôles que nous avons établie permettra aux utilisateurs de l'application d'avoir toujours une vue sur les éléments du réseau de distribution dont ils sont responsables, et de faire circuler les informations beaucoup plus vite.
+				La division en différents rôles que nous avons établie permet aux utilisateurs de l'application d'avoir toujours une vue sur les éléments du réseau de distribution dont ils sont responsables, et de faire circuler les informations beaucoup plus vite.
 
-				Nous souhaitons également aider les gestionnaires de zone à prendre des décisions plus rapidement. En effet, grâce à la digitalisation des données, il leur sera possible de visualiser leur réseau de distribution selon des filtres. Ceux-ci pourraient mettre en avant les points d'eaux nécessitant une réparation, ou les villages dans lesquels les factures sont en retard.
+				Nous souhaitons également aider les gestionnaires de zone à prendre des décisions plus rapidement. En effet, grâce à la numérisation des données, il leur est possible de visualiser leur réseau de distribution avec des filtres. Ceux-ci peuvent mettre en avant les points d'eaux nécessitant une réparation, ou les villages dans lesquels les factures sont en retard.
 
 				%Je vois rien d'autre perso ?
 
 		\section{Besoins non-fonctionnels}
 
 			%Pages : 1 à 2
-			Le terme "besoin non-fonctionnels" désigne des besoins soit optionnels, soit des contraintes liées à l'implémentation ou à une situation spécifique au projet en lui-même. Si ces buts ne sont pas atteints, l'application serait quand même utilisable, mais il est important de les noter et des les garder à l'esprit lors de l'implémentation
-
-			\'Etant donné que notre phase d'implémentation s'est bien passée, nous avons pu leur accorder une partie de notre rélexion et de notre attention. Nous avons pour cela légèrement modifier le cahier des charges initial, y ajoutant un élément.
+			Le terme de \emph{besoin non-fonctionnel} désigne un besoin caractérisant le système, une contrainte liée à l'implémentation, aux performances ou à une situation spécifique au projet en lui-même. Si ces buts ne sont pas atteints, l'application est quand même utilisable, leur réalisation est cependant nécessaire pour obtenir un système fiable et qualitatif.
 
 			\subsection*{Sécurité des données}
-				Dans le monde d'aujourd'hui, il est évident qu'une certaine attention se doit être accordée à la sécurité d'une application web. En Haïti, la menace pourrait également venir des utilisateurs de l'application eux-mêmes, car on observe beaucoup de corruption au sein des fonctionnaires.
+				Dans le monde d'aujourd'hui, il est évident qu'une certaine attention se doit être accordée à la sécurité d'une application web. En Haïti peut-être plus qu'ailleurs, une attention particulière se doit d'être portée à la possibilité qu'un utilisateur malveillant ou non se connecte au système.
 
-				Par conséquent, nous avons non seulement implémenté un système de connexion avec privilèges (certaines données sont inaccessibles sans un niveau de privilège particulier), mais nous avons également ajouté un système de \emph{logs}.
+				Par conséquent, nous avons non seulement implémenté un principe de connexion avec privilèges (certaines données sont inaccessibles sans un niveau de privilège particulier), mais nous avons également ajouté un système de \emph{logs}.
 
-				Ce module n'était pas prévu initallement, nous l'avons ajouté pour prévenir les erreur des utilisateurs, ou les comportements malicieux. Il permet aux supérieurs hiérarchiques de vérifier les modifications faites par leurs subordonnés. Si ces modifications leur semblent incorrectes, un seul clic leur permet de faire revenir les données à leur état précédent.
+				Ce module, appelé \emph{module historique} n'était pas prévu initallement, nous l'avons ajouté pour remédier aux erreurs des utilisateurs, ou aux comportements malicieux. Ce module permet aux supérieurs hiérarchiques de consuleter les modifications faites par leurs subordonnés. Si ces modifications leur semblent incorrectes, un seul clic leur permet de faire revenir les données à leur état précédent. Si une modification est acceptée, elle disparaît de la liste en laissant la modification, jugée valide, dans la base de données.
 
 			\subsection*{Connexions lentes et peu fiables}
-				L'utilisation de notre application en Haïti a amené un besoin particulier : là-bas, la connexion Internet est bien plus lente que nos standards européens, et est souvent peu fiable. Pour pallier à cela, nous avons d'abord utilisé les techniques courantes : nous envoyons aussi peu de données que possible, faisont usage de la cache et envoyons les informations des différents éléments de la page séparément.
+				L'utilisation de notre application en Haïti amène un besoin particulier : dans ce pays, la connexion Internet est bien plus lente que nos standards européens et y est souvent peu fiable. Pour pallier à cela, nous avons d'abord utilisé les techniques courantes : nous envoyons aussi peu de données que possible, faisons usage de la cache~\ref{sec:cache_client} et envoyons les informations des différents éléments de la page séparément.
 
-				Cependant, une demande de nos clients a été de pouvoir utiliser certaines fonctionnalités de l'application lorsqu'il n'y a pas de connexion. Pour cela, nous avons développé un \emph{service worker}, détaillé ci-après. %Référencer le service worker ? 
+				Cependant, une demande de nos clients a été de pouvoir utiliser certaines fonctionnalités de l'application lorsqu'il n'y a pas de connexion. Pour cela, nous avons développé un \emph{service worker}, détaillé en section~\ref{sec:service_worker}.
+
+			\subsection*{Technologies simples et populaires}
+				% Est-ce que c'est pas un besoin non-fonctionnel aussi ?
+				% TODO ?
 
 		\section{Cahier des charges}
 			\label{sec:cahier_des_charges}
@@ -462,17 +466,17 @@
 			% Expliquer que le besoin non-fonctionnel d'évolutivité de l'application justifie l'utilisation de "modules". Expliquer comment ils s'intègrent en un seul système, et puis donner un résumé, pour chaque module, de ce qu'il permet de faire.
 			% Et en fait c'est le seul endroit où on peut parler de tout ça, donc ça doit être fait ici.
 			%Pages : 2 à 3
-			Après discussion avec Protos et les Haïtiens, il nous a semblé évident d'organiser notre application en différents modules tournant autour de notre base de données. Ce choix de design nous a permis dans un premier temps d'appliquer la méthode Agile plus facilement, déployant notre travail module par module. Dans un second temps, il permettra à notre application d'évoluer très rapidement : un nouveau module vient se greffer à la base de donnée sans changer le fonctionnement des autres, un ancien module qui aurait perdu son utilité peut être enlevé sans rien endommager. De plus, ce choix devrais aider les futurs développeurs à ajouter à la base applicative existante plus rapidement.
+			Après discussion avec Protos et les Haïtiens, nous avons décidé d'organiser notre application en différents modules indépendants intéragissant avec notre base de données. Ce choix de conception nous a permis dans un premier temps d'appliquer la méthode Agile plus facilement, déployant notre travail module par module. Dans un second temps, il permet à notre application d'évoluer très rapidement : un nouveau module vient se greffer à la base de donnée sans changer le fonctionnement des autres, un ancien module qui aurait perdu son utilité peut être enlevé sans rien endommager. De plus, ce choix devrait aider les futurs développeurs à ajouter à la base applicative existante plus rapidement.
 
 			Chaque module représente un type d'activité pratiqué par les gestionnaires du réseau de distribution. Après cette première année de développement, nous en avons créé sept :
 			\begin{itemize}
-				\item Le module \textbf{réseau}, permettant de créer de nouveaux éléments du réseau (point d'eau, conduites, réservoir, prise individuelle) et de consulter des informations à leur propos
-				\item Le module \textbf{carte interactive}, très en lien avec le précédent, permets de placer et visualiser les éléments du réseau de distribution sur une carte, à la main ou via des coordonnées géographiques.
-				\item Le module \textbf{consommateurs} contient toutes les informations à propos des usagers du réseau, groupés par ménages.
-				\item Le module \textbf{financier}, également en lien avec le module précédent, permet de consulter et d'ajouter les informations concernant les paiements faits par les usagers du réseau.
-				\item Le module \textbf{rapports} permets aux gestionnaires de fontaines d'entrer des informations sur le fonctionnement du réseau (s'il a été actif, quelle quantité d'eau a été distribuée) et de créer des tickets de problèmes en cas de panne d'un élément.
-				\item Le module \textbf{gestion de zone} permets aux gestionnaires de zone d'attribuer un point d'eau à un gestionnaire de fontaine ou une zone à un gestionnaire de zone, de créer de nouvelles zones se trouvant dans la leur, et de gérer le mode et le montant des paiements que devront effectuer les usagers de leur zone. %Peut-être pas clair ?
-				\item Le module \textbf{historique} permets aux supérieur hiérarchiques de visualiser tous les changements, ajouts ou suppressions effectués par leur subordonnés. Ils peuvent valider ou annuler ces changements, et consulter les actions des trois semaines précédentes.
+				\item Le module \textbf{réseau}, permet de créer de nouveaux éléments du réseau (source, conduite, réservoir, kiosque, fontaine, prise individuelle) et de consulter des informations à leur propos (nom, emplacement, état de fonctionnement)
+				\item Le module \textbf{carte interactive}, fortement lié avec le précédent, permet de placer et visualiser les éléments du réseau de distribution sur une carte. Le module permet de placer des éléments au jugé avec la souris, ou directement avec trois systèmes de coordonnées : le degré décimal, le degré-minute-seconde et la transverse universelle de Mercator (cette dernière méthode demandée par notre contact haïtien).
+				\item Le module \textbf{consommateurs} contient toutes les informations à propos des usagers du réseau (nom, adresse, etc), groupés par ménages.
+				\item Le module \textbf{financier}, fortement lié avec le module précédent, permet de consulter et d'ajouter les informations concernant les paiements réalisés par les usagers du réseau.
+				\item Le module \textbf{rapports} permet aux gestionnaires de fontaine(s) d'entrer des informations sur le fonctionnement du réseau (s'il a été actif, quelle quantité d'eau a été distribuée) et de créer des tickets de problèmes en cas de panne d'un élément.
+				\item Le module \textbf{gestion de zone}, plus administratif, permet de créer de nouveaux gestionnaires et de les assigner à une zone ou des éléments du réseau en fonction de leur rôle.
+				\item Le module \textbf{historique} permet aux supérieurs hiérarchiques de visualiser tous les changements, ajouts ou suppressions effectués par leurs subordonnés. Ils peuvent valider ou annuler ces changements. Pendant trois semaines, un choix (validation ou annulation) est affiché dans une seconde table pour informer les autres supérieurs qu'une décision a été prise, voire de récupérer des informations supprimées en cas d'annulation erronée.
 			\end{itemize}
 
 			%\subsection*{Complet en annexe ?}
