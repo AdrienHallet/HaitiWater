@@ -21,6 +21,7 @@
 \usepackage{cite}
 \usepackage{float}
 \usepackage{multirow}
+\usepackage[final]{pdfpages}
 
 \begin{document}
 
@@ -45,14 +46,14 @@
 
 		\subsection*{Contexte}
 
-			Ce mémoire se place dans le cadre d'un projet de développement lancé par l'ONG Protos\footnote{\href{https://www.protos.ngo/fr/}{www.protos.ngo}}. Protos a pour objectif, entre autres, d'améliorer l'accès à l'eau potable en milieu rural afin d'aider le développement de plusieurs pays du monde. Un des pays dans lesquels Protos s'est engagée est Haïti.
+			Ce mémoire se place dans le cadre d'un projet de développement financé par l'ARES-CCD dans le cadre de ses projets de synergie. Les partenaires du projet sont L'ONG Protos\footnote{\href{https://www.protos.ngo/fr/}{www.protos.ngo}}, L'UCL et l'UEH. Protos a pour objectif, entre autres, d'améliorer l'accès à l'eau potable en milieu rural afin d'aider le développement de plusieurs pays du monde. Un des pays dans lesquels Protos s'est engagée est Haïti.
 
-			Une succession de crises politiques et catastrophes naturelles ces dernières décennies ont rendu l'accès à l'eau potable, entre autres, particulièrement complexe dans ce pays des Antilles. En 2010, un violent séisme a laissé le pays en ruine, détruisant beaucoup d'infrastructures, y compris de distribution d'eau. Des incertitudes politiques entravent la reconstruction de ces installations et les populations ne sont pas toujours aidées par le pouvoir politique pour assurer la distribution de l'eau, particulièrement dans les zones rurales. C'est une des raisons pour lesquelles l'ONG Protos est active dans le pays.
+			Une succession de crises politiques et catastrophes naturelles ces dernières décennies ont rendu l'accès à l'eau potable, entre autres, particulièrement complexe dans ce pays des Antilles. En 2010, un violent séisme a laissé le pays en ruine, détruisant beaucoup d'infrastructures, y compris de distribution d'eau. Des incertitudes politiques entravent la reconstruction de ces installations et les populations ne sont pas toujours aidées par les services publics pour assurer la distribution de l'eau, particulièrement dans les zones rurales. C'est une des raisons pour lesquelles l'ONG Protos est active dans le pays.
 			% TODO trop chargé politiquement ?
 			% Adrien: Je trouvais aussi, j'ai reformulé d'un point de vue neutre pour quand même rester justes sans prendre parti. Je trouvais "chaos politique" un peu trop et j'ai nuancé la seconde partie du paragraphe
 			% TODO citer l'analyse contextuelle commune
 
-			Protos a contacté l'UCL afin de l'aider dans un projet de développement en Haïti. L'objectif est de réaliser un système logiciel pilote pour la gestion de la distribution d'eau potable en zone rurale. En effet, aucune gestion centralisée organisée par l'Etat n'existe pour les zones rurales. Des réseaux existent, constitués de points de prélèvement d'eau, de conduites de distribution d'eau et de fontaines situées dans les villages, mais la gestion publique de ceux-ci n'est pas opérationnelle. Dès lors, les organismes locaux en charge de ces réseaux en assurent la gestion de manière indépendante, en se s'appuyant comme ils le peuvent sur les moyens et les acteurs locaux.
+			Protos a contacté l'UCL afin de l'aider dans un projet de développement en Haïti. L'objectif est de réaliser un système logiciel pilote pour la gestion de la distribution d'eau potable en zone rurale. En effet, aucune gestion centralisée organisée par l'Etat n'existe pour ces zones, éloignées des grandes agglomérations. Des réseaux existent, constitués de points de prélèvement d'eau, de conduites de distribution d'eau et de fontaines situées dans les villages, mais la gestion publique de ceux-ci n'est pas opérationnelle. Dès lors, les organismes locaux en charge de ces réseaux en assurent la gestion de manière indépendante, en s'appuyant comme ils le peuvent sur les moyens et les acteurs locaux. Une des principales conséquences est un taux de recouvrement extrêmement faible des factures (inférieur à 20\% en moyenne). 
 
 			L'ONG Protos intervient dans ce cadre, pour proposer un appui à ces organismes locaux afin de mieux organiser cette distribution. Grâce à une meilleure organisation, il sera possible d'améliorer le taux de recouvrement des factures liées à la distribution d'eau, ce qui permettra d'assurer des rentrées financières à ces organismes qui sont également en charge de la maintenance physique des réseaux, mais sans recevoir de réels moyens de la part de l'Etat.
 
@@ -60,7 +61,7 @@
 
 		\subsection*{Problématiques}
 
-			La structure hiérarchique des différents acteurs de la distibution de l'eau, gouvernementaux ou non, est assez complexe. Ces acteurs doivent s'organiser, individuellement et en groupes, pour arriver à une gestion efficace des ressources. Dans ce mémoire, nous nous concentrons sur trois axes afin d'améliorer leur coordination.
+			La structure hiérarchique des différents acteurs de la distibution de l'eau, gouvernementaux ou non, est assez complexe. Ces acteurs doivent s'organiser, individuellement et en groupes, pour arriver à une gestion efficace des ressources. Dans ce mémoire, nous nous concentrons sur trois axes afin d'améliorer la coordination entre ces acteurs.
 
 			\begin{description}
 				\item[Communication] afin de permettre aux différents acteurs de s'informer à partir de la même plateforme.
@@ -74,7 +75,7 @@
 			Nous réalisons ce travail dans le cadre de nos études de Master en Sciences Informatiques. Le but de ce travail est de conclure celles-ci, et de mettre tous nos apprentissages en application dans un projet à grande échelle.
 			% Mettre nos apprentissages en application. Huehehe, parce qu'on code une application, huehehehehehe
 
-			De plus, il s'agit d'un projet réel, avec de véritables acteurs, enjeux et un objectif d'utilisation à long terme. Cela entraine de nouvelles problèmatiques pour nous, qui ne sont pas abordées dans le reste de notre formation.
+			De plus, il s'agit d'un projet réel, avec de véritables acteurs, enjeux et un objectif d'utilisation à long terme. Cela entraine de nouvelles problématiques pour nous, qui ne sont pas abordées dans le reste de notre formation.
 			%Nos études, nos études. Reformulation ! Par contre je vois pas trop l'intérêt des paragraphes ci-dessus, je pensais plus à la motivation pour bosser à trois dont Kim avait parlé
 
 			Ce mémoire nous permet d'avoir une première expérience de développement d'une application web, partant de rien sauf des attentes de nos clients, et intégrant toutes les parties et les étapes de son développement.
@@ -85,34 +86,34 @@
 
 			Le but final de ce mémoire est de délivrer une application à l'ONG Protos et aux acteurs de la distribution de l'eau à Haïti. Nous visons un déploiement de cette base applicative sur le terrain, et que les futures équipes de développement pourront travailler à sa maintenance et évolution.
 
-			Nous espérons également que cette application leur permettra d'avoir un bon exemple de solution logicielle. Cela pourrait leur aider à voir comment un logiciel peut les aider dans leur gestion, et les aider à bien repenser leurs besoins lors de projets futurs.
+			Nous espérons également que cette application permettra à Protos comme aux Haïtiens d'avoir un bon exemple de solution logicielle. Cela pourrait les aider à voir comment un logiciel peut être un appui dans leur gestion, et leur permettre de bien repenser leurs besoins lors de projets futurs.
 			% On pourrait expliquer un peu mieux, mais vous voulez peut-être le garder court ?
 
 		\subsection*{Approche}
 
-			Avant de commencer le développement de l'application, nous avons effectué une longue phase de recherches. Cette phase est séparée en deux.
+			Avant de commencer le développement de l'application, nous avons effectué une longue phase de recherches. Cette phase est séparée en deux parties.
 
 			Durant la première partie, nous avons observé ce qu'il se faisait dans les systèmes existants de la gestion de l'eau en Europe pour avoir une meilleure vue d'ensemble du travail à accomplir et des possibilités. En seconde partie, nous avons analysé les documents fournis par l'ONG Protos afin d'avoir une idée de la solution actuellement déployée en Haïti et des améliorations possibles.
 
-			La phase de développement suivante fut l'analyse fonctionnelle et la conception. Nous avons établi nos propositions en terme de fonctionnalités pour l'application, ainsi qu'en terme de fenêtres et contrôles pour les présenter à Protos sous forme d'un cahier des charges.
+			La phase de développement suivante fut l'analyse fonctionnelle et la conception. Nous avons établi nos propositions en termes de fonctionnalités pour l'application, ainsi qu'en termes de fenêtres et contrôles pour les présenter à Protos sous forme d'un cahier des charges.
 			% TODO : mettre le cahier des charges en annexes ? <- à voir à la fin du mémoire. On le mettra s'il est utile, pas s'il est redondant
 
 			Après validation de l'interface et des fonctionnalités, nous sommes passés à la phase de réalisation, durant laquelle nous avons implémenté ces fonctionnalités et les systèmes nécessaires à leur bon fonctionnement. Cette phase a été la plus longue étant donné le nombre de fonctionnalités à implémenter et la nécessité de documenter à la fois le code pour les équipes de développement ainsi que l'interface pour nos futurs utilisateurs.
 			%3*Fonctionnalité me trigger tellement mais je trouve pas d'autre mots, TODO
 			%Adrien : voila, j'ai scindé fonctionnalité et les "systèmes nécessaires à leur bon fonctionnement". Comme ça on a la bonne définition de foncitonnalité tout en indiquant au lecteur qu'on a fait les deux (l'ancienne phrase sous-entendait qu'on travaillait sur une application existante).
 
-			Enfin, la validation. Nous avons présenté l'application et les fonctionnalités que nous avons implémentées à des utilisateurs, afin d'obtenir des retours et de nous assurer que l'application que nous avons développé répondait aux attentes. % \emph{Note; phase pas encore effectuée}
+			Enfin, la validation. Nous avons présenté l'application et les fonctionnalités que nous avons implémentées à des utilisateurs, afin d'obtenir des retours et de nous assurer que l'application que nous avons développée répondait aux attentes. % \emph{Note; phase pas encore effectuée}
 			%TODO, potentiellement reformuler parce que pas encore fait x)
 
-			Au cours de la phase de réalisation, nous avons pu collaborer avec un stagière venant d'Haïti. Cela nous a permet de comprendre plus directement les besoins sur place, complétant ainsi les informations plus théoriques que nous avions obtenues des documents de Protos. Cette vision plus pratique nous a permet d'avoir une meilleure idée de la réalité du terrain.
+			Au cours de la phase de réalisation, nous avons pu collaborer avec un stagiaire venant d'Haïti. Cela nous a permis de comprendre plus directement les besoins sur place, complétant ainsi les informations plus théoriques que nous avions obtenues des documents de Protos. Cette vision plus pratique nous a permis d'avoir une meilleure idée de la réalité du terrain.
 
 		\subsection*{Contribution}
 
-			Grâce à notre travail de fin d'études, nous avons permis à l'ONG Protos ainsi qu'aux acteurs de terrain à Haïti d'avoir un premier contact avec le monde du développement logiciel. Nous espérons que celui-ci les aidera à comprendre les problématiques liées à la création de logiciels informatiques pour leurs projets futurs.
+			Grâce à notre travail de fin d'études, nous avons permis à l'ONG Protos ainsi qu'aux acteurs de terrain en Haïti d'avoir un premier contact avec le monde du développement logiciel. Nous espérons que celui-ci les aidera à comprendre les problématiques liées à la création de logiciels informatiques pour leurs projets futurs.
 
 			Nous avons également proposé une application pour la gestion de l'eau potable à Haïti. Nous espérons qu'elle pourra servir de base de travail, permettant aux acteurs de terrain d'avoir un jour un outil les aidant dans leur travail quotidien et apportant une aide au développement national.
 
-			Nous espérons avoir contribué à l'amélioration de la gestion de l'eau en Haïti, mais ce travail a assurément contribué au développement de nos compétences; en tant que développeurs, de par l'utilisation de librairies et frameworks peu ou pas connus, en tant qu'analystes grâce au problème réel posé et la nécessité de comprendre les besoins. La coordination du groupe, la planification du travail et la communication avec les clients ont également beaucoup apporté à notre développement professionnel.
+			Nous espérons avoir contribué à l'amélioration de la gestion de l'eau en Haïti, mais ce travail a assurément contribué au développement de nos compétences; en tant que développeurs, de par l'utilisation de librairies et frameworks peu ou pas connus, en tant qu'analystes grâce au problème réel posé et à la nécessité de comprendre les besoins. La coordination du groupe, la planification du travail et la communication avec les clients ont également beaucoup apporté à notre développement professionnel.
 
 		\subsection*{Plan}
 
@@ -122,49 +123,49 @@
 
 		% Pages : 6 à 10
 
-		\section{Situation de l'eau à Haïti}
+		\section{Situation de l'eau en Haïti}
 			\label{sec:situation}
 
 			% Auteur: Adrien
 			% Relu: Céline, Sébastien
 
-			Haïti est un pays qui doit actuellement faire face à une situation difficile. \'Education, économie, habitat, etc, sont autant de défis que le pays devra relever. L'eau potable, son assainissement, sa gestion et sa distribution font partie de ces défis, en particulier dans les zones rurales. Les zones d'action de l'ONG Protos sont particulièrement touchées. La majorité des familles s'approvisionne en eau à des fontaines publiques (96\% des foyers) et effectue un trajet de plus de 30 minutes (58\% des foyers). Il est de plus extrèmement difficile de maintenir et développer le réseau de distribution d'eau potable dans certaines régions en raison de la pauvreté extrème d'une grande partie de l'île. La zone étudiée de \emph{Passe Catabois} (au nord du pays), par exemple, a un taux de recouvrement des factures de 11\% seulement. Si la situation est complexe, il est toutefois possible d'identifier des facteurs expliquant l'état, entre autres, des infrastructures d'eau potable.
+			Haïti est un des pays les plus pauvres de la planète, qui peine à se remettre du séisme de 2010 qui a ravagé le pays et en particulier sa capitable, Port-au-Prince. \'Education, économie, habitat, etc, sont autant de défis que le pays doit relever. L'eau potable, son assainissement, sa gestion et sa distribution font partie de ces défis, en particulier dans les zones rurales. Les zones d'action de l'ONG Protos sont particulièrement touchées. La majorité des familles s'approvisionne en eau à des fontaines publiques (96\% des foyers) et effectue une marche de plus de 30 minutes (58\% des foyers). Il est de plus extrêmement difficile de maintenir et développer le réseau de distribution d'eau potable dans certaines régions en raison de la pauvreté extrême d'une grande partie de l'île. La zone étudiée de \emph{Passe Catabois} (au nord du pays), par exemple, a un taux de recouvrement des factures de 11\% seulement. Si la situation est complexe, il est toutefois possible d'identifier des facteurs expliquant l'état, entre autres, des infrastructures d'eau potable.
 
 			% TODO add carte haiti w/ zones de protos
 
 			\subsection*{Problèmes environnementaux}
 
-				Située dans les Caraïbes au sud-est de la République de Cuba et des \'Etats-Unis d'Amérique, la République d'Haïti occupe un territoire de $27.750km^{2}$ sur la partie ouest de l'île d'Hispaniola. Le pays entier souffre de sa position géographique~\cite{ref:regards_situation_eau_haiti} qui le place dans un risque permanent de catastrophes naturelles. La proximité de failles tectoniques et de courants aériens et marins favorisant la formation de tempêtes tropicales produisent une succession de cataclysmes. De multiples tempêtes et séismes frappent l'île fréquemment. Le tristement célèbre tremblement de terre du 12 janvier 2010, dont le nombre de victimes est approximé à $250.000$ morts et autant de blessés, a, à lui seul, causé des dégâts estimés de 8 à 14 milliards USD.~\cite{ref:estimating_economic_damage_earthquake_haiti}. Ces catastrophes périodiques détruisent les infrastructures et mettent à mal l'économie du pays, empêchant un développement du réseau d'eau potable, entre autres, suffisant pour répondre aux besoins.
+				Située dans les Caraïbes au sud-est de la République de Cuba et des \'Etats-Unis d'Amérique, la République d'Haïti occupe un territoire de $27.750km^{2}$ sur la partie occidentale de l'île d'Hispaniola. Le pays entier souffre de sa position géographique~\cite{ref:regards_situation_eau_haiti} qui le place dans un risque permanent de catastrophes naturelles. La proximité de failles tectoniques et de courants aériens et marins favorisant la formation de tempêtes tropicales produisent une succession de cataclysmes. De multiples tempêtes et séismes frappent l'île fréquemment. Le tristement célèbre tremblement de terre du 12 janvier 2010, dont le nombre de victimes est approximé à $250.000$ morts et autant de blessés, a, à lui seul, causé des dégâts estimés de 8 à 14 milliards USD~\cite{ref:estimating_economic_damage_earthquake_haiti}. Ces catastrophes périodiques détruisent les infrastructures et mettent à mal l'économie du pays, empêchant notamment un développement du réseau d'eau potable suffisant pour répondre aux besoins.
 
-				Le climat haïtien n'aide pas la situation. Météorologiquement parlant, Haïti affronte une alternance entre saison très chaude et saison moins chaude, les deux provoquant fréquemment des sècheresses. Les différentes régions du pays ont des climats variés, obligeant l'adoption de plusieurs mesures pour sauvegarder la population et rend difficile une politique commune de gestion des ressources. Il convient de noter que l'aridité qui résulte de ce climat est accentuée par les activités humaines. La déforestation massive et rapide du pays, à des fins principalement énergétiques, empêche une rétention correcte des eaux dans les sols. Seuls 2\% à 3\% du territoire sont occupés par des forêts (venant de plus de 60\% il y a un siècle). La sècheresse se trouve ainsi aggravée, et le ruissellement des eaux accélère l'érosion des sols~\cite{ref:desertification_of_haiti}. Les terres sont ainsi progressivement emportées vers la mer. En 2008, un rapport des Nations Unies estimait cette perte à 37 millions de tonnes par an~\cite{ref:impact_degradation_terre}. Les cours d'eaux ont donc un débit accéléré, parfois torrentiel, rendant difficile l'exploitation de l'écoulement naturel et nécessitant plus d'infrastructures humaines.
+				Le climat haïtien n'aide pas la situation. Météorologiquement parlant, Haïti affronte une alternance entre saison très chaude et saison moins chaude, les deux provoquant fréquemment des sécheresses. Les différentes régions du pays ont des climats variés, obligeant l'adoption de plusieurs mesures pour sauvegarder la population et rend difficile une politique commune de gestion des ressources. Il convient de noter que l'aridité qui résulte de ce climat est accentuée par les activités humaines. La déforestation massive et rapide du pays, à des fins principalement énergétiques, empêche une rétention correcte des eaux dans les sols. Seuls 2\% à 3\% du territoire sont occupés par des forêts (venant de plus de 60\% il y a un siècle). La sécheresse se trouve ainsi aggravée, et le ruissellement des eaux accélère l'érosion des sols~\cite{ref:desertification_of_haiti}. Les terres sont ainsi progressivement emportées vers la mer. En 2008, un rapport des Nations Unies estimait cette perte à 37 millions de tonnes par an~\cite{ref:impact_degradation_terre}. Les cours d'eaux ont donc un débit accéléré, parfois torrentiel, rendant difficile l'exploitation de l'écoulement naturel et nécessitant plus d'infrastructures pour obtenir de l'eau potable.
 
 			\subsection*{Problèmes politiques}
 
-				Pays colonisé français devenu indépendant en 1804, la République d'Haïti est passée au travers de profondes réformes politiques. Le pays oscille politiquement jusqu'à une instabilité contemporaine relative (on dénombre 15 présidents et 22 premiers ministres depuis 1986 alors que le mandat est constitutionnellement valable 5 ans) et des tensions internes continuent de perturber le pays. Cela entraine une difficulté à adopter des politiques de long terme, ou même une politique commune aux différents gouvernements.
+				Pays colonisé français devenu indépendant en 1804, la République d'Haïti a connu plusieurs régimes politiques différents, dont une dictature qui s'est terminée en 1986. Depuis lors, le pays oscille politiquement jusqu'à une instabilité contemporaine relative (on dénombre 15 présidents et 22 premiers ministres depuis 1986 alors que le mandat est constitutionnellement valable 5 ans) et des tensions internes continuent de perturber le pays. Cela entraine une difficulté à adopter des politiques de long terme, ou même une politique commune aux différents gouvernements.
 
-				La scène internationale s'est très largement mobilisée pour Haïti et tout particulièrement après le séisme de 2010. De nombreuses organisations humanitaires et non-gouvernementales sont arrivées, mais les aides financières sont soupçonnées de détournement par ces mêmes organisations~\cite{ref:analyse_contextuelle_commune}. Ces aides sont parfois décriées dans la dépendance qu'elles créent et le manque de vision à long terme. La population s'est également déjà retournée contre les aides et notamment contre les casques bleus venu aider après le séisme. Des soldats népalais des Nations Unies, venus aider après le drame, auraient involontairement déclenché une grave épidémie de choléra en introduisant la maladie en tant que porteurs sains. Le \emph{Center for Disease Control and Prevention (CDC)}, un service du département de la santé des \'Etats-Unis d'amérique, a confirmé cette hypothèse et les Nations Unies ont reconnu leur responsabilité en décembre 2016. L'épidémie a causé $10.000$ morts pour $800.000$ cas dans les Caraïbes, majoritairement en Haïti. Cette maladie a été introduite par des rejets d'eaux usées dans un cours d'eau, par négligence et manque d'installations permettant d'évacuer les eaux usées dans un campement d'aide humanitaire.
+				La scène internationale s'est très largement mobilisée pour Haïti et tout particulièrement après le séisme de 2010. De nombreuses organisations humanitaires et non-gouvernementales sont arrivées, mais les aides financières sont soupçonnées de détournement par ces mêmes organisations~\cite{ref:analyse_contextuelle_commune}. Ces aides sont parfois décriées dans la dépendance qu'elles créent et le manque de vision à long terme. La population s'est également déjà retournée contre les aides et notamment contre les casques bleus venu aider après le séisme, et toujours présents à l'heure actuelle. Des soldats népalais des Nations Unies, venus aider après le drame, auraient involontairement déclenché une grave épidémie de choléra en introduisant la maladie en tant que porteurs sains. Le \emph{Center for Disease Control and Prevention (CDC)}, un service du département de la santé des \'Etats-Unis d'amérique, a confirmé cette hypothèse et les Nations Unies ont reconnu leur responsabilité en décembre 2016. L'épidémie a causé $10.000$ morts pour $800.000$ cas dans les Caraïbes, majoritairement en Haïti. Cette maladie a été introduite par des rejets d'eaux usées dans un cours d'eau, par négligence et manque d'installations permettant d'évacuer les eaux usées dans un campement d'aide humanitaire.
 
 				La République d'Haïti entretient également des relations conflictuelles avec la République Dominicaine, avec laquelle elle partage l'île d'Hispaniola. Les raisons sont multiples (travailleurs étrangers, tensions ethniques, etc) et un lourd passé pèse sur la relation entre les deux pays.
 
-				Nous voyons donc que la situation politique intérieure et internationale haïtienne est un cas complexe. Les diverses tensions et soupçons de corruption ne donnant certainement pas à la problématique de l'eau toute l'attention, ni tous les fonds nécessaires.
+				Nous voyons donc que la situation politique intérieure et internationale haïtienne est un cas complexe. Les diverses tensions et soupçons de corruption ne permettent certainement pas de donner à la problématique de l'eau toute l'attention, ni tous les fonds nécessaires.
 
 			\subsection*{Problèmes sociaux}
 
-				De ces conditions environnementales et politiques émane une population pauvre, voire abandonnée dans les zones rurales où des conseils de village tentent de pallier aux problèmes au quotidien. Là où les villes et principalement la capitale profitent des avantages de la mondialisation, la campagne haïtienne peine à bénéficier de l'aide nationale et repose essentiellement sur les organisations locales et externes au pays. L'éducation y est difficilement accessible et la population est très majoritairement endettée (81\% des foyers haïtiens), situation aggravée depuis 2015 lorsque la monnaie locale, la Gourde (HTG) a cessé d'être maintenue à un taux d'échange fixe avec le Dollar (USD). La Gourde continue depuis sa dépréciation (1 Euro vaut $93,5445$ Gourdes~\footnote{Taux de change du marché au 28 mars 2019}). La société haïtienne est donc pauvre et les inégalités nombreuses. La campagne en particulier, qui semble déjà oubliée financièrement, manque de techniciens et ingénieurs aptes à créer et maintenir un réseau de distribution d'eau potable avancé.
+				De ces conditions environnementales et politiques émane une population pauvre, voire abandonnée dans les zones rurales où des conseils de village tentent de pallier les problèmes au quotidien. Là où les villes et principalement la capitale profitent des avantages de la mondialisation, la campagne haïtienne peine à bénéficier de l'aide nationale et son développement repose essentiellement sur les organisations locales et externes au pays. L'éducation y est difficilement accessible et la population est très majoritairement endettée (81\% des foyers haïtiens), situation aggravée depuis 2015 lorsque la monnaie locale, la Gourde (HTG) a cessé d'être maintenue à un taux de change fixe avec le Dollar (USD). La Gourde continue depuis sa dépréciation (1 Euro vaut $93,5445$ Gourdes~\footnote{Taux de change du marché au 28 mars 2019}). La société haïtienne est donc pauvre et les inégalités nombreuses. La campagne en particulier, qui semble déjà oubliée financièrement, manque de techniciens et ingénieurs aptes à créer et maintenir un réseau de distribution d'eau potable avancé.
 
 			\subsection*{Problèmes organisationnels}
 				Le modèle politique et organisationnel d'Haïti se calque sur la théorie occidentale. Cependant les profondes différences résultent en une mise en pratique des concepts qui ne sont pas toujours efficaces.
 				On constate notamment un manque de collaboration entre les entités haïtiennes ou même entre villages. Particulièrement dans les zones rurales, les croyances locales (religions, magie) sont parfois consultées pour des décisions importantes au détriment de la rationalité. La communication entre les différentes parties du pays n'est pas optimale. Les entités gouvernementales sont parfois nommées sans moyens financiers ni même bureaux et se retrouvent désoeuvrées. Les fréquentes crises détournent l'attention des problèmes de fond tels que l'éducation, les infrastructures, ...
 
-		\section{Gestion actuelle}
+		\section{Gestion actuelle de la distribution d'eau en milieu rural}
 			% Auteure: Céline
 			% Relu: Adrien, Sébastien
 
-			\subsection*{Organisation du pays}
+			\subsection*{Organisation générale}
 
-    			Comme exposé dans la section précédente, la situation environnementale, politique et sociale, cause une instabilité dans l'organisation d'Haïti. Les présidents changent souvent, et avec eux, les mesures mises en place. Les responsabilités des ministères et leurs sous-entités sont assez peu claires, ou impossibles à mettre en pratique.
+    			Comme exposé dans la section précédente, la situation environnementale, politique et sociale, cause une instabilité dans l'organisation des services publics d'Haïti. Les présidents changent souvent, et avec eux, les mesures mises en place. Les responsabilités des ministères et de leurs sous-entités sont assez peu claires, ou impossibles à mettre en pratique.
 
-    			Par conséquent, l'ONG Protos est sans doute l'une des entités les plus stables au niveau de l'organisation de la gestion de l'eau en Haïti. Elle supervise plusieurs organisations locales, en apportant son soutien (expérience, logistique, finances), tandis que ce sont les localités elles-mêmes qui tentent de solutionner les problèmes.
+    			Par conséquent, nos lectures des différents documents fournis par l'ONG Protos nous a démontré qu'elle est sans doute l'une des entités les plus stables au niveau de l'organisation de la gestion de l'eau dans la région visée par ce travail. Elle supervise plusieurs organisations locales, en apportant son soutien (expérience, logistique, finances), tandis que ce sont les localités elles-mêmes qui tentent de solutionner les problèmes.
 
     			Chaque zone est traitée indépendemment (elle dispose de son ONG locale), mais on distingue tout de même trois groupes d'acteurs récurrents :
     			\begin{itemize}
@@ -173,12 +174,13 @@
     				\item Les autres ONG (locales ou non)
     			\end{itemize}
 
-    			Protos se repose beaucoup sur ces entités locales, notamment les services étatiques, comme l'Université d'\'Etat d'Haïti (qui aura une place dans ce projet à l'avenir). \'Egalement, elle tend à être la plus inclusive possible, et à impliquer un maximum d'acteurs (locaux) dans ses projets. L'idée est que les citoyens instruits servent de bon exemple pour répandre les avancées sociales et/ou technologiques à travers le pays. Selon eux, pour avoir un système fonctionnel, la conscientisation sur la problématique de l'eau devrait partir des habitants eux-même avant de remonter à l'état.
+    			Protos se repose beaucoup sur des entités locales, notamment les services étatiques, comme l'Université d'\'Etat d'Haïti (qui aura une place dans ce projet à l'avenir). \'Egalement, elle tend à être la plus inclusive possible, et à impliquer un maximum d'acteurs (locaux) dans ses projets. L'idée est que les citoyens instruits servent de bon exemple pour répandre les avancées sociales et/ou technologiques à travers le pays. Selon eux, pour avoir un système fonctionnel, la conscientisation sur la problématique de l'eau devrait partir des habitants eux-même avant de remonter vers l'\'Etat.
 
     			%Un mot sur la théorie du changement ?
                 %(Adrien): Je pense pas. La TdC était super intéressante et fait écho aux cours d'info mais n'influe pas notre développement ni la manière donc l'eau est gérée. La TdC est surtout exposée par Protos pour sa "vision", ce qu'à mon sens tu expliques très bien et clairement dans les deux dernières phrases.
 
     			Actuellement, Protos agit dans deux zones du pays : Nord-Est (région dite "Moustiques") et Centre-Est (région dite "Onde Verte"). Celles-ci font partie des plus rurales, et ont été choisies car ce sont celles qui ont le plus besoin d'aide.
+    			%TODO, photo détaillée des zones ?
 
 			\subsection*{Structure organisationnelle}
 				\label{sec:structure_haiti}
@@ -186,11 +188,11 @@
 				% TODO add schema
 
     			%DINEPA, OREPA, CAEPAS,...
-    			En plus de l'aide fournie par l'ONG Protos, il existe en Haïti plusieurs structures dédiées à la gestion de l'eau. Premièrement, la DINEPA (DIrection Nationale de l'Eau Potable et de l'Assainissement), qui a pour mission d’exécuter la politique de l’état dans le secteur de l’eau potable et de l’assainissement autour de 3 grands axes : le développement du secteur au niveau national, la régulation du secteur et le contrôle des acteurs~\cite{ref:dinepa}. La DINEPA est sous contrôle direct du Ministère de Travaux Publics, Transports et Communication.
+    			En plus de l'aide fournie par l'ONG Protos, il existe en Haïti plusieurs structures dédiées à la gestion de l'eau. Premièrement, la DINEPA (DIrection Nationale de l'Eau Potable et de l'Assainissement), qui a pour mission d’exécuter la politique de l’\'Etat dans le secteur de l’eau potable et de l’assainissement autour de trois grands axes : le développement du secteur au niveau national, la régulation du secteur et le contrôle des acteurs~\cite{ref:dinepa}. La DINEPA est sous contrôle direct du Ministère de Travaux Publics, Transports et Communication.
 
     			La DINEPA supervise des branches régionales appelées OREPA (Offices Régionaux d'Eau Potable et d'Assainissement), gérant chacune une zone du pays. Elles sont chargées de la prestation du service de distribution de l'eau potable en milieu urbain et rural.
 
-    			Finalement, il existe des CAEPA (Comités d’Approvisionnement en Eau Potable et d'Assainissement), qui gèrent un réseau de distribution d'eau à un niveau local réduit. Ils sont moins formellement gérés par l'état et sont encore loin d'être en place sur tout le pays, mais ont prouvé leur efficacité. Surtout dans les régions rurales, les habitants se reposent bien plus sur les CAEPA pour leur approvisionnement en eau que d'autres entités privées ou publiques.
+    			Finalement, il existe des CAEPA (Comités d’Approvisionnement en Eau Potable et d'Assainissement), qui gèrent un réseau de distribution d'eau à un niveau local réduit. Ils sont moins formellement gérés par l'\'Etat et sont encore loin d'être en place sur tout le pays, mais ont prouvé leur efficacité. Surtout dans les régions rurales, les habitants se reposent bien plus sur les CAEPA pour leur approvisionnement en eau que sur d'autres entités privées ou publiques.
 
     			%Pls send help, j'ai pas d'inspi -> Thx a lot ;)
     			% Todo : Mettre un schéma
@@ -199,11 +201,12 @@
 			\subsection*{Procédures actuelles}
 				\label{sec:procedures_actuelles}
 
-    			On peut remarquer qu'il n'y a pas vraiment de standardisation dans les procédures en place. En effet, un comité de gestion de l'eau existe à Poste-Métier depuis plus de 20 ans, mais il n'est présent que grâce à l'implication du Pasteur Chrisbon Fraïs et à l'aide de Protos. Cet effort s'étant montré efficace, le système établi a Poste-Métier a été appliqué dans d'autres zones, avec plus ou moins de succès.
+    			On peut remarquer qu'il n'y a pas vraiment de standardisation dans les procédures en place au niveau des CAEPA. En effet, un comité de gestion de l'eau existe à Poste-Métier depuis plus de 20 ans, mais il n'est présent que grâce à l'implication du Pasteur Chrisbon Fraïs et à l'aide de Protos. Cet effort s'étant montré efficace, le système établi à Poste-Métier a été appliqué dans d'autres zones, avec plus ou moins de succès.
 
-    			Le principal problème rencontré par les comités de l'eau est le recouvrement des factures. En effet, on constate que les habitants d'Haïti n'ont pas l'habitude d'avoir à payer pour l'eau, et rechignent à le faire. Premièrement parce qu'ils ne l'ont jamais fait, mais également car la religion a encore une place forte dans la société Haïtienne et l'eau y est considérée comme \emph{don de Dieu}. Protos met en avant qu'une part essentielle du processus de stabilisation du réseau de distribution est l'éducation des habitants, pour qu'ils comprennent qu'ils ne payent pas l'eau elle-même, mais bien tout le service fourni par le réseau pour l'assainissement, le transport et la distribution.
+    			Le principal problème rencontré par les comités de l'eau est le recouvrement des factures. En effet, on constate que les habitants d'Haïti n'ont pas l'habitude d'avoir à payer pour l'eau, et rechignent à le faire. Premièrement parce qu'ils ne l'ont jamais fait, mais également car la religion a encore une place forte dans la société haïtienne et l'eau y est considérée comme \emph{don de Dieu}. Protos met en avant qu'une part essentielle du processus de stabilisation du réseau de distribution est l'éducation des habitants, pour qu'ils comprennent qu'ils ne payent pas l'eau elle-même, mais bien tout le service fourni par le réseau pour l'assainissement, le transport et la distribution.
 
     			Concrètement, si la zone de Poste Métier a un taux de recouvrement satisfaisant (89\%), les autres zones comme Passe Catabois sont bien en deça (11\%). Ceci est dû à plusieurs éléments : les habitants sont mieux informés sur la problématique de l'eau, mais les gestionnaires de fontaines ont aussi le pouvoir de couper l'accès à l'eau (à l'aide de cadenas) quand les factures ne sont pas payées. On remarque également que les modes de fonctionnements des différentes zones ne sont pas toujours les mêmes (pas toujours de bureau pour les réunions, règlements plus ou moins stricts).
+    			%TODO : taille des comités etc, voir commentaire Sandra
 
     			En pratique, un comité de l'eau (\emph{Komite Dlo} en Créole haïtien) est composé d'un président, un vice-président, un secrétaire, un trésorier et un conseiller, élus par les consommateurs locaux pour cinq ans. Ils se réunissent tous les mois pour parler des affaires courantes, et organisent une fois par an une assemblée générale où sont conviés les usagers du réseau. Ils sont en charge du bon fonctionnement du réseau, de la gestion du budget et des fonds amenés par les utilisateurs, de superviser les \emph{comités fontaines} et de rendre des comptes à la population.
 
@@ -212,7 +215,7 @@
     			Malgré la structure hiérarchique décrite ci-dessus, ces organismes ont encore du mal à effectuer la gestion du réseau au jour le jour. Ils utilisent encore les outils les plus basiques : un crayon et du papier. Cette situation rend l'accès aux informations antérieures difficile voire impossible. Il est également difficile de transmettre ces informations à la hiérarchie supérieure.
                 % (Adrien) Foreshadowing l'utilité d'HaïtiWater avec ces deux nouvelles dernières phrases -> good ;)
 
-    			L'accès aux fontaines public est accordé après le règlement d'un paiement annuel. Les consommateurs se voient attribuer une carte spécifiant la somme, le lieu et la date. Cette carte est utilisée comme preuve de paiement pour accéder aux fontaines. Cependant, il n'est pas possible pour le responsable fontaine de se souvenir exactement qui a payé ou non et les informations se perdent. De plus, certains abus (distribution non-équitable, prise d'eau sans paiement) ont été constatés.
+    			L'accès aux fontaines publiques est accordé après le règlement d'un paiement annuel. Les consommateurs se voient attribuer une carte spécifiant la somme, le lieu et la date. Cette carte est utilisée comme preuve de paiement pour accéder aux fontaines. Cependant, il n'est pas possible pour le responsable fontaine de se souvenir exactement qui a payé ou non et les informations se perdent. De plus, certains abus (distribution non-équitable, prise d'eau sans paiement) ont été constatés.
 
 
 		\section{Comparaison avec d'autres pays}
@@ -223,7 +226,7 @@
 
 			\subsection*{Gestion de l'eau en Belgique}
 
-				Nous avons d'abord étudié la situation de l'eau en Belgique, choix naturel de par la localisation de nos études et du développement de ce mémoire. La première chose importante est que l'eau est une compétence régionale en Belgique, ce qui signifie que chaque région (Flandre, Wallonie et Bruxelles) développe sa propre politique à propos de l'eau.
+				Nous avons d'abord étudié la situation de la distribution de l'eau en Belgique, choix naturel de par la localisation de nos études et du développement de ce mémoire. La première chose importante est que l'eau est une compétence régionale en Belgique, ce qui signifie que chaque région (Flandre, Wallonie et Bruxelles) développe sa propre politique à propos de l'eau.
 
 				Par exemple, en Wallonie, la gestion de l'eau est déléguée par le gouvernement wallon à la SPGE, Société Publique de la Gestion de l'Eau. Il s'agit d'une société publique, dont le fonctionnement est décrit par un contrat de gestion établi par le gouvernement. Elle travaille avec différentes intercommunales, sociétés également publiques, pour s'assurer de la distribution d'eau potable, ainsi que de l'égouttage et l'assainissement des eaux usées. Ces différentes intercommunales sont mandatées par la SPGE via des contrats de gestions sur des parties spécifiques du territoire wallon.
 
@@ -233,7 +236,7 @@
 
 			\subsection*{Visite d'un centre opérationnel en France}
 
-				Afin d'avoir une meilleur vision de ce qu'implique la gestion de l'eau sur le terrain, ainsi que le quotidien d'une société impliquée dans cette gestion, nous sommes allés visiter le groupe Saur~\footnote{\url{https://www.saur.com/}}, une entreprise de gestion (assainissement, distribution, facturation, etc) de l'eau pour les particuliers et industriels, principalement en France.
+				Afin d'avoir une meilleur vision de ce qu'implique la gestion de l'eau sur le terrain, ainsi que du quotidien d'une société impliquée dans cette gestion, nous sommes allés visiter le groupe Saur~\footnote{\url{https://www.saur.com/}}, une entreprise de gestion (assainissement, distribution, facturation, etc) de l'eau pour les particuliers et industriels, principalement en France.
 
 				Nous avons visité le Centre de Pilotage Opérationnel de Serris. Il s'agit du centre névralgique d'où sont dirigées les activités de Saur pour la région Île-de-France. Ce centre permet un suivi en temps réel des activités sur toute la région par des ordonnanceurs, employés se chargeant de la planification et du suivi du travail des opérateurs de terrain.
 
@@ -250,9 +253,9 @@
 
 			Afin d'avoir une meilleure idée de ce à quoi devrait ressembler un logiciel de gestion de distribution d'eau, nous avons recherché des logiciels existants afin d'identifier leurs similarités, forces et faiblesses.
 
-			\textbf{EPANET} est un logiciel libre de droits, développé par l'\emph{Environment Protection Agency} aux États-Unis. Ce logiciel est une véritable référence dans le milieu, et se retrouve souvent utilisé comme base d'autres logiciels. \textbf{WaterCAD} s'inspire de suites logicielles connues afin d'apporter une interface moderne et des visuels avancés. \textbf{KY Pipe} se base sur EPANET pour proposer une analyse hydraulique avancée et pour permettre de modéliser de nombreux contenus. Beaucoup d'autres logiciels existent, généralement basés sur EPANET ou AutoCAD (un logiciel plus générique).
+			\textbf{EPANET}~\cite{ref:epanet} est un logiciel libre de droits, développé par l'\emph{Environment Protection Agency} aux États-Unis. Ce logiciel est une véritable référence dans le milieu, et se retrouve souvent utilisé comme base d'autres logiciels. \textbf{WaterCAD}~\cite{ref:watercad} s'inspire de suites logicielles connues afin d'apporter une interface moderne et des visuels avancés. \textbf{KY Pipe}~\cite{ref:kypipe} se base sur EPANET pour proposer une analyse hydraulique avancée et pour permettre de modéliser de nombreux contenus. Beaucoup d'autres logiciels existent, généralement basés sur EPANET ou AutoCAD (un logiciel plus générique).
 
-			On peut remarquer que tous ces logiciels proposent une modélisation géographique du réseau de distribution. Celle-ci permet un affichage du réseau sous forme de graphe avec de liens pour les conduites et des nœuds pour les différents points de traitement, ainsi qu'une superposition sur une carte géographique pour une meilleure visualisation. Un autre module commun à tous ces logiciels permet d'effectuer des analyses formelles sur le réseau. Les modèles mathématiques sont utilisés pour poser une évaluation (quantitative, relative, etc) du système. Ces analyses permettent d'étudier les flux, les dépôts, la pression, etc, que ce soit en un point ou sur toute une partie du réseau. Un dernier module commun permet d'obtenir des rapports sur l'état en temps réel du réseau de distribution.
+			On peut remarquer que tous ces logiciels proposent une modélisation géographique du réseau de distribution. Celle-ci permet un affichage du réseau sous forme de graphe avec de liens pour les conduites et des nœuds pour les différents points de traitement, ainsi qu'une superposition sur une carte géographique pour une meilleure visualisation. Un autre module commun à tous ces logiciels permet d'effectuer des analyses formelles sur le réseau. Les modèles mathématiques sont utilisés pour poser une évaluation (quantitative, relative, etc) du système. Ces analyses permettent d'étudier les flux, les dépôts, la pression, etc, que ce soit en un point ou sur toute une partie du réseau. Un dernier module commun permet d'obten{}ir des rapports sur l'état en temps réel du réseau de distribution.
 
 			La majeure différence entre ces solutions est le modèle tarifaire. On passe d'un logiciel gratuit à d'autres dont le prix peut s'élever jusqu'à 14.000 \$. Les autres variations sont plus d'ordre visuel, avec des interfaces plus ou moins stylisées ainsi que des représentations du réseau et des données plus ou moins modernes.
 
@@ -283,23 +286,29 @@
 
 					\item[Hebdomadaire] Chaque semaine en alternance, nous rencontrions un de nos promoteurs. Dans la continuité de la planification mensuelle, ces réunions permettaient de présenter les productions, rapporter les tâches en cours et leur avancement, et enfin de projeter le futur du travail. Ces présentations étaient également l'occasion de rassembler les productions et d'avoir, chaque semaine, des documents ou démonstrations pouvant être comprises par des acteurs étrangers à l'équipe de développement. C'était donc autant un médium d'information que l'occasion de nous recentrer sur le travail, sans compter les précieux retours de nos promoteurs.
 
-					\item[Quotidien] Après une période d'expérimentation avec plusieurs outils de suivi, la gestion au quotidien des tâches à accomplir s'est ancrée sur Trello~\footnote{\url{https://trello.com}}, un tableau en ligne composé de cartes amovibles réparties dans des colonnes. Dans notre organisation, une carte représente une tâche plus ou moins atomique semblable à un \emph{récit utilisateur}~\footnote{Un récit utilisateur est une phrase ou texte court décrivant une fonctionnalité à développer}. Nous utilisons les colonnes pour classer les cartes selon l'état de la tâche associée. Nous avons ainsi défini les colonnes : \emph{à faire, a faire urgemment, en cours, problématique} et \emph{fini}. Nous avons également utilisé des messageries instantanées (e.g. Slack~\footnote{\url{https://slack.com/intl/fr-be/}}) et canaux vocaux pour organiser les tâches.
+					\item[Quotidien] Après une période d'expérimentation avec plusieurs outils de suivi, la gestion au quotidien des tâches à accomplir s'est ancrée sur Trello~\footnote{\url{https://trello.com}}, un tableau en ligne composé de cartes amovibles réparties dans des colonnes. Dans notre organisation (exemple simplifié en figure~\ref{fig:screen_trello_simplifie}), une carte représente une tâche plus ou moins atomique semblable à un \emph{récit utilisateur}~\footnote{Un récit utilisateur est une phrase ou texte court décrivant une fonctionnalité à développer}. Nous utilisons les colonnes pour classer les cartes selon l'état de la tâche associée. Nous avons ainsi défini les colonnes : \emph{à faire, a faire urgemment, en cours, problématique} et \emph{fini}. Nous avons également utilisé des messageries instantanées (e.g. Slack~\footnote{\url{https://slack.com/intl/fr-be/}}) et canaux vocaux pour organiser les tâches de manière plus informelle.
 				\end{description}
+
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth]{images/screen_trello_simplifie}
+					\caption{Exemple simplifié d'interface Trello}
+					\label{fig:screen_trello_simplifie}
+				\end{figure}
 
 				Etablir un plan et s'y tenir n'était cependant pas suffisant. Le projet a connu de nombreuses modifications dans ses objectifs et contraintes. Différents facteurs viennent expliquer ces modifications :
 
 				\begin{itemize}
 					\item La présentation de prototypes aux partenaires et aux promoteurs ont souvent amené de nouvelles idées pour l'application, ou suggéré la modification de fonctionnalités existantes.
-					\item L'arrivée de nouveaux acteurs, principalement aux mois de février et mars. Plusieurs haïtiens ont pu apporter des éclaircissements sur la situation qui ont modifié l'application et l'orientation de son développement.
+					\item L'arrivée de nouveaux acteurs, principalement aux mois de février et mars. Plusieurs Haïtiens ont pu apporter des éclaircissements sur la situation qui ont modifié l'application et l'orientation de son développement.
 					\item Certaines fonctionnalités se sont révélées plus complexes à implémenter que prévu.
 				\end{itemize}
 
-				La figure~\ref{fig:simplified_gantt} présente une vue simplifiée du diagramme de Gantt final sur lequel les modules implémentés (voir section~\ref{sec:cahier_des_charges}) sont placés sur une ligne temporelle en dessous de laquelle les grandes phases du mémoire ont été placées, ainsi que les deux versions majeures, \emph{alpha} et \emph{beta}, présentées à tous les acteurs du projet.
+				La figure~\ref{fig:simplified_gantt} présente une vue simplifiée du diagramme de Gantt~\footnote{Un diagramme de Gantt présente l'avancement et les prévisions des tâches d'un projet en fonction du temps.} final sur lequel les modules implémentés (voir section~\ref{sec:cahier_des_charges}) sont placés sur une ligne temporelle en dessous de laquelle les grandes phases du mémoire ont été placées, ainsi que les deux versions majeures, \emph{alpha} et \emph{beta}, présentées à tous les acteurs du projet.
 
 				Les phases d'\emph{analyse} et \emph{architecture} se sont également clôturées par des réunions de taille plus importante afin qu'un maximum de personnes puissent donner leur avis sur les artefacts (cahier des charges, ébauches d'interface graphique, etc). C'est notamment après ces réunions que les changements de planification étaient décidés pour répondre aux nouveaux besoins du client.
 
-				Le diagramme en figure~\ref{fig:simplified_gantt} est donc la version finale. Comparé au plan initial, on constate une augmentation de la phase d'implémentation en raison de l'augmentation de la charge de travail, les modules \emph{historique} et \emph{finances} étaient en effet imprévus. De nombreuses autres fonctionnalités ajoutées à posteriori ont allongé cette phase.
-				Il était également prévu de passer plus de temps sur l'analyse et la conception du système. Or le cahier des charges et les ébauches n'étaient pas assez concrèts pour avoir des retours précis sur l'outil. Devant ce fait et l'ampleur du projet, nous avons démarré l'implémentation plus tôt que prévu, et elle s'est également allongée sur le mois d'avril (pour un total d'environ 6 semaines supplémentaires).
+				Le diagramme en figure~\ref{fig:simplified_gantt} est donc la version finale. Comparé au plan initial, on constate une augmentation de la phase d'implémentation en raison de l'augmentation de la charge de travail, les modules \emph{historique} et \emph{finances} étaient en effet imprévus. De nombreuses autres fonctionnalités ajoutées a posteriori ont allongé cette phase.
+				Il était également prévu de passer plus de temps sur l'analyse et la conception du système. Or le cahier des charges et les ébauches n'étaient pas assez concrets pour avoir des retours précis sur l'outil. Devant ce fait et l'ampleur du projet, nous avons démarré l'implémentation plus tôt que prévu, et elle s'est également allongée sur le mois d'avril (pour un total d'environ 6 semaines supplémentaires).
 
 				Ces imprévus n'ont heureusement pas eu d'impact sur la production. Le démarrage anticipé de l'analyse en août, l'ajout d'une semaine de travail imprévue durant la session d'examen de janvier ainsi qu'une zone tampon de deux semaines prévue dans l'horaire initial ont permis d'accomplir la totalité des tâches initialement prévues, ainsi qu'une part appréciable des suggestions apportées au cours de l'année.
 
@@ -317,13 +326,13 @@
 
 		\section{Méthodologie}
 
-			Garantir l'avancement sans variation indésirable de tout projet se fait par le biais d'une méthodologie. Il est important que cette méthode de travail soit connue de chacun pour garantir un rôle fixe et un suivi efficace. Cette notion de méthode est une caractéristique bien connue de la gestion de projet, le but étant de partir d'un besoin et d'apporter une solution informatisée. La méthode lie ces deux états et définit un système de communication, échéances, tâches, etc. De nombreuses méthodes déjà établies existent et sont prêtes à l'emploi par n'importe quelle équipe.
+			Garantir l'avancement sans variation indésirable de tout projet se fait par le biais d'une méthodologie~\cite{ref:kolp_methodologies}. Il est important que cette méthode de travail soit connue de chacun pour garantir un rôle fixe et un suivi efficace. Cette notion de méthode est une caractéristique bien connue de la gestion de projet, le but étant de partir d'un besoin et d'apporter une solution informatisée. La méthode lie ces deux états et définit un système de communication, échéances, tâches, etc. De nombreuses méthodes déjà établies existent et sont prêtes à l'emploi par n'importe quelle équipe.
 
 			\subsection*{Agile}
 
-				Dans la section précédente, nous avons évoqué les changements constants dans la planification et les tâches. C'est donc tout naturellement que nous avons opté pour une \emph{méthode agile}, en opposition aux méthodes traditionnelles dites "waterfall" qui se montrent plus rigides et réfractaires au changement.
+				Dans la section précédente, nous avons évoqué les changements constants dans la planification et les tâches. C'est donc tout naturellement que nous avons opté pour une \emph{méthode agile}, en opposition aux méthodes traditionnelles dites \emph{waterfall} qui se montrent plus rigides et réfractaires au changement.
 
-				Nous n'avons pas suivi une méthode agile fixe, préférant une version plus relaxée, adaptée aux variations de disponibilité inhérentes à notre statut d'étudiant. On peut cependant relever des grands principes inspirés de méthodes existantes.
+				Nous n'avons pas suivi une méthode agile fixe, préférant une version plus relaxée, adaptée aux variations de disponibilité inhérentes à notre statut d'étudiant. On peut cependant relever des grands principes inspirés de méthodes existantes, notamment Scrum~\cite{ref:scrum}.
 
 				\begin{description}
 					\item[Développement dirigé par les fonctionnalités] \emph{Feature Driven Development} en anglais, ce type de développement focalise les ressources sur la création. Tout d'abord création d'un prototype général et d'une liste de fonctionnalités. Ensuite création de celles-ci, ajoutées à l'application en impliquant le client à chaque fois qu'une fonctionnalité est créée. C'est également le client qui définit la priorité des fonctionnalités. Ce dernier point fut très utile dans notre mémoire où les acteurs haïtiens ont souhaité orienter le développement vers l'aspect financier de l'application, en opposition à Protos qui accentuait principalement le réseau de distribution.
@@ -347,9 +356,9 @@
 
 			\subsection*{Analyse}
 
-				La phase d'analyse principale, d'août à octobre, avait pour but de comprendre la situation et le rôle de l'application. Afin que toute l'équipe avance vers le même objectif, il a été nécessaire que chacun soit impliqué dans l'analyse. En débutant par une recherche libre, nous avons cherché à nous documenter sur le contexte haïtien, les solutions existantes et les entreprises qui appliquent ces solutions. L'apport de plusieurs centaines de pages de documentation par Protos et nos promoteurs a nécessité une certaine organisation. Demander à chacun de nous, mémorants, de tout lire nous a semblé improductif, mais il était nécessaire que les informations circulent. Nous avons donc adopté un système de file pour les documents. Chaque nouveau document est placé dans cette file et pris en charge par un de nous trois (selon disponibilité et affinité). Au fil de la lecture, un document résumant le contenu et relevant les informations utiles pour le mémoire est produit. Le résumé terminé et mis à disposition, il est lu et discuté en groupe. Un autre objectif de ce système est de pouvoir bénéficier de documents raccourcis pour rechercher des informations, notamment dans la rédaction de ce travail.
+				La phase d'analyse principale, d'août à octobre, avait pour but de comprendre la situation et le rôle de l'application. Afin que toute l'équipe avance vers le même objectif, il a été nécessaire que chacun soit impliqué dans l'analyse. En débutant par une recherche libre, nous avons cherché à nous documenter sur le contexte haïtien, les solutions existantes et les entreprises qui appliquent ces solutions. L'apport de plusieurs centaines de pages de documentation par Protos et nos promoteurs a nécessité une certaine organisation. Demander à chacun de nous, mémorants, de tout lire nous a semblé improductif, mais il était nécessaire que les informations circulent. Nous avons donc adopté un système de file pour les documents. Chaque nouveau document~\cite{ref:resumes_documents} est placé dans cette file et pris en charge par un de nous trois (selon disponibilité et affinité). Au fil de la lecture, un document résumant le contenu et relevant les informations utiles pour le mémoire est produit. Le résumé terminé et mis à disposition, il est lu et discuté en groupe. Un autre objectif de ce système est de pouvoir bénéficier de documents raccourcis pour rechercher des informations, notamment dans la rédaction de ce travail.
 
-				Précisons cependant que même si ce que nous considérons être comme la phase d'analyse principale était de août à octobre, les changements d'exigences et l'apport de nouvelles informations au cours de l'année ont induit des phases d'analyse complémentaires, principalement au démarrage l'implémentation de chaque module. A nouveau, nous nous sommes tous trois impliqués dans ces phases afin que le développement aille dans un sens unique.
+				Précisons cependant que même si ce que nous considérons être comme la phase d'analyse principale s'est déroulée de août à octobre, les changements d'exigences et l'apport de nouvelles informations au cours de l'année ont induit des phases d'analyse complémentaires, principalement au démarrage l'implémentation de chaque module. A nouveau, nous nous sommes tous trois impliqués dans ces phases afin que le développement aille dans un sens unique.
 
 			\subsection*{Conception et implémentation}
 
@@ -366,7 +375,7 @@
 
 				Pour chacune de ces préoccupations, le responsable désigné s'est chargé de la conception, des schémas, de la réalisation (implémentation) et de la documentation. Une communication constante et présentation de l'avancement des tâches à chaque membre de l'équipe se sont implicitement imposées, toujours dans l'optique d'orienter le développement dans le même sens.
 
-				L'inconvénient principal de ce type d'organisation et la compartementalisation qui nuit à l'apprentissage individuel puisque tout le monde ne travaille pas avec la totalité des technologies utilisées. Cela pose un risque d'arrêt, même temporaire, du développement si un des membres se trouve dans l'incapacité d'assumer sa charge de travail. En entreprise, ce risque serait à corriger au plus vite en impliquant plus d'acteurs dans chaque branche du développement, ou en impliquant tous les acteurs dans la totalité du code (par exemple via un système de rotation).
+				L'inconvénient principal de ce type d'organisation est la compartementalisation qui nuit à l'apprentissage individuel puisque tout le monde ne travaille pas avec la totalité des technologies utilisées. Cela pose un risque d'arrêt, même temporaire, du développement si un des membres se trouve dans l'incapacité d'assumer sa charge de travail. En entreprise, ce risque serait à corriger au plus vite en impliquant plus d'acteurs dans chaque branche du développement, ou en impliquant tous les acteurs dans la totalité du code (par exemple via un système de rotation).
 
 				Nous avons tout de même effectué ce choix pour la puissance de travail qu'il permet et les facilités de développement et d'organisation apportées. Chacun de nous a développé une connaissance accrue de la technologie utilisée dans sa partie, permettant une augmentation drastique de l'efficacité qui s'est particulièrement ressentie dans la seconde partie (second quadrimestre) du travail. Organisationnellement parlant, savoir directement à qui s'adresser en cas de problème ou demande de fonctionnalité a été également particulièrement pratique.
 
@@ -450,7 +459,7 @@
 				\'Etablie dès le premier jour, l'exigence du support web pour ce travail a formé la totalité du mémoire. Nous n'avons pas eu de réel choix à ce niveau, il nous est néanmoins possible de trouver des avantages à ce type de développement :
 				\begin{itemize}
 					\item L'application ne nécessite aucune installation. Il n'y a aucun prérequis d'installation et la seule nécessité est de disposer d'un navigateur internet (préférentiellement majeur et relaivement récent). C'est une facilité pour l'utilisateur, qui ne pourrait avoir plus de facilités à atteindre l'application puisqu'il suffit d'accéder au site internet. L'avantage est également étendu au développement qui ne doit pas se préoccuper du système d'exploitation de l'utilisateur.
-					\item Le déploiement des mises à jour et la manière dont l'application fonctionne en général est uniforme à travers les utilisateurs et les conflits de version, bien que devant toujours être gérés notamment par le biais du cache (voir section~\ref{sec:sec:cache_client}), sont moindres que sur une application locale. D'éventuels conflits de données peuvent être réglés directement via le serveur et les outils de développement disponibles à l'équipe, ce qui est plus rapide et moins complexe que de créer des automatisations pour gérer ces mises à jour individuellement pour chaque utilisateur.
+					\item Le déploiement des mises à jour et la manière dont l'application fonctionne en général est uniforme à travers les utilisateurs et les conflits de version, bien que devant toujours être gérés notamment par le biais du cache (voir section~\ref{sec:cache_client}), sont moindres que sur une application locale. D'éventuels conflits de données peuvent être réglés directement via le serveur et les outils de développement disponibles à l'équipe, ce qui est plus rapide et moins complexe que de créer des automatisations pour gérer ces mises à jour individuellement pour chaque utilisateur.
 					\item
 				\end{itemize}
 
@@ -686,28 +695,49 @@
 				\item Un bloc de contrôle plus complexe, ici la carte interactive. Sur celle-ci, il est possible de placer des marqueurs (fontaines, kiosques, prises individuelles, sources et réservoirs) ou des lignes polygonales (conduites). Supportant les habituels contrôles de zoom (molette ou boutons) et déplacement (en cliquer/glisser), il est également possible de basculer entre une vue cartographique d'OpenStreetMap~\footnote{\url{https://www.openstreetmap.org/}} et une vue sattelite de Google~\footnote{\url{https://www.google.com/maps}}
 			\end{enumerate}
 
-			% Todo énumération des modules GUI
+			Tant pour accélérer le développement que pour permettre à l'utilisateur de s'habituer à l'utilisation de l'interface en se familiarisant avec les contrôles, les blocs de l'interface graphique sont réutilisés à travers les différentes pages de l'application.
 
-			\subsection*{Référence en annexe ?}
+			La saisie des données occupe également une grande importance dans l'application. Pour ajouter et modifier les données, nous utilisons des fenêtres modales contenant des formulaires
+
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{images/screen_rapport_mensuel.png}
+				\caption{Capture d'écran du formulaire de rapport mensuel d'HaïtiWater}
+				\label{fig:screen_rapport_mensuel}
+			\end{figure}
+
+			Ces formulaires ont pour objectif d'accompagner l'utilisateur dans ses tâches. En figure~\ref{fig:screen_rapport_mensuel}, vous observez que pour atteindre cet accompagnement nous mettons en place un formulaire qui se consulte de haut en bas et de droite à gauche, où chaque information entrée est une information qui ne nécessite aucun retour en arrière. Sur ce formulaire en particulier, l'utilisateur peut entrer des données dans l'unité de volume de son choix (mètres cubes, gallons), la conversion est faite automatiquement. On trouve un autre exemple de cet accompagnement dans ce formulaire avec la séparation en 4 parties distinctes successives qui évitent un bloc formulaire trop grand et permettent une transition entre différentes parties logiques du rapport mensuel.
+
+			%TODO voir si on met les screens de toute l'application en annexe
 
 		\section{Procédure d'utilisation}
 
-			Pages : 2 à 3
+			%Pages : 2 à 3
 
-			\subsection*{Référence en annexe ?}
+			%TODO que mettre en contenu ? à voir avec le CdC
 
 		\section{Client}
 
 			% Le client est la partie visible de l'iceberg. Quand même un gros morceau mais totalement inutile sans le back. Il y a des calculs et conversions effectuées pour alléger la connexion, mais aucun calcul n'est enregistré en back (don't trust the user).
+			L'interface et sa facilité d'utilisation n'a pas été le seul axe du développement du client. C'est au niveau technologique que nous trouvons deux contraintes importantes : l'allégement de l'utilisation de la connexion et la simplification du code source derrière l'application.
 
 			\subsection*{Mise en cache}
 				\label{sec:cache_client}
 
-			Pages : 4 à 5
-			\subsection*{Modularité et responsiveness}
+				La mise en cache est un système natif commun à la vaste majorité des navigateurs modernes. Le concept est simple; conserver l'ancienne version d'un fichier pour la réutiliser la prochaine fois si elle n'a pas changé. HaïtiWater utilise pleinement ce concept pour alléger le poids des téléchargements. Nous avons poursuivi un objectif de généricité dans le code source afin d'éliminer la redondance et de permettre une forte réutilisation des composants. Grâce à cette mise en cache, les pages de l'application qui font en moyenne $1,2$MB lors de la première visite ne requierent qu'approximativement $10$KB de téléchargement pour les suivantes. Une exception peut être notée; le module d'information géographique est plus gourmand en ressources réseau en raison du téléchargement des images composant la carte.
+
+			%Pages : 4 à 5
+			\subsection*{Gabarits, modularité et responsiveness}
 				% Interface construite en blocs (screen?)
-			\subsection*{Gabarits}
-				% Ce qui permet d'implémenter la modularité dans l'app. Les blocs individuels sont construits et on les ajoute dans les pages selon le désir
+				Nous avons vu plus tôt que l'application est constituée d'une zone de travail dans laquelle des blocs de contrôles sont placés pour former les différents modules de l'application. Ces blocs de contrôle reflètent l'architecture logicielle de l'interface.
+
+				Pour implémenter ces contrôles, nous utilisons les gabarits Django qui sont des blocs de code HTML établissant la structure de la page web. Ces différents blocs de structure sont ensuite utilisés dans l'application pour créer les différentes pages :
+				\begin{itemize}
+					\item En \emph{extension}, c'est-à-dire que nous crééons une nouvelle page à partir d'un gabarit existant. Les contrôles communs (figure~\ref{fig:capture_gis}.1-3) de l'application sont ainsi définis une seule fois et réutilisés à travers les modules.
+					\item En \emph{inclusion}, dans laquelle un bloc de contrôle est défini indépendamment d'une page, lui permettant de conserver le même fonctionnement en une seule implémentation à travers plusieurs pages web. Les tables et formulaires sont des exemples typiques.
+				\end{itemize}
+
+
+
 			\subsection*{Accessibilité hors-ligne}
 				\label{sec:service_worker}
 
@@ -807,8 +837,8 @@
 		Pages : beaucoup
 
 	\chapter{Wireframes}
-
-		Pages : beaucoup
+		\label{sec:wireframes}
+		\includepdf[pages=-,nup=1x2,pagecommand={},width=\textwidth]{../documents/design/wireframes/hi-fi/wireframes_hifi_pencil.pdf}
 
 	\chapter{Diagrammes d'activité}
 
