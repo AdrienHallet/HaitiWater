@@ -710,8 +710,23 @@
 				% Ce qui permet d'implémenter la modularité dans l'app. Les blocs individuels sont construits et on les ajoute dans les pages selon le désir
 			\subsection*{Accessibilité hors-ligne}
 				\label{sec:service_worker}
-			  	% TODO @Sébastien
-				% Expliquer le Service Worker, ses avantages et inconvénients, et les évolutions possibles pour appliquer le service worker partout, peut-être aussi le problème de la consistance de la DB ?
+
+				Une contrainte importante à Haïti est la disponibilité de la connexion internet, dès lors il est nécessaire pour les futurs utilisateurs de notre application de pouvoir y accéder hors ligne. Cela n'est d'habitude pas possible pour un site internet, cependant la fondation Mozilla a développé récemment les Services Workers \cite{ref:serviceworker}. Il s'agit d'un module qui s'ajoute sur la machine de l'utilisateur. Il vient intercepter les requêtes effectuées par le client avant qu'elles soient transmises au serveur par le réseau afin d'y effectuer différents traitements.
+
+				Une possibilité du Service Worker est de pouvoir coordonner la mise en cache des documents renvoyés par le serveur sur le navigateur internet de l'utilisateur. Initialement, le cache est vide. Lorsqu'une requête pour un document est reçue, il est y stocké par le service worker. Par la suite, les prochaines requêtes pour ce document seront interceptée par le service worker qui ira chercher les informations directement dans le cache du navigateur à la place de transférer la requête au serveur.
+
+				Une autre possibilité est de pouvoir faire intercepter les requêtes faites au serveur lorsque celui-ci n'est pas accessible, comme lorsque la connexion internet n'est pas stable. De cette manière, nous pouvons quand même offrir certaines fonctionnalités même hors-connexion. Cependant, il est encore nécessaire de choisir quelles fonctionnalités proposer dans ce cas. Le service worker, se trouvant sur la machine de l'utilisateur, ne peut utiliser que les données qui lui sont accessibles puisque le serveur n'est pas disponible. Pour cela, nous avons imaginé trois choix possibles :
+
+				\begin{itemize}
+					\item Toutes les fonctionnalités. Cela implique d'avoir une version locale de la base de données sur la machine de l'utilisateur. Il est aussi nécessaire de synchroniser les différentes versions de la base de données y compris en cas d'inconsistance, si deux utilisateurs déconnectés modifient le même élément par exemple.
+					\item Version statique des données. Cela implique également d'avoir une version local de la base de donnée. Mais en supprimant la possibilité de modifier ces données sans connexion, cela simplifie la synchronisation et enlève les problèmes d'inconsistance.
+					\item Quelques formulaires d'ajout. En enlevant la possibilité de visualiser des données, il n'est dès lors pas nécessaire de garder une base de donnée sur la machine de l'utilisateur. Les fonctionnalités restantes sont la possibilité de remplir des formulaires d'ajout pour différentes tables, ce qui nous semble être la tâche la plus importante à avoir même hors connexion afin de ne pas perdre d'informations.
+				\end{itemize}
+
+				Nous sommes finalement partis sur cette dernière option car elle donnait le moins de complexité sur le service worker. Il est dès lors possible pour un utilisateur de compléter le rapport mensuel hors connexion. Ce module est facilement extensible à la possibilité de compléter d'autres formulaires dans le futur, voire à la possibilité d'accéder aux données s'il apparaît que cette fonctionnalité est importante pour les utilisateurs finaux de l'application.
+
+				Au final, les services workers nous permettent d'avoir des fonctionnalités autrement impossible sur un site web. Ils ont aussi l'avantage d'être un standard maintenant disponible sur tous les navigateurs majeurs. Cependant, cette compatibilité est relativement récente et des utilisateurs utilisant de vieilles versions de ces navigateurs risquent de ne pas avoir accès aux services workers. Heureusement, cette fonctionnalité est entièrement optionnelle et le site fonctionne encore sans cette compatibilité.
+
 			\subsection*{...}
 
 		\section{Serveur}
@@ -752,7 +767,6 @@
 			\subsection*{Modifications apportées}
 
 	\chapter{Améliorations futures}
-
 
 		Total des pages : 4 à 7
 
