@@ -499,6 +499,8 @@
 	\chapter{Implémentation}
 
 		Total des pages : 16 à 22
+		% Auteur : Adrien (+Seb)
+		% Relu :  Céline
 
 		% L'implémentation suit les principes du cahier des charges. Intègrer les fonctionnalités demandées et respecter les besoins du client.
 
@@ -518,9 +520,9 @@
 				% Requis du client. Avantage de la portabilité, installation, données décentralisées directement, donc communes à tous les utilisateurs
 				% Désavantage support des navigateurs multiples, perte en performances d'opérations complexes, nécessite plus de bande passante, rend plus difficile l'accès hors-ligne aux fonctionnalités
 
-				\'Etablie dès le premier jour, l'exigence du support web pour ce travail a formé la totalité du mémoire. Nous n'avons pas eu de réel choix à ce niveau, il nous est néanmoins possible de trouver des avantages à ce type de développement :
+				\'Etablie dès le premier jour, l'exigence du support web pour ce travail a influencé la totalité du mémoire. Nous n'avons pas eu de réel choix à ce niveau, il nous est néanmoins possible de trouver des avantages à ce type de développement :
 				\begin{itemize}
-					\item L'application ne nécessite aucune installation. Il n'y a aucun prérequis d'installation et la seule nécessité est de disposer d'un navigateur internet (préférentiellement majeur et relaivement récent). C'est une facilité pour l'utilisateur, qui ne pourrait avoir plus de facilités à atteindre l'application puisqu'il suffit d'accéder au site internet. L'avantage est également étendu au développement qui ne doit pas se préoccuper du système d'exploitation de l'utilisateur.
+					\item L'application ne nécessite aucune installation, aucun prérequis et la seule nécessité est de disposer d'un navigateur internet (préférentiellement majeur et relaivement récent). C'est une facilité pour l'utilisateur, puisqu'il suffit d'accéder au site internet. L'avantage est également étendu au développement qui ne doit pas se préoccuper du système d'exploitation de l'utilisateur.
 					\item Le déploiement des mises à jour et la manière dont l'application fonctionne en général est uniforme à travers les utilisateurs et les conflits de version, bien que devant toujours être gérés notamment par le biais du cache (voir section~\ref{sec:cache_client}), sont moindres que sur une application locale. D'éventuels conflits de données peuvent être réglés directement via le serveur et les outils de développement disponibles à l'équipe, ce qui est plus rapide et moins complexe que de créer des automatisations pour gérer ces mises à jour individuellement pour chaque utilisateur.
 					\item
 				\end{itemize}
@@ -535,10 +537,10 @@
 			\subsection*{Choix du framework - Django}
 				% Framework éprouvé (ancien, maintenu, communauté, documentation), adapté à de larges applications (scalable), permet l'utilisation facilité de PostgreSQL (modèles), gabarits pour du HTML 'importé' sans besoin d'angular/whatever (moins de techs, reste simple).
 
-				Un framework est une infrastructure logicielle dans laquelle l'application est développée. On peut argumenter, avec raison, qu'un framework ajoute une certaine quantité d'outils qui ont pour effet de complexifier l'application et d'en augmenter la taille. Dans une application aussi large que la nôtre cependant, l'apport bénéfique qu'ont ces outils supplante largement ces inconvénients. Parmi ces apports bénéfique on citera surtout :
+				Un framework est une infrastructure logicielle dans laquelle l'application est développée. On peut argumenter, avec raison, qu'un framework ajoute une certaine quantité d'outils qui ont pour effet de complexifier l'application et d'en augmenter la taille. Dans une application aussi large que la nôtre cependant, l'apport bénéfique qu'ont ces outils supplante largement ces inconvénients. Parmi ces apports bénéfiques on citera surtout :
 				\begin{itemize}
 					\item L'environnement de travail d'un framework impose certaines contraintes qui répandent des bonnes pratiques. Par exemple une structure des fichiers du code source qui permet à long terme une meilleure maintenance, surtout dans de larges applications.
-					\item Les outils fournis sont testés, utilisés et éprouvés. Il n'est pas nécessaire de devoir créer nous-même des fonctionnalités déjà présentes dans un framework, et même si recréer ces fonctionnalités est une expérience enrichissante, elle reste moins efficace. De plus, les fonctionnalités existantes sont de meilleure qualité, offrent de meilleures performances et surtout ne sont pas à maintenir par l'équipe de développement de l'application, mais par l'organisme en charge de la publication du framework. Ces avantages seront d'autant plus importants que le framework est populaire et maintenu à jour.
+					\item Les outils fournis sont testés, utilisés et éprouvés. Il n'est pas nécessaire de créer nous-même des fonctionnalités déjà présentes dans un framework, et même si recréer ces fonctionnalités est une expérience enrichissante, elle reste moins efficace. De plus, les fonctionnalités existantes sont de meilleure qualité, offrent de meilleures performances et surtout ne sont pas à maintenir par l'équipe de développement de l'application, mais par l'organisme en charge de la publication du framework. Ces avantages seront d'autant plus importants que le framework est populaire et maintenu à jour.
 					\item Un framework aura beaucoup de fonctionnalités par défaut qui rendront le développement plus aisé. Messages d'erreur, outils de mesures, etc.
 					\item La documentation et l'aide sont de meilleure qualité. Les framework ont généralement une communauté et une équipe de développement dont les capacité et l'expérience permettent une production de documentation rendant très facile la compréhension du projet et la recherche d'aide. Avantages qu'il est impossible d'égaler dans une équipe de trois personnes sur dix mois.
 				\end{itemize}
@@ -570,7 +572,7 @@
 
 					\begin{description}
 						\item[C] Complexité - Difficulté d'utilisation / apprentissage. \hfill \\
-							\'Evaluer la complexité est hautement subjective en fonction des préférences et habitudes du développeur. Nous pouvons néanmoins comparer les langages utilisés et la structure du framework.
+							\'Evaluer la complexité est hautement subjectif en fonction des préférences et habitudes du développeur. Nous pouvons néanmoins comparer les langages utilisés et la structure du framework.
 
 							Une mesure de la complexité se base sur l'imbrication des blocs de code. Un code comportant beaucoup de structures imbriquées sera moins lisible, et donc plus complexe. Les résultats\footnote{\'Etude de Seerene~\copyright, 2015} en figure~\ref{fig:complexity} montrent que cette mesure favorise le langage Python dans nos options.
 
@@ -582,7 +584,7 @@
 							\end{figure}
 
 					\item[M] Maintenabilité - Aisance et possibilités de maintenance. \hfill \\
-							L'aisance avec laquelle un code est maintenu à jour est inversement lié à la complexité. A cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long terme.
+							L'aisance avec laquelle un code est maintenu à jour est inversement lié à la complexité. \'A cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long terme.
 
 					\item[Pe] Performance - Capacités du framework. \hfill \\
 							Bien que moins importantes que dans une application critique (e.g.: aérospatial, banque), les performances sont mesurées en termes de temps de réponse pour une requête du client au serveur.
@@ -606,7 +608,7 @@
 				\subsection*{Django}
 					Le choix d'un framework repose sur de nombreux critères dont plusieurs sont subjectifs. En l'absence d'une ligne directrice, le choix se fait souvent selon l'expérience et les désirs de l'équipe. Notre comparatif terminé, il est devenu clair que nous favorisions un framework utilisant le langage de programmation Python.
 
-					Flask a été envisagé, cependant les facilités offertes par Django dans la gestion de la base de données, particulièrement pour les données géographiques, a été le facteur décisif. Parmi les sites populaires utilisant Django, on citera Instagram, DropBox, Disqus~\footnote{https://djangostars.com/blog/10-popular-sites-made-on-django/}.
+					Flask a été envisagé, cependant les facilités offertes par Django dans la gestion de la base de données, particulièrement pour les données géographiques, ont été le facteur décisif. Parmi les sites populaires utilisant Django, on citera Instagram, DropBox, Disqus~\footnote{https://djangostars.com/blog/10-popular-sites-made-on-django/}.
 
 			\subsection*{Python}
 				% Obligé par Django, quand même un bon choix. Pas le plus répandu (PHP et ASP.NET bien plus utilisés) mais permet une bonne gestion des objets intégrée directement au serveur, car langage OO.
@@ -619,7 +621,7 @@
 
 				Si l'utilisation du langage Python était imposée dès lors que Django fut choisi en tant qu'environnement logiciel, le système de gestion de base de données, dont le rôle est de lier l'application web et la base de données, a pu être choisi un peu plus librement.
 
-				Nous avons tout de suite écarté les systèmes non-relationnels. Bien que présentant des avantages, principalement dans l'agilité avec laquelle la structure des données peut évoluer, ces derniers ne sont pas adaptés à une application comme celle développée dans le cadre de ce mémoire. En effet les données ont de fortes dépendances, les éléments du réseau étant rattachés à des gestionnaires faisant parties de zones géographiques elle-même gérées, etc. Les outils offerts par les bases de données relationnelles pour joindre différents groupes de données (par exemple pour croiser les consommateurs avec leurs paiements afin d'obtenir un détail financier), sont tout simplement mieux adaptés au fonctionnement de l'application.
+				Nous avons tout de suite écarté les systèmes non-relationnels. Bien que présentant des avantages, principalement dans l'agilité avec laquelle la structure des données peut évoluer, ces derniers ne sont pas adaptés à une application comme celle développée dans le cadre de ce mémoire. En effet, les données ont de fortes dépendances, les éléments du réseau étant rattachés à des gestionnaires faisant parties de zones géographiques elle-même gérées, etc. Les outils offerts par les bases de données relationnelles pour joindre différents groupes de données (par exemple pour croiser les consommateurs avec leurs paiements afin d'obtenir un détail financier), sont tout simplement mieux adaptés au fonctionnement de l'application.
 
 				Restent donc les systèmes de gestion de base de données (SGBD) relationnels, dans lequels nous avons opté pour PostgreSQL, classé quatrième système de gestion de bases de données le plus utilisé au monde~\footnote{\url{https://db-engines.com/en/ranking}, 1 mai 2019}. La première motivation de ce choix est la recommandation du framework Django, lequel s'adapte mieux à ce SGBD via son système de \emph{mapping objet-relationnel} (voire section~\ref{sec:serveur}). La seconde motivation est l'existence de l'extension PostGIS~\cite{ref:postgis}, une extension du SGBD permettant de traiter aisément les données géographiques.
 
@@ -634,7 +636,7 @@
 
 				Bootstrap ajoute l'avantage non-négligeable d'implémenter un bon nombre de fonctionnalités nous permettant d'accélerer le développement, tout en étant une bibliothèque assez connue que pour être extensivement testée et documentée, la rendant une meilleure alternative à une création personnalisée qui aurait sans doute été moins performante.
 
-				Le désavantage majeur est son poids. Accompagnée de nombreuses fonctionnalités qui n'ont pas été utilisées dans ce projet, Bootstrap est lourde (approximativement 400 KB), d'autant plus en considérant la lenteur des connexions haïtiennes, cependant il est tout à fait possible de nettoyer la bibliothèque (voir section~\ref{ref:suite_projet}) pour n'en conserver que les fonctionnalités utilisées, et ainsi optimiser les téléchargements.
+				Le désavantage majeur est son poids. Accompagnée de nombreuses fonctionnalités qui n'ont pas été utilisées dans ce projet, Bootstrap est lourde (approximativement 400 KB), d'autant plus en considérant la lenteur des connexions haïtiennes,. Il est cependant tout à fait possible de nettoyer la bibliothèque (voir section~\ref{ref:suite_projet}) pour n'en conserver que les fonctionnalités utilisées, et ainsi optimiser les téléchargements.
 
 			\subsection*{DataTables}
 				% Un constat ; les tables Django ne permettent pas de contrôler l'information à 100%
@@ -643,7 +645,7 @@
 
 				DataTables~\cite{ref:datatables} est la seconde plus grosse bibliothèque du projet, gérant l'affichage des données sous forme de tables. A nouveau sélectionnée de par son ancienneté permettant une documentation et des tutoriels efficaces, DataTables était très loin d'être la seule option. Nous avons envisagé, et débuté la première version avec, la bibliothèque \emph{Django-Tables2} qui causait un ralentissement du chargement des pages contenant les données, et une perte de contrôle de l'information au niveau du serveur car les tables étaient directement rattachées aux modèles de la base de données.
 
-				Dans notre volonté d'offrir une API pour communiquer avec le serveur (voir section~\ref{sec:serveur}), nous avons migré vers DataTables. En utilisant la technologie AJAX (Asynchronous Javascript And XML) de DataTables, nous pouvons exploiter pleinement l'asynchronicité du navigateur et charger une page de l'application en totale indépendance des données ce qui augmente la vitesse de chargement des contrôles, permettant d'utiliser directement une fonctionnalité de l'application sans attendre le téléchargement des données (par exemple pour ajouter un élément).
+				Dans notre volonté d'offrir une API pour communiquer avec le serveur (voir section~\ref{sec:serveur}), nous avons migré vers DataTables. En utilisant la technologie AJAX (Asynchronous Javascript And XML) de DataTables, nous pouvons exploiter pleinement l'asynchronicité du navigateur et charger une page de l'application en totale indépendance des données, ce qui augmente la vitesse de chargement des contrôles, permettant d'utiliser directement une fonctionnalité de l'application sans attendre le téléchargement des données (par exemple pour ajouter un élément).
 
 				Les capacités offertes par DataTables sur le contrôle des données nous permettent également de gérer les données à l'envoi et/ou à la réception et de contrôler leur affichage, tout en bénéficiant des fonctionnalités implémentées par la bibliothèque (champ de recherche, tri dynamique, pagination).
 
@@ -688,7 +690,7 @@
 				Rappelons que l'application a trois concepts clefs :
 				\begin{description}
 					\item[Zone] \hfill \\
-						Une zone est un partitionnement des données de l'application. A la base de l'application se situe la zone racine dans laquelle toutes les données sont enregistrées. Une zone peut être composée d'autres zones. Une zone parente rassemble la totalité des données des zones filles. En revanche une zone fille ne rassemble que les données qui lui sont rattachées et ne voit pas le contenu des zones soeurs. On peut ainsi se servir des zones pour diviser géographiquement le réseau de distribution d'eau selon le principe de la hiérarchie haïtienne existante (DINEPA, OREPA, CAEPA) exposée en section~\ref{sec:structure_haiti}. Chacun a donc ses propres responsabilités et ne vient pas empiéter sur le territoire de l'autre.
+						Une zone est un partitionnement des données de l'application. A la base de l'application se situe la zone racine dans laquelle toutes les données sont enregistrées. Une zone peut être composée d'autres zones. Une zone parente rassemble la totalité des données des zones filles. En revanche, une zone fille ne rassemble que les données qui lui sont rattachées et ne voit pas le contenu des zones soeurs. On peut ainsi se servir des zones pour diviser géographiquement le réseau de distribution d'eau selon le principe de la hiérarchie haïtienne existante (DINEPA, OREPA, CAEPA) exposée en section~\ref{sec:structure_haiti}. Chacun a donc ses propres responsabilités et ne vient pas empiéter sur le territoire de l'autre.
 					\item[Elément du réseau] \hfill \\
 						Un élément du réseau peut être une conduite, un réservoir, une source, une fontaine, un kiosque ou une prise individuelle. Ces six éléments constituent le réseau de distribution d'eau potable haïtien et sont enregistrés dans une zone.
 					\item[Consommateur] \hfill \\
@@ -734,7 +736,7 @@
 			% La GUI n'est qu'une manière d'utiliser l'application. Pour l'instant la seule, mais on différencie vraiment le serveur et l'application car au final la webapp n'est qu'une GUI pour l'API.
 			% Les fonctionnalités
 
-			Partie visible de notre application, l'interface graphique permet d'utiliser les fonctionnalités d'HaïtiWater. En réalité, l'interface graphique n'est qu'un moyen de faciliter l'utilisation de l'application et de rendre les données accessibles et lisibles par un humain. L'application est entièrement contrôlée par l'API qui requiert les données à afficher ou modifier. Somme toute, n'importe quelle autre interface (application locale, mobile, etc) pourrait envoyer les mêmes requêtes. Cela permet donc de décentraliser la logique de l'application dans le serveur tandis que l'interface permet de présenter l'information à un humain (tableaux, graphiques), le guider dans son utilisation et faciliter la saisie de données via les formulaires. Non content de permettre, dans le futur, la création de nouvelles interfaces, cette séparation des rôles améliorer le développement et la maintenance de l'application, nous y reviendrons en section~\ref{sec:serveur}.
+			Partie visible de notre application, l'interface graphique, permet d'utiliser les fonctionnalités d'HaïtiWater. En réalité, l'interface graphique n'est qu'un moyen de faciliter l'utilisation de l'application et de rendre les données accessibles et lisibles par un humain. L'application est entièrement contrôlée par l'API qui requiert les données à afficher ou modifier. Somme toute, n'importe quelle autre interface (application locale, mobile, etc) pourrait envoyer les mêmes requêtes. Cela permet donc de décentraliser la logique de l'application dans le serveur tandis que l'interface permet de présenter l'information à un humain (tableaux, graphiques), le guider dans son utilisation et faciliter la saisie de données via les formulaires. Non content de permettre, dans le futur, la création de nouvelles interfaces, cette séparation des rôles nous a permis d'améliorer le développement et la maintenance de l'application, nous y reviendrons en section~\ref{sec:serveur}.
 
 			Se voulant simple, l'interface est composée de blocs de contrôle permettant de gérer les données dans une zone de travail commune à toute les pages permettant de naviguer à travers l'application.
 
@@ -767,7 +769,7 @@
 				\label{fig:screen_rapport_mensuel}
 			\end{figure}
 
-			Ces formulaires ont pour objectif d'accompagner l'utilisateur dans ses tâches. En figure~\ref{fig:screen_rapport_mensuel}, vous observez que pour atteindre cet accompagnement nous mettons en place un formulaire qui se consulte de haut en bas et de droite à gauche, où chaque information entrée est une information qui ne nécessite aucun retour en arrière. Sur ce formulaire en particulier, l'utilisateur peut entrer des données dans l'unité de volume de son choix (mètres cubes, gallons), la conversion est faite automatiquement. On trouve un autre exemple de cet accompagnement dans ce formulaire avec la séparation en 4 parties distinctes successives qui évitent un bloc formulaire trop grand et permettent une transition entre différentes parties logiques du rapport mensuel.
+			Ces formulaires ont pour objectif d'accompagner l'utilisateur dans ses tâches. En figure~\ref{fig:screen_rapport_mensuel}, vous observez que pour atteindre ce but, nous mettons en place un formulaire qui se consulte de haut en bas et de droite à gauche, où chaque information entrée est une information qui ne nécessite aucun retour en arrière. Sur ce formulaire en particulier, l'utilisateur peut entrer des données dans l'unité de volume de son choix (mètres cubes, gallons), la conversion est faite automatiquement. On trouve un autre exemple de ce genre d'accompagnement dans ce même formulaire, qui est séparé en quatre parties distinctes. Celles-ci qui évitent un bloc formulaire trop grand et permettent une transition entre différentes parties logiques du rapport mensuel.
 
 			%TODO voir si on met les screens de toute l'application en annexe
 
@@ -803,21 +805,21 @@
 			\subsection*{Accessibilité hors-ligne}
 				\label{sec:service_worker}
 
-				Une contrainte importante à Haïti est la disponibilité de la connexion internet, dès lors il est nécessaire pour les futurs utilisateurs de notre application de pouvoir y accéder hors ligne. Cela n'est d'habitude pas possible pour un site internet, cependant la fondation Mozilla a développé récemment les Services Workers \cite{ref:serviceworker}. Il s'agit d'un module qui s'ajoute sur la machine de l'utilisateur. Il vient intercepter les requêtes effectuées par le client avant qu'elles soient transmises au serveur par le réseau afin d'y effectuer différents traitements.
+				Une contrainte importante en Haïti est la disponibilité de la connexion internet. Dès lors, il est nécessaire pour les futurs utilisateurs de notre application de pouvoir y accéder hors ligne. Cela n'est d'habitude pas possible pour un site internet, cependant la fondation Mozilla a développé récemment les Services Workers \cite{ref:serviceworker}. Il s'agit d'un module qui s'ajoute sur la machine de l'utilisateur et vient intercepter les requêtes effectuées par le client avant qu'elles ne soient transmises au serveur, afin d'y effectuer différents traitements.
 
-				Une possibilité du Service Worker est de pouvoir coordonner la mise en cache des documents renvoyés par le serveur sur le navigateur internet de l'utilisateur. Initialement, le cache est vide. Lorsqu'une requête pour un document est reçue, il est y stocké par le service worker. Par la suite, les prochaines requêtes pour ce document seront interceptée par le service worker qui ira chercher les informations directement dans le cache du navigateur à la place de transférer la requête au serveur.
+				L'une des capacités du Service Worker est de coordonner la mise en cache des documents renvoyés par le serveur sur le navigateur internet de l'utilisateur. Initialement, le cache est vide. Lorsqu'une requête pour un document est reçue, il est stocké dans ce cache par le Service Worker. Par la suite, les prochaines requêtes pour ce document seront interceptées par ce module, qui ira chercher les informations directement dans le cache du navigateur à la place de transférer la requête au serveur.
 
-				Une autre possibilité est de pouvoir faire intercepter les requêtes faites au serveur lorsque celui-ci n'est pas accessible, comme lorsque la connexion internet n'est pas stable. De cette manière, nous pouvons quand même offrir certaines fonctionnalités même hors-connexion. Cependant, il est encore nécessaire de choisir quelles fonctionnalités proposer dans ce cas. Le service worker, se trouvant sur la machine de l'utilisateur, ne peut utiliser que les données qui lui sont accessibles puisque le serveur n'est pas disponible. Pour cela, nous avons imaginé trois choix possibles :
+				Il est également possible d'intercepter les requêtes faites au serveur lorsque celui-ci n'est pas accessible, comme lorsque la connexion internet n'est pas stable. De cette manière, nous pouvons quand même offrir certaines fonctionnalités hors-connexion. Cependant, il est encore nécessaire de choisir quelles fonctionnalités proposer dans ce cas. Le Service Worker se trouvant sur la machine de l'utilisateur ne peut utiliser que les données qui lui sont accessibles puisque le serveur n'est pas disponible. Pour cela, nous avons imaginé trois choix possibles :
 
 				\begin{itemize}
-					\item Toutes les fonctionnalités. Cela implique d'avoir une version locale de la base de données sur la machine de l'utilisateur. Il est aussi nécessaire de synchroniser les différentes versions de la base de données y compris en cas d'inconsistance, si deux utilisateurs déconnectés modifient le même élément par exemple.
-					\item Version statique des données. Cela implique également d'avoir une version local de la base de donnée. Mais en supprimant la possibilité de modifier ces données sans connexion, cela simplifie la synchronisation et enlève les problèmes d'inconsistance.
-					\item Quelques formulaires d'ajout. En enlevant la possibilité de visualiser des données, il n'est dès lors pas nécessaire de garder une base de donnée sur la machine de l'utilisateur. Les fonctionnalités restantes sont la possibilité de remplir des formulaires d'ajout pour différentes tables, ce qui nous semble être la tâche la plus importante à avoir même hors connexion afin de ne pas perdre d'informations.
+					\item Toutes les fonctionnalités. Cela implique d'avoir une version locale de la base de données sur la machine de l'utilisateur. Il est aussi nécessaire de synchroniser les différentes versions de celle-ci, y compris en cas d'inconsistance, si deux utilisateurs déconnectés modifient le même élément par exemple.
+					\item Version statique des données. Cela implique également d'avoir une version locale de la base de donnée, mais en supprimant la possibilité de modifier ces données sans connexion. Cela simplifie la synchronisation et règle les problèmes d'inconsistance.
+					\item Quelques formulaires d'ajout. En retirant la possibilité de visualiser des données, il n'est dès lors pas nécessaire de garder une base de donnée sur la machine de l'utilisateur. Les fonctionnalités restantes sont la possibilité de remplir des formulaires d'ajout pour différentes tables, ce qui nous semble être la tâche la plus importante à avoir lorsqu'il n'y a pas de connexion, afin de ne pas perdre d'informations.
 				\end{itemize}
 
-				Nous sommes finalement partis sur cette dernière option car elle donnait le moins de complexité sur le service worker. Il est dès lors possible pour un utilisateur de compléter le rapport mensuel hors connexion. Ce module est facilement extensible à la possibilité de compléter d'autres formulaires dans le futur, voire à la possibilité d'accéder aux données s'il apparaît que cette fonctionnalité est importante pour les utilisateurs finaux de l'application.
+				Nous nous sommes finalement décidés pour cette dernière option, qui nous semblait plus réaliste et plus en accord avec la faible connexion d'Haïti. Il est dès lors possible pour un utilisateur de compléter le rapport mensuel hors connexion. Ce module est facilement extensible à la possibilité de compléter d'autres formulaires dans le futur, voire à la possibilité d'accéder aux données s'il apparaît que cette fonctionnalité est importante pour les utilisateurs finaux de l'application.
 
-				Au final, les services workers nous permettent d'avoir des fonctionnalités autrement impossible sur un site web. Ils ont aussi l'avantage d'être un standard maintenant disponible sur tous les navigateurs majeurs. Cependant, cette compatibilité est relativement récente et des utilisateurs utilisant de vieilles versions de ces navigateurs risquent de ne pas avoir accès aux services workers. Heureusement, cette fonctionnalité est entièrement optionnelle et le site fonctionne encore sans cette compatibilité.
+				Au final, les Services Workers nous permettent d'avoir des fonctionnalités autrement impossible sur un site web. Ils ont aussi l'avantage d'être un standard maintenant disponible sur tous les navigateurs majeurs. Cependant, cette compatibilité est relativement récente et des utilisateurs utilisant de vieilles versions de ces navigateurs risquent de ne pas avoir accès à cette technologie. Heureusement, cette fonctionnalité est entièrement optionnelle et le site fonctionne encore sans cette compatibilité. Il est également possible pour tout utilisateur de simplement mettre à jour ou changer de navigateur, s'il venait à avoir besoin des Service Workers.
 
 			\subsection*{...}
 
