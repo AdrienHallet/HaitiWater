@@ -21,6 +21,7 @@
 \usepackage{cite}
 \usepackage{float}
 \usepackage{multirow}
+\usepackage{multicol}
 \usepackage[final]{pdfpages}
 
 \begin{document}
@@ -852,10 +853,17 @@
 
 		\section{Vérifications utilisateurs réels}
 			% Pages : 3 à 4
-			Cette étape, qui s'est déroulée de mars à avril, a mis des utilisateurs étrangers à l'équipe de développement face à l'application.
+			Cette étape, qui s'est déroulée de mars à avril, a mis des utilisateurs étrangers à l'équipe de développement face à l'application. Derrière cette vérification, deux points de l'application étaient mis à l'épreuve : l'interface graphique et la procédure d'utilisation. Après plusieurs mois de développement, le point de vue d'utilisateurs externes avec des connaissances en informatique et en gestion de l'eau fortement variables était nécessaire.
 
+			Les séances de validation ont eu lieu selon les disponibilités des utilisateurs d'essai, répartis en deux groupes. Un premier groupe de 9 utilisateurs a testé l'application dans la version \emph{Alpha 3}, un second groupe de 11 utilisateurs a testé l'application dans la version \emph{Beta 1}, dans laquelle les modules financier et historique ont été rajoutés ainsi que plusieurs changements suggérés par les utilisateurs d'essai du premier groupe de validation.
 
 			\subsection*{Méthodologie}
+
+				Afin d'introduire un minimum d'erreurs statistiques, la mesure de la satisfaction des utilisateurs a suivi un protocole établi avec l'expérience de nos promoteurs sur base d'un ancien travail~\cite{ref:reflecton}, de cours~\cite{ref:vanderdonckt_hci, ref:vanderdonckt_cscw} et recherches sur la satisfaction utilisateur~\cite{ref:usability_evaluation_tools, ref:ssi}.
+
+
+
+
 
 			\subsection*{Résultats obtenus}
 			\subsection*{Modifications apportées}
@@ -909,7 +917,7 @@
 		Pages : beaucoup
 
 	\chapter{Documents de validation}
-		Pages : 10 à 20
+		\input{../documents/validation/protocole_content.tex}
 	\setlength{\parskip}{0em}
 	\backcoverpage
 
