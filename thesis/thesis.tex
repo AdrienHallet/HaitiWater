@@ -859,14 +859,40 @@
 
 			\subsection*{Méthodologie}
 
-				Afin d'introduire un minimum d'erreurs statistiques, la mesure de la satisfaction des utilisateurs a suivi un protocole établi avec l'expérience de nos promoteurs sur base d'un ancien travail~\cite{ref:reflecton}, de cours~\cite{ref:vanderdonckt_hci, ref:vanderdonckt_cscw} et recherches sur la satisfaction utilisateur~\cite{ref:usability_evaluation_tools, ref:ssi}.
+				Afin d'introduire un minimum d'erreurs statistiques, la mesure de la satisfaction des utilisateurs a suivi un protocole (protocole complet disponible en annexe~\ref{sec:documents_validation}) établi avec l'expérience de nos promoteurs sur base d'un ancien travail de fin d'études~\cite{ref:reflecton}, de cours~\cite{ref:vanderdonckt_hci, ref:vanderdonckt_cscw} et recherches sur la satisfaction utilisateur~\cite{ref:usability_evaluation_tools, ref:ssi}.
 
+				Autant que possible, les séances se sont déroulées en présence physique de l'utilisateur d'essai. Certaines contraintes horaires et logistiques ont imposé la réalisation de séances à distance dans lesquelles nous avons utilisé Skype ou Discord, logiciels permettant de transmettre la voix et partager l'écran de l'utilisateur.
 
+				Après une brève introduction au concept de l'application et aux objectifs de la séance, les utilisateurs obtiennent un scénario composé d'un contexte et de tâches à réaliser qu'ils peuvent lire à leur aise. Un utilisateur travaille seul et est chronométré durant la séance. S'il a une question ou s'il reste bloqué sur une tâche, un indice lui est donné et noté dans un document avec le temps nécessité pour réaliser la tâche.
 
+				Après trois scénarios accomplis, l'utilisateur d'essai remplit un formulaire (Google Form\copyright) anonymisé composé de 24 questions fermées réparties en quatre sections :
+				\begin{description}
+					\item[Général] est une première section cherchant à identifier si l'utilisateur a compris les tâches qu'il vient d'accomplir avec l'application.
+					\item[Fonctionnalités] cherche à identifier la compréhension des contrôles de l'application par l'utilisateur.
+					\item[Usabilité] est une section particulière. Composée de dix questions alternant des assertions positives et négatives en alternance, cette section est une transcription en français de la \emph{System Usability Scale (SUS)}~\cite{ref:sus}. Se décrivant comme une mesure rapide et sâle, la SUS présente l'avantage de pouvoir être complétée rapidement par nos utilisateurs d'essai durant ces séances de maximum deux heures non-rémunérées.
+					\item[Esthétique] est une dernière section, sans doute la plus subjective, composée de questions sur l'apparence de l'interface graphique.
+				\end{description}
 
+				L'utilisateur sélectionne la réponse sur une échelle de Likert~\cite{ref:wikipedia_likert_scale} à 5 valeurs allant de \emph{Pas du tout d'accord} à \emph{Tout à fait d'accord}. Si l'utilisateur ne comprend pas la question ou n'a pas d'avis, il sélectionne le \emph{neutre}.
 
 			\subsection*{Résultats obtenus}
+
+				Les contraintes inhérentes au cadre du mémoire, principalement en temps et budget, nous empêchent de pouvoir réaliser une étude qui donnerait une mesure plutôt précise de la satisfaction utilisateur. Néanmoins, de nos vingt réponses des utilisateurs d'essai nous pouvons tout de même extraire une certaine indication de l'expérience utilisateur d'HaïtiWater.
+
+				Les résultats des 14 questions évaluant la satisfaction des utilisateurs sur le concept, les fonctionnalités et l'esthétique de l'application sont représentés en figure~\ref{fig:validation_likert}.
+
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth]{images/likert_questions}
+					\caption{Répartition des réponses aux questions du formulaire de validation}
+					\label{fig:validation_likert}
+				\end{figure}
+
+				Nous pouvons constater une tendance positive dans les réponses aux questions ainsi qu'une cohérence dans les groupements : les quatre questions ayant reçu le score le plus bas sont toutes liées à une certaine complexité de l'interface.
+
+				Les dix questions de la SUS s'évaluent différemment. L'échelle a sa propre formule de calcul~\cite{ref:sus} qui permet de normaliser les résultats à une valeur de 0 à 100. Notez cependant qu'il ne s'agit pas d'un pourcentage de qualité mais d'une valeur suivant une distribution gaussienne dont la moyenne empirique se situe à 68. Le premier groupe de validation nous plaçait à 67,5, le second à 77,5 pour une moyenne à 73. Nous devons rester précautionneux quant à ces résultats, mais ils montrent que l'interface est plutôt bien reçue. L'augmentation des résultats entre les deux groupes est positive et montre que les changements déjà apportés à l'application après le premier groupe ont eu un impact positif sur l'expérience utilisateur.
+
 			\subsection*{Modifications apportées}
+				% TODO Adrien mods + module "aide"
 
 	\chapter{Améliorations futures}
 
@@ -917,6 +943,7 @@
 		Pages : beaucoup
 
 	\chapter{Documents de validation}
+		\label{sec:documents_validation}
 		\input{../documents/validation/protocole_content.tex}
 	\setlength{\parskip}{0em}
 	\backcoverpage
