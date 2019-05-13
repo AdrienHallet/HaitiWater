@@ -773,7 +773,7 @@
 
 			%TODO voir si on met les screens de toute l'application en annexe
 
-		\section{Procédure d'utilisation}
+		%\section{Procédure d'utilisation}
 
 			%Pages : 2 à 3
 
@@ -805,16 +805,16 @@
 			\subsection*{Accessibilité hors-ligne}
 				\label{sec:service_worker}
 
-				Une contrainte importante en Haïti est la disponibilité de la connexion internet. Dès lors, il est nécessaire pour les futurs utilisateurs de notre application de pouvoir y accéder hors ligne. Cela n'est d'habitude pas possible pour un site internet, cependant la fondation Mozilla a développé récemment les Services Workers \cite{ref:serviceworker}. Il s'agit d'un module qui s'ajoute sur la machine de l'utilisateur et vient intercepter les requêtes effectuées par le client avant qu'elles ne soient transmises au serveur, afin d'y effectuer différents traitements.
+				Une contrainte importante en Haïti est la faible disponibilité de la connexion internet. Dès lors, il est nécessaire pour les futurs utilisateurs de notre application de pouvoir y accéder hors-ligne. Cela n'est d'habitude pas possible pour un site internet, cependant la fondation Mozilla a récemment développé les Services Workers~\cite{ref:serviceworker}. Il s'agit d'un module qui s'ajoute sur la machine de l'utilisateur et vient intercepter les requêtes effectuées par le client avant qu'elles ne soient transmises au serveur, afin d'y effectuer différents traitements.
 
-				L'une des capacités du Service Worker est de coordonner la mise en cache des documents renvoyés par le serveur sur le navigateur internet de l'utilisateur. Initialement, le cache est vide. Lorsqu'une requête pour un document est reçue, il est stocké dans ce cache par le Service Worker. Par la suite, les prochaines requêtes pour ce document seront interceptées par ce module, qui ira chercher les informations directement dans le cache du navigateur à la place de transférer la requête au serveur.
+				L'une des capacités du Service Worker est de coordonner la mise en cache des documents renvoyés par le serveur sur le navigateur internet de l'utilisateur. Initialement, le cache est vide. Lorsqu'une requête pour un document est reçue, ce dernier est stocké dans ce cache par le Service Worker. Par la suite, les prochaines requêtes pour ce document seront interceptées par ce module, qui ira chercher les informations directement dans le cache du navigateur au lieu de transférer la requête au serveur.
 
 				Il est également possible d'intercepter les requêtes faites au serveur lorsque celui-ci n'est pas accessible, comme lorsque la connexion internet n'est pas stable. De cette manière, nous pouvons quand même offrir certaines fonctionnalités hors-connexion. Cependant, il est encore nécessaire de choisir quelles fonctionnalités proposer dans ce cas. Le Service Worker se trouvant sur la machine de l'utilisateur ne peut utiliser que les données qui lui sont accessibles puisque le serveur n'est pas disponible. Pour cela, nous avons imaginé trois choix possibles :
 
 				\begin{itemize}
 					\item Toutes les fonctionnalités. Cela implique d'avoir une version locale de la base de données sur la machine de l'utilisateur. Il est aussi nécessaire de synchroniser les différentes versions de celle-ci, y compris en cas d'inconsistance, si deux utilisateurs déconnectés modifient le même élément par exemple.
 					\item Version statique des données. Cela implique également d'avoir une version locale de la base de donnée, mais en supprimant la possibilité de modifier ces données sans connexion. Cela simplifie la synchronisation et règle les problèmes d'inconsistance.
-					\item Quelques formulaires d'ajout. En retirant la possibilité de visualiser des données, il n'est dès lors pas nécessaire de garder une base de donnée sur la machine de l'utilisateur. Les fonctionnalités restantes sont la possibilité de remplir des formulaires d'ajout pour différentes tables, ce qui nous semble être la tâche la plus importante à avoir lorsqu'il n'y a pas de connexion, afin de ne pas perdre d'informations.
+					\item Quelques formulaires d'ajout. En retirant la possibilité de visualiser des données, il n'est dès lors pas nécessaire de garder une base de donnée sur la machine de l'utilisateur. Reste la possibilité de remplir des formulaires d'ajout pour différentes tables, ce qui nous semble être la tâche la plus importante à avoir lorsqu'il n'y a pas de connexion, afin de ne pas perdre d'informations.
 				\end{itemize}
 
 				Nous nous sommes finalement décidés pour cette dernière option, qui nous semblait plus réaliste et plus en accord avec la faible connexion d'Haïti. Il est dès lors possible pour un utilisateur de compléter le rapport mensuel hors connexion. Ce module est facilement extensible à la possibilité de compléter d'autres formulaires dans le futur, voire à la possibilité d'accéder aux données s'il apparaît que cette fonctionnalité est importante pour les utilisateurs finaux de l'application.
