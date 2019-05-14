@@ -894,7 +894,25 @@
 				Les dix questions de la SUS s'évaluent différemment. L'échelle a sa propre formule de calcul~\cite{ref:sus} qui permet de normaliser les résultats à une valeur de 0 à 100. Notez cependant qu'il ne s'agit pas d'un pourcentage de qualité mais d'une valeur suivant une distribution gaussienne dont la moyenne empirique se situe à 68. Le premier groupe de validation nous plaçait à 67,5, le second à 77,5 pour une moyenne à 73. Nous devons rester précautionneux quant à ces résultats, mais ils montrent que l'interface est plutôt bien reçue. L'augmentation des résultats entre les deux groupes est positive et montre que les changements déjà apportés à l'application après le premier groupe ont eu un impact positif sur l'expérience utilisateur.
 
 			\subsection*{Modifications apportées}
-				% TODO Adrien mods + module "aide"
+				Sur base des commentaires apportés durant les séances de validation, plusieurs modifications ont été apportées à l'application. Certaines prévues mais retravaillées sur les conseils des utilisateurs, d'autres imprévues.
+
+				La figure~\ref{fig:screen_zone_quick_help} présente un des multiples ajouts post-validation apportés à l'application. Nous avons vu dans la section précédente que la complexité de l'interface pouvait être sa faiblesse, alors nous avons implémenté une fonctionnalité de \emph{visite}, concept existant déjà sur de nombreuses applications web. En appuyant sur le bouton d'aide rapide dans le coin supérieur droit de l'interface, l'utilisateur déclenche une série d'astuces qui présentent brièvement les contrôles disponibles sur la page.
+
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth]{images/screen_zone_quick_help.png}
+					\caption{Capture d'écran du module de gestion de zone avec l'aide rapide activée}
+					\label{fig:screen_zone_quick_help}
+				\end{figure}
+
+				D'autres modifications ont également été apportées à l'application et nous pouvons citer les plus importantes :
+				\begin{itemize}
+					\item Une table \emph{bac à sable} dans la page d'aide qui permet d'utiliser une table qui n'a aucun impact sur l'application pour comprendre les contrôles.
+					\item Des boutons de pagination pour les tables permettant d'accéder directement à la première ou dernière page d'une table.
+					\item Un bouton permettant d'afficher ou masquer le mot de passe sur la fenêtre de connexion, particulièrement utile sur smartphones et tablettes.
+					\item Refonte des contrôles du module géographique qui n'étaient auparavant pas bien compris. A présent les boutons sont plus explicites, certains ont changé de place pour être plus proches de la fenêtre sur laquelle ils ont un effet, et enfin l'ajout de textes d'aide dont le contenu est dynamiquement modifié selon l'action en cours.
+					\item Une icone de chargement lors de l'envoi d'un formulaire.
+					\item La totalité des contrôles dispose désormais de \emph{tooltips} affichés au survol de la souris.
+				\end{itemize}
 
 	\chapter{Améliorations futures}
 
