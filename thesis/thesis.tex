@@ -417,6 +417,8 @@
 			Le terme \emph{besoins fonctionnels} décrit les besoins précis d'un client, les non-négociables dans le cadre d'un projet. Ce sont les points qui ont été mis en avant par Protos et les Haïtiens comme étant essentiels, nécessaires afin que notre application leur soit utile.
 
 			\subsection*{Gestion des données}
+				\label{sec:gest_donnee}
+
 				La chose la plus évidente dont ont besoin les acteurs sur place est une aide à la gestion de leurs données. La technique papier-crayon décrite plus tôt s'est montrée inefficace, il faut donc un système permettant à la fois de centraliser les données et d'éviter les pertes, tout en ne s'éloignant pas trop de ce que les Haïtiens connaissent et font aujourd'hui, afin que la transition vers le nouveau système informatisé puisse être facilitée par une certaine familiarité.
 
 				Pour mieux comprendre la nature exacte des données en question, nous avons étudié des fichiers Excel~\cite{ref:resumes_documents}, qui servent à ce jour de premier pas vers une informatisation de la gestion du réseau de distribution d'eau.
@@ -730,7 +732,8 @@
 				En somme, plus un utilisateur est haut dans la hiérarchie, plus il a de pouvoir sur les données de l'application, la zone racine étant donc la somme de toutes les données, faisant des gestionnaires de cette zone les utilisateurs ayant le plus d'impact sur le système.
 
 		\section{Interface utilisateur}
-			% A fusionner avec "Client" ?
+			% TODO A fusionner avec "Client" ?
+			% ça me semble plus logique en sous-section de client en effet (seb)
 
 			% Pages : 2 à 3
 			% La GUI n'est qu'une manière d'utiliser l'application. Pour l'instant la seule, mais on différencie vraiment le serveur et l'application car au final la webapp n'est qu'une GUI pour l'API.
@@ -830,9 +833,27 @@
 			% Parler de l'ORM de Django
 
 			Pages : 4 à 5
-			\subsection*{Authentification}
-			\subsection*{Requêtes}
-			\subsection*{...}
+
+			\subsection{Requêtes}
+
+				La fonction principale du serveur est de répondre aux requêtes que lui envoie le client, on en compte trois types différent. Les deux premiers types sont responsable de gérer la représentation de l'information à l'utilisateur tandis que le dernier est en charge de la gestion de l'information en elle même.
+
+				\begin{itemize}
+					\item Les requêtes de fichier, comme un script JS ou une feuille de style CSS.
+					\item Les requêtes de document, donnant les pages HTML à afficher à l'utilisateur.
+					\item Les requêtes de données, interragissant avec la base de données.
+				\end{itemize}
+
+				Les documents ne contiennent pas les données, le client effectue des requêtes après qu'ils soient rendus pour télécharger ces dernières et ainsi compléter les tables. Ceci nous permet de cacher plus efficacement les documents et fichiers (voir section \ref{sec:cache_client}) et de les rendre plus léger pour accélérer le rendu des pages HTML même en cas de faible connexion.
+
+				Nous avons décidé de séparer la logique des requêtes de données du reste de l'application en le rassemblant dans un module spécifique API. Cela nous a permis de mieux compartementalisation notre code et la logique de l'application.
+
+				Une autre possibilité est de rajouter une autre interface pour notre application. Il suffit d'intéragir avec l'API pour pouvoir gérer toutes les données, sans s'embarrasser de la manière de la représenter. De cette manière, nous pourrions créer une autre application même sur une toute autre plateforme comme Android par exemple. Elle n'aurait qu'à gérer sa manière de représentation sur cette plateforme et pourrait intéragir de notre première application au moyen de requêtes de données.
+
+
+			% \subsection*{Authentification}
+			% \subsection*{Requêtes}
+			% \subsection*{...}
 
 	\chapter{Validation}
 
