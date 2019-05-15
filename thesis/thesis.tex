@@ -803,8 +803,6 @@
 					\item En \emph{inclusion}, dans laquelle un bloc de contrôle est défini indépendamment d'une page, lui permettant de conserver le même fonctionnement en une seule implémentation à travers plusieurs pages web. Les tables et formulaires sont des exemples typiques.
 				\end{itemize}
 
-
-
 			\subsection*{Accessibilité hors-ligne}
 				\label{sec:service_worker}
 
@@ -824,7 +822,7 @@
 
 				Au final, les Services Workers nous permettent d'avoir des fonctionnalités autrement impossible sur un site web. Ils ont aussi l'avantage d'être un standard maintenant disponible sur tous les navigateurs majeurs. Cependant, cette compatibilité est relativement récente et des utilisateurs utilisant de vieilles versions de ces navigateurs risquent de ne pas avoir accès à cette technologie. Heureusement, cette fonctionnalité est entièrement optionnelle et le site fonctionne encore sans cette compatibilité. Il est également possible pour tout utilisateur de simplement mettre à jour ou changer de navigateur, s'il venait à avoir besoin des Service Workers.
 
-			\subsection*{...}
+			%\subsection*{...}
 
 		\section{Serveur}
 			\label{sec:serveur}
@@ -832,7 +830,7 @@
 			% Parler de l'API, pourquoi c'est bien à la place d'utiliser du django classique et comment on l'a faite
 			% Parler de l'ORM de Django
 
-			Pages : 4 à 5
+			% Pages : 4 à 5
 
 			\subsection{Requêtes}
 
@@ -850,6 +848,13 @@
 
 				Une autre possibilité est de rajouter une autre interface pour notre application. Il suffit d'intéragir avec l'API pour pouvoir gérer toutes les données, sans s'embarrasser de la manière de la représenter. De cette manière, nous pourrions créer une autre application même sur une toute autre plateforme comme Android par exemple. Elle n'aurait qu'à gérer sa manière de représentation sur cette plateforme et pourrait intéragir de notre première application au moyen de requêtes de données.
 
+			\subsection{Mapping Objet-Relationnel}
+
+				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment nous avons créé la base de données et sa structure. Il nous reste à faire intérragir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de donnée, et se charge d'effectuer toutes les requêtes à ce dernier.
+
+				Il nous suffit de décrire la structure des données en utilisant des classes Python et l'ORM saura créer les tables et les modifier au fur et à mesure des changements que nous introduisons. Ensuite, nous pouvons facilement intéragir avec ces classes pour créer, modifier, supprimer et récupérer des données sans toucher au SQL.
+
+				Cela nous permet de simplifier l'interaction avec la base de données, et cela nous permet aussi de nous détacher de quel serveur voire quel système de gestion de base de données nous utilisons. Il serait possible de passer de PostreSQL que nous utilisons pour un autre comme MySQL en changeant simplement la configuration de l'ORM.
 
 			% \subsection*{Authentification}
 			% \subsection*{Requêtes}
