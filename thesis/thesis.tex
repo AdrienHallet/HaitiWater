@@ -834,27 +834,35 @@
 
 			\subsection{Requêtes}
 
-				La fonction principale du serveur est de répondre aux requêtes que lui envoie le client, on en compte trois types différent. Les deux premiers types sont responsable de gérer la représentation de l'information à l'utilisateur tandis que le dernier est en charge de la gestion de l'information en elle même.
+				La fonction principale du serveur est de répondre aux requêtes que lui envoie le client, on en compte trois types différent. Les deux premiers types gèrent la représentation de l'information à l'utilisateur tandis que le dernier est en charge de l'information en elle-même.
 
 				\begin{itemize}
-					\item Les requêtes de fichier, comme un script JS ou une feuille de style CSS.
-					\item Les requêtes de document, donnant les pages HTML à afficher à l'utilisateur.
+					\item Les requêtes de fichiers statiques, comme un script JS ou une feuille de style CSS.
+					\item Les requêtes de documents, qui desservent les pages HTML à afficher à l'utilisateur et qui importent les fichiers statiques.
 					\item Les requêtes de données, interragissant avec la base de données.
 				\end{itemize}
 
-				Les documents ne contiennent pas les données, le client effectue des requêtes après qu'ils soient rendus pour télécharger ces dernières et ainsi compléter les tables. Ceci nous permet de cacher plus efficacement les documents et fichiers (voir section \ref{sec:cache_client}) et de les rendre plus léger pour accélérer le rendu des pages HTML même en cas de faible connexion.
+				%Les documents ne contiennent pas les données, le client effectue des requêtes après qu'ils soient rendus pour télécharger ces dernières et ainsi compléter les tables. Ceci nous permet de cacher plus efficacement les documents et fichiers (voir section \ref{sec:cache_client}) et de les rendre plus légers pour accélérer le rendu des pages HTML même en cas de faible connexion.
 
-				Nous avons décidé de séparer la logique des requêtes de données du reste de l'application en le rassemblant dans un module spécifique API. Cela nous a permis de mieux compartementalisation notre code et la logique de l'application.
+				%Nous avons décidé de séparer la logique des requêtes de données du reste de l'application en le rassemblant dans un module spécifique API. Cela nous a permis de mieux compartementalisation notre code et la logique de l'application.
+				% (Adrien) -> J'ai trouvé les deux paragraphes trop complexes, je propose ça comme reformulation :
 
-				Une autre possibilité est de rajouter une autre interface pour notre application. Il suffit d'intéragir avec l'API pour pouvoir gérer toutes les données, sans s'embarrasser de la manière de la représenter. De cette manière, nous pourrions créer une autre application même sur une toute autre plateforme comme Android par exemple. Elle n'aurait qu'à gérer sa manière de représentation sur cette plateforme et pourrait intéragir de notre première application au moyen de requêtes de données.
+				Les deux premiers types de requêtes permettent à un navigateur de télécharger l'application afin d'avoir une interface graphique pour manipuler le troisième type requête via l'API. Cette séparation permet de réduire le temps de chargement en allégeant les documents HTML qui ne contiennent que la logique de contrôle. Les données sont ensuite envoyées de manière asynchrone, donc non-bloquante, lorsque l'application envoie les requêtes à l'API.
+
+				En plus des avantages apportés au client, la présence d'une API est une bonne pratique qui permet une meilleure compartementalisation des rôles du serveur.
+
+				% TODO schéma des requêtes avec timeline, en mode diagramme de séquence
+
+				% Une autre possibilité est de rajouter une autre interface pour notre application. Il suffit d'intéragir avec l'API pour pouvoir gérer toutes les données, sans s'embarrasser de la manière de la représenter. De cette manière, nous pourrions créer une autre application même sur une toute autre plateforme comme Android par exemple. Elle n'aurait qu'à gérer sa manière de représentation sur cette plateforme et pourrait intéragir de notre première application au moyen de requêtes de données.
+				% (Adrien) -> paragraphe commenté, déjà expliqué ailleurs et ça sera également mis en avant dans les "projets futus"
 
 			\subsection{Mapping Objet-Relationnel}
 
-				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment nous avons créé la base de données et sa structure. Il nous reste à faire intérragir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de donnée, et se charge d'effectuer toutes les requêtes à ce dernier.
+				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment nous avons créé la base de données et sa structure. Il nous reste à faire interagir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de donnée, et se charge d'y envoyer toutes les requêtes.
 
-				Il nous suffit de décrire la structure des données en utilisant des classes Python et l'ORM saura créer les tables et les modifier au fur et à mesure des changements que nous introduisons. Ensuite, nous pouvons facilement intéragir avec ces classes pour créer, modifier, supprimer et récupérer des données sans toucher au SQL.
+				Il nous suffit de décrire la structure des données en utilisant des classes Python et l'ORM saura créer les tables de la base de données et les modifier au fur et à mesure des changements que nous introduisons. Ensuite, nous pouvons facilement interagir avec ces classes pour créer, modifier, supprimer et récupérer des données sans toucher au SQL.
 
-				Cela nous permet de simplifier l'interaction avec la base de données, et cela nous permet aussi de nous détacher de quel serveur voire quel système de gestion de base de données nous utilisons. Il serait possible de passer de PostreSQL que nous utilisons pour un autre comme MySQL en changeant simplement la configuration de l'ORM.
+				Cela nous permet de simplifier l'interaction avec la base de données ainsi que de nous détacher de quel serveur voire quel système de gestion de base de données nous utilisons. Il serait possible de passer de PostreSQL, que nous utilisons, pour un autre comme MySQL sans modifier la logique interne de l'application et de l'accès aux données.
 
 			% \subsection*{Authentification}
 			% \subsection*{Requêtes}
@@ -878,13 +886,13 @@
 
 			\subsection*{Tests unitaires}
 
-				Le but d'un test unitaire est de vérifier le fonctionnement d'une partie atomique de l'application. Souvent, on utilise une fonctionnalité suivant une utilisation précise, un récit utilisateur. Dans le cas de notre application, toute interaction se fait au moyen de requêtes au serveur. Nous avons dès lors décidé d'effectuer nos tests sur le fonctionnement de ces requêtes suivant différent cas d'utilisation. Nous n'avons pas créé de tests pour les requêtes de fichier.
+				Le but d'un test unitaire est de vérifier le fonctionnement d'une partie atomique de l'application. Souvent, on utilise une fonctionnalité suivant une utilisation précise, un récit utilisateur. Dans le cas de notre application, toute interaction se fait au moyen de requêtes au serveur. Nous avons dès lors décidé d'effectuer nos tests sur le fonctionnement de ces requêtes suivant différents cas d'utilisation. Nous n'avons pas créé de tests pour les requêtes de fichiers statiques.
 
-				D'abord pour les requêtes de document, nous vérifions que ceux-ci sont correctement chargés dans plusieurs cas, comme lorsque l'utilisateur n'est pas connecté, ou avec des utilisateurs possédant différents niveaux d'autorisation.
+				D'abord pour les requêtes de documents, nous vérifions que ceux-ci sont correctement chargés dans plusieurs cas, comme lorsque l'utilisateur n'est pas connecté, ou avec des utilisateurs possédant différents niveaux d'autorisation.
 
 				Pour les requêtes de données, nous vérifions sur la base de donnée que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupéré sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées.
 
-			\subsection*{Tests fonctionnels} % TODO See if done
+			%\subsection*{Tests fonctionnels} % TODO See if done
 
 		\section{Vérifications utilisateurs réels}
 			% Pages : 3 à 4
