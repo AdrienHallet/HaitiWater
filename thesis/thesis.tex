@@ -502,7 +502,7 @@
 
 		Total des pages : 16 à 22
 		% Auteur : Adrien (+Seb)
-		% Relu :  Céline
+		% Relu :  Céline deux fois :P
 
 		% L'implémentation suit les principes du cahier des charges. Intègrer les fonctionnalités demandées et respecter les besoins du client.
 
@@ -692,7 +692,7 @@
 				Rappelons que l'application a trois concepts clefs :
 				\begin{description}
 					\item[Zone] \hfill \\
-						Une zone est un partitionnement des données de l'application. A la base de l'application se situe la zone racine dans laquelle toutes les données sont enregistrées. Une zone peut être composée d'autres zones. Une zone parente rassemble la totalité des données des zones filles. En revanche, une zone fille ne rassemble que les données qui lui sont rattachées et ne voit pas le contenu des zones soeurs. On peut ainsi se servir des zones pour diviser géographiquement le réseau de distribution d'eau selon le principe de la hiérarchie haïtienne existante (DINEPA, OREPA, CAEPA) exposée en section~\ref{sec:structure_haiti}. Chacun a donc ses propres responsabilités et ne vient pas empiéter sur le territoire de l'autre.
+						Une zone est un partitionnement des données de l'application. A la base de celle-ci se situe la zone racine dans laquelle toutes les données sont enregistrées. Une zone peut être composée d'autres zones. Une zone parente rassemble la totalité des données des zones filles. En revanche, une zone fille ne rassemble que les données qui lui sont rattachées et ne voit pas le contenu des zones soeurs. On peut ainsi se servir des zones pour diviser géographiquement le réseau de distribution d'eau selon le principe de la hiérarchie haïtienne existante (DINEPA, OREPA, CAEPA) exposée en section~\ref{sec:structure_haiti}. Chacun a donc ses propres responsabilités et ne vient pas empiéter sur le territoire de l'autre.
 					\item[Elément du réseau] \hfill \\
 						Un élément du réseau peut être une conduite, un réservoir, une source, une fontaine, un kiosque ou une prise individuelle. Ces six éléments constituent le réseau de distribution d'eau potable haïtien et sont enregistrés dans une zone.
 					\item[Consommateur] \hfill \\
@@ -834,10 +834,10 @@
 
 			\subsection{Requêtes}
 
-				La fonction principale du serveur est de répondre aux requêtes que lui envoie le client, on en compte trois types différent. Les deux premiers types gèrent la représentation de l'information à l'utilisateur tandis que le dernier est en charge de l'information en elle-même.
+				La fonction principale du serveur est de répondre aux requêtes que lui envoie le client. On en compte trois types différent : les deux premiers gèrent la représentation de l'information à l'utilisateur tandis que le dernier est en charge de l'information en elle-même.
 
 				\begin{itemize}
-					\item Les requêtes de fichiers statiques, comme un script JS ou une feuille de style CSS.
+					\item Les requêtes de fichiers statiques, comme un script JavaScript ou une feuille de style CSS.
 					\item Les requêtes de documents, qui desservent les pages HTML à afficher à l'utilisateur et qui importent les fichiers statiques.
 					\item Les requêtes de données, interragissant avec la base de données.
 				\end{itemize}
@@ -846,6 +846,7 @@
 
 				%Nous avons décidé de séparer la logique des requêtes de données du reste de l'application en le rassemblant dans un module spécifique API. Cela nous a permis de mieux compartementalisation notre code et la logique de l'application.
 				% (Adrien) -> J'ai trouvé les deux paragraphes trop complexes, je propose ça comme reformulation :
+				% Céline : me semble bien
 
 				Les deux premiers types de requêtes permettent à un navigateur de télécharger l'application afin d'avoir une interface graphique pour manipuler le troisième type requête via l'API. Cette séparation permet de réduire le temps de chargement en allégeant les documents HTML qui ne contiennent que la logique de contrôle. Les données sont ensuite envoyées de manière asynchrone, donc non-bloquante, lorsque l'application envoie les requêtes à l'API.
 
@@ -858,11 +859,11 @@
 
 			\subsection{Mapping Objet-Relationnel}
 
-				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment nous avons créé la base de données et sa structure. Il nous reste à faire interagir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de donnée, et se charge d'y envoyer toutes les requêtes.
+				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment a été créé la base de données et sa structure. Il nous reste à faire interagir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de donnée, et se charge d'y envoyer toutes les requêtes.
 
-				Il nous suffit de décrire la structure des données en utilisant des classes Python et l'ORM saura créer les tables de la base de données et les modifier au fur et à mesure des changements que nous introduisons. Ensuite, nous pouvons facilement interagir avec ces classes pour créer, modifier, supprimer et récupérer des données sans toucher au SQL.
+				Il nous suffit de décrire la structure des données en utilisant des classes Python et le framework sera capable de créer les tables de la base de données et de les modifier au fur et à mesure des changements que nous introduisons. Ensuite, nous pouvons facilement interagir avec ces classes pour créer, modifier, supprimer et récupérer des données sans toucher au SQL.
 
-				Cela nous permet de simplifier l'interaction avec la base de données ainsi que de nous détacher de quel serveur voire quel système de gestion de base de données nous utilisons. Il serait possible de passer de PostreSQL, que nous utilisons, pour un autre comme MySQL sans modifier la logique interne de l'application et de l'accès aux données.
+				Cela nous permet de simplifier l'interaction avec la base de données ainsi que de nous détacher de quel serveur voire quel système de gestion de base de données nous utilisons. Il serait possible de passer de PostreSQL, que nous utilisons, pour un autre système (MySQL, par exemple) sans modifier la logique interne de l'application et de l'accès aux données.
 
 			% \subsection*{Authentification}
 			% \subsection*{Requêtes}
@@ -898,7 +899,7 @@
 			% Pages : 3 à 4
 			Cette étape, qui s'est déroulée de mars à avril, a mis des utilisateurs étrangers à l'équipe de développement face à l'application. Derrière cette vérification, deux points de l'application étaient mis à l'épreuve : l'interface graphique et la procédure d'utilisation. Après plusieurs mois de développement, le point de vue d'utilisateurs externes avec des connaissances en informatique et en gestion de l'eau fortement variables était nécessaire.
 
-			Les séances de validation ont eu lieu selon les disponibilités des utilisateurs d'essai, répartis en deux groupes. Un premier groupe de 9 utilisateurs a testé l'application dans la version \emph{Alpha 3}, un second groupe de 11 utilisateurs a testé l'application dans la version \emph{Beta 1}, dans laquelle les modules financier et historique ont été rajoutés ainsi que plusieurs changements suggérés par les utilisateurs d'essai du premier groupe de validation.
+			Les séances de validation ont eu lieu selon les disponibilités des utilisateurs d'essai, répartis en deux groupes. Un premier groupe de 9 utilisateurs a testé l'application dans la version \emph{Alpha 3}, un second groupe de 11 utilisateurs a testé l'application dans la version \emph{Beta 1}, dans laquelle  ont été rajoutés les modules financier et historique, ainsi que plusieurs changements suggérés par les utilisateurs d'essai du premier groupe de validation.
 
 			\subsection*{Méthodologie}
 
@@ -912,7 +913,7 @@
 				\begin{description}
 					\item[Général] est une première section cherchant à identifier si l'utilisateur a compris les tâches qu'il vient d'accomplir avec l'application.
 					\item[Fonctionnalités] cherche à identifier la compréhension des contrôles de l'application par l'utilisateur.
-					\item[Usabilité] est une section particulière. Composée de dix questions alternant des assertions positives et négatives en alternance, cette section est une transcription en français de la \emph{System Usability Scale (SUS)}~\cite{ref:sus}. Se décrivant comme une mesure rapide et sâle, la SUS présente l'avantage de pouvoir être complétée rapidement par nos utilisateurs d'essai durant ces séances de maximum deux heures non-rémunérées.
+					\item[Usabilité] est une section particulière. Composée de dix questions alternant des assertions positives et négatives en alternance, cette section est une transcription en français de la \emph{System Usability Scale (SUS)}~\cite{ref:sus}. Se décrivant comme une mesure "rapide et sale", la SUS présente l'avantage de pouvoir être complétée rapidement par nos utilisateurs d'essai durant ces séances de maximum deux heures non-rémunérées.
 					\item[Esthétique] est une dernière section, sans doute la plus subjective, composée de questions sur l'apparence de l'interface graphique.
 				\end{description}
 
@@ -920,7 +921,7 @@
 
 			\subsection*{Résultats obtenus}
 
-				Les contraintes inhérentes au cadre du mémoire, principalement en temps et budget, nous empêchent de pouvoir réaliser une étude qui donnerait une mesure plutôt précise de la satisfaction utilisateur. Néanmoins, de nos vingt réponses des utilisateurs d'essai nous pouvons tout de même extraire une certaine indication de l'expérience utilisateur d'HaïtiWater.
+				Les contraintes inhérentes au cadre du mémoire, principalement en temps et budget, nous empêchent de pouvoir réaliser une étude qui donnerait une mesure très précise de la satisfaction utilisateur. Néanmoins, nous pouvons tout de même extraire une certaine indication de l'expérience utilisateur d'HaïtiWater de nos vingt réponses des utilisateurs d'essai.
 
 				Les résultats des 14 questions évaluant la satisfaction des utilisateurs sur le concept, les fonctionnalités et l'esthétique de l'application sont représentés en figure~\ref{fig:validation_likert}.
 
@@ -937,7 +938,7 @@
 			\subsection*{Modifications apportées}
 				Sur base des commentaires apportés durant les séances de validation, plusieurs modifications ont été apportées à l'application. Certaines prévues mais retravaillées sur les conseils des utilisateurs, d'autres imprévues.
 
-				La figure~\ref{fig:screen_zone_quick_help} présente un des multiples ajouts post-validation apportés à l'application. Nous avons vu dans la section précédente que la complexité de l'interface pouvait être sa faiblesse, alors nous avons implémenté une fonctionnalité de \emph{visite}, concept existant déjà sur de nombreuses applications web. En appuyant sur le bouton d'aide rapide dans le coin supérieur droit de l'interface, l'utilisateur déclenche une série d'astuces qui présentent brièvement les contrôles disponibles sur la page.
+				La figure~\ref{fig:screen_zone_quick_help} présente un des multiples ajouts post-validation apportés à l'application. Nous avons vu dans la section précédente que la complexité de l'interface pouvait être sa faiblesse, ce qui nous a amenés à implémenter une fonctionnalité de \emph{visite}, concept existant déjà sur de nombreuses applications web. En appuyant sur le bouton d'aide rapide dans le coin supérieur droit de l'interface, l'utilisateur déclenche une série d'astuces qui présentent brièvement les contrôles disponibles sur la page.
 
 				\begin{figure}[H]
 					\includegraphics[width=\textwidth]{images/screen_zone_quick_help.png}
@@ -947,10 +948,10 @@
 
 				D'autres modifications ont également été apportées à l'application et nous pouvons citer les plus importantes :
 				\begin{itemize}
-					\item Une table \emph{bac à sable} dans la page d'aide qui permet d'utiliser une table qui n'a aucun impact sur l'application pour comprendre les contrôles.
+					\item Une table \emph{bac à sable} dans la page d'aide qui permet d'utiliser une table qui n'a aucun impact sur l'application pour en comprendre les contrôles.
 					\item Des boutons de pagination pour les tables permettant d'accéder directement à la première ou dernière page d'une table.
 					\item Un bouton permettant d'afficher ou masquer le mot de passe sur la fenêtre de connexion, particulièrement utile sur smartphones et tablettes.
-					\item Refonte des contrôles du module géographique qui n'étaient auparavant pas bien compris. A présent les boutons sont plus explicites, certains ont changé de place pour être plus proches de la fenêtre sur laquelle ils ont un effet, et enfin l'ajout de textes d'aide dont le contenu est dynamiquement modifié selon l'action en cours.
+					\item Refonte des contrôles du module géographique qui n'étaient auparavant pas bien compris. A présent, les boutons sont plus explicites, certains ont changé de place pour être plus proches de la fenêtre sur laquelle ils ont un effet, et enfin l'ajout de textes d'aide dont le contenu est dynamiquement modifié selon l'action en cours.
 					\item Une icone de chargement lors de l'envoi d'un formulaire.
 					\item La totalité des contrôles dispose désormais de \emph{tooltips} affichés au survol de la souris.
 				\end{itemize}
