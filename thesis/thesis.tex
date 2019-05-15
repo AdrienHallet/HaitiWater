@@ -873,10 +873,17 @@
 			\subsection*{Poids}
 
 		\section{Vérifications automatiques}
-			%TODO Sébastien
-			Pages : 2 à 3
+			% TODO Sébastien
+			% Pages : 2 à 3
 
 			\subsection*{Tests unitaires}
+
+				Le but d'un test unitaire est de vérifier le fonctionnement d'une partie atomique de l'application. Souvent, on utilise une fonctionnalité suivant une utilisation précise, un récit utilisateur. Dans le cas de notre application, toute interaction se fait au moyen de requêtes au serveur. Nous avons dès lors décidé d'effectuer nos tests sur le fonctionnement de ces requêtes suivant différent cas d'utilisation. Nous n'avons pas créé de tests pour les requêtes de fichier.
+
+				D'abord pour les requêtes de document, nous vérifions que ceux-ci sont correctement chargés dans plusieurs cas, comme lorsque l'utilisateur n'est pas connecté, ou avec des utilisateurs possédant différents niveaux d'autorisation.
+
+				Pour les requêtes de données, nous vérifions sur la base de donnée que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupéré sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées.
+
 			\subsection*{Tests fonctionnels} % TODO See if done
 
 		\section{Vérifications utilisateurs réels}
