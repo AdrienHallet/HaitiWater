@@ -865,12 +865,12 @@
 		%Total des pages : 8 à 11
 		La validation rassemble les étapes du projet qui ont pour but de vérifier le fonctionnement et la qualité des productions. Les premières validations se sont essentiellement basées sur des productions écrites (cahier des charges, schémas) présentées aux acteurs d'Haïti, à Protos et à nos promoteurs pour exposer notre avancement et l'orientation du travail futur.
 
-		\section{Performances}
+		%\section{Performances}
 
-			Pages : 3 à 4
+			%Pages : 3 à 4
 
-			\subsection*{Temps}
-			\subsection*{Poids}
+			%\subsection*{Temps}
+			%\subsection*{Poids}
 
 		\section{Vérifications automatiques}
 			% TODO Sébastien
@@ -949,13 +949,19 @@
 
 	\chapter{Améliorations futures}
 
-		Total des pages : 4 à 7
+		La soumission de ce travail de fin d'études ne marque pas la fin du développement de l'application Haïtiwater ni des travaux connexes. Comme tout projet de développement, un certain suivi minimum doit être assuré afin de maintenir l'outil à jour et parer aux problèmes du quotidien. De plus, HaïtiWater est considéré comme étant toujours en développement au vu des ambitions des différents acteurs souhaitant utiliser l'application.
 
 		\section{Suite du projet}
 			\label{ref:suite_projet}
 			% Lors du déploiement, même si le site est pas hyper lourd, on peut encore l'alléger en faisant du coverage par les navigateurs (quelques stats), pas une bonne idée de le faire maintenant vu que développement pas fini.
 
-			Pages : 2 à 3
+			Poursuivre le développement d'HaïtiWater est donc la priorité des futures équipes. L'application dans son état actuel fournit une base logicielle assez large implémentant de nombreux principes (gestion de données, visuels, accès hors-connexion, etc), lesquels devraient être poursuivis pour augmenter leur qualité et quantité.
+
+			A présent que l'application va être essayée en Haïti, les futures équipes de développement devront se montrer à l'écoute des acteurs du projet et modifier l'application selon leurs demandes pour, par exemple, prendre en charge plus de données. Une autre tâche importante sera la visualisation et aggrégation des données pour fournir plus de rapports automatiques. Les graphiques déjà présents en sont un bon exemple, permettant de présenter l'information rapidement et de manière compréhensible pour ainsi identifier directement les problèmes potentiels et améliorations possibles du réseau de distribution d'eau potable.
+
+			Le déploiement de l'application sur un serveur haïtien est un autre objectif à court terme du projet. La transition ne devrait pas être un problème puisque le serveur prêté par l'UCLouvain est un serveur de deux coeurs à 2GHz avec 1Go de mémoire vive, donc n'étant pas particulièrement performant. Cette migration du serveur de l'application devrait améliorer le temps de réponse de l'application en Haïti qui doit en ce moment systématiquement communiquer avec la Belgique.
+
+			Une autre amélioration du temps de réponse serait d'alléger les pages de l'application. Bien que ces dernières soient largement mises en cache (voir section~\ref{sec:cache_client}), leur téléchargement initial et à chaque fois que le cache est vidé représente entre $1$ et $1.6$Mo de données. En passant l'outil \emph{coverage} de \emph{DevTools (Chrome)}, nous observons qu'en moyenne l'application utilise 40\% des fichiers téléchargés ce qui est dû à l'importation des librairies comme Bootstrap. En supprimant les fonctionnalités inutilisées, l'application pourrait donc être allégée. Cela n'a pas été fait jusqu'à présent puisque l'application est en développement et que des fonctionnalités inutilisées pourraient le devenir. Nous avons tout de même créée un script~\footnote{https://github.com/AdrienHalletUCL/chromeCoverageParser} qui permet de raccourcir les fichiers en enlevant les fonctions inutilisées, script qui pourrait être réutilisé dans les travaux futurs sur HaïtiWater.
 
 		\section{Défis rencontrés}
 
@@ -967,15 +973,13 @@
 
 	\chapter{Conclusion}
 
-		Pages : 1 à 2
 
-	\chapter*{Bibliographie}
 	\addcontentsline{toc}{chapter}{Bibliographie}
 
 	\bibliography{bibliography}{}
 	\bibliographystyle{plain}
 
-		Pages : 2 à 3
+		%Pages : 2 à 3
 
 	\appendix
 
