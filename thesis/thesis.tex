@@ -50,7 +50,7 @@
 			Ce mémoire se place dans le cadre d'un projet de développement financé par l'ARES-CCD dans le cadre de ses projets de synergie. Les partenaires du projet sont L'ONG Protos\footnote{\href{https://www.protos.ngo/fr/}{www.protos.ngo}}, L'UCL et l'UEH. Protos a pour objectif, entre autres, d'améliorer l'accès à l'eau potable en milieu rural afin d'aider le développement de plusieurs pays du monde. Un des pays dans lesquels Protos s'est engagée est Haïti.
 
 			Une succession de crises politiques et catastrophes naturelles ces dernières décennies ont rendu l'accès à l'eau potable, entre autres, particulièrement complexe dans ce pays des Antilles. En 2010, un violent séisme a laissé le pays en ruine, détruisant beaucoup d'infrastructures, y compris de distribution d'eau. Des incertitudes politiques entravent la reconstruction de ces installations et les populations ne sont pas toujours aidées par les services publics pour assurer la distribution de l'eau, particulièrement dans les zones rurales. C'est une des raisons pour lesquelles l'ONG Protos est active dans le pays.
-			% TODO trop chargé politiquement ?
+			% trop chargé politiquement ?
 			% Adrien: Je trouvais aussi, j'ai reformulé d'un point de vue neutre pour quand même rester justes sans prendre parti. Je trouvais "chaos politique" un peu trop et j'ai nuancé la seconde partie du paragraphe
 			% TODO citer l'analyse contextuelle commune
 
@@ -69,7 +69,7 @@
 				\item[Collaboration] pour uniformiser le format des données et donner un rôle défini à chacun.
 				\item[Stockage] de manière à rassembler l'information sous forme numérique, permettant une meilleure sauvegarde des données, et à terme de les traiter en large volume de manière statistique.
 			\end{description}
-			% Réponse au TODO de Seb. Je pense que c'est plus clair et que la disposition en points permet une identification directe des objectifs.
+			% Réponse au message de Seb. Je pense que c'est plus clair et que la disposition en points permet une identification directe des objectifs.
 
 		\subsection*{Motivation}
 
@@ -97,10 +97,10 @@
 			Durant la première partie, nous avons observé ce qu'il se faisait dans les systèmes existants de la gestion de l'eau en Europe pour avoir une meilleure vue d'ensemble du travail à accomplir et des possibilités. En seconde partie, nous avons analysé les documents fournis par l'ONG Protos afin d'avoir une idée de la solution actuellement déployée en Haïti et des améliorations possibles.
 
 			La phase de développement suivante fut l'analyse fonctionnelle et la conception. Nous avons établi nos propositions en termes de fonctionnalités pour l'application, ainsi qu'en termes de fenêtres et contrôles pour les présenter à Protos sous forme d'un cahier des charges.
-			% TODO : mettre le cahier des charges en annexes ? <- à voir à la fin du mémoire. On le mettra s'il est utile, pas s'il est redondant
+			% : mettre le cahier des charges en annexes ? <- à voir à la fin du mémoire. On le mettra s'il est utile, pas s'il est redondant : Done
 
 			Après validation de l'interface et des fonctionnalités, nous sommes passés à la phase de réalisation, durant laquelle nous avons implémenté ces fonctionnalités et les systèmes nécessaires à leur bon fonctionnement. Cette phase a été la plus longue étant donné le nombre de fonctionnalités à implémenter et la nécessité de documenter à la fois le code pour les équipes de développement ainsi que l'interface pour nos futurs utilisateurs.
-			%3*Fonctionnalité me trigger tellement mais je trouve pas d'autre mots, TODO
+			%3*Fonctionnalité me trigger tellement mais je trouve pas d'autre mots, 
 			%Adrien : voila, j'ai scindé fonctionnalité et les "systèmes nécessaires à leur bon fonctionnement". Comme ça on a la bonne définition de foncitonnalité tout en indiquant au lecteur qu'on a fait les deux (l'ancienne phrase sous-entendait qu'on travaillait sur une application existante).
 
 			Enfin, la validation. Nous avons présenté l'application et les fonctionnalités que nous avons implémentées à des utilisateurs, afin d'obtenir des retours et de nous assurer que l'application que nous avons développée répondait aux attentes. % \emph{Note; phase pas encore effectuée}
@@ -212,6 +212,14 @@
 				En pratique, un comité de l'eau (\emph{Komité Dlo} en Créole haïtien) est composé d'un président, un vice-président, un secrétaire, un trésorier et un conseiller, élus par les consommateurs locaux pour cinq ans. Ils se réunissent tous les mois pour parler des affaires courantes, et organisent une fois par an une assemblée générale où sont conviés les usagers du réseau. Ils sont en charge du bon fonctionnement du réseau, de la gestion du budget et des fonds amenés par les utilisateurs, de superviser les \emph{comités fontaines} et de rendre des comptes à la population.
 
 				Les comités fontaines, eux, sont composés d'un responsable fontaine, un secrétaire et un trésorier. Il sont en charge du bon fonctionnement et de la qualité du point d'eau, d'apporter les fonds au comité d'eau et de gérer les éventuels conflits entre usagers ou les réparations nécéssaires.
+
+				Concrètement, la quantité de points d'eau et le nombre d'usagers desservis par les réseaux de distribution d'eau varie : comme ceux-ci sont en développement, les nombres sont en constante augmentation. En ce moment, on compte par exemple 13 fontaines publiques dans la zone Passe Catabois, et 25 dans la zone Poste Métier. Ces fontaines déservent entre 100 et 1000 usagers (voir figure \ref{fig:conso_fontaine}), avec une moyenne autour de 300.
+
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth]{images/conso_fontaine}
+					\caption{Répartition de consommateur par fontaine}
+					\label{fig:conso_fontaine}
+				\end{figure}
 
 				Malgré la structure hiérarchique décrite ci-dessus, ces organismes ont encore du mal à effectuer la gestion du réseau au jour le jour. Ils utilisent encore les outils les plus basiques : un crayon et du papier. Cette situation rend l'accès aux informations antérieures difficile voire impossible. Il est également difficile de transmettre ces informations à la hiérarchie supérieure.
 				% (Adrien) Foreshadowing l'utilité d'HaïtiWater avec ces deux nouvelles dernières phrases -> good ;)
