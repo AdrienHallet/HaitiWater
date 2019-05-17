@@ -33,10 +33,10 @@
 
 	% Total des pages : entre 49 et 75 d'après nos estimations.
 
-	\chapter*{Abstract}
+	\chapter*{Résumé}
 	\addcontentsline{toc}{chapter}{Abstract}
 
-		Page : 1
+		%TODO résumé (pas dépasser la page)
 
 	\chapter{Introduction}
 
@@ -47,22 +47,21 @@
 
 		\subsection*{Contexte}
 
-			Ce mémoire se place dans le cadre d'un projet de développement financé par l'ARES-CCD dans le cadre de ses projets de synergie. Les partenaires du projet sont L'ONG Protos\footnote{\href{https://www.protos.ngo/fr/}{www.protos.ngo}}, L'UCL et l'UEH. Protos a pour objectif, entre autres, d'améliorer l'accès à l'eau potable en milieu rural afin d'aider le développement de plusieurs pays du monde. Un des pays dans lesquels Protos s'est engagée est Haïti.
+			Ce mémoire se place dans le cadre d'un projet de développement financé par l'ARES-CCD dans le cadre de ses projets de synergie. Les partenaires du projet sont L'ONG Protos\footnote{\href{https://www.protos.ngo/fr/}{www.protos.ngo}}, L'UCL et l'UEH. Protos a pour objectif, entre autres, d'améliorer l'accès à l'eau potable en milieu rural afin d'aider le développement de plusieurs pays du monde. Un des pays dans lesquels Protos s'est engagée est Haïti et leur présence depuis quelques années a permis de produire un état des lieux nous permettant de comprendre la situation sur place~\cite{ref:analyse_contextuelle_commune}.
 
 			Une succession de crises politiques et catastrophes naturelles ces dernières décennies ont rendu l'accès à l'eau potable, entre autres, particulièrement complexe dans ce pays des Antilles. En 2010, un violent séisme a laissé le pays en ruine, détruisant beaucoup d'infrastructures, y compris de distribution d'eau. Des incertitudes politiques entravent la reconstruction de ces installations et les populations ne sont pas toujours aidées par les services publics pour assurer la distribution de l'eau, particulièrement dans les zones rurales. C'est une des raisons pour lesquelles l'ONG Protos est active dans le pays.
 			% trop chargé politiquement ?
 			% Adrien: Je trouvais aussi, j'ai reformulé d'un point de vue neutre pour quand même rester justes sans prendre parti. Je trouvais "chaos politique" un peu trop et j'ai nuancé la seconde partie du paragraphe
-			% TODO citer l'analyse contextuelle commune
 
 			Protos a contacté l'UCL afin de l'aider dans un projet de développement en Haïti. L'objectif est de réaliser un système logiciel pilote pour la gestion de la distribution d'eau potable en zone rurale. En effet, aucune gestion centralisée organisée par l'Etat n'existe pour ces zones, éloignées des grandes agglomérations. Des réseaux existent, constitués de points de prélèvement d'eau, de conduites de distribution d'eau et de fontaines situées dans les villages, mais la gestion publique de ceux-ci n'est pas opérationnelle. Dès lors, les organismes locaux en charge de ces réseaux en assurent la gestion de manière indépendante, en s'appuyant comme ils le peuvent sur les moyens et les acteurs locaux. Une des principales conséquences est un taux de recouvrement extrêmement faible des factures (inférieur à 20\% en moyenne).
 
-			L'ONG Protos intervient dans ce cadre, pour proposer un appui à ces organismes locaux afin de mieux organiser cette distribution. Grâce à une meilleure organisation, il sera possible d'améliorer le taux de recouvrement des factures liées à la distribution d'eau, ce qui permettra d'assurer des rentrées financières à ces organismes qui sont également en charge de la maintenance physique des réseaux, mais sans recevoir de réels moyens de la part de l'Etat.
+			L'ONG Protos intervient dans ce cadre~\cite{ref:programme_protos}, pour proposer un appui à ces organismes locaux afin de mieux organiser cette distribution. Grâce à une meilleure organisation, il sera possible d'améliorer le taux de recouvrement des factures liées à la distribution d'eau, ce qui permettra d'assurer des rentrées financières à ces organismes qui sont également en charge de la maintenance physique des réseaux, mais sans recevoir de réels moyens de la part de l'Etat.
 
 			Ce projet est prévu sur trois ans, une première année pour la conception d'un prototype, une deuxième année pour finaliser le système tester son déploiement sur place et une troisième année pour le finaliser. Ce mémoire constitue la première partie de ce projet.
 
 		\subsection*{Problématiques}
 
-			La structure hiérarchique des différents acteurs de la distibution de l'eau, gouvernementaux ou non, est assez complexe. Ces acteurs doivent s'organiser, individuellement et en groupes, pour arriver à une gestion efficace des ressources. Dans ce mémoire, nous nous concentrons sur trois axes afin d'améliorer la coordination entre ces acteurs.
+			La structure hiérarchique des différents acteurs de la distibution de l'eau, gouvernementaux ou non, est assez complexe~\cite{ref:analyse_contextuelle_commune}. Ces acteurs doivent s'organiser, individuellement et en groupes, pour arriver à une gestion efficace des ressources. Dans ce mémoire, nous nous concentrons sur trois axes afin d'améliorer la coordination entre ces acteurs.
 
 			\begin{description}
 				\item[Communication] afin de permettre aux différents acteurs de s'informer à partir de la même plateforme.
@@ -100,7 +99,7 @@
 			% : mettre le cahier des charges en annexes ? <- à voir à la fin du mémoire. On le mettra s'il est utile, pas s'il est redondant : Done
 
 			Après validation de l'interface et des fonctionnalités, nous sommes passés à la phase de réalisation, durant laquelle nous avons implémenté ces fonctionnalités et les systèmes nécessaires à leur bon fonctionnement. Cette phase a été la plus longue étant donné le nombre de fonctionnalités à implémenter et la nécessité de documenter à la fois le code pour les équipes de développement ainsi que l'interface pour nos futurs utilisateurs.
-			%3*Fonctionnalité me trigger tellement mais je trouve pas d'autre mots, 
+			%3*Fonctionnalité me trigger tellement mais je trouve pas d'autre mots,
 			%Adrien : voila, j'ai scindé fonctionnalité et les "systèmes nécessaires à leur bon fonctionnement". Comme ça on a la bonne définition de foncitonnalité tout en indiquant au lecteur qu'on a fait les deux (l'ancienne phrase sous-entendait qu'on travaillait sur une application existante).
 
 			Enfin, la validation. Nous avons présenté l'application et les fonctionnalités que nous avons implémentées à des utilisateurs, afin d'obtenir des retours et de nous assurer que l'application que nous avons développée répondait aux attentes. Suite aux commentaires récoltés, nous avons fait quelques ajustements. Nous avons même eu l'occasion de faire une seconde phase de validation, pour confirmer que ces changements ont été bénéfiques. % \emph{Note; phase pas encore effectuée}
@@ -184,7 +183,7 @@
 				%(Adrien): Je pense pas. La TdC était super intéressante et fait écho aux cours d'info mais n'influe pas notre développement ni la manière donc l'eau est gérée. La TdC est surtout exposée par Protos pour sa "vision", ce qu'à mon sens tu expliques très bien et clairement dans les deux dernières phrases.
 
 				Actuellement, Protos agit dans deux zones du pays, indiquées sur la figure \ref{fig:carte_haiti_color} : Nord-Ouest (région dite "Moustiques") en bleu et Centre-Est (région dite "Onde Verte") en vert. Celles-ci font partie des plus rurales, et ont été choisies car ce sont celles qui ont le plus besoin d'aide.
-				
+
 				\begin{figure}[H]
 					\includegraphics[width=\textwidth]{images/carte_regions_haiti_color}
 					\caption{Régions d'Haiti où l'ONG Protos est active}
@@ -207,7 +206,7 @@
 					\begin{center}
 						\includegraphics[width=\textwidth/2]{images/organisation}
 						\caption{Structure organisationnelle de la gestion de l'eau en Haïti}
-						\label{fig:organisation}	
+						\label{fig:organisation}
 					\end{center}
 				\end{figure}
 
@@ -227,7 +226,7 @@
 
 				Les comités fontaines, eux, sont composés d'un responsable fontaine, un secrétaire et un trésorier. Il sont en charge du bon fonctionnement et de la qualité du point d'eau, d'apporter les fonds au comité d'eau et de gérer les éventuels conflits entre usagers ou les réparations nécéssaires.
 
-				Concrètement, la quantité de points d'eau et le nombre d'usagers desservis par les réseaux de distribution d'eau varie : comme ceux-ci sont en développement, les nombres sont en constante augmentation. En ce moment, on compte par exemple 13 fontaines publiques dans la zone Passe Catabois, et 25 dans la zone Poste Métier. Ces fontaines déservent entre 100 et 1000 usagers (voir figure \ref{fig:conso_fontaine}), avec une moyenne autour de 300.
+				Concrètement, la quantité de points d'eau et le nombre d'usagers desservis par les réseaux de distribution d'eau varie : comme ceux-ci sont en développement, les nombres sont en constante augmentation. En ce moment, on compte par exemple 13 fontaines publiques dans la zone Passe Catabois, et 25 dans la zone Poste Métier. Ces fontaines alimentent entre 100 et 1000 usagers (voir figure \ref{fig:conso_fontaine}), avec une moyenne autour de 300.
 
 				\begin{figure}[H]
 					\includegraphics[width=\textwidth]{images/conso_fontaine}
@@ -522,7 +521,7 @@
 
 	\chapter{Implémentation}
 
-		Total des pages : 16 à 22
+		%Total des pages : 16 à 22
 		% Auteur : Adrien (+Seb)
 		% Relu :  Céline deux fois :P
 
@@ -531,7 +530,7 @@
 		\section{Choix technologiques}
 			\label{sec:choix_tech}
 
-			Pages : 3 à 4
+			% Pages : 3 à 4
 			% Outils informatiques, plusieurs choix, le notre n'est pas le meilleur mais celui qui nous a semblé le plus adapté.
 			% Ici on détaille les choix majeurs. Les bibliothèques plus petites sont détaillées dans la documentation.
 			% Ici, donc, uniquement ce qui est soit réellement gros, soit souvent utilisé
@@ -1015,10 +1014,8 @@
 		%Pages : 2 à 3
 
 	\appendix
-
-	\chapter{Cahier des charges complet}
-
-		Pages : beaucoup
+		\includepdf[pages=1,pagecommand=\chapter{Cahier des charges complet}, offset=0 -3cm, scale=0.6]{../documents/requirements/Cahier_des_Charges.pdf}
+		\includepdf[pages=2-,pagecommand=\section*{},width=\textwidth]{../documents/requirements/Cahier_des_Charges.pdf}
 
 	\chapter{Base de données}
 
