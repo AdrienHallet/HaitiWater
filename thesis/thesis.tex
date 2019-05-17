@@ -23,6 +23,8 @@
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage[final]{pdfpages}
+\usepackage{booktabs}
+\usepackage{multirow}
 
 \begin{document}
 
@@ -936,7 +938,7 @@
 				\begin{description}
 					\item[Général] est une première section cherchant à identifier si l'utilisateur a compris les tâches qu'il vient d'accomplir avec l'application.
 					\item[Fonctionnalités] cherche à identifier la compréhension des contrôles de l'application par l'utilisateur.
-					\item[Usabilité] est une section particulière. Composée de dix questions alternant des assertions positives et négatives en alternance, cette section est une transcription en français de la \emph{System Usability Scale (SUS)}~\cite{ref:sus}. Se décrivant comme une mesure "rapide et sale", la SUS présente l'avantage de pouvoir être complétée rapidement par nos utilisateurs d'essai durant ces séances de maximum deux heures non-rémunérées.
+					\item[Usabilité] est une section particulière. Composée de dix questions alternant des assertions positives et négatives en alternance, cette section est une transcription en français de la \emph{System Usability Scale (SUS)}~\cite{ref:sus}. Se décrivant comme une mesure \emph{rapide et sale}, la SUS présente l'avantage de pouvoir être complétée rapidement par nos utilisateurs d'essai durant ces séances de maximum deux heures non-rémunérées.
 					\item[Esthétique] est une dernière section, sans doute la plus subjective, composée de questions sur l'apparence de l'interface graphique.
 				\end{description}
 
@@ -997,13 +999,43 @@
 
 		\section{Défis rencontrés}
 
-			Pages : 1 à 2
+			La contrainte la plus importante de ce projet est le contexte haïtien. Exposé en section~\ref{sec:situation}, ce dernier pose un environnement et des acteurs différents de ce dont on peut avoir l'habitude, surtout en tant qu'étudiants. La suite du projet doit impliquer ces acteurs afin d'améliorer l'outil et la compréhension de leurs besoins et demandes est un enjeu important pour la viabilité d'HaïtiWater.
+
+			Il est également important de concilier les demandes des différents groupes d'acteurs qui ont des objectifs parfois différents et la limite en disponiblité du temps de développement nécessite de placer des priorités.
+
+			%TODO quoi d'autre ?
 
 		\section{Propositions}
 
-			Pages : 1 à 2
+			Beaucoup de modules pourraient être ajoutés à HaïtiWater. Une demande récurrente est le module \emph{Citizen Science} qui vise à impliquer les consommateurs haïtiens dans la gestion réseau de distribution en leur proposant par exemple de signaler des problèmes, consulter leur consommation et factures.
+
+			L'évolution du système sur d'autres axes que l'application web est également un chemin qui pourrait être poursuivi. Les acteurs haïtiens souhaitant développer l'aspect hors-ligne de l'application, il pourrait être envisagé de développer une application locale qui utiliserait un instantané de la base de données. Cela requièrerait un gros travail sur la consistance de la base de données du côté du serveur mais permettrait des utilisations hors-ligne plus avancées.
+
+			%TODO quoi d'autre ? on va pas lister tout le backlog, si ?
+
 
 	\chapter{Conclusion}
+
+		%TODO
+
+		\section{Métriques}
+			\begin{table*}[!h]
+				\centering
+				\begin{tabular}{@{}lllc@{}}
+					\toprule
+					Environnement	& Métrique	& Valeur \\
+					\midrule
+					\multirow{2}{*}{Trello} & Nombre de cartes  & x  \\
+						& & \\
+					\bottomrule
+					\multirow{2}{*}{Code} & Nombre de commits & x \\
+						& Nombre de lignes de code (avec librairies) & \\
+						& Nombre de lignes de code (sans librairies) & \\
+					\bottomrule
+				\end{tabular}
+				\caption{Quelques métriques du projet en date du $DATE$}
+				\label{tab:table_metriques}
+			\end{table*}
 
 
 	\addcontentsline{toc}{chapter}{Bibliographie}
@@ -1016,6 +1048,8 @@
 	\appendix
 		\includepdf[pages=1,pagecommand=\chapter{Cahier des charges complet}, offset=0 -3cm, scale=0.6]{../documents/requirements/Cahier_des_Charges.pdf}
 		\includepdf[pages=2-,pagecommand=\section*{},width=\textwidth]{../documents/requirements/Cahier_des_Charges.pdf}
+
+		%TODO trouver un moyen d'include images/full_gant_1705.pdf correctement
 
 	\chapter{Base de données}
 
