@@ -25,6 +25,7 @@
 \usepackage[final]{pdfpages}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{graphicx}
 
 \begin{document}
 
@@ -1055,26 +1056,40 @@
 		%Pages : 2 à 3
 
 	\appendix
-		\includepdf[pages=1,pagecommand=\chapter{Cahier des charges complet}, offset=0 -3cm, scale=0.6]{../documents/requirements/Cahier_des_Charges.pdf}
-		\includepdf[pages=2-,pagecommand=\section*{},width=\textwidth]{../documents/requirements/Cahier_des_Charges.pdf}
 
-		%TODO trouver un moyen d'include images/full_gant_1705.pdf correctement
+	%\chapter{Cahier des charges complet}
+
+		\includepdf[pages=1,pagecommand=\chapter{Cahier des charges complet}, offset=0 -3cm, scale=0.6]{../documents/requirements/Cahier_des_Charges.pdf}
+		\includepdf[pages=2-,pagecommand={},width=1.1\textwidth]{../documents/requirements/Cahier_des_Charges.pdf}
+
+	%\chapter{Planning}
+
+		\includepdf[pages=1,pagecommand=\chapter{Planning}, offset=0 -3cm, scale=0.6]{images/gantt_simplified}
+		\includepdf[pages=2-,pagecommand={},width=1.1\textwidth]{images/gantt_simplified}
 
 	\chapter{Base de données}
 
 		%TODO include schéma complet + tout autre document jugé utile
+		% Le schéma se trouve déjà complet dans la partie d'analyse, pas utile de le remettre pour moi
+		% Et je vois pas d'autres documents
 
-	\chapter{Wireframes}
+	%\chapter{Wireframes}
+
+		\includepdf[pages=1,pagecommand=\chapter{Wireframes},offset=0 -3cm,width=\textwidth]{../documents/design/wireframes/hi-fi/wireframes_hifi_pencil.pdf}
+
 		\label{sec:wireframes}
-		\includepdf[pages=-,nup=1x2,pagecommand={},width=\textwidth]{../documents/design/wireframes/hi-fi/wireframes_hifi_pencil.pdf}
+
+		\includepdf[pages=2-,nup=1x2,pagecommand={},width=\textwidth]{../documents/design/wireframes/hi-fi/wireframes_hifi_pencil.pdf}
 
 	\chapter{Diagrammes d'activité}
 
 		%TODO include les diagrammes d'activité, ils sont quelque part, c'est certain :p (ouuups)
 
 	\chapter{Documents de validation}
+
 		\label{sec:documents_validation}
 		\input{../documents/validation/protocole_content.tex}
+
 	\setlength{\parskip}{0em}
 	\backcoverpage
 
