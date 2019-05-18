@@ -114,7 +114,7 @@
 
 			Nous avons également proposé une application pour la gestion de l'eau potable à Haïti. Nous espérons qu'elle pourra servir de base de travail, permettant aux acteurs de terrain d'avoir un jour un outil les aidant dans leur travail quotidien et apportant une aide au développement national.
 
-			Nous espérons avoir contribué à l'amélioration de la gestion de l'eau en Haïti, mais ce travail a assurément contribué au développement de nos compétences; en tant que développeurs, de par l'utilisation de librairies et frameworks peu ou pas connus, en tant qu'analystes grâce au problème réel posé et à la nécessité de comprendre les besoins. La coordination du groupe, la planification du travail et la communication avec les clients ont également beaucoup apporté à notre développement professionnel.
+			Nous espérons avoir contribué à l'amélioration de la gestion de l'eau en Haïti, mais ce travail a assurément contribué au développement de nos compétences; en tant que développeurs, de par l'utilisation de bibliothèques et frameworks peu ou pas connus, en tant qu'analystes grâce au problème réel posé et à la nécessité de comprendre les besoins. La coordination du groupe, la planification du travail et la communication avec les clients ont également beaucoup apporté à notre développement professionnel.
 
 		\subsection*{Plan}
 
@@ -184,7 +184,7 @@
 				%Un mot sur la théorie du changement ?
 				%(Adrien): Je pense pas. La TdC était super intéressante et fait écho aux cours d'info mais n'influe pas notre développement ni la manière donc l'eau est gérée. La TdC est surtout exposée par Protos pour sa "vision", ce qu'à mon sens tu expliques très bien et clairement dans les deux dernières phrases.
 
-				Actuellement, Protos agit dans deux zones du pays, indiquées sur la figure \ref{fig:carte_haiti_color} : Nord-Ouest (région dite "Moustiques") en bleu et Centre-Est (région dite "Onde Verte") en vert. Celles-ci font partie des plus rurales, et ont été choisies car ce sont celles qui ont le plus besoin d'aide.
+				Actuellement, Protos agit dans deux zones du pays, indiquées sur la figure \ref{fig:carte_haiti_color} : Nord-Ouest (région dite \emph{Moustiques}) en bleu et Centre-Est (région dite \emph{Onde Verte}) en vert. Celles-ci font partie des plus rurales, et ont été choisies car ce sont celles qui ont le plus besoin d'aide.
 
 				\begin{figure}[H]
 					\includegraphics[width=\textwidth]{images/carte_regions_haiti_color}
@@ -271,7 +271,7 @@
 				Ce système informatique ne détermine pas le réseau de distribution. Celui-ci s'est développé historiquement et le système informatique s'est greffé par dessus. Il permet une collecte des données de ce réseau et de déterminer les opérations à effectuer en fonction de ces données.
 				% (Adrien) expliciter ce qu'on en retire pour notre mémoire ? est-ce que ça a changé quelque chose ? explique-t-on le fait qu'on est tout petits à côté de ça ?
 				% (Seb) je sais pas trop en fait :O
-				% TODO : voir si on met la photo du grand tableau d'affichage de Saur
+				% DONE : voir si on met la photo du grand tableau d'affichage de Saur -> Pas utile finalement je pense
 
 		\section{Comparaison avec des outils existants}
 			\label{sec:outils_existants}
@@ -667,7 +667,7 @@
 			\subsection*{DataTables}
 				% Un constat ; les tables Django ne permettent pas de contrôler l'information à 100%
 				% Second constat ; on veut une API (référence serveur)
-				% DataTable, librairie connue, avec un gros support, grosse documentation, beaucoup de modules pour gérer les tables, AJAX pour 100% séparer les données de leur présentation
+				% DataTable, bibliothèque connue, avec un gros support, grosse documentation, beaucoup de modules pour gérer les tables, AJAX pour 100% séparer les données de leur présentation
 
 				DataTables~\cite{ref:datatables} est la seconde plus grosse bibliothèque du projet, gérant l'affichage des données sous forme de tables. A nouveau sélectionnée de par son ancienneté permettant une documentation et des tutoriels efficaces, DataTables était très loin d'être la seule option. Nous avons envisagé, et débuté la première version avec, la bibliothèque \emph{Django-Tables2} qui causait un ralentissement du chargement des pages contenant les données, et une perte de contrôle de l'information au niveau du serveur car les tables étaient directement rattachées aux modèles de la base de données.
 
@@ -996,7 +996,7 @@
 
 			Le déploiement de l'application sur un serveur haïtien est un autre objectif à court terme du projet. La transition ne devrait pas être un problème puisque le serveur prêté par l'UCLouvain est un serveur de deux coeurs à 2GHz avec 1Go de mémoire vive, donc n'étant pas particulièrement performant. Cette migration du serveur de l'application devrait améliorer le temps de réponse de l'application en Haïti qui doit en ce moment systématiquement communiquer avec la Belgique.
 
-			Une autre amélioration du temps de réponse serait d'alléger les pages de l'application. Bien que ces dernières soient largement mises en cache (voir section~\ref{sec:cache_client}), leur téléchargement initial et à chaque fois que le cache est vidé représente entre $1$ et $1.6$Mo de données. En passant l'outil \emph{coverage} de \emph{DevTools (Chrome)}, nous observons qu'en moyenne l'application utilise 40\% des fichiers téléchargés ce qui est dû à l'importation des librairies comme Bootstrap. En supprimant les fonctionnalités inutilisées, l'application pourrait donc être allégée. Cela n'a pas été fait jusqu'à présent puisque l'application est en développement et que des fonctionnalités inutilisées pourraient le devenir. Nous avons tout de même créée un script~\footnote{https://github.com/AdrienHalletUCL/chromeCoverageParser} qui permet de raccourcir les fichiers en enlevant les fonctions inutilisées, script qui pourrait être réutilisé dans les travaux futurs sur HaïtiWater.
+			Une autre amélioration du temps de réponse serait d'alléger les pages de l'application. Bien que ces dernières soient largement mises en cache (voir section~\ref{sec:cache_client}), leur téléchargement initial et à chaque fois que le cache est vidé représente entre $1$ et $1.6$Mo de données. En passant l'outil \emph{coverage} de \emph{DevTools (Chrome)}, nous observons qu'en moyenne l'application utilise 40\% des fichiers téléchargés ce qui est dû à l'importation des bibliothèques comme Bootstrap. En supprimant les fonctionnalités inutilisées, l'application pourrait donc être allégée. Cela n'a pas été fait jusqu'à présent puisque l'application est en développement et que des fonctionnalités inutilisées pourraient le devenir. Nous avons tout de même créée un script~\footnote{https://github.com/AdrienHalletUCL/chromeCoverageParser} qui permet de raccourcir les fichiers en enlevant les fonctions inutilisées, script qui pourrait être réutilisé dans les travaux futurs sur HaïtiWater.
 
 		\section{Défis rencontrés}
 
@@ -1028,7 +1028,7 @@
 
 		%TODO est-ce qu'on met les métriques, si oui quoi de plus ?
 		\section{Métriques}
-			\begin{table*}[H]
+			\begin{table}[H]
 				\centering
 				\begin{tabular}{@{}lllc@{}}
 					\toprule
@@ -1037,14 +1037,14 @@
 					\multirow{2}{*}{Trello} & Nombre de cartes  & x  \\
 						& & \\
 					\bottomrule
-					\multirow{2}{*}{Code} & Nombre de commits & x \\
-						& Nombre de lignes de code (avec librairies) & \\
-						& Nombre de lignes de code (sans librairies) & \\
+					\multirow{3}{*}{Code} & Nombre de commits & x \\
+						& Nombre de lignes de code (avec bibliothèques) & \\
+						& Nombre de lignes de code (sans bibliothèques) & \\
 					\bottomrule
 				\end{tabular}
 				\caption{Quelques métriques du projet en date du $DATE$}
 				\label{tab:table_metriques}
-			\end{table*}
+			\end{table}
 
 
 	\addcontentsline{toc}{chapter}{Bibliographie}
