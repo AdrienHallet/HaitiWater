@@ -1001,7 +1001,7 @@
 
 			Une autre amélioration du temps de réponse serait d'alléger les pages de l'application. Bien que ces dernières soient largement mises en cache (voir section~\ref{sec:cache_client}), leur téléchargement initial et à chaque fois que le cache est vidé représente entre $1$ et $1.6$Mo de données. En passant l'outil \emph{coverage} de \emph{DevTools (Chrome)}, nous observons qu'en moyenne l'application utilise 40\% des fichiers téléchargés ce qui est dû à l'importation des bibliothèques comme Bootstrap. En supprimant les fonctionnalités inutilisées, l'application pourrait donc être allégée. Cela n'a pas été fait jusqu'à présent puisque l'application est en développement et que des fonctionnalités inutilisées pourraient le devenir. Nous avons tout de même créée un script~\footnote{https://github.com/AdrienHalletUCL/chromeCoverageParser} qui permet de raccourcir les fichiers en enlevant les fonctions inutilisées, script qui pourrait être réutilisé dans les travaux futurs sur HaïtiWater.
 
-			De plus, à la création de nouveaux utilisateurs, un e-mail leur est envoyé avec leurs informations de connexion. Par facilité, ce prossessus est géré entièrement sur le serveur et utilise une simple adresse Gmail classique; ce qui rend l'action bloquante. Dans le futur, il serait important d'avoir un serveur mail dédié pour prendre en charge ces actions. %Serveur SMTP ou serveur mail ?
+			De plus, à la création de nouveaux utilisateurs, un e-mail leur est envoyé avec leurs informations de connexion. Par facilité et économie, ce processus est entièrement géré par le serveur de l'application et utilise une adresse Gmail classique, ce qui rend l'action bloquante et donc lente. Dans le futur, il serait important d'avoir un serveur mail dédié pour prendre en charge ces actions. Un Haïtien a également proposé d'utiliser des SMS, qui sont apparemment plus utilisés que les courriels en Haïti.
 
 		\section{Défis rencontrés}
 
@@ -1009,8 +1009,11 @@
 
 			Il est également important de concilier les demandes des différents groupes d'acteurs qui ont des objectifs parfois différents et la limite en disponiblité du temps de développement nécessite de placer des priorités.
 
-			%TODO quoi d'autre ? -> How about that ?
-			Ensuite, même si nous avons eu l'occasion d'apprendre à nous connaître et travailler ensemble au cours de nos quatre premières années d'étude, un projet d'une telle envergure était une première pour nous trois. De plus, nous n'avons pas reçu de formation particulièrement centrée sur le web. Il nous a fallu apprendre beaucoup par nous-mêmes, et s'organiser afin de créer une dynamique d'équipe qui fonctionne.
+			%done quoi d'autre ? -> How about that ?
+			% (A) Je trouve que la première phrase ne correspond pas à la section, je pensais à cette section comme les défis du projet, pas de nos capacités, d'autant que la nécessité de travailler à trois et les difficultés qui en découlent sont exposées dans la conclusion et la section organisation, par contre le fait que ça se rattache à des techs non-enseignées, ça oui !
+
+			% Ensuite, même si nous avons eu l'occasion d'apprendre à nous connaître et travailler ensemble au cours de nos quatre premières années d'étude, un projet d'une telle envergure était une première pour nous trois.
+			De plus, nous n'avons pas reçu de formation particulièrement centrée sur le web et il est fort à parier que les prochaines équipes de développement n'auront pas eu de formations approfondies sur les technologies utilisées. L'apprentissage individuel et autonome requis pour participer au projet est un défi, similaire à beaucoup de projets informatiques, qu'il est nécessaire de relever pour être efficace.
 
 		\section{Propositions}
 
@@ -1018,10 +1021,11 @@
 
 			L'évolution du système sur d'autres axes que l'application web est également un chemin qui pourrait être poursuivi. Les acteurs haïtiens souhaitant développer l'aspect hors-ligne de l'application, il pourrait être envisagé de développer une application locale qui utiliserait un instantané de la base de données. Cela requièrerait un gros travail sur la consistance de la base de données du côté du serveur mais permettrait des utilisations hors-ligne plus avancées.
 
-			%TODO quoi d'autre ? on va pas lister tout le backlog, si ? -> Les trucs les plus important
-			Au niveau de l'application elle-même, le système de notifications pourrait être amélioré : pour l'instant, un seul type de notification existe, signalant à un gestionnaire de fontaine que son rapport mensuel est en attente d'être envoyé. Il serait sans doute utile d'en créer d'autres : si un ticket de problème concernant un élément du réseau sous la responsabilité de l'utilisateur a été ouvert, pour signaler que l'échéance des payements de carte arrive, etc... Pour maximiser l'utilité des notifications pour les acteurs sur le terrain, il faudrait discuter à nouveau avec eux afin d'identifier exactement leurs besoins, ce point précis n'ayant pas été abordé lors du cahier des charges.
+			%done quoi d'autre ? on va pas lister tout le backlog, si ? -> Les trucs les plus important
+			% (A) bien trouvé !
+			Au niveau de l'application elle-même, le système de notifications pourrait être étoffé : pour l'instant, un seul type de notification existe, signalant à un gestionnaire de fontaine que son rapport mensuel est en attente d'envoi. D'autres notifications sont possibles : si un ticket de support concernant un élément du réseau sous la responsabilité de l'utilisateur a été ouvert, pour signaler que l'échéance des paiements approche, etc. Pour maximiser l'utilité des notifications pour les acteurs sur le terrain, il faudrait discuter à nouveau avec eux afin d'identifier exactement leurs besoins.
 
-			Enfin, le module de la carte interactive devrait être étoffé afin d'offir plus de détails d'un coup d'oeil. Nous avons imaginé, par exemple, des pictogrammes différents pour les différents éléments du réseau (fontaines, prises individuelles,...). Il nous a également été demandé lors de la validation d'indiquer les nouveaux éléments en une autre couleur, pour aider les utilisateurs à s'y retrouver.
+			Enfin, le module de la carte interactive devrait être amélioré afin d'offir plus d'informations en un coup d'oeil. Nous avons imaginé, par exemple, des pictogrammes différents pour les différents éléments du réseau (fontaines, prises individuelles,...). Un système de code couleurs pour les éléments selon différents filtres, voire à la création des éléments pour aider les utilisateurs à s'y retrouver, serait également un ajout désirable.
 
 
 	\chapter{Conclusion}
@@ -1035,7 +1039,7 @@
 		Nous espérons également qu'au même titre que nous avons appris de nos contacts avec les acteurs de Protos et Haïti, ces derniers ont eu une bonne (pour la plupart première) expérience de leur implication dans le développement d'un outil pouvant les aider dans leur travail, et que cette expérience leur permettra dans le futur d'identifier ce qui leur plaît ou non dans HaïtiWater pour créer la prochaine version, ou le prochain logiciel utilisé en Haïti.
 		%(Adrien) -> Je suis pas convaincu par mon dernier paragraphe, j'aimerais qu'on termine sur quelque chose de plus "grand" -> How about that :
 
-		Enfin, l'ONG Protos a signifié son intérêt de déployer HaitiWater (qu'il faudrait dès lors nommer autrement) dans d'autres pays en voie de développement. Grâce à la modularité de notre projet, peu de changements seraient nécéssaire (principalement les unités et la monnaie), et notre outil de transition destiné au fonctionnement Haïtien pourrait devenir un exemple de bonnes pratiques plus génériques pour développer un réseau de distribution d'eau potable. 
+		Enfin, l'ONG Protos a signifié son intérêt de déployer HaïtiWater (qu'il faudrait dès lors nommer autrement) dans d'autres pays en voie de développement. Grâce à la modularité de notre projet, peu de changements seraient nécéssaire (principalement les unités de mesure et la devise monétaire) et notre outil de transition destiné au fonctionnement Haïtien pourrait devenir un exemple de bonnes pratiques plus génériques pour développer un réseau de distribution d'eau potable.
 
 		%TODO est-ce qu'on met les métriques, si oui quoi de plus ?
 		% J'aime bien. Pourquoi pas des stats de git aussi ? Avec ces deux trucs là ça me semble pas mal
