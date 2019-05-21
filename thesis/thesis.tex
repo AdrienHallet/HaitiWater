@@ -891,6 +891,14 @@
 
 			% Pages : 4 à 5
 
+			\subsection{Mapping Objet-Relationnel}
+
+				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment a été créé la base de données et sa structure. Il nous reste à faire interagir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de donnée, et se charge d'y envoyer toutes les requêtes.
+
+				Il nous suffit de décrire la structure des données en utilisant des classes Python et le framework sera capable de créer les tables de la base de données et de les modifier au fur et à mesure des changements que nous introduisons. Ensuite, nous pouvons facilement interagir avec ces classes pour créer, modifier, supprimer et récupérer des données sans toucher au SQL.
+
+				Cela nous permet de simplifier l'interaction avec la base de données ainsi que de nous détacher de quel serveur voire quel système de gestion de base de données nous utilisons. Il serait possible de passer de PostreSQL, que nous utilisons, pour un autre système (MySQL, par exemple) sans modifier la logique interne de l'application et de l'accès aux données.
+
 			\subsection{Requêtes}
 
 				La fonction principale du serveur est de répondre aux requêtes que lui envoie le client. On en compte trois types différent : les deux premiers gèrent la représentation de l'information à l'utilisateur tandis que le dernier est en charge de l'information en elle-même.
@@ -911,18 +919,18 @@
 
 				En plus des avantages apportés au client, la présence d'une API est une bonne pratique qui permet une meilleure compartementalisation des rôles du serveur.
 
+				En mettant tout cela ensemble, nous obtenons un grand nombre d'acteurs dans le traitement d'une requête. Le diagramme en figure \ref{fig:sequence} montre un exemple des communications entre tous ces acteurs, ici dans le cas du traitement de la requête de chargement de la page des rapports par l'utilisateur.
+
+				\begin{figure}
+					\includegraphics[width=\textwidth]{images/sequence}
+					\caption{Diagramme de séquence -- Chargement de la page des rapports}
+					\label{fig:sequence}
+				\end{figure}
+
 				% TODO schéma des requêtes avec timeline, en mode diagramme de séquence
 
 				% Une autre possibilité est de rajouter une autre interface pour notre application. Il suffit d'intéragir avec l'API pour pouvoir gérer toutes les données, sans s'embarrasser de la manière de la représenter. De cette manière, nous pourrions créer une autre application même sur une toute autre plateforme comme Android par exemple. Elle n'aurait qu'à gérer sa manière de représentation sur cette plateforme et pourrait intéragir de notre première application au moyen de requêtes de données.
 				% (Adrien) -> paragraphe commenté, déjà expliqué ailleurs et ça sera également mis en avant dans les "projets futus"
-
-			\subsection{Mapping Objet-Relationnel}
-
-				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment a été créé la base de données et sa structure. Il nous reste à faire interagir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de donnée, et se charge d'y envoyer toutes les requêtes.
-
-				Il nous suffit de décrire la structure des données en utilisant des classes Python et le framework sera capable de créer les tables de la base de données et de les modifier au fur et à mesure des changements que nous introduisons. Ensuite, nous pouvons facilement interagir avec ces classes pour créer, modifier, supprimer et récupérer des données sans toucher au SQL.
-
-				Cela nous permet de simplifier l'interaction avec la base de données ainsi que de nous détacher de quel serveur voire quel système de gestion de base de données nous utilisons. Il serait possible de passer de PostreSQL, que nous utilisons, pour un autre système (MySQL, par exemple) sans modifier la logique interne de l'application et de l'accès aux données.
 
 			% \subsection*{Authentification}
 			% \subsection*{Requêtes}
