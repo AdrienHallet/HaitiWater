@@ -984,6 +984,8 @@
 				\end{itemize}
 
 	\chapter{Améliorations futures}
+		%Auteur : Adrien
+		%Relu : Céline
 
 		La soumission de ce travail de fin d'études ne marque pas la fin du développement de l'application Haïtiwater ni des travaux connexes. Comme tout projet de développement, un certain suivi minimum doit être assuré afin de maintenir l'outil à jour et parer aux problèmes du quotidien. De plus, HaïtiWater est considéré comme étant toujours en développement au vu des ambitions des différents acteurs souhaitant utiliser l'application.
 
@@ -995,9 +997,11 @@
 
 			A présent que l'application va être essayée en Haïti, les futures équipes de développement devront se montrer à l'écoute des acteurs du projet et modifier l'application selon leurs demandes pour, par exemple, prendre en charge plus de données. Une autre tâche importante sera la visualisation et aggrégation des données pour fournir plus de rapports automatiques. Les graphiques déjà présents en sont un bon exemple, permettant de présenter l'information rapidement et de manière compréhensible pour ainsi identifier directement les problèmes potentiels et améliorations possibles du réseau de distribution d'eau potable.
 
-			Le déploiement de l'application sur un serveur haïtien est un autre objectif à court terme du projet. La transition ne devrait pas être un problème puisque le serveur prêté par l'UCLouvain est un serveur de deux coeurs à 2GHz avec 1Go de mémoire vive, donc n'étant pas particulièrement performant. Cette migration du serveur de l'application devrait améliorer le temps de réponse de l'application en Haïti qui doit en ce moment systématiquement communiquer avec la Belgique.
+			Le déploiement de l'application sur un serveur haïtien est un autre objectif à court terme du projet. La transition ne devrait pas être un problème puisque le serveur prêté par l'UCLouvain est un serveur de deux coeurs à 2GHz avec 1Go de mémoire vive, donc n'étant pas particulièrement performant. Cette migration du serveur de l'application devrait améliorer le temps de réponse de l'application en Haïti puisqu'en ce moment, il faut systématiquement communiquer avec le serveur en Belgique.
 
 			Une autre amélioration du temps de réponse serait d'alléger les pages de l'application. Bien que ces dernières soient largement mises en cache (voir section~\ref{sec:cache_client}), leur téléchargement initial et à chaque fois que le cache est vidé représente entre $1$ et $1.6$Mo de données. En passant l'outil \emph{coverage} de \emph{DevTools (Chrome)}, nous observons qu'en moyenne l'application utilise 40\% des fichiers téléchargés ce qui est dû à l'importation des bibliothèques comme Bootstrap. En supprimant les fonctionnalités inutilisées, l'application pourrait donc être allégée. Cela n'a pas été fait jusqu'à présent puisque l'application est en développement et que des fonctionnalités inutilisées pourraient le devenir. Nous avons tout de même créée un script~\footnote{https://github.com/AdrienHalletUCL/chromeCoverageParser} qui permet de raccourcir les fichiers en enlevant les fonctions inutilisées, script qui pourrait être réutilisé dans les travaux futurs sur HaïtiWater.
+
+			De plus, à la création de nouveaux utilisateurs, un e-mail leur est envoyé avec leurs informations de connexion. Par facilité, ce prossessus est géré entièrement sur le serveur et utilise une simple adresse Gmail classique; ce qui rend l'action bloquante. Dans le futur, il serait important d'avoir un serveur mail dédié pour prendre en charge ces actions. %Serveur SMTP ou serveur mail ?
 
 		\section{Défis rencontrés}
 
@@ -1005,7 +1009,8 @@
 
 			Il est également important de concilier les demandes des différents groupes d'acteurs qui ont des objectifs parfois différents et la limite en disponiblité du temps de développement nécessite de placer des priorités.
 
-			%TODO quoi d'autre ?
+			%TODO quoi d'autre ? -> How about that ?
+			Ensuite, même si nous avons eu l'occasion d'apprendre à nous connaître et travailler ensemble au cours de nos quatre premières années d'étude, un projet d'une telle envergure était une première pour nous trois. De plus, nous n'avons pas reçu de formation particulièrement centrée sur le web. Il nous a fallu apprendre beaucoup par nous-mêmes, et s'organiser afin de créer une dynamique d'équipe qui fonctionne.
 
 		\section{Propositions}
 
@@ -1013,21 +1018,28 @@
 
 			L'évolution du système sur d'autres axes que l'application web est également un chemin qui pourrait être poursuivi. Les acteurs haïtiens souhaitant développer l'aspect hors-ligne de l'application, il pourrait être envisagé de développer une application locale qui utiliserait un instantané de la base de données. Cela requièrerait un gros travail sur la consistance de la base de données du côté du serveur mais permettrait des utilisations hors-ligne plus avancées.
 
-			%TODO quoi d'autre ? on va pas lister tout le backlog, si ?
+			%TODO quoi d'autre ? on va pas lister tout le backlog, si ? -> Les trucs les plus important
+			Au niveau de l'application elle-même, le système de notifications pourrait être amélioré : pour l'instant, un seul type de notification existe, signalant à un gestionnaire de fontaine que son rapport mensuel est en attente d'être envoyé. Il serait sans doute utile d'en créer d'autres : si un ticket de problème concernant un élément du réseau sous la responsabilité de l'utilisateur a été ouvert, pour signaler que l'échéance des payements de carte arrive, etc... Pour maximiser l'utilité des notifications pour les acteurs sur le terrain, il faudrait discuter à nouveau avec eux afin d'identifier exactement leurs besoins, ce point précis n'ayant pas été abordé lors du cahier des charges.
+
+			Enfin, le module de la carte interactive devrait être étoffé afin d'offir plus de détails d'un coup d'oeil. Nous avons imaginé, par exemple, des pictogrammes différents pour les différents éléments du réseau (fontaines, prises individuelles,...). Il nous a également été demandé lors de la validation d'indiquer les nouveaux éléments en une autre couleur, pour aider les utilisateurs à s'y retrouver.
 
 
 	\chapter{Conclusion}
 
 		Avec ce mémoire s'achève le plus gros projet que nous ayons eu l'occasion de réaliser durant notre parcours universitaire. Sur le plan personnel, nous retirons énormément de cette expérience qui nous a permis de mettre en pratique les connaissances acquises durant nos études. Participer à un cycle de développement complet durant presque une année, avec de réels clients, a également été un apport non-négligeable dans notre formation.
 
-		D'après les premiers retours d'organisations haïtiennes, l'application reçoit un accueil positif de la part des comités haïtiens auxquels elle a été présentée. Nous entretenons beaucoup d'espoirs pour l'application, à commencer par notre désir de voir l'application utilisée et continuer à être développée au fil du temps grâce à la base applicative modulaire que nous avons mise en place.
+		D'après les premiers retours d'organisations haïtiennes, l'application reçoit un accueil positif de la part des comités haïtiens auxquels elle a été présentée. Nous entretenons beaucoup d'espoirs pour l'application, à commencer par notre désir de la voir utilisée et continuer à être développée au fil du temps grâce à la base applicative modulaire que nous avons mise en place.
 
 		Il est évident qu'avec la modernisation du réseau de distribution d'eau potable haïtien, l'application ne pourra pas être compétitive face à de larges progiciels tels que ceux décrits en section~\ref{sec:outils_existants}. Nous voyons HaïtiWater comme un outil de transition qui s'adapte à la structure actuelle du pays pour les aider dans leur développement.
 
 		Nous espérons également qu'au même titre que nous avons appris de nos contacts avec les acteurs de Protos et Haïti, ces derniers ont eu une bonne (pour la plupart première) expérience de leur implication dans le développement d'un outil pouvant les aider dans leur travail, et que cette expérience leur permettra dans le futur d'identifier ce qui leur plaît ou non dans HaïtiWater pour créer la prochaine version, ou le prochain logiciel utilisé en Haïti.
-		%(Adrien) -> Je suis pas convaincu par mon dernier paragraphe, j'aimerais qu'on termine sur quelque chose de plus "grand"
+		%(Adrien) -> Je suis pas convaincu par mon dernier paragraphe, j'aimerais qu'on termine sur quelque chose de plus "grand" -> How about that :
+
+		Enfin, l'ONG Protos a signifié son intérêt de déployer HaitiWater (qu'il faudrait dès lors nommer autrement) dans d'autres pays en voie de développement. Grâce à la modularité de notre projet, peu de changements seraient nécéssaire (principalement les unités et la monnaie), et notre outil de transition destiné au fonctionnement Haïtien pourrait devenir un exemple de bonnes pratiques plus génériques pour développer un réseau de distribution d'eau potable. 
 
 		%TODO est-ce qu'on met les métriques, si oui quoi de plus ?
+		% J'aime bien. Pourquoi pas des stats de git aussi ? Avec ces deux trucs là ça me semble pas mal
+		% Aussi : on mettrais pas un piti chapitre de remerciement ? On a plein de gens à remercier je trouve :D
 		\section{Métriques}
 			\begin{table}[H]
 				\centering
