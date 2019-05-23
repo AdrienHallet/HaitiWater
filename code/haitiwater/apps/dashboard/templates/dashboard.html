@@ -1,19 +1,38 @@
 {% extends "base.html" %}
 {% load group_filter %}
+{% load static %}
 
-    {% block page_name %}
-        Accueil
-    {% endblock %}
+{% block page_import %}
+    <script type="application/javascript">
+        {% if user.is_authenticated %}
+            const outlets = [];
+            {% for outlet in water_outlets_report %}
+                outlets.push([{{ outlet.0 }}, "{{ outlet.1 }}"]);
+            {% endfor %}
+            localStorage.setItem("username", "{{ user.get_username }}");
+            localStorage.setItem("outlets", JSON.stringify(outlets));
+        {% else %}
+            localStorage.removeItem("username");
+            localStorage.removeItem("outlets");
+        {% endif %}
+    </script>
+    <script src="{% static "dashboard.js" %}"></script>
+{% endblock %}
 
-    {% block page_content %}
-        <div class="text-center">
+{% block page_name %}
+    Accueil
+{% endblock %}
+
+{% block page_content %}
+    <div class="text-center">
+        {% if user.is_authenticated and user|has_group:"Gestionnaire de zone"%}
+
             <div class="row">
-                {% if user.is_authenticated and user|has_group:"Gestionnaire de zone"%}
                 <div class="pricing-table">
 
                     <div class="col-lg-6 col-sm-6">
                         <div class="plan">
-                            <h3>Le réseau de votre zone<span><a class="fa fa-tint"></a></span></h3>
+                            <h3>Le réseau de votre zone<span><i class="fa fa-tint"></i></span></h3>
                             <a class="btn btn-lg btn-default" href="/reseau/">{{ zone_name }}</a>
                             <ul>
                                 <li><b>{{ amount_fountain }}</b> Fontaines</li>
@@ -26,7 +45,7 @@
 
                     <div class="col-lg-6 col-sm-6">
                         <div class="plan">
-                            <h3>Vos consommateurs<span><a class="fa fa-users"></a></span></h3>
+                            <h3>Vos consommateurs<span><i class="fa fa-users"></i></span></h3>
                             <a class="btn btn-lg btn-default" href="/consommateurs/">{{ zone_name }}</a>
                             <ul>
                                 <li><b>{{ amount_registered_consumers }}</b> Foyers enregistrés</li>
@@ -34,12 +53,46 @@
                             </ul>
                         </div>
                     </div>
+
                 </div>
             </div>
-            {% elif user.is_authenticated and user|has_group:"Gestionnaire de fontaine"%}
-                Page d'acceuil du gestionnaire de fontaine
-            {% else %}
-                <h3>Contenu réservé, veuillez <a href="{% url 'login' %}">vous connecter</a></h3>
-            {% endif %}
-        </div>
-    {% endblock %}
+
+        {% elif user.is_authenticated and user|has_group:"Gestionnaire de fontaine"%}
+            <!--- Todo : create custom dashboard for fountain managers --->
+            <div class="row">
+                <div class="pricing-table">
+
+                    <div class="col-lg-6 col-sm-6">
+                        <div class="plan">
+                            <h3>Le réseau de votre zone<span><i class="fa fa-tint"></i></span></h3>
+                            <a class="btn btn-lg btn-default" href="/reseau/">{{ zone_name }}</a>
+                            <ul>
+                                <li><b>{{ amount_fountain }}</b> Fontaines</li>
+                                <li><b>{{ amount_kiosk }}</b> Kiosques</li>
+                                <li><b>{{ amount_individual }}</b> Prises individuelles</li>
+                                <li><b>{{ amount_pipe }}</b> Conduites</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-sm-6">
+                        <div class="plan">
+                            <h3>Vos consommateurs<span><i class="fa fa-users"></i></span></h3>
+                            <a class="btn btn-lg btn-default" href="/consommateurs/">{{ zone_name }}</a>
+                            <ul>
+                                <li><b>{{ amount_registered_consumers }}</b> Foyers enregistrés</li>
+                                <li><b>{{ amount_individual_consumers }}</b> Consommateurs individuels</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        {% else %}
+
+            <h3>Contenu réservé, veuillez <a href="{% url 'login' %}">vous connecter</a></h3>
+
+        {% endif %}
+    </div>
+{% endblock %}

@@ -5,9 +5,4 @@ $(document).ready(function() {
     drawManagerTable();
     // Draw the zone table
     drawZoneTable();
-
-    $('#multiselect-manager-outlets').select2({
-        dropdownParent: $('#modalManager'),
-        width: '100%',
-    });
 });

@@ -9,8 +9,25 @@ window.onload = function() {
     for(i; i < len; i++) {
         buttons[i].className += " hidden";
     }
-    console.log("Generic table handler loaded");
 };
+
+function getAjaxController(dataURL){
+    return (
+    {
+        url: dataURL,
+        error: function (xhr, error, thrown) {
+            if(xhr.status === 200) { return; } //301
+            console.log(xhr);
+            console.log(error + '\n' + thrown);
+            $('#datatable-ajax_wrapper').hide();
+            new PNotify({
+                title: 'Échec du téléchargement!',
+                text: "Les données de la table n'ont pas pu être téléchargées: " + xhr.responseText,
+                type: 'failure',
+            });
+        }
+    });
+}
 
 function editElement(data){
     if(data){
@@ -33,19 +50,20 @@ function drawDataTable(tableName){
  * @param table a String containing the table name
  * @param id an integer corresponding to the primary key of the element to remove
  */
-function removeElement(table, id){
+function removeElement(table, id, otherParameters){
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/remove/";
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
                 console.log("POST error on remove element");
                 new PNotify({
                     title: 'Échec!',
-                    text: "L'élement n'a pas pu être supprimé",
+                    text: xhttp.responseText,
                     type: 'error'
                 });
             } else {
@@ -58,7 +76,8 @@ function removeElement(table, id){
             }
         }
     };
-    xhttp.send("table=" + table + "&id=" + id);
+    if (typeof otherParameters === 'undefined') { otherParameters = ''; }
+    xhttp.send("table=" + table + "&id=" + id + otherParameters);
 }
 
 /**
@@ -66,13 +85,12 @@ function removeElement(table, id){
  * @returns {string} containing edit and remove buttons HTML code
  */
 function getActionButtonsHTML(modalName){
-    return '<div class="center"><a href="#'+ modalName + '" class="modal-with-form edit-row fa fa-pen"></a>' +
+    return '<div class="center"><a href="#'+ modalName + '" class="modal-with-form edit-row fa fa-pen" title="Editer"></a>' +
             '&nbsp&nbsp&nbsp&nbsp' + // Non-breaking spaces to avoid clicking on the wrong icon
-            '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash"></a></div>'
+            '<a style="cursor:pointer;" class="on-default remove-row fa fa-trash" title="Supprimer"></a></div>'
 }
 
 function hideFormErrorMsg(table){
-    console.log("hiding message");
     $('#form-' + table + '-error').addClass('hidden');
 }
 
@@ -109,6 +127,8 @@ function getRequest(table){
             return validateManagerForm();
         case 'zone':
             return validateZoneForm();
+        case 'payment':
+            return validatePaymentForm();
         default:
             return validateForm();
     }
@@ -117,24 +137,29 @@ function getRequest(table){
 /**
  * Send a post request to server and handle it
  */
-function postNewRow(table){
+function postNewRow(table, callback){
     let request = getRequest(table);
-    console.log(request);
     if(!request){
         // Form is not valid (missing/wrong fields)
         console.log("invalid form");
         return false;
     }
+    beforeModalRequest();
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/add/";
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
                 document.getElementById("form-" + table + "-error").className = "alert alert-danger";
-                document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
+                if(xhttp.responseText !== ''){
+                    document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.responseText;
+                } else {
+                    document.getElementById("form-" + table + "-error-msg").innerHTML = xhttp.status + ': ' + xhttp.statusText;
+                }
             } else {
                 document.getElementById("form-" + table + "-error").className = "alert alert-danger hidden"; // hide old msg
                 dismissModal();
@@ -145,6 +170,8 @@ function postNewRow(table){
                 });
                 drawDataTable(table);
             }
+            afterModalRequest();
+            typeof callback === 'function' && callback(xhttp.responseText);
         }
     };
     xhttp.send(request)
@@ -153,17 +180,19 @@ function postNewRow(table){
 /**
  * Send a post request to server and handle it
  */
-function postEditRow(table){
+function postEditRow(table, callback){
     let request = getRequest(table);
     if(!request){
         // Form is not valid (missing/wrong fields)
         return false;
     }
+    beforeModalRequest();
     let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     let postURL = baseURL + "/api/edit/?" + request;
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", postURL, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState === 4) {
             if (xhttp.status !== 200) {
@@ -182,11 +211,17 @@ function postEditRow(table){
                 });
                 drawDataTable(table);
             }
+            afterModalRequest();
+            typeof callback === 'function' && callback();
         }
     };
     xhttp.send(request)
 }
 
+/**
+ * French translation of DataTable functions
+ * @returns config object
+ */
 function getDataTableFrenchTranslation(){
     return {
         "sProcessing": "Chargement...",
@@ -200,10 +235,10 @@ function getDataTableFrenchTranslation(){
         "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
         "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
         "oPaginate": {
-            "sFirst": "Premier",
-            "sPrevious": "Pr&eacute;c&eacute;dent",
-            "sNext": "Suivant",
-            "sLast": "Dernier"
+            "sFirst": '<i class="fas fa-angle-double-left fa-lg"></i>',
+            "sPrevious": '<i class="fas fa-angle-left fa-lg"></i>',
+            "sNext": '<i class="fas fa-angle-right fa-lg"></i>',
+            "sLast": '<i class="fas fa-angle-double-right fa-lg"></i>'
         },
         "oAria": {
             "sSortAscending": ": activer pour trier la colonne par ordre croissant",
@@ -211,9 +246,69 @@ function getDataTableFrenchTranslation(){
         },
         buttons: {
             pageLength: {
-                _: "Afficher %d éléments ▼",
-                '-1': "Tout afficher ▼"
+                _: "Afficher %d éléments <i class='fas fa-angle-down'></i>",
+                '-1': "Tout afficher <i class='fas fa-angle-down'></i>"
             }
         },
     }
+}
+
+/**
+ * Executed before a send. Acts as a modal lock to prevent multi-sending and let user know it's loading
+ */
+function beforeModalRequest(){
+    //Disable the button to avoid multiple send and put loading spinner
+    let button = $('.modal-confirm');
+    if (button.is('li')){ // Wizard Modal
+        button.addClass('disabled');
+    } else { // Classic modal
+        button.prop('disabled', true);
+    }
+    button.append('<i class="loader fas fa-spinner fa-spin"></i>');
+    button.addClass('loading');
+}
+
+/**
+ * Restore modal to origin state
+ */
+function afterModalRequest(){
+    let button = $('.modal-confirm');
+    if (button.is('li')){ // Wizard Modal
+        button.removeClass('disabled');
+    } else { // Classic modal
+        button.prop('disabled', false);
+    }
+    button.find('.loader').remove();
+}
+
+/**
+ * Get the value of
+ * @param cookieName a cookie
+ * @returns {string} the value
+ */
+function getCookie(cookieName)
+{
+    if (document.cookie.length > 0)
+    {
+        let cookieStart = document.cookie.indexOf(cookieName + "=");
+        if (cookieStart !== -1)
+        {
+            cookieStart = cookieStart + cookieName.length + 1;
+            let cookieEnd = document.cookie.indexOf(";", cookieStart);
+            if (cookieEnd === -1) cookieEnd = document.cookie.length;
+            return unescape(document.cookie.substring(cookieStart,cookieEnd));
+        }
+    }
+    return "";
+}
+
+/**
+ * Set a new URL for a datatable, useful for live changes of DataTable URL logic
+ * @param table the table name
+ * @param optional additional parameters
+ */
+function setTableURL(table, optional){
+    let baseURL = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    let dataURL = baseURL + "/api/table/?name=" + table + optional;
+    $('#datatable-'+table).DataTable().ajax.url(dataURL).load();
 }

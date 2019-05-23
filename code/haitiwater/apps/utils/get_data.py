@@ -1,7 +1,24 @@
-from ..water_network.models import Element
+import datetime
+
 from ..consumers.models import Consumer
 from ..report.models import Report
-import datetime
+from ..water_network.models import Element, VirtualElementTotal, VirtualZoneTotal
+
+
+def is_int(i):
+    try:
+        int(i)
+        return True
+    except ValueError:
+        return False
+
+
+def is_float(i):
+    try:
+        float(i)
+        return True
+    except ValueError:
+        return False
 
 
 def is_user_fountain(request):
@@ -29,11 +46,19 @@ def get_current_month_fr():
 
 
 def get_amount(type, zone):
-    result = 0
-    for elem in Element.objects.filter(type=type):
-        if elem.zone.name in zone.subzones:
-            result += 1
-    return result
+    zone_view = VirtualZoneTotal.objects.get(relevant_model=zone.id)
+    if type == "FOUNTAIN":
+        return zone_view.fountains
+    elif type == 'KIOSK':
+        return zone_view.kiosks
+    elif type == "INDIVIDUAL":
+        return zone_view.indiv_outputs
+    elif type == "PIPE":
+        return zone_view.pipes
+    elif type == "TANK":
+        return zone_view.tanks
+    else:
+        return 0
 
 
 def get_amount_fountain(zone):
@@ -52,35 +77,29 @@ def get_amount_pipe(zone):
     return get_amount("PIPE", zone)
 
 
-def get_amount_consumer(zone):
-    res = 0
-    for consumer in Consumer.objects.all():
-        if consumer.water_outlet.zone.name in zone.subzones:
-            res += 1
-    return res
-
-
-def get_registered_consumers(request): #TODO refactor
+def get_amount_household(request):
     if is_user_zone(request):
         zone = request.user.profile.zone
+        zone_view = VirtualZoneTotal.objects.get(relevant_model=zone.id)
+        return zone_view.indiv_consumers
     elif is_user_fountain(request):
-        zone = get_higher_zone(request.user.profile.outlets)
+        total = 0
+        for outlet in request.user.profile.outlets:
+            consumers_outlet = Consumer.objects.filter(water_outlet_id=outlet)
+            total += len(consumers_outlet)
+        return total
+
+
+def get_total_consumers(request):
     result = 0
-    for consumer in Consumer.objects.all():
-        if consumer.water_outlet.zone.name in zone.subzones:
-            result += 1
-    return result
-
-
-def get_total_consumers(request): #TODO refactor
     if is_user_zone(request):
         zone = request.user.profile.zone
+        zone_view = VirtualZoneTotal.objects.get(relevant_model=zone.id)
+        return zone_view.total_consumers
     elif is_user_fountain(request):
-        zone = get_higher_zone(request.user.profile.outlets)
-    result = 0
-    for consumer in Consumer.objects.all():
-        if consumer.water_outlet.zone.name in zone.subzones:
-            result += consumer.household_size
+        for outlet in request.user.profile.outlets:
+            view = VirtualElementTotal.objects.get(relevant_model=outlet)
+            result += view.total_consumers
     return result
 
 
@@ -88,7 +107,7 @@ def get_amount_indiv_consummer(zone):
     result = 0
     for consumer in Consumer.objects.all():
         if consumer.water_outlet.zone.name in zone.subzones:
-            result += consumer.household_size
+            result += consumer.household_size+1
     return result
 
 
@@ -96,18 +115,16 @@ def get_outlets(request):
     zone = request.user.profile.zone
     outlets = request.user.profile.outlets
     if zone:
-        all_outlets = Element.objects.all()
+        all_outlets = Element.objects.filter(zone__name__in=zone.subzones, type__in=["KIOSK", "FOUNTAIN", "INDIVIDUAL"])
         result = []
         for elem in all_outlets:
-            if elem.type in ["KIOSK", "FOUNTAIN", "INDIVIDUAL"] and elem.zone.name in zone.subzones:
-                result.append((elem.id, elem.name))
+            result.append((elem.id, elem.name))
         return result
     else:
-        all_outlets = Element.objects.all()
         result = []
-        for elem in all_outlets:
-            if elem.type in ["KIOSK", "FOUNTAIN", "INDIVIDUAL"] and str(elem.id) in outlets:
-                result.append((elem.id, elem.name))
+        for elem_id in outlets:
+            elem = Element.objects.get(id=elem_id)
+            result.append((elem.id, elem.name))
         return result
 
 
@@ -115,7 +132,8 @@ def get_outlets_report(request):
     all_outlets = get_outlets(request)
     result = []
     for elem in all_outlets:
-        reports = Report.objects.filter(water_outlet=elem[0], month=get_current_month())
+        reports = Report.objects.filter(water_outlet=elem[0],
+                                        timestamp__month=datetime.date.today().month)
         if len(reports) == 0:
             result.append(elem)
     return result
@@ -125,12 +143,14 @@ def get_quantity_distributed(request):
     outlets = get_outlets(request)
     total = 0
     for outlet in outlets:
-        report = Report.objects.filter(water_outlet=outlet[0], month=get_current_month())
+        report = Report.objects.filter(water_outlet=outlet[0],
+                                       timestamp__month=datetime.date.today().month,
+                                       has_data=True,
+                                       was_active=True)
         if len(report) == 1:
             report = report[0]
             total += report.quantity_distributed
-    return [total, total*264.17] #m3, gals
-
+    return [total, round(total*264.17, 3)] #m3, gals
 
 
 def get_zone(request):
@@ -152,3 +172,10 @@ def get_higher_zone(outlets):
             elif out.zone.name not in zone.subzones and zone.name in out.zone.subzones: #New zone is higher
                 zone = out.zone
     return zone
+
+
+def has_access(outlet, request):
+    if is_user_fountain(request):
+        return str(outlet.id) in request.user.profile.outlets
+    elif is_user_zone(request):
+        return outlet.zone.name in request.user.profile.zone.subzones

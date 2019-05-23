@@ -1,0 +1,126 @@
+.content {
+    padding: 0 18px;
+    overflow: hidden;
+    background-color: #f8f8f8;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.collapsible {
+	margin: 10px 0 0;
+	position: relative;
+	clear: both;
+}
+
+.collapsible > input {
+	cursor: pointer;
+	filter: alpha(opacity=0);
+	height: 45px;
+	margin: 0;
+	opacity: 0;
+	position: absolute;
+	width: 100%;
+	z-index: 2;
+}
+
+.collapsible > label {
+	-webkit-transition: all 0.15s ease-out;
+	-moz-transition: all 0.15s ease-out;
+	transition: all 0.15s ease-out;
+	background: #F4F4F4;
+	border-left: 5px solid lightgrey;
+	border-radius: 5px;
+	color: #cccccc;
+	display: block;
+	font-size: 1.1em;
+	min-height: 20px;
+	padding: 12px 20px 12px 10px;
+	position: relative;
+	cursor: pointer;
+	font-weight: 400;
+}
+
+.collapsible.collapsed > label::-moz-selection {
+	background: none;
+}
+
+.collapsible.collapsed > label i.fa-minus {
+	display: none;
+}
+
+.collapsible.collapsed > label i.fa-plus {
+	display: inline;
+}
+
+.collapsible > label::selection {
+	background: none;
+}
+
+.collapsible > label + p {
+	display: block;
+	overflow: hidden;
+	padding-left: 30px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	height: 25px;
+}
+
+.collapsible > label i {
+	font-size: 0.7em;
+	margin-right: 8px;
+	position: relative;
+	top: -1px;
+}
+
+.collapsible > .collapsible-content {
+	display: none;
+}
+
+.collapsible > .collapsible-content > p {
+	margin-bottom: 0;
+	padding: 10px 0;
+}
+
+.collapsible i.fa-minus {
+	display: inline;
+	color: #FFF;
+}
+
+.collapsible i.fa-plus {
+	display: none;
+}
+
+.collapsible.collapsed > label {
+	background: #293241;
+	border-color: lightgrey;
+	color: #FFF;
+}
+
+.collapsible > label:hover, .collapsible > label {
+	background: #293241;
+	border-color: #EE6C4D;
+	color: #FFF;
+}
+
+.collapsible > p {
+	white-space: normal;
+}
+
+.breathing-color {
+    background-color: black;
+
+    animation: 1s infinite alternate ease-out breathing-color;
+}
+
+@keyframes breathing-color {
+    from
+    {
+        color: #777777;
+		background-color: transparent;
+    }
+    to
+    {
+        color: #ee6c4d;
+		background-color: transparent;
+    }
+}

@@ -1,7 +1,7 @@
 {% load static %}
 
 <!-- Modal form to add/edit network element -->
-<script src="{% static "javascripts/forms/waterElementFormHandler.js"%}"></script>
+<script src="{% static "waterElementFormHandler.js"%}"></script>
 <div id="modal-water-element" class="modal-block modal-block-primary mfp-hide">
     <section class="panel">
         <header class="panel-heading">
@@ -30,12 +30,15 @@
                             <option value="individual">Prise individuelle</option>
                             <option value="source">Source</option>
                             <option value="pipe">Conduite</option>
+                            <option value="tank">Réservoir</option>
                         </select>
                         <label id="select-type-error" class="error">Champ requis</label>
                     </div>
                 </div>
                 <div class="form-group mt-lg">
-                    <label class="col-sm-3 control-label">Emplacement</label>
+                    <label class="col-sm-3 control-label" data-toggle="tooltip" title="Description de l'emplacement de l'élément">
+                        Description
+                    </label>
                     <div class="col-sm-9">
                         <input id="input-localization" name="input-localization" class="form-control">
                         <label id="input-localization-error" class="error">Champ requis</label>
@@ -45,7 +48,6 @@
                     <label class="col-sm-3 control-label">État</label>
                     <div class="col-sm-9">
                         <select id="select-state" name="state" class="form-control">
-                            <option value="none">...</option>
                             <option value="ok">En service</option>
                             <option value="repair">Nécessite réparation</option>
                             <option value="ko">Hors service</option>
@@ -58,7 +60,7 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <button id="modal-submit-add" onclick="postNewRow('water_element')" class="btn btn-primary modal-confirm">
+                    <button id="modal-submit-add" onclick="postNewRow('water_element', focusWaterElementDetails)" class="btn btn-primary modal-confirm">
                         Ajouter
                     </button>
                     <button id="modal-submit-edit" onclick="postEditRow('water_element')" class="btn btn-primary modal-confirm hidden">

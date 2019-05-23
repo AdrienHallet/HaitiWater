@@ -2,25 +2,29 @@
 
 <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
 <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
-<script src="{% static "javascripts/tables/waterElementTableGenerator.js" %}"></script>
+<script src="{% static "waterElementTableGenerator.js" %}"></script>
+<script src="{% static "vendor/bootstrap-datepicker/js/bootstrap-datepicker.js" %}"></script>
 
 <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
+<link rel="stylesheet" href="{% static "vendor/bootstrap-datepicker/css/datepicker.css" %}"/>
 <div id="datatable-water_element_wrapper" class="dataTables_wrapper no-footer">
-    <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-water_element" aria-describedby="datatable-ajax_info">
+    <table class="table table-bordered table-responsive table-striped dataTable no-footer" id="datatable-water_element" aria-describedby="datatable-ajax_info" style="width:100%;">
         <thead>
             <tr>
-                <th colspan="5" width="80%"></th>
-                <th class="text-center" colspan="2" width="15%">Quantité d'eau distribuée</th>
+                <th colspan="5"><p class="text-center">Informations</p></th>
+                <th class="text-center" colspan="2">Quantité d'eau distribuée</th>
+                <th class="text-center" colspan="2"><p class="text-center">Gestion</p></th>
             </tr>
             <tr>
                 <th width="2%">Id</th>
                 <th width="5%">Type</th>
-                <th width="25%">Emplacement</th>
+                <th>Emplacement</th>
                 <th width="5%">Utilisateurs</th>
                 <th width="10%">État</th>
                 <th width="5%" class="text-center">m³</th>
                 <th width="5%" class="text-center">gallons</th>
                 <th width="10%" id="managerColumn">Gestionnaire</th>
+                <th>Zone parente</th>
                 <th width="5%">Actions</th>
             </tr>
         </thead>

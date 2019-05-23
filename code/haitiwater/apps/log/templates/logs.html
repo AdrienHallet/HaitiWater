@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_import %}
+    <script src="{% static "logsTableGenerator.js" %}"></script>
+    <script src="{% static "logsHistoryTableGenerator.js" %}"></script>
+    <script src="{% static "vendor/jquery-datatables/media/js/jquery.dataTables.min.js" %}"></script>
+    <link rel="stylesheet" href="{% static "vendor/jquery-datatables-bs3/assets/css/datatables.css" %}"/>
+    <script src="{% static "vendor/jquery-datatables-bs3/assets/js/datatables.js" %}"></script>
+{% endblock %}
+
+{% block page_name %}
+    Historique
+{% endblock %}
+
+{% block page_content %}
+    <section class="panel" data-intro="Cette table rassemble les actions effectuées par vos subalternes. Vous pouvez les accepter ou les refuser, ce qui les annulera. Ces choix sont irréversibles.">
+        <header class="panel-heading">
+            <div class="panel-actions form-inline">
+                <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
+            </div>
+            <h2 class="panel-title">Actions effectuées</h2>
+            <p>Cliquez sur une ligne pour afficher les détails ! Validez ou refusez les changements avec les boutons d'action.</p>
+        </header>
+
+        <div class="panel-body">
+            <div id="datatable-logs_wrapper" class="dataTables_wrapper no-footer">
+                <table class="table table-bordered table-responsive table-striped dataTable no-footer"
+                       id="datatable-logs" aria-describedby="datatable-logs_info">
+                    <thead>
+                    <tr>
+                        <th width="2%">Id</th>
+                        <th width="10%">Horodateur</th>
+                        <th width="10%">Type</th>
+                        <th width="10%">Utilisateur</th>
+                        <th width="25%">Modification</th>
+                        <th width="5%">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel" data-intro="Vous pouvez voir les dernières actions acceptées et refusées, mais vous ne pouvez plus les modifier.">
+        <header class="panel-heading">
+            <div class="panel-actions form-inline">
+                <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
+            </div>
+            <h2 class="panel-title">Actions effectuées</h2>
+            <p>Vous pouvez visualiser les changements acceptés ou validés des trois dernières semaines.</p>
+        </header>
+
+        <div class="panel-body">
+            <div id="datatable-logs_wrapper" class="dataTables_wrapper no-footer">
+                <table class="table table-bordered table-responsive table-striped dataTable no-footer"
+                       id="datatable-logs-history" aria-describedby="datatable-logs-history_info">
+                    <thead>
+                    <tr>
+                        <th width="5%">Id</th>
+                        <th width="10%">Horodateur</th>
+                        <th width="10%">Type</th>
+                        <th width="10%">Utilisateur</th>
+                        <th width="10%">Modification</th>
+                        <th width="5%">Action choisie</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}

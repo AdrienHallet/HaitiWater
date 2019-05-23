@@ -11,7 +11,7 @@
         <section class="panel">
             <header class="panel-heading">
                 <div class="panel-actions">
-                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
                 </div>
 
                 <h2 class="panel-title">Informations</h2>
@@ -33,13 +33,13 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label" for="input-last-name">Nom</label>
                         <div class="col-md-6">
-                            <input id="input-last-name" name="last-name" type="text" class="form-control" value="{{ last_name }}" required>
+                            <input id="input-last-name" name="last-name" type="text" class="form-control" value="{{ user.last_name }}" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label" for="input-first-name">Prénom</label>
                         <div class="col-md-6">
-                            <input id="input-first-name" name="first-name" type="text" class="form-control" value="{{ first_name }}" required>
+                            <input id="input-first-name" name="first-name" type="text" class="form-control" value="{{ user.first_name }}" required>
                         </div>
                     </div>
                     <div class="form-group">
@@ -49,11 +49,13 @@
                                 <span class="input-group-addon">
                                     <span class="icon"><i class="fa fa-envelope"></i></span>
                                 </span>
-                                <input id="input-email" name="email" type="email" class="form-control" value="{{ email }}" required>
+                                <input id="input-email" name="email" type="email" class="form-control" value="{{ user.email }}" required>
                             </div>
                         </div>
                     </div>
-                    <input type="submit" class="btn pull-right" value="Modifier">
+                    <div class="col-md-9">
+                      <input type="submit" class="btn pull-right" value="Modifier">
+                    </div>
                 </form>
             </div>
         </section>
@@ -61,10 +63,62 @@
         <section class="panel">
             <header class="panel-heading">
                 <div class="panel-actions">
-                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
                 </div>
-                <h2 class="panel-title"><a href="changer-mot-de-passe/">Changer le mot de passe</a></h2>
+                <h2 class="panel-title">Changer le mot de passe</h2>
             </header>
+            <div class="panel-body">
+              <form class="form-horizontal form-bordered" method="POST">
+                {% csrf_token %}
+                  {% if form.errors %}
+                    <div class="form-group">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6 alert alert-danger">
+                        <ul>
+                          {% for field in form %}
+                            {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  {% endif %}
+                <div class="form-group">
+                  <label class="col-md-3 control-label" for="id_old_password">Ancien mot de passe</label>
+                  <div class="col-md-6">
+                    <input class="form-control" type="password" name="old_password" autofocus="" required="" id="id_old_password">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-3"></div>
+                  <div class="col-md-6">
+                    <ul>
+                      <li>Votre mot de passe ne peut pas trop ressembler à vos autres informations personnelles.</li>
+                      <li>Votre mot de passe doit contenir au minimum 8 caractères.</li>
+                      <li>Votre mot de passe ne peut pas être un mot de passe couramment utilisé.</li>
+                      <li>Votre mot de passe ne peut pas être entièrement numérique.</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label" for="id_new_password1">Nouveau mot de passe</label>
+                  <div class="col-md-6">
+                    <input class="form-control" type="password" name="new_password1" required="" id="id_new_password1" aria-autocomplete="list">
+                  </div>
+                  <span class="helptext"></span>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label" for="id_new_password2">Confirmation du nouveau mot de passe</label>
+                  <div class="col-md-6">
+                    <input class="form-control" type="password" name="new_password2" required="" id="id_new_password2">
+                  </div>
+                </div>
+                <div class="col-md-9">
+                  <input type="submit" class="btn pull-right" value="Modifier">
+                </div>
+              </form>
+            </div>
         </section>
     </div>
 {% endblock %}

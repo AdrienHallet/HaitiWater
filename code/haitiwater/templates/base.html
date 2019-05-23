@@ -4,11 +4,12 @@
 
 <!doctype html>
 <html class="fixed">
+
 	<head>
 		<!-- Basic -->
 		<meta charset="UTF-8">
 		<title>HaïtiWater {{ project_version }}</title>
-		<meta name="keywords" content="HTML5 Admin Template" />
+		<meta name="keywords" content="Haïti water management system" />
 		<meta name="description" content="Système de gestion d'eau en Haïti">
 
         <!-- Favicon -->
@@ -18,70 +19,73 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 		<!-- Web Fonts  -->
-		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
-
+        <link rel="stylesheet" href="{% static "vendor/fonts-google/open-sans.css" %}"/>
 		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="{% static "vendor/fontawesome/css/all.min.css" %}"/>
+		<link rel="stylesheet" href="{% static "vendor/intro/intro.min.css" %}"/>
 
-            <!-- Download&Cache Vendors -->
-             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <!-- Uncompessed (minified) Vendor JS -->
+        <script src="{% static "vendor/intro/intro.min.js" %}"></script>
 
         {% compress css %}
-            <!-- Local Vendors -->
+            {# Local Vendors #}
             <link rel="stylesheet" href="{% static "vendor/bootstrap/css/bootstrap.css" %}"/>
             <link rel="stylesheet" href="{% static "vendor/magnific-popup/magnific-popup.css" %}"/>
             <link rel="stylesheet" href="{% static "vendor/pnotify/pnotify.custom.css" %}"/>
             <link rel="stylesheet" href="{% static "vendor/bootstrap-datepicker/css/datepicker3.css" %}"/>
 
-            <!-- Specific Page Vendor CSS -->
-            <link rel="stylesheet" href="{% static "vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" %}"/>
+            {# Specific Page Vendor CSS #}
             <link rel="stylesheet" href="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.css" %}"/>
             <link rel="stylesheet" href="{% static "vendor/morris/morris.css" %}"/>
 
-            <!-- Theme CSS -->
+            {# Theme CSS #}
             <link rel="stylesheet" href="{% static "stylesheets/theme.css" %}"/>
             <link rel="stylesheet" href="{% static "stylesheets/theme-extension.css" %}"/>
             <link rel="stylesheet" href="{% static "stylesheets/theme-special-cases.css" %}"/>
 
-            <!-- Skin CSS -->
+            {# Skin CSS #}
             <link rel="stylesheet" href="{% static "stylesheets/skins/default.css" %}"/>
         {% endcompress %}
 
         <!-- Vendors JS -->
         {% compress js %}
             <script src="{% static "vendor/jquery/jquery.js" %}"></script>
-            <script src="{% static "vendor/jquery-browser-mobile/jquery.browser.mobile.js" %}"></script>
             <script src="{% static "vendor/nanoscroller/nanoscroller.js" %}"></script>
             <script src="{% static "vendor/bootstrap/js/bootstrap.js" %}"></script>
             <script src="{% static "vendor/magnific-popup/magnific-popup.js" %}"></script>
-            <script src="{% static "vendor/jquery-placeholder/jquery.placeholder.js" %}"></script>
-            <script src="{% static "vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js" %}"></script>
-            <script src="{% static "vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js" %}"></script>
-            <script src="{% static "vendor/jquery-appear/jquery.appear.js" %}"></script>
             <script src="{% static "vendor/modernizr/modernizr.js"%}"></script>
             <script src="{% static "vendor/pnotify/pnotify.custom.js"%}"></script>
+            <script src="{% static "vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"%}"></script>
 
-            <!-- Theme Base, Components and Settings -->
+            {# Theme Base, Components and Settings #}
             <script src="{% static "javascripts/theme.js" %}"></script>
 
-            <!-- Theme Custom -->
+            {# Theme Custom #}
             <script src="{% static "javascripts/theme.custom.js" %}"></script>
 
-            <!-- Theme Initialization Files -->
+            {# Theme Initialization Files #}
             <script src="{% static "javascripts/theme.init.js" %}"></script>
 
-            <!-- Scripts often needed, requested in main template for preload !-->
+            {# Scripts often needed, requested in main template for preload #}
             <script src="{% static "javascripts/tables/genericTableHandler.js" %}"></script>
+            <script src="{% static "javascripts/tables/genericModalHandler.js" %}"></script>
 
-            <!-- Service worker installation -->
+            {# Service worker installation #}
             <script src="{% static "javascripts/sw.install.js" %}"></script>
         {% endcompress %}
 
+        {% block page_import %}
+            {# Imports from extending pages #}
+        {% endblock %}
 	</head>
+
 	<body>
 		<section class="body">
 
 			<!-- Header Section -->
 			<header class="header">
+
+                <!-- Logo -->
 				<div class="logo-container">
 					<a href="/accueil/" class="logo">
 						<img src="{% static "images/logo.png" %}" height="35" alt="{{ project_name }}" />
@@ -91,108 +95,56 @@
 					</div>
 				</div>
 
-				<!-- Notification -->
 				<div class="header-right">
-{#					{% if user.is_authenticated %}#}
-{#					<ul class="notifications">#}
-{#						<li>#}
-{#                            <!-- Ticket Notification -->#}
-{#							<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">#}
-{#								<i class="fa fa-envelope"></i>#}
-{#								<span class="badge">1</span> {# Todo Notification counter badge #}
-{#							</a>#}
-{#							<div class="dropdown-menu notification-menu">#}
-{#								<div class="notification-title">#}
-{#									<span class="pull-right label label-default">1</span> {# Todo ticket counter simple #}
-{#									Tickets#}
-{#								</div>#}
-{##}
-{#                                <!-- Ticket list-->#}
-{#                                Todo get active tickets from current user#}
-{#								<div class="content">#}
-{#									<ul>#}
-{#										<li>#}
-{#											<a href="#" class="clearfix">#}
-{#												<span class="title">Utilisateur</span>#}
-{#												<span class="message truncate">Contenu du message</span>#}
-{#											</a>#}
-{#										</li>#}
-{#									</ul>#}
-{##}
-{#									<hr />#}
-{##}
-{#									<div class="text-right">#}
-{#                                        Todo link to tickets#}
-{#										<a href="/rapport/" class="view-more">Tous les tickets</a>#}
-{#									</div>#}
-{#								</div>#}
-{#							</div>#}
-{#						</li>#}
-{#                        <!-- Classic notifications -->#}
-{#						<li>#}
-{#							<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">#}
-{#								<i class="fa fa-bell"></i>#}
-{#								<span class="badge">1</span> {# Todo counter badge #}
-{#							</a>#}
-{#							<div class="dropdown-menu notification-menu">#}
-{#								<div class="notification-title">#}
-{#									<span class="pull-right label label-default">1</span>#}
-{#									Notifications#}
-{#								</div>#}
-{##}
-{#                                <!-- Notification list-->#}
-{#								<div class="content">#}
-{#									<ul>#}
-{#										<li>#}
-{#											<a href="#" class="clearfix">#}
-{#												<div class="image">#}
-{#												</div>#}
-{#												<span class="title">Titre notification</span>#}
-{#												<span class="message">Message notification</span>#}
-{#											</a>#}
-{#										</li>#}
-{#									</ul>#}
-{##}
-{#									<hr />#}
-{##}
-{#									<div class="text-right">#}
-{#										<a href="#" class="view-more">Toutes les notifications</a>#}
-{#									</div>#}
-{#								</div>#}
-{#							</div>#}
-{#						</li>#}
-{#						{% endif %}#}
-{#					</ul>#}
-{#                    <!-- end: Notification list-->#}
 
-					<span class="separator"></span>
+                    <!-- Notification -->
+					{% if user.is_authenticated %}
+                        <ul class="notifications">
+                            <li>
+                                <a id="notification-parent" href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+                                    <i class="fa fa-bell"></i>
+                                    <span id="alert-badge" class="badge">?</span>
+                                </a>
+                                <div class="dropdown-menu notification-menu">
+                                    <div class="notification-title">
+                                        <span class="pull-right label label-default" id="classic-badge">?</span>
+                                        Notifications
+                                    </div>
+                                    <div class="content">
+                                        <ul id="notification-content"></ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    {% endif %}
+
+                    <span class="separator"></span>
 
                     <!-- User top-right display-->
-					<div id="userbox" class="userbox">
-						<a href="#" data-toggle="dropdown">
-							<div class="profile-info">
-                                {% if user.is_authenticated %}
-								    <span class="name">{{ user.get_username }}</span>
-								    <span class="role">{{ user|get_group }}</span>
-							</div>
-							<i class="fa custom-caret"></i>
-						</a>
-
-						<div class="dropdown-menu">
-							<ul class="list-unstyled">
-								<li class="divider"></li>
-								<li>
-									<a role="menuitem" tabindex="-1" href="/profil/editer/"><i class="fa fa-user"></i>Mon profil</a>
-								</li>
-								<li>
-									<a role="menuitem" tabindex="-1" href="{% url 'logout' %}"><i class="fa fa-power-off"></i>Déconnexion</a>
-								</li>
-							</ul>
-                            {% else %}
-                                    <span><a href="{% url 'login'%}?next={{request.path}}">Se connecter</a></span>
-                            {% endif %}
-						</div>
-					</div>
+                    <div id="userbox" class="userbox">
+                        {% if request.path != '/offline/' and user.is_authenticated %}
+                            <a href="#" data-toggle="dropdown">
+                                <div class="profile-info">
+                                    <span class="name">{{ user.get_username }}</span>
+                                    <span class="role">{{ user|get_group }}</span>
+                                </div>
+                                <i class="fa custom-caret"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <ul class="list-unstyled">
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a role="menuitem" tabindex="-1" href="/profil/editer/"><i class="fa fa-user"></i>Mon profil</a>
+                                    </li>
+                                    <li>
+                                        <a role="menuitem" tabindex="-1" href="{% url 'logout' %}"><i class="fa fa-power-off"></i>Déconnexion</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <span><a href="{% url 'login'%}?next={{request.path}}">Se connecter</a></span>
+                        {% endif %}
+                    </div>
 				</div>
 			</header>
 			<!-- end: Header -->
@@ -205,27 +157,33 @@
 							Navigation
 						</div>
 						<div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
-							<i class="fa fa-bars" aria-label="Toggle sidebar"></i> {# Hamburger menu #}
-							<i class="fa fa-arrow-left" aria-label="Toggle sidebar"></i> {# Hamburger menu #}
+							<i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+							<i class="fa fa-arrow-left" aria-label="Toggle sidebar"></i>
 						</div>
 					</div>
 
-                    <!-- Menu Items--> {# Todo filter menu according to user rights #}
+                    <!-- Menu Items-->
 					{% include "components/main_menu.html" %}
 				</aside>
 				<!-- end: Navigation menu (left) -->
 
 				<section id="page-content" role="main" class="content-body">
 					<header class="page-header">
-						<h2>{% block page_name %}{% endblock %}</h2>
+                        <div class="row">
+                            <div class="col-sm-11">
+						        <h2>{% block page_name %}{% endblock %}</h2>
+                            </div>
+                            <div class="col-sm-1">
+                                <i id="quick-help" class="fas fa-info-circle fa-2x clickable" data-toggle="tooltip" data-placement="left" title="Aide rapide" onclick="startPageTour();"></i>
+                            </div>
+                        </div>
 					</header>
-					<!-- Page content-->
-                        {% block page_content %}
-
-                        {% endblock %}
-					<!-- end: Page content -->
+                    <!-- Page content -->
+                    {% block page_content %}{% endblock %}
+                    <!-- end: Page content -->
 				</section>
 			</div>
+
 		</section>
 	</body>
 </html>

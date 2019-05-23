@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load group_filter %}
+
+{% block page_name %}
+    <script src="{% static "vendor/leaflet/leaflet.js" %}"></script>
+    <script src="{% static "vendor/leaflet/leaflet.draw.js" %}"></script>
+    <link rel="stylesheet" href="{% static "vendor/leaflet/leaflet.css" %}">
+    <link rel="stylesheet" href="{% static "vendor/leaflet/leaflet.draw.css" %}">
+
+    <script src="{% static "gis.js" %}"></script>
+    <script src="{% static "gisHelper.js" %}"></script>
+    <script src="{% static "locale_fr.js" %}"></script>
+    <link href="{% static "water_network.css" %}">
+    Vue géographique
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row">
+        <div class="col-lg-4">
+            <section class="panel">
+                <header class="panel-heading">
+                    <!-- Table block control actions -->
+                    <div class="panel-actions form-inline">
+                        <a id="print-water_element" class="fa fa-print clickable" data-toggle="tooltip" title="Imprimer la table"></a>
+                        <a id="water_element-options" class="fas fa-cog clickable" data-toggle="tooltip" title="Options"></a>
+                        <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser""></a>
+                    </div>
+                    <h2 class="panel-title">Éléments du réseau</h2>
+                    <h2 class="panel-subtitle">Cliquez sur un élément pour afficher ses détails (panneau de droite)</h2>
+                </header>
+                <div class="panel-body">
+                    {% include "water_element_table.html" %}
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-8">
+            <section class="panel">
+                <header class="panel-heading">
+                    <!-- Table block control actions -->
+                    <div class="panel-actions form-inline">
+                        {% if user|has_group:"Gestionnaire de zone" %}
+                            <a id="call-water-modal" href="#modal-water-element" onclick="setupModalAdd()" class="modal-with-form fa fa-plus" data-toggle="tooltip" title="Ajouter un élément"></a>
+                        {% endif %}
+                        <a href="#" class="fa fa-caret-down" data-toggle="tooltip" title="Minimiser"></a>
+                    </div>
+                    <h2 class="panel-title">Carte interactive</h2>
+                    <h2 class="panel-subtitle">Utilisez le panneau de la carte pour placer les éléments</h2>
+                </header>
+                <div class="panel-body">
+                    <div class="row">
+                        <div id="map-container" class="col-md-12">
+                            <div style="height: 600px;" id="map-water-network"></div>
+                        </div>
+
+                        <div id="details" class="col-md-4 collapse">
+                            <div class="text-center">
+                               <div class="btn-group">
+                                  <button id="button-draw" type="button" class="btn btn-small" data-toggle="tooltip" title="Placer sur la carte" disabled>
+                                      <i class="fas fa-map-marker-alt"></i>
+                                      Placer
+                                  </button>
+                                  <button id="button-edit" type="button" class="btn btn-small" data-toggle="tooltip" title="Entrer les coordonnées" disabled>
+                                      <i class="fas fa-pen"></i>
+                                      Coordonnées
+                                  </button>
+                                  <button id="button-remove" type="button" class="btn btn-small" data-toggle="tooltip" title="Supprimer le marqueur" disabled>
+                                      <i class="fas fa-trash"></i>
+                                      Supprimer
+                                  </button>
+                               </div>
+                               <br>
+                               <div id="error-detail-table" class="alert alert-warning hidden"></div>
+                               <table id="detail-table" class="table table-condensed mb-none">
+        							<tbody>
+                                        <tr>
+        									<td class="text-left">Identifiant</td>
+        									<td class="text-left" id="element-details-id"></td>
+        								</tr>
+                                        <tr>
+        									<td class="text-left">Type</td>
+        									<td class="text-left" id="element-details-type"></td>
+        								</tr>
+                                        <tr>
+        									<td class="text-left">Emplacement</td>
+        									<td class="text-left" id="element-details-localization"></td>
+        								</tr>
+                                        <tr>
+        									<td class="text-left">Coordonnées (lat,lon)</td>
+        									<td class="text-left" id="element-details-lat-lon"></td>
+        								</tr>
+                                        <tr>
+        									<td class="text-left">Gestionnaire</td>
+        									<td class="text-left" id="element-details-manager"></td>
+        								</tr>
+                                        <tr>
+        									<td class="text-left">Utilisateurs</td>
+        									<td class="text-left" id="element-details-users"></td>
+        								</tr>
+                                        <tr>
+        									<td class="text-left">État</td>
+        									<td class="text-left" id="element-details-state"></td>
+        								</tr>
+                                        <tr>
+        									<td class="text-left">Volume mois dernier</td>
+        									<td class="text-left" id="element-details-current-month-cubic"></td>
+        								</tr>
+                                        <tr>
+        									<td class="text-left">Volume mensuel moyen</td>
+        									<td class="text-left" id="element-details-average-month-cubic"></td>
+        								</tr>
+                                        <tr>
+        									<td class="text-left">Volume total</td>
+        									<td class="text-left" id="element-details-total-cubic"></td>
+        								</tr>
+        							</tbody>
+        						</table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </row>
+
+    {% include 'water_element_modal.html' %}
+
+{% endblock %}
