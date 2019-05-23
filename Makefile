@@ -3,6 +3,9 @@ all: app
 requirements:
 	cd documents/requirements && make
 
+validation:
+	cd documents/validation && make
+
 thesis:
 	cd thesis && make
 
