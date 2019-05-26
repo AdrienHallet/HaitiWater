@@ -495,8 +495,6 @@
 
 				Nous sommes partis des documents décrits dans la section \ref{sec:gest_donnee} afin de déterminer différentes procédures importantes dans la gestion de l'eau. Nous avons ensuite conçu des diagrammes représentant comment les utilisateurs pourraient les réaliser au sein de notre application. Ces diagrammes sont disponibles dans l'annexe \ref{sec:activity_diag}.
 
-				%Je vois rien d'autre perso ?
-				%non plus
 
 		\section{Besoins non-fonctionnels}
 
@@ -524,11 +522,16 @@
 		\section{Cahier des charges}
 			\label{sec:cahier_des_charges}
 
-			% Important : dans cette section, il faut impérativement parler des modules.
-			% Expliquer que le besoin non-fonctionnel d'évolutivité de l'application justifie l'utilisation de "modules". Expliquer comment ils s'intègrent en un seul système, et puis donner un résumé, pour chaque module, de ce qu'il permet de faire.
-			% Et en fait c'est le seul endroit où on peut parler de tout ça, donc ça doit être fait ici.
 			%Pages : 2 à 3
-			Après discussion avec Protos et les Haïtiens, nous avons décidé d'organiser notre application en différents modules intéragissant avec notre base de données. Certains sont indépendants tandis que d'autres étendent un module précédent pour lui rajouter des fonctionnalités. Ce choix de conception nous a permis dans un premier temps d'appliquer la méthode Agile plus facilement, déployant notre travail module par module. Dans un second temps, il permet à notre application d'évoluer très rapidement : un nouveau module vient se greffer à la base de donnée sans changer le fonctionnement des autres, un ancien module qui aurait perdu son utilité peut être enlevé sans rien endommager. De plus, ce choix devrait aider les futurs développeurs à ajouter à la base applicative existante plus rapidement.
+			Après discussion avec Protos et les Haïtiens, nous avons décidé d'organiser notre application en différents modules intéragissant avec notre base de données. Certains sont indépendants tandis que d'autres étendent un module précédent pour lui rajouter des fonctionnalités. Ils forment au final un réseau de dépendances, montré dans la figure \ref{fig:modules}.
+
+			Ce choix de conception nous a permis dans un premier temps d'appliquer la méthode Agile plus facilement, déployant notre travail module par module. Dans un second temps, il permet à notre application d'évoluer très rapidement : un nouveau module vient se greffer à la base de donnée sans changer le fonctionnement des autres, un ancien module qui aurait perdu son utilité peut être enlevé sans rien endommager s'il n'a pas de dépendances. De plus, ce choix devrait aider les futurs développeurs à ajouter à la base applicative existante plus rapidement. Le cahier des charges complet initialement créé et approuvé par toutes les parties est disponible dans l'annexe \ref{sec:cdc}.
+
+			\begin{figure}
+				\includegraphics[width=\textwidth]{images/modules}
+				\caption{Relations entre les différents modules de l'application et entités gérées}
+				\label{fig:modules}
+			\end{figure}
 
 			Chaque module représente un type d'activité pratiqué par les gestionnaires du réseau de distribution. Après cette première année de développement, nous en avons créé huit :
 			\begin{itemize}
@@ -542,8 +545,6 @@
 				\item Le module \textbf{offline} permet d'assurer la disponibilité du site même lorsque la connexion internet n'est pas stable, donnant la possiblité de compléter le rapport mensuel. Les fonctionnalités précises de ce module sont décrites plus en détail dans la section~\ref{sec:service_worker}.
 			\end{itemize}
 
-			% TODO schéma des différents modules et de leurs liens entre eux et avec la base de données
-
 		\section{Structure des données}
 
 			À partir des informations des différents documents analysés dans la section \ref{sec:gest_donnee}, nous avons avons commencé à établir une structure pour les données de notre application. Nous avons d'abord repéré les champs qui nous semblaient les plus importants dans les différents fichiers Excel~\cite{ref:resumes_documents}. Nous avons ensuite confronté ça aux différents modules et fonctionnalités développés dans le cahier des charges. En rassemblant tout ça, nous avons établis un schéma en figure \ref{fig:db} représentant la structure des données à laquelle nous sommes arrivé. Il montre un diagramme des relations entre les différentes entités de notre application, selon le standard UML~\cite{ref:siegfried_db}.
@@ -556,9 +557,7 @@
 			\end{figure}
 
 			% TODO explain better figure, how we made it and what it says
-			% Compliqué de faire ça ici avant d'avoir parlé du cahier des charges je trouve. On en fait une section à part dans ce chapitre ou on le bouge dans le chapitre d'implem ?
 			% Est-ce que je rentre dans les détails de ce qu'il y a dans le schéma ? Kim a l'air d'en avoir envie...
-
 
 	\chapter{Implémentation}
 
