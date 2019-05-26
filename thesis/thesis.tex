@@ -973,7 +973,6 @@
 
 
 		\section{Vérifications automatiques}
-			% TODO Sébastien
 			% Pages : 2 à 3
 
 			\subsection*{Tests unitaires}
@@ -984,9 +983,7 @@
 
 				Pour les requêtes de données, nous vérifions sur la base de données que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupéré sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées.
 
-				% TODO coverage
-
-			%\subsection*{Tests fonctionnels} % TODO See if done
+				Pour vérifier tout cela, nous avons créé un total de 187 tests unitaires. Tous ensembles cerux-ci couvrent 85\% des fichiers et 87\% des lignes de code de notre application, sachant que les fichiers restants concernent principalement le fonctionnement interne à Django et qu'il n'est ni évident ni pertinent de les vérifier. Grâce à tous ces tests, nous pouvons nous assurer que notre application fonctionne correctement, au moins pour tous les cas envisagés. De plus, nous pouvons les utiliser lors de modifications dans le code de l'application afin de vérifier que celles-ci n'endommagent pas les fonctionnalités existantes.
 
 		\section{Vérifications utilisateurs réels}
 			% Pages : 3 à 4
@@ -1233,7 +1230,7 @@
 
 	%\chapter{Base de données}
 
-		%TODO include schéma complet + tout autre document jugé utile
+		% include schéma complet + tout autre document jugé utile
 		% Le schéma se trouve déjà complet dans la partie d'analyse, pas utile de le remettre pour moi
 		% Et je vois pas d'autres documents
 
