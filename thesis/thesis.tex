@@ -940,14 +940,8 @@
 	\chapter{Validation}
 
 		%Total des pages : 8 à 11
-		La validation rassemble les étapes du projet qui ont pour but de vérifier le fonctionnement et la qualité des productions. Les premières validations se sont essentiellement basées sur des productions écrites (cahier des charges, schémas) présentées aux acteurs d'Haïti, à Protos et à nos promoteurs pour exposer notre avancement et l'orientation du travail futur.
+		La validation rassemble les étapes du projet qui ont pour but de vérifier le fonctionnement et la qualité des productions (documents d'analyse, de conception, l'application HaïtiWater). Les premières validations se sont essentiellement basées sur des productions écrites (cahier des charges, schémas) présentées aux acteurs d'Haïti, à Protos et à nos promoteurs pour exposer notre avancement et orienter le travail. Nous ne présenterons pas ici ces réunions d'avancement exposées en section~\ref{sec:planification}. Nous avons mis en place des tests automatiques permettant de confirmer le fonctionnement de l'implémentation existante durant le développement. Enfin, une période de validation avec utilisateurs a permis d'éprouver l'application, son interface et principe de fonctionnement.
 
-		%\section{Performances}
-
-			%Pages : 3 à 4
-
-			%\subsection*{Temps}
-			%\subsection*{Poids}
 
 		\section{Vérifications automatiques}
 			% TODO Sébastien
@@ -959,7 +953,7 @@
 
 				D'abord pour les requêtes de documents, nous vérifions que ceux-ci sont correctement chargés dans plusieurs cas, comme lorsque l'utilisateur n'est pas connecté, ou avec des utilisateurs possédant différents niveaux d'autorisation.
 
-				Pour les requêtes de données, nous vérifions sur la base de donnée que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupéré sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées.
+				Pour les requêtes de données, nous vérifions sur la base de données que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupéré sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées.
 
 				% TODO coverage
 
@@ -973,11 +967,11 @@
 
 			\subsection*{Méthodologie}
 
-				Afin d'introduire un minimum d'erreurs statistiques, la mesure de la satisfaction des utilisateurs a suivi un protocole (protocole complet disponible en annexe~\ref{sec:documents_validation}) établi avec l'expérience de nos promoteurs sur base d'un ancien travail de fin d'études~\cite{ref:reflecton}, de cours~\cite{ref:vanderdonckt_hci, ref:vanderdonckt_cscw} et recherches sur la satisfaction utilisateur~\cite{ref:usability_evaluation_tools, ref:ssi}.
+				Afin d'introduire un minimum d'erreurs statistiques, la mesure de la satisfaction des utilisateurs a suivi un protocole (protocole complet et scénarios disponibles en annexe~\ref{sec:documents_validation}) établi avec l'expérience de nos promoteurs sur base d'un ancien travail de fin d'études~\cite{ref:reflecton}, de cours~\cite{ref:vanderdonckt_hci, ref:vanderdonckt_cscw} et recherches sur la satisfaction utilisateur~\cite{ref:usability_evaluation_tools, ref:ssi}.
 
 				Autant que possible, les séances se sont déroulées en présence physique de l'utilisateur d'essai. Certaines contraintes horaires et logistiques ont imposé la réalisation de séances à distance dans lesquelles nous avons utilisé Skype ou Discord, logiciels permettant de transmettre la voix et partager l'écran de l'utilisateur.
 
-				Après une brève introduction au concept de l'application et aux objectifs de la séance, les utilisateurs obtiennent un scénario composé d'un contexte et de tâches à réaliser qu'ils peuvent lire à leur aise. Un utilisateur travaille seul et est chronométré durant la séance. S'il a une question ou s'il reste bloqué sur une tâche, un indice lui est donné et noté dans un document avec le temps nécessité pour réaliser la tâche.
+				Après une brève introduction au concept de l'application et aux objectifs de la séance, les utilisateurs obtiennent un scénario composé d'un contexte et de tâches (e.g. : trier les éléments d'une table par ordre décroissant, ajouter une source d'eau potable, etc) à réaliser qu'ils peuvent lire à leur aise. Un utilisateur travaille seul et est chronométré durant la séance. S'il a une question ou s'il reste bloqué sur une tâche, un indice lui est donné et noté dans un document avec le temps nécessité pour réaliser le scénario.
 
 				Après trois scénarios accomplis, l'utilisateur d'essai remplit un formulaire (Google Form\copyright) anonymisé composé de 24 questions fermées réparties en quatre sections :
 				\begin{description}
@@ -1003,28 +997,102 @@
 
 				Nous pouvons constater une tendance positive dans les réponses aux questions ainsi qu'une cohérence dans les groupements : les quatre questions ayant reçu le score le plus bas sont toutes liées à une certaine complexité de l'interface.
 
-				Les dix questions de la SUS s'évaluent différemment. L'échelle a sa propre formule de calcul~\cite{ref:sus} qui permet de normaliser les résultats à une valeur de 0 à 100. Notez cependant qu'il ne s'agit pas d'un pourcentage de qualité mais d'une valeur suivant une distribution gaussienne dont la moyenne empirique se situe à 68. Le premier groupe de validation nous plaçait à 67,5 et le second à 77,5, pour une moyenne globale à 73. Nous devons rester précautionneux quant à ces résultats, mais ils montrent que l'interface est plutôt bien reçue. L'augmentation des résultats entre les deux groupes est positive et montre que les changements déjà apportés à l'application après le premier groupe ont eu un impact positif sur l'expérience utilisateur.
+				Les dix questions de la SUS s'évaluent différemment. L'échelle a sa propre formule de calcul~\cite{ref:sus} qui permet de normaliser les résultats à une valeur de 0 à 100. Notez cependant qu'il ne s'agit pas d'un pourcentage de qualité mais d'une valeur suivant une distribution gaussienne dont la moyenne empirique se situe à 68. Le premier groupe de validation nous plaçait à 67,5 et le second à 77,5, pour une moyenne globale à 73. Nous devons rester précautionneux quant à ces résultats. Il y a encore de la place pour s'améliorer, néanmoins l'augmentation des résultats entre les deux groupes est positive et montre que les changements déjà apportés à l'application après le premier groupe ont eu un impact positif sur l'expérience utilisateur.
+
+				\begin{table}
+					\centering
+					\begin{tabular}{|c|l|c|c|c|c|c|c|}
+						\hline
+						 \multirow{2}{*}{\textbf{Groupe}} &\multirow{2}{*}{\textbf{Utilisateur}} & \multicolumn{6}{|c|}{\textbf{Temps pour réaliser le scénario}} \\ \cline{3-8}
+						 &  & \textbf{1}  & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6}\\ \cline{1-8}
+						 \multirow{9}{*}{1} & 1 & 03'37 & 6'27" & 7'32" & 14'21" & 04'41" & - \\ \cline{2-8}
+						 & 2 & 08'55 & 13'31" & 6'56" & - & - & - \\ \cline{2-8}
+						 & 3 & - & 4'19" & 4'0" & 18'0" & - & - \\ \cline{2-8}
+						 & 4 & - & 10'30" & 14'0" & - & 7'0" & - \\ \cline{2-8}
+						 & 5 & 7'45" & 9'0" & - & - & 10'50" & - \\ \cline{2-8}
+						 & 6 & 3'30" & 2'45" & 6'30 & 12'00" & 6'0" & - \\ \cline{2-8}
+						 & 7 & 6'0" & 6'17" & 15'14 & - & - & - \\ \cline{2-8}
+						 & 8 & 3'51" & 1'50" & 4'18 & 15'0" & 2'20" & - \\ \cline{2-8}
+						 & 9 & 5'35" & 5'58" & - & - & 6'20" & - \\ \cline{1-8}
+						 \multirow{11}{*}{2} & 10 & - & 3'0" & 18'0" & 7'0" & - & - \\ \cline{2-8}
+						 & 11 & 16'0" & 19'0" & - & 7'50" & - & - \\ \cline{2-8}
+						 & 12 & - & 9'35" & - & - & 5'15" & 6'12" \\ \cline{2-8}
+						 & 13 & 8'0" & 18'0" & - & - & 7'0" & - \\ \cline{2-8}
+						 & 14 & 4'0" & 6'0" & 8'0" & - & - & - \\ \cline{2-8}
+						 & 15 & - & 1'2" & - & 4'53" & 1'43" & - \\ \cline{2-8}
+						 & 16 & 5'27" & - & 9'53" & - & - & 6'39" \\ \cline{2-8}
+						 & 17 & 7'19" & - & 11'9" & 7'24" & - & - \\ \cline{2-8}
+						 & 18 & 6'47" & - & - & 7'39" & 3'46" & - \\ \cline{2-8}
+						 & 19 & 4'0" & - & 8'18" & 8'5" & 3'23" & 5'48" \\ \cline{2-8}
+						 & 20 & 7'2" & 8'12" & - & 9'2" & - & - \\ \cline{1-8}
+					\end{tabular}
+					\caption{Temps écoulé pour complètement réaliser un scénario}
+					\label{tab:validation_times}
+				\end{table}
 
 			\subsection*{Modifications apportées}
 				Sur base des commentaires apportés durant les séances de validation, plusieurs modifications ont été apportées à l'application. Certaines prévues mais retravaillées sur les conseils des utilisateurs, d'autres imprévues.
 
-				La figure~\ref{fig:screen_zone_quick_help} présente un des multiples ajouts post-validation apportés à l'application. Nous avons vu dans la section précédente que la complexité de l'interface pouvait être sa faiblesse, ce qui nous a amenés à implémenter une fonctionnalité de \emph{visite}, concept existant déjà sur de nombreuses applications web. En appuyant sur le bouton d'aide rapide dans le coin supérieur droit de l'interface, l'utilisateur déclenche une série d'astuces qui présentent brièvement les contrôles disponibles sur la page.
-
-				\begin{figure}[H]
-					\includegraphics[width=\textwidth]{images/screen_zone_quick_help.png}
-					\caption{Capture d'écran du module de gestion de zone avec l'aide rapide activée}
-					\label{fig:screen_zone_quick_help}
-				\end{figure}
-
-				D'autres modifications ont également été apportées à l'application et nous pouvons citer les plus importantes :
+				Une partie de ces ajouts a été implémentée entre les deux groupes de validation, dont :
 				\begin{itemize}
+					\item De nouveaux boutons de pagination (voir figure~\ref{fig:screen_pagination}) pour les tables permettant d'accéder directement à la première ou dernière page d'une table.
+						\begin{figure}[H]
+							\centering
+							\includegraphics[scale=0.75]{images/screen_pagination.png}
+							\caption{Contrôles de pagination des tables (dans l'ordre; première page, page précédente, accès direct à la page x, page suivante, dernière page)}
+							\label{fig:screen_pagination}
+						\end{figure}
+					\item Une icone de chargement animée lors de l'envoi d'un formulaire.
+						\begin{figure}[H]
+							\centering
+							\includegraphics[scale=0.75]{images/screen_loading.png}
+							\caption{Icône de chargement d'un formulaire}
+							\label{fig:screen_loading}
+						\end{figure}
+					\item De nouveaux contrôles pour le module géographique. Le premier groupe a montré des difficultés à réaliser le scénario. Nous avons repensé l'interface et, bien que le faible échantillon ne permette pas d'affirmer que c'est dû à l'interface, le temps pour réaliser ce scénario s'est amélioré (voir table~\ref{tab:validation_times}).
+						\begin{figure}[H]
+							\centering
+							\includegraphics[scale=0.75]{images/screen_gis_small.png}
+							\caption{Contrôles de placement du module géographique}
+							\label{fig:screen_gis_small}
+						\end{figure}
+				\end{itemize}
+
+				Ces changements ont été positivement reçus et nous avons constaté la disparition de certains commentaires (notamment sur la lenteur présumée de l'application avec le bouton de chargement).
+
+				D'autres changements ont été mis en place après les séances de validation, dont :
+				\begin{itemize}
+					\item Un système de \emph{visite}, concept tiré de nombreuses autres applications web, qui présente de manière interactive l'interface lorsque l'utilisateur appuie sur le bouton d'aide rapide en haut à droite de notre interface.
+						\begin{figure}[H]
+							\centering
+							\includegraphics[width=0.65\textwidth]{images/screen_sandbox_table_quick_help.png}
+							\caption{Aide rapide pour les contrôles des tables, astuce 2 sur 9}
+							\label{fig:screen_sandbox_quick_help}
+						\end{figure}
 					\item Une table \emph{bac à sable} dans la page d'aide qui permet d'utiliser une table qui n'a aucun impact sur l'application pour en comprendre les contrôles.
-					\item Des boutons de pagination pour les tables permettant d'accéder directement à la première ou dernière page d'une table.
 					\item Un bouton permettant d'afficher ou masquer le mot de passe sur la fenêtre de connexion, particulièrement utile sur smartphones et tablettes.
-					\item Refonte des contrôles du module géographique qui n'étaient auparavant pas bien compris. A présent, les boutons sont plus explicites, certains ont changé de place pour être plus proches de la fenêtre sur laquelle ils ont un effet, et enfin l'ajout de textes d'aide dont le contenu est dynamiquement modifié selon l'action en cours.
-					\item Une icone de chargement lors de l'envoi d'un formulaire.
 					\item La totalité des contrôles dispose désormais de \emph{tooltips} affichés au survol de la souris.
 				\end{itemize}
+
+				Les contraintes en temps nous empêchant un troisème groupe de validation, nous n'avons pas pu obtenir l'appréciation des utilisateurs sur ces dernières améliorations et nouveautés. Dans l'idéal, la prochaine équipe de développement devrait poursuivre cette étude de la satisfaction des utilisateurs. Des tests de validation en condition réelle à Haïti sont également nécessaires.
+
+				% La figure~\ref{fig:screen_sandbox_quick_help} présente un des multiples ajouts post-validation apportés à l'application. Nous avons vu dans la section précédente que la complexité de l'interface pouvait être sa faiblesse, ce qui nous a amenés à implémenter une fonctionnalité de \emph{visite}, concept existant déjà sur de nombreuses applications web. En appuyant sur le bouton d'aide rapide dans le coin supérieur droit de l'interface, l'utilisateur déclenche une série d'astuces qui présentent brièvement les contrôles disponibles sur la page.
+				%
+				% \begin{figure}[H]
+				% 	\includegraphics[width=\textwidth]{images/screen_sandbox_table_quick_help.png}
+				% 	\caption{Capture d'écran de l'aide rapide pour les contrôles des tables}
+				% 	\label{fig:screen_sandbox_quick_help}
+				% \end{figure}
+				%
+				% D'autres modifications ont également été apportées à l'application et nous pouvons citer les plus importantes :
+				% \begin{itemize}
+				% 	\item Une table \emph{bac à sable} dans la page d'aide qui permet d'utiliser une table qui n'a aucun impact sur l'application pour en comprendre les contrôles.
+				% 	\item Des boutons de pagination pour les tables permettant d'accéder directement à la première ou dernière page d'une table.
+				% 	\item Un bouton permettant d'afficher ou masquer le mot de passe sur la fenêtre de connexion, particulièrement utile sur smartphones et tablettes.
+				% 	\item Refonte des contrôles du module géographique qui n'étaient auparavant pas bien compris. A présent, les boutons sont plus explicites, certains ont changé de place pour être plus proches de la fenêtre sur laquelle ils ont un effet, et enfin l'ajout de textes d'aide dont le contenu est dynamiquement modifié selon l'action en cours.
+				% 	\item Une icone de chargement lors de l'envoi d'un formulaire.
+				% 	\item La totalité des contrôles dispose désormais de \emph{tooltips} affichés au survol de la souris.
+				% \end{itemize}
 
 	\chapter{Améliorations futures}
 		%Auteur : Adrien
