@@ -27,6 +27,11 @@
 \usepackage{multirow}
 \usepackage{graphicx}
 
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}% pour les checkmark
+\newcommand{\xmark}{\ding{55}}%
+
 \begin{document}
 
 	\maketitle
@@ -784,11 +789,36 @@
 				% Gestionnaire de zone; tout, dans sa zone et enfants.
 				% Gestionnaire de fontaine; tous les droits sur la gestion des consommateurs et des paiements. Ne peut pas modifier le réseau ou les utilisateurs de l'application
 				% On dispose quand même d'un garde-fou, le module d'historique
-				Bien entendu, une hiérarchie implique un système de permissions. Dans notre application, ce dernier se calque exactement sur la structure exposée ci-avant. En toute normalité, les utilisateurs ne peuvent effectuer que les actions qui sont assignées à leur rôle. L'interface propose des contrôles réduits aux gestionnaires de fontaine, en opposition aux gestionnaires de zone qui doivent assumer leurs responsabilités supplémentaires.
+				% Bien entendu, une hiérarchie implique un système de permissions. Dans notre application, ce dernier se calque exactement sur la structure exposée ci-avant. En toute normalité, les utilisateurs ne peuvent effectuer que les actions qui sont assignées à leur rôle. L'interface propose des contrôles réduits aux gestionnaires de fontaine, en opposition aux gestionnaires de zone qui doivent assumer leurs responsabilités supplémentaires.
+				%
+				% De plus, les données sont fortement liées à la hiérarchie et empêchent une quelconque utilisation, ajout, modification ou suppression par un utilisateur non-autorisé. Lorsqu'une donnée, peu importe son type (une zone, un consommateur, un rapport mensuel, etc), est ajoutée dans l'application, elle n'est visible que par l'utilisateur qui l'a créée et les utilisateurs qui lui sont supérieurs dans la hiérarchie (utilisateurs parents).
+				%
+				% En somme, plus un utilisateur est haut dans la hiérarchie, plus il a de pouvoir sur les données de l'application, la zone racine étant donc la somme de toutes les données, faisant des gestionnaires de cette zone les utilisateurs ayant le plus d'impact sur le système.
 
-				De plus, les données sont fortement liées à la hiérarchie et empêchent une quelconque utilisation, ajout, modification ou suppression par un utilisateur non-autorisé. Lorsqu'une donnée, peu importe son type (une zone, un consommateur, un rapport mensuel, etc), est ajoutée dans l'application, elle n'est visible que par l'utilisateur qui l'a créée et les utilisateurs qui lui sont supérieurs dans la hiérarchie (utilisateurs parents).
+				Les utilisateurs peuvent agir sur les données qui sont à leur niveau, et en dessous en accord avec le principe hiérarchique, selon le système de permission exposé en table~\ref{tab:permissions}.
+				\begin{table}[H]
+					\centering
+					\small
+					\setlength\tabcolsep{2pt}
+					\begin{tabular}{|l|c|c|}
+						\hline
+						\multirow{2}{*}{\textbf{Permission}} & \multicolumn{2}{l|}{\textbf{Gestionnaire de}} \\ \cline{2-3}
+						 & \textbf{fontaine} & \textbf{zone} \\ \hline
+						 Ajouter/modifier/supprimer un consommateur & \cmark & \cmark \\ \hline
+						 Ajouter/modifier/supprimer un élément du réseau de distribution & \cmark & \cmark \\ \hline
+						 Ajouter/modifier/supprimer un rapport mensuel & \cmark & \cmark \\ \hline
+						 Ajouter/modifier/supprimer un paiement & \cmark & \cmark \\ \hline
+						 Ajouter/modifier/supprimer un ticket de support & \cmark & \cmark \\ \hline
+						 Ajouter/modifier/supprimer une zone & \xmark & \cmark \\ \hline
+						 Ajouter/modifier/supprimer un gestionnaire & \xmark & \cmark$^{*}$ \\ \hline
+						 Accepter/refuser un changement dans l'historique & \xmark & \cmark \\ \hline
+						 \multicolumn{3}{p{\textwidth}}{\emph{* : Un gestionnaire de zone ne peut pas modifier les informations personnelles (mot de passe, courriel, nom, prénom) d'un gestionnaire existant}} \\
+					\end{tabular}
+					\caption{Permissions dans l'application, par type d'utilisateur}
+					\label{tab:permissions}
+				\end{table}
 
-				En somme, plus un utilisateur est haut dans la hiérarchie, plus il a de pouvoir sur les données de l'application, la zone racine étant donc la somme de toutes les données, faisant des gestionnaires de cette zone les utilisateurs ayant le plus d'impact sur le système.
+
 
 		\section{Interface utilisateur}
 			% TODO A fusionner avec "Client" ?
@@ -952,11 +982,7 @@
 
 				D'abord pour les requêtes de documents, nous vérifions que ceux-ci sont correctement chargés dans plusieurs cas, comme lorsque l'utilisateur n'est pas connecté, ou avec des utilisateurs possédant différents niveaux d'autorisation.
 
-<<<<<<< HEAD
 				Pour les requêtes de données, nous vérifions sur la base de données que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupéré sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées.
-=======
-				Pour les requêtes de données, nous vérifions sur la base de donnée que son état soit cohérent après que la requête ait été effectuée, ou que les données que nous avons récupérées soient correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées.
->>>>>>> 2ee8395189c552f9980a77916a25e478c3cc4638
 
 				% TODO coverage
 
