@@ -458,7 +458,6 @@
 
 		\label{sec:analyse_besoins}
 		%Total des pages : 6 à 10
-		%TODO : Kim veut plus d'introduction ?
 
 		La phase d'analyse des besoins est, dans tout projet, l'une des plus importantes. Elle permet de s'accorder entre toutes les parties impliquées, clients comme développeurs, sur la portée du projet, quelles fonctionnalités implémenter, et comment y arriver. Cette phase se doit d'être méticuleuse, afin que toutes les parties impliquées soient d'accord sur ce qu'elles souhaitent.
 
@@ -466,10 +465,9 @@
 
 		Nous pensons avoir trouvé un bon entre-deux, prenant avantage des conseils glanés au cours de nos études~\cite{ref:kim_coo} : nous avons présenté au plus vite des visuels de la future application, et avons organisé une réunion Skype pour pouvoir échanger en direct avec nos clients malgré le décalage horaire.
 
-		Le cahier des charges résultant de ces interactions nous semble complet, et a été assez peu modifié au cours du projet. Deux éléments s'y sont cependant ajoutés, l'un pour répondre aux besoins non-fonctionnels et l'autre suggéré par Louis Fritzno, un acteur haïtien venu pour apporter un point de vue concret.
+		Le cahier des charges résultant de ces interactions (voir section \ref{sec:cdc}) nous semble complet, et a été assez peu modifié au cours du projet. Deux éléments s'y sont cependant ajoutés, l'un pour répondre aux besoins non-fonctionnels et l'autre suggéré par Louis Fritzno, un acteur haïtien venu pour apporter un point de vue concret.
 
 		\section{Besoins fonctionnels}
-			% TODO maybe faire des user stories ? (Kim)
 
 			%Pages : 1 à 2
 			Le terme \emph{besoins fonctionnels} décrit les besoins précis d'un client sur le projet. Ce sont les points qui ont été mis en avant par Protos et les Haïtiens comme étant les plus importants afin que notre application leur soit utile.
@@ -481,17 +479,7 @@
 
 				Pour mieux comprendre la nature exacte des données en question, nous avons étudié des fichiers Excel~\cite{ref:resumes_documents}, qui servent à ce jour de premier pas vers une informatisation de la gestion du réseau de distribution d'eau.
 
-				\begin{figure}[ht!]
-					\centering
-					\includegraphics[width=\textwidth]{images/db}
-					\caption{Schéma des données du système}
-					\label{fig:db}
-				\end{figure}
-
-				% TODO explain better figure, how we made it and what it says
-				% Compliqué de faire ça ici avant d'avoir parlé du cahier des charges je trouve. On en fait une section à part dans ce chapitre ou on le bouge dans le chapitre d'implem ?
-
-				Ces documents nous ont été d'une très grande utilité, puisqu'ils nous ont permis de lister toutes les données nécessaires à notre application, nous donnant un solide point de départ pour notre base de données. En réunissant tous les informations qu'ils contenaient et en dessinant les liens logiques entre elles à la main, nous en avons retiré une structure de données, présentée dans la figure~\ref{fig:db}. Ils nous ont également permis de mieux comprendre quelles étaient les responsabilités des différents acteurs, ce qui nous a donné la structure de l'application elle-même.
+				Ces documents nous ont été d'une très grande utilité, puisqu'ils nous ont permis de lister toutes les données nécessaires à notre application, nous donnant un solide point de départ pour notre base de données. Ils nous ont également permis de mieux comprendre quelles étaient les responsabilités des différents acteurs, ce qui nous a donné la structure de l'application elle-même.
 
 				En nous inspirant directement des \emph{Komité Dlo} décrit dans le chapitre \ref{sec:structure_haiti}, nous avons décidé de créer deux types de gestionnaires : ceux dits \emph{de zone}, qui effectuent une gestion générale de toute une partie du réseau de distribution avec peu d'interaction avec ses usagers. Ils collaborent avec des gestionnaires dits \emph{de fontaine(s)}, qui s'occupent directement un ou plusieurs points d'eau, et sont en contact direct avec les consommateurs.
 
@@ -556,13 +544,21 @@
 
 			% TODO schéma des différents modules et de leurs liens entre eux et avec la base de données
 
-			%\subsection*{Complet en annexe ?}
+		\section{Structure des données}
 
-		%\section{Structure des données}
+			À partir des informations des différents documents analysés dans la section \ref{sec:gest_donnee}, nous avons avons commencé à établir une structure pour les données de notre application. Nous avons d'abord repéré les champs qui nous semblaient les plus importants dans les différents fichiers Excel~\cite{ref:resumes_documents}. Nous avons ensuite confronté ça aux différents modules et fonctionnalités développés dans le cahier des charges. En rassemblant tout ça, nous avons établis un schéma en figure \ref{fig:db} représentant la structure des données à laquelle nous sommes arrivé. Il montre un diagramme des relations entre les différentes entités de notre application, selon le standard UML~\cite{ref:siegfried_db}.
 
-			%Pages : 2 à 3
+			\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{images/db}
+				\caption{Schéma des données du système}
+				\label{fig:db}
+			\end{figure}
 
-			%\subsection*{Complet en annexe ?}
+			% TODO explain better figure, how we made it and what it says
+			% Compliqué de faire ça ici avant d'avoir parlé du cahier des charges je trouve. On en fait une section à part dans ce chapitre ou on le bouge dans le chapitre d'implem ?
+			% Est-ce que je rentre dans les détails de ce qu'il y a dans le schéma ? Kim a l'air d'en avoir envie...
+
 
 	\chapter{Implémentation}
 
@@ -1130,6 +1126,7 @@
 	%\chapter{Cahier des charges complet}
 
 		\includepdf[pages=1,pagecommand=\chapter{Cahier des charges complet}, offset=0 -3cm, scale=0.6]{../documents/requirements/Cahier_des_Charges.pdf}
+		\label{sec:cdc}
 		\includepdf[pages=2-,pagecommand={},width=1.1\textwidth]{../documents/requirements/Cahier_des_Charges.pdf}
 
 	%\chapter{Planning}
