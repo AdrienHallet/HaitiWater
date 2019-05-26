@@ -48,14 +48,13 @@
 		L'outil est hébergé par l'UCLouvain à l'adresse : \\ \url{https://haitiwater.sipr.ucl.ac.be}
 
 		Si vous souhaitez le visionner dans son ensemble, le nom d'utilisateur principal ainsi que son mot de passe est \emph{Protos}. Nous vous demandons cependant de ne pas modifier les données présentes, car elles sont réelles et ont été entrées dans le but de tester l'application sur place.
-		%TODO est-ce qu'on donne le mot de passe ? Est-ce qu'on explique qu'on ne peut pas le donner car il y a des informations pseudo-sensibles dessus ?
 
 	\chapter*{Remerciements}
 	\addcontentsline{toc}{chapter}{Remerciements}
 
 		De nombreuses personnes ont participé à ce mémoire et l'outil HaïtiWater. Nous souhaitons prendre quelques instants pour les remercier.
 
-		Merci aux professeurs Kim Mens et Sandra Soares-Frazão pour leur indéflectible soutien, les conseils et apports tout au long de ces mois de travail.
+		Merci aux professeurs Kim Mens et Sandra Soares-Frazão pour leur indéfectible soutien, les conseils et apports tout au long de ces mois de travail.
 
 		Merci à Benoît Duhoux et Olivier Carlier d'avoir accepté de lire ce travail et d'assister à la défense orale.
 
@@ -71,7 +70,6 @@
 
 		Merci à nos parents et proches pour nous avoir supporté, dans tous les sens du terme, durant ce travail.
 
-
 	\chapter{Introduction}
 
 		% Auteur: Sébastien
@@ -81,7 +79,7 @@
 
 		\subsection*{Contexte}
 
-			Ce mémoire se place dans le cadre d'un projet de développement financé par l'ARES-CCD dans le cadre de ses projets de synergie. Les partenaires du projet sont L'ONG Protos\footnote{\href{https://www.protos.ngo/fr/}{www.protos.ngo}}, L'UCL et l'UEH. Protos a pour objectif, entre autres, d'améliorer l'accès à l'eau potable en milieu rural afin d'aider le développement de plusieurs pays du monde. Un des pays dans lesquels Protos s'est engagée est Haïti et leur présence depuis quelques années a permis de produire un état des lieux nous permettant de comprendre la situation sur place~\cite{ref:analyse_contextuelle_commune}.
+			Ce mémoire se place dans le cadre d'un projet de développement financé par l'ARES-CCD dans le cadre de ses projets de synergie. Les partenaires du projet sont L'ONG Protos\footnote{\href{https://www.protos.ngo/fr/}{www.protos.ngo}}, L'UCL et l'UEH. L'un des objectifs de Protos est d'améliorer l'accès à l'eau potable en milieu rural afin d'aider le développement de plusieurs pays du monde. Un des pays dans lesquels Protos s'est engagée est Haïti et leur présence depuis quelques années a permis de produire un état des lieux nous permettant de comprendre la situation sur place~\cite{ref:analyse_contextuelle_commune}.
 
 			Une succession de crises politiques et catastrophes naturelles ces dernières décennies ont rendu l'accès à l'eau potable, entre autres, particulièrement complexe dans ce pays des Antilles. En 2010, un violent séisme a laissé le pays en ruine, détruisant beaucoup d'infrastructures, y compris de distribution d'eau. Des incertitudes politiques entravent la reconstruction de ces installations et les populations ne sont pas toujours aidées par les services publics pour assurer la distribution de l'eau, particulièrement dans les zones rurales. C'est une des raisons pour lesquelles l'ONG Protos est active dans le pays.
 			% trop chargé politiquement ?
@@ -91,7 +89,7 @@
 
 			L'ONG Protos intervient dans ce cadre~\cite{ref:programme_protos}, pour proposer un appui à ces organismes locaux afin de mieux organiser cette distribution. Grâce à une meilleure organisation, il sera possible d'améliorer le taux de recouvrement des factures liées à la distribution d'eau, ce qui permettra d'assurer des rentrées financières à ces organismes qui sont également en charge de la maintenance physique des réseaux, mais sans recevoir de réels moyens de la part de l'Etat.
 
-			Ce projet est prévu sur trois ans, une première année pour la conception d'un prototype, une deuxième année pour finaliser le système tester son déploiement sur place et une troisième année pour le finaliser. Ce mémoire constitue la première partie de ce projet.
+			Ce projet est prévu sur trois ans, une première année pour la conception d'un prototype, une deuxième année pour finaliser le système ainsi que tester son déploiement sur place et une troisième année pour le finaliser. Ce mémoire constitue la première partie de ce projet.
 
 		\subsection*{Problématiques}
 
@@ -118,7 +116,7 @@
 
 		\subsection*{Objectif}
 
-			Le but final de ce mémoire est de délivrer une application à l'ONG Protos et aux acteurs de la distribution de l'eau à Haïti. Nous visons un déploiement de cette base applicative sur le terrain, et que les futures équipes de développement pourront travailler à sa maintenance et évolution.
+			Le but final de ce mémoire est de délivrer une application à l'ONG Protos et aux acteurs de la distribution de l'eau à Haïti. Nous visons un déploiement de cette base applicative sur le terrain, et que les futures équipes de développement pourront travailler à sa maintenance et son évolution.
 
 			Nous espérons également que cette application permettra à Protos comme aux Haïtiens d'avoir un bon exemple de solution logicielle. Cela pourrait les aider à voir comment un logiciel peut être un appui dans leur gestion, et leur permettre de bien repenser leurs besoins lors de projets futurs.
 			% On pourrait expliquer un peu mieux, mais vous voulez peut-être le garder court ?
@@ -174,13 +172,13 @@
 
 				Située dans les Caraïbes au sud-est de la République de Cuba et des \'Etats-Unis d'Amérique, la République d'Haïti occupe un territoire de $27.750km^{2}$ sur la partie occidentale de l'île d'Hispaniola. Le pays entier souffre de sa position géographique~\cite{ref:regards_situation_eau_haiti} qui le place dans un risque permanent de catastrophes naturelles. La proximité de failles tectoniques et de courants aériens et marins favorisant la formation de tempêtes tropicales produisent une succession de cataclysmes. De multiples tempêtes et séismes frappent l'île fréquemment. Le tristement célèbre tremblement de terre du 12 janvier 2010, dont le nombre de victimes est approximé à $250.000$ morts et autant de blessés, a, à lui seul, causé des dégâts estimés de 8 à 14 milliards USD~\cite{ref:estimating_economic_damage_earthquake_haiti}. Ces catastrophes périodiques détruisent les infrastructures et mettent à mal l'économie du pays, empêchant notamment un développement du réseau d'eau potable suffisant pour répondre aux besoins.
 
-				Le climat haïtien n'aide pas la situation. Météorologiquement parlant, Haïti affronte une alternance entre saison très chaude et saison moins chaude, les deux provoquant fréquemment des sécheresses. Les différentes régions du pays ont des climats variés, obligeant l'adoption de plusieurs mesures pour sauvegarder la population et rend difficile une politique commune de gestion des ressources. Il convient de noter que l'aridité qui résulte de ce climat est accentuée par les activités humaines. La déforestation massive et rapide du pays, à des fins principalement énergétiques, empêche une rétention correcte des eaux dans les sols. Seuls 2\% à 3\% du territoire sont occupés par des forêts (venant de plus de 60\% il y a un siècle). La sécheresse se trouve ainsi aggravée, et le ruissellement des eaux accélère l'érosion des sols~\cite{ref:desertification_of_haiti}. Les terres sont ainsi progressivement emportées vers la mer. En 2008, un rapport des Nations Unies estimait cette perte à 37 millions de tonnes par an~\cite{ref:impact_degradation_terre}. Les cours d'eaux ont donc un débit accéléré, parfois torrentiel, rendant difficile l'exploitation de l'écoulement naturel et nécessitant plus d'infrastructures pour obtenir de l'eau potable.
+				Le climat haïtien n'aide pas la situation. Météorologiquement parlant, Haïti affronte une alternance entre saison très chaude et saison moins chaude, les deux provoquant fréquemment des sécheresses. Les différentes régions du pays ont des climats variés, obligeant l'adoption de plusieurs mesures pour sauvegarder la population et rendant difficile une politique commune de gestion des ressources. Il convient de noter que l'aridité qui résulte de ce climat est accentuée par les activités humaines. La déforestation massive et rapide du pays, à des fins principalement énergétiques, empêche une rétention correcte des eaux dans les sols. Seuls 2\% à 3\% du territoire sont occupés par des forêts (venant de plus de 60\% il y a un siècle). La sécheresse se trouve ainsi aggravée, et le ruissellement des eaux accélère l'érosion des sols~\cite{ref:desertification_of_haiti}. Les terres sont ainsi progressivement emportées vers la mer. En 2008, un rapport des Nations Unies estimait cette perte à 37 millions de tonnes par an~\cite{ref:impact_degradation_terre}. Les cours d'eaux ont donc un débit accéléré, parfois torrentiel, rendant difficile l'exploitation de l'écoulement naturel et nécessitant plus d'infrastructures pour obtenir de l'eau potable.
 
 			\subsection*{Problèmes politiques}
 
 				Pays colonisé français devenu indépendant en 1804, la République d'Haïti a connu plusieurs régimes politiques différents, dont une dictature qui s'est terminée en 1986. Depuis lors, le pays oscille politiquement jusqu'à une instabilité contemporaine relative (on dénombre 15 présidents et 22 premiers ministres depuis 1986 alors que le mandat est constitutionnellement valable 5 ans) et des tensions internes continuent de perturber le pays. Cela entraine une difficulté à adopter des politiques de long terme, ou même une politique commune aux différents gouvernements.
 
-				La scène internationale s'est très largement mobilisée pour Haïti et tout particulièrement après le séisme de 2010. De nombreuses organisations humanitaires et non-gouvernementales sont arrivées, mais les aides financières sont soupçonnées de détournement par ces mêmes organisations~\cite{ref:analyse_contextuelle_commune}. Ces aides sont parfois décriées dans la dépendance qu'elles créent et le manque de vision à long terme. La population s'est également déjà retournée contre les aides et notamment contre les casques bleus venu aider après le séisme, et toujours présents à l'heure actuelle. Des soldats népalais des Nations Unies, venus aider après le drame, auraient involontairement déclenché une grave épidémie de choléra en introduisant la maladie en tant que porteurs sains. Le \emph{Center for Disease Control and Prevention (CDC)}, un service du département de la santé des \'Etats-Unis d'amérique, a confirmé cette hypothèse et les Nations Unies ont reconnu leur responsabilité en décembre 2016. L'épidémie a causé $10.000$ morts pour $800.000$ cas dans les Caraïbes, majoritairement en Haïti. Cette maladie a été introduite par des rejets d'eaux usées dans un cours d'eau, par négligence et manque d'installations permettant d'évacuer les eaux usées dans un campement d'aide humanitaire.
+				La scène internationale s'est très largement mobilisée pour Haïti et tout particulièrement après le séisme de 2010. De nombreuses organisations humanitaires et non-gouvernementales sont arrivées, mais les aides financières sont soupçonnées de détournement par ces mêmes organisations~\cite{ref:analyse_contextuelle_commune}. Ces aides sont parfois décriées dans la dépendance qu'elles créent et leur manque de vision à long terme. La population s'est également déjà retournée contre les aides et notamment contre les casques bleus venu aider après le séisme, et toujours présents à l'heure actuelle. Des soldats népalais des Nations Unies, venus aider après le drame, auraient involontairement déclenché une grave épidémie de choléra en introduisant la maladie en tant que porteurs sains. Le \emph{Center for Disease Control and Prevention (CDC)}, un service du département de la santé des \'Etats-Unis d'Amérique, a confirmé cette hypothèse et les Nations Unies ont reconnu leur responsabilité en décembre 2016. L'épidémie a causé $10.000$ morts pour $800.000$ cas dans les Caraïbes, majoritairement en Haïti. Cette maladie a été introduite par des rejets d'eaux usées dans un cours d'eau, par négligence et manque d'installations permettant d'évacuer les eaux usées dans un campement d'aide humanitaire.
 
 				La République d'Haïti entretient également des relations conflictuelles avec la République Dominicaine, avec laquelle elle partage l'île d'Hispaniola. Les raisons sont multiples (travailleurs étrangers, tensions ethniques, etc) et un lourd passé pèse sur la relation entre les deux pays.
 
@@ -191,6 +189,7 @@
 				De ces conditions environnementales et politiques émane une population pauvre, voire abandonnée dans les zones rurales où des conseils de village tentent de pallier les problèmes au quotidien. Là où les villes et principalement la capitale profitent des avantages de la mondialisation, la campagne haïtienne peine à bénéficier de l'aide nationale et son développement repose essentiellement sur les organisations locales et externes au pays. L'éducation y est difficilement accessible et la population est très majoritairement endettée (81\% des foyers haïtiens), situation aggravée depuis 2015 lorsque la monnaie locale, la Gourde (HTG) a cessé d'être maintenue à un taux de change fixe avec le Dollar (USD). La Gourde continue depuis sa dépréciation (1 Euro vaut $93,5445$ Gourdes~\footnote{Taux de change du marché au 28 mars 2019}). La société haïtienne est donc pauvre et les inégalités nombreuses. La campagne en particulier, qui semble déjà oubliée financièrement, manque de techniciens et ingénieurs aptes à créer et maintenir un réseau de distribution d'eau potable avancé.
 
 			\subsection*{Problèmes organisationnels}
+
 				Le modèle politique et organisationnel d'Haïti se calque sur la théorie occidentale. Cependant les profondes différences résultent en une mise en pratique des concepts qui ne sont pas toujours efficaces.
 				On constate notamment un manque de collaboration entre les entités haïtiennes ou même entre villages. Particulièrement dans les zones rurales, les croyances locales (religions, magie) sont parfois consultées pour des décisions importantes au détriment de la rationalité. La communication entre les différentes parties du pays n'est pas optimale. Les entités gouvernementales sont parfois nommées sans moyens financiers ni même bureaux et se retrouvent désoeuvrées. Les fréquentes crises détournent l'attention des problèmes de fond tels que l'éducation, les infrastructures, ...
 
@@ -264,7 +263,7 @@
 
 				\begin{figure}[H]
 					\includegraphics[width=\textwidth]{images/conso_fontaine}
-					\caption{Répartition de consommateur par fontaine}
+					\caption{Répartition des consommateurs par fontaine}
 					\label{fig:conso_fontaine}
 				\end{figure}
 
@@ -278,7 +277,7 @@
 			% Auteur: Sébastien
 			% Relu: Adrien, Céline
 
-			La situation de l'eau dans d'autres pays, en particulier ceux aux économies fortes et établies, est différente. Le contexte d'Haïti est évidemment particulier, comme nous avons pu le voir dans les sections précédents. Ces circonstances nécessitent des solutions adaptées pour gérer la distribution d'eau. Néanmoins, une analyse de la situation d'autres pays a été utile afin de découvrir d'autres manières de faire, identifier les bonnes pratiques du milieu ainsi que les différences avec la situation haïtienne afin de bénéficier de l'expérience des organismes existants.
+			La situation de l'eau dans d'autres pays, en particulier ceux aux économies fortes et établies, est différente. Le contexte d'Haïti est évidemment particulier, comme nous avons pu le voir dans les sections précédentes. Ces circonstances nécessitent des solutions adaptées pour gérer la distribution d'eau. Néanmoins, une analyse de la situation d'autres pays a été utile afin de découvrir d'autres manières de faire, d'identifier les bonnes pratiques du milieu ainsi que les différences avec la situation haïtienne afin de bénéficier de l'expérience des organismes existants.
 
 			\subsection*{Gestion de l'eau en Belgique}
 
@@ -312,9 +311,9 @@
 
 			\textbf{EPANET}~\cite{ref:epanet} est un logiciel libre de droits, développé par l'\emph{Environment Protection Agency} aux États-Unis. Ce logiciel est une véritable référence dans le milieu, et se retrouve souvent utilisé comme base d'autres logiciels. \textbf{WaterCAD}~\cite{ref:watercad} s'inspire de suites logicielles connues afin d'apporter une interface moderne et des visuels avancés. \textbf{KY Pipe}~\cite{ref:kypipe} se base sur EPANET pour proposer une analyse hydraulique avancée et pour permettre de modéliser de nombreux contenus. Beaucoup d'autres logiciels existent, généralement basés sur EPANET ou AutoCAD (un logiciel plus générique).
 
-			On peut remarquer que tous ces logiciels proposent une modélisation géographique du réseau de distribution. Celle-ci permet un affichage du réseau sous forme de graphe avec de liens pour les conduites et des nœuds pour les différents points de traitement, ainsi qu'une superposition sur une carte géographique pour une meilleure visualisation. Un autre module commun à tous ces logiciels permet d'effectuer des analyses formelles sur le réseau. Les modèles mathématiques sont utilisés pour poser une évaluation (quantitative, relative, etc) du système. Ces analyses permettent d'étudier les flux, les dépôts, la pression, etc, que ce soit en un point ou sur toute une partie du réseau. Un dernier module commun permet d'obten{}ir des rapports sur l'état en temps réel du réseau de distribution.
+			On peut remarquer que tous ces logiciels proposent une modélisation géographique du réseau de distribution. Celle-ci permet un affichage du réseau sous forme de graphe avec de liens pour les conduites et des nœuds pour les différents points de traitement, ainsi qu'une superposition sur une carte géographique pour une meilleure visualisation. Un autre module commun à tous ces logiciels permet d'effectuer des analyses formelles sur le réseau. Les modèles mathématiques sont utilisés pour poser une évaluation (quantitative, relative, etc) du système. Ces analyses permettent d'étudier les flux, les dépôts, la pression, etc, que ce soit en un point ou sur toute une partie du réseau. Un dernier module commun permet d'obtenir des rapports sur l'état en temps réel du réseau de distribution.
 
-			La majeure différence entre ces solutions est le modèle tarifaire. On passe d'un logiciel gratuit à d'autres dont le prix peut s'élever jusqu'à 14.000 \$. Les autres variations sont plus d'ordre visuel, avec des interfaces plus ou moins stylisées ainsi que des représentations du réseau et des données plus ou moins modernes.
+			La majeure différence entre ces solutions est le modèle tarifaire. On passe d'un logiciel gratuit à d'autres dont le prix peut s'élever jusqu'à 14.000 \$. Les autres variations sont plutôt d'ordre visuel, avec des interfaces plus ou moins stylisées ainsi que des représentations du réseau et des données plus ou moins modernes.
 
 	\chapter{Organisation}
 		%Auteur : Adrien
@@ -338,7 +337,7 @@
 				L'organisation d'un groupe, même réduit à trois personnes, est nécessaire pour orienter le travail dans un but commun. La planification de la réalisation du mémoire, qui est constitué en vaste majorité de l'application web produite, s'est effectuée sur trois plans :
 
 				\begin{description}
-					\item[Mensuel] Au départ du mémoire, un plan général a été dressé. Au début, les inconnues (e.g., étendue du projet, fonctionnalités à implémenter) ont empêché de définir avec précision les productions et les dates butoires. Avec l'avancée du mémoire, nous avons pu estimer l'état et notre vitesse de travail. Les réunions avec Protos pour présenter nos deux plus grandes échéances, à savoir les versions alpha et beta de l'application web, ont été l'occasion de refaire le point et reformuler les objectifs.
+					\item[Mensuel] Au départ du mémoire, un plan général a été dressé. Au début, les inconnues (e.g., étendue du projet, fonctionnalités à implémenter) ont empêché de définir avec précision les productions et les dates butoirs. Avec l'avancée du mémoire, nous avons pu estimer l'état et notre vitesse de travail. Les réunions avec Protos pour présenter nos deux plus grandes échéances, à savoir les versions alpha et beta de l'application web, ont été l'occasion de refaire le point et reformuler les objectifs.
 
 					\item[Hebdomadaire] Chaque semaine en alternance, nous rencontrions un de nos promoteurs. Dans la continuité de la planification mensuelle, ces réunions permettaient de présenter les productions, rapporter les tâches en cours et leur avancement, et enfin de projeter le futur du travail. Ces présentations étaient également l'occasion de rassembler les productions et d'avoir, chaque semaine, des documents ou démonstrations pouvant être comprises par des acteurs étrangers à l'équipe de développement. C'était donc autant un médium d'information que l'occasion de nous recentrer sur le travail, sans compter les précieux retours de nos promoteurs.
 
@@ -361,7 +360,7 @@
 
 				La figure~\ref{fig:simplified_gantt} présente une vue simplifiée du diagramme de Gantt~\footnote{Un diagramme de Gantt présente l'avancement et les prévisions des tâches d'un projet en fonction du temps.} final sur lequel les modules implémentés (voir section~\ref{sec:cahier_des_charges}) sont placés sur une ligne temporelle en dessous de laquelle les grandes phases du mémoire ont été placées, ainsi que les deux versions majeures, \emph{alpha} et \emph{beta}, présentées à tous les acteurs du projet.
 
-				Les phases d'\emph{analyse} et \emph{architecture} se sont également clôturées par des réunions de taille plus importante afin qu'un maximum de personnes puissent donner leur avis sur les artefacts (cahier des charges, ébauches d'interface graphique, etc). C'est notamment après ces réunions que les changements de planification étaient décidés pour répondre aux nouveaux besoins du client.
+				Les phases d'\emph{analyse} et d'\emph{architecture} se sont également clôturées par des réunions de taille plus importante afin qu'un maximum de personnes puissent donner leur avis sur les artefacts (cahier des charges, ébauches d'interface graphique, etc). C'est notamment après ces réunions que les changements de planification étaient décidés pour répondre aux nouveaux besoins du client.
 
 				Le diagramme en figure~\ref{fig:simplified_gantt} est donc la version finale. Comparé au plan initial, on constate une augmentation de la phase d'implémentation en raison de l'augmentation de la charge de travail, les modules \emph{historique} et \emph{finances} étaient en effet imprévus. De nombreuses autres fonctionnalités ajoutées a posteriori ont allongé cette phase.
 				Il était également prévu de passer plus de temps sur l'analyse et la conception du système. Or le cahier des charges et les ébauches n'étaient pas assez concrets pour avoir des retours précis sur l'outil. Devant ce fait et l'ampleur du projet, nous avons démarré l'implémentation plus tôt que prévu, et elle s'est également allongée sur le mois d'avril (pour un total d'environ 6 semaines supplémentaires).
@@ -414,7 +413,7 @@
 
 				La phase d'analyse principale, d'août à octobre, avait pour but de comprendre la situation et le rôle de l'application. Afin que toute l'équipe avance vers le même objectif, il a été nécessaire que chacun soit impliqué dans l'analyse. En débutant par une recherche libre, nous avons cherché à nous documenter sur le contexte haïtien, les solutions existantes et les entreprises qui appliquent ces solutions. L'apport de plusieurs centaines de pages de documentation par Protos et nos promoteurs a nécessité une certaine organisation. Demander à chacun de nous, mémorants, de tout lire nous a semblé improductif, mais il était nécessaire que les informations circulent. Nous avons donc adopté un système de file pour les documents. Chaque nouveau document~\cite{ref:resumes_documents} est placé dans cette file et pris en charge par un de nous trois (selon disponibilité et affinité). Au fil de la lecture, un document résumant le contenu et relevant les informations utiles pour le mémoire est produit. Le résumé terminé et mis à disposition, il est lu et discuté en groupe. Un autre objectif de ce système est de pouvoir bénéficier de documents raccourcis pour rechercher des informations, notamment dans la rédaction de ce travail.
 
-				Précisons cependant que même si ce que nous considérons être comme la phase d'analyse principale s'est déroulée de août à octobre, les changements d'exigences et l'apport de nouvelles informations au cours de l'année ont induit des phases d'analyse complémentaires, principalement au démarrage l'implémentation de chaque module. A nouveau, nous nous sommes tous trois impliqués dans ces phases afin que le développement aille dans un sens unique.
+				Précisons cependant que même si ce que nous considérons être comme la phase d'analyse principale s'est déroulée de août à octobre, les changements d'exigences et l'apport de nouvelles informations au cours de l'année ont induit des phases d'analyse complémentaires, principalement au démarrage de l'implémentation de chaque module. A nouveau, nous nous sommes tous trois impliqués dans ces phases afin que le développement soit cohérent.
 
 			\subsection*{Conception et implémentation}
 
@@ -431,7 +430,7 @@
 
 				Pour chacune de ces préoccupations, le responsable désigné s'est chargé de la conception, des schémas, de la réalisation (implémentation) et de la documentation. Une communication constante et présentation de l'avancement des tâches à chaque membre de l'équipe se sont implicitement imposées, toujours dans l'optique d'orienter le développement dans le même sens.
 
-				L'inconvénient principal de ce type d'organisation est la compartementalisation qui nuit à l'apprentissage individuel puisque tout le monde ne travaille pas avec la totalité des technologies utilisées. Cela pose un risque d'arrêt, même temporaire, du développement si un des membres se trouve dans l'incapacité d'assumer sa charge de travail. En entreprise, ce risque serait à corriger au plus vite en impliquant plus d'acteurs dans chaque branche du développement, ou en impliquant tous les acteurs dans la totalité du code (par exemple via un système de rotation).
+				L'inconvénient principal de ce type d'organisation est la compartimentalisation qui nuit à l'apprentissage individuel puisque tout le monde ne travaille pas avec la totalité des technologies utilisées. Cela pose un risque d'arrêt, même temporaire, du développement si un des membres se trouve dans l'incapacité d'assumer sa charge de travail. En entreprise, ce risque serait à corriger au plus vite en impliquant plus d'acteurs dans chaque branche du développement, ou en impliquant tous les acteurs dans la totalité du code (par exemple via un système de rotation).
 
 				Nous avons tout de même effectué ce choix pour la puissance de travail qu'il permet et les facilités de développement et d'organisation apportées. Chacun de nous a développé une connaissance accrue de la technologie utilisée dans sa partie, permettant une augmentation drastique de l'efficacité qui s'est particulièrement ressentie dans la seconde partie (second quadrimestre) du travail. Organisationnellement parlant, savoir directement à qui s'adresser en cas de problème ou demande de fonctionnalité a été également particulièrement pratique.
 
@@ -455,23 +454,23 @@
 
 				La colonne de travail prioritaire s'est avérée une très bonne idée. Puisque nos fonctionnalités sont dépendantes à la fois du client et du serveur, cela permettait d'identifier clairement les besoins. Nous pouvions ainsi débuter une séance de développement à n'importe quel moment en sachant ce dont les autres avaient besoin.
 
-
-
 	\chapter{Analyse des besoins}
 
 		\label{sec:analyse_besoins}
 		%Total des pages : 6 à 10
 
-		La phase d'analyse des besoins est, dans tout projet, l'une des plus importantes. Elle se doit d'être méticuleuse, afin que tous les partis impliqués soient d'accord sur ce qu'ils souhaitent. Cependant, nous devions rester conscients que le temps accordé à un mémoire est assez court par rapport à ce qui se fait dans l'industrie pour un projet de cette ampleur. Nous ne pouvions donc pas passer trop de temps sur cette phase, sous peine de ne plus en avoir assez pour implémenter les fonctionnalités établies.
+		La phase d'analyse des besoins est, dans tout projet, l'une des plus importantes. Elle permet de s'accorder entre toutes les parties impliquées, clients comme développeurs, sur la portée du projet, quelles fonctionnalités implémenter, et comment y arriver. Cette phase se doit d'être méticuleuse, afin que toutes les parties impliquées soient d'accord sur ce qu'elles souhaitent.
 
-		Nous pensons avoir trouvé un bon entre-deux, prenant avantage des conseils glanés au cours de nos études~\cite{ref:kim_coo} : nous avons présenté au plus vite des visuels de la future application, et avons organisé une réunion Skype pour pouvoir échanger en direct avec nos clients malgré le déclage horaire.
+		Cependant, nous devions rester conscients que le temps accordé à un mémoire est assez court par rapport à ce qui se fait dans l'industrie pour un projet de cette ampleur. Nous ne pouvions donc pas passer trop de temps sur cette phase, sous peine de ne plus en avoir assez pour implémenter les fonctionnalités établies.
 
-		Le cahier des charges résultant de ces interactions nous semble complet, et a été assez peu modifié au cours du projet. Deux éléments s'y sont cependant ajoutés, l'un pour répondre aux besoins non-fonctionnels et l'autre suggéré par Louis Fritzno, un acteur haïtien venu pour apporter un point de vue concret.
+		Nous pensons avoir trouvé un bon entre-deux, prenant avantage des conseils glanés au cours de nos études~\cite{ref:kim_coo} : nous avons présenté au plus vite des visuels de la future application, et avons organisé une réunion Skype pour pouvoir échanger en direct avec nos clients malgré le décalage horaire.
+
+		Le cahier des charges résultant de ces interactions (voir section \ref{sec:cdc}) nous semble complet, et a été assez peu modifié au cours du projet. Deux éléments s'y sont cependant ajoutés, l'un pour répondre aux besoins non-fonctionnels et l'autre suggéré par Louis Fritzno, un acteur haïtien venu pour apporter un point de vue concret.
 
 		\section{Besoins fonctionnels}
 
 			%Pages : 1 à 2
-			Le terme \emph{besoins fonctionnels} décrit les besoins précis d'un client, les non-négociables dans le cadre d'un projet. Ce sont les points qui ont été mis en avant par Protos et les Haïtiens comme étant essentiels, nécessaires afin que notre application leur soit utile.
+			Le terme \emph{besoins fonctionnels} décrit les besoins précis d'un client sur le projet. Ce sont les points qui ont été mis en avant par Protos et les Haïtiens comme étant les plus importants afin que notre application leur soit utile.
 
 			\subsection*{Gestion des données}
 				\label{sec:gest_donnee}
@@ -480,16 +479,9 @@
 
 				Pour mieux comprendre la nature exacte des données en question, nous avons étudié des fichiers Excel~\cite{ref:resumes_documents}, qui servent à ce jour de premier pas vers une informatisation de la gestion du réseau de distribution d'eau.
 
-				\begin{figure}[ht!]
-					\centering
-					\includegraphics[width=\textwidth]{images/db}
-					\caption{Schéma des données du système}
-					\label{fig:db}
-				\end{figure}
+				Ces documents nous ont été d'une très grande utilité, puisqu'ils nous ont permis de lister toutes les données nécessaires à notre application, nous donnant un solide point de départ pour notre base de données. Ils nous ont également permis de mieux comprendre quelles étaient les responsabilités des différents acteurs, ce qui nous a donné la structure de l'application elle-même.
 
-				Ces documents nous ont été d'une très grande utilité, puisqu'ils nous ont permis de lister toutes les données nécessaires à notre application, nous donnant un solide point de départ pour notre base de données. Nous en avons retiré une structure de données présentée dans la figure~\ref{fig:db}. Ils nous ont également permis de mieux comprendre quelles étaient les responsabilités des différents acteurs, ce qui nous a donné la structure de l'application elle-même.
-
-				En nous inspirant directement des \emph{Komité Dlo} décrit dans le chapitre \ref{sec:structure_haiti}, nous avons décidé de créer deux types de gestionnaires : ceux dits \emph{de zone}, avec peu d'interaction avec les usagers du réseau, qui ont une vision plus globale de celui-ci. Ils collaborent avec des gestionnaires dits \emph{de fontaine(s)}, qui gèrent directement un ou plusieurs points d'eau, et sont en contact direct avec les consommateurs.
+				En nous inspirant directement des \emph{Komité Dlo} décrit dans le chapitre \ref{sec:structure_haiti}, nous avons décidé de créer deux types de gestionnaires : ceux dits \emph{de zone}, qui effectuent une gestion générale de toute une partie du réseau de distribution avec peu d'interaction avec ses usagers. Ils collaborent avec des gestionnaires dits \emph{de fontaine(s)}, qui s'occupent directement un ou plusieurs points d'eau, et sont en contact direct avec les consommateurs.
 
 				Cette division permet à chacun d'avoir un rôle clair et précis, les gestionnaires de fontaines apportant les données au jour le jour (paiements, nouveaux usagers, etc.), tandis que les gestionnaires de zone s'occupent du réseau en lui-même.
 
@@ -499,27 +491,25 @@
 
 				La division en différents rôles que nous avons établie permet aux utilisateurs de l'application d'avoir toujours une vue sur les éléments du réseau de distribution dont ils sont responsables, et de faire circuler les informations beaucoup plus vite.
 
-				Nous souhaitons également aider les gestionnaires de zone à prendre des décisions plus rapidement. En effet, grâce à la numérisation des données, il leur est possible de visualiser leur réseau de distribution avec des filtres. Ceux-ci peuvent mettre en avant les points d'eaux nécessitant une réparation, ou les villages dans lesquels les factures sont en retard.
+				Nous souhaitons également aider les gestionnaires de zone à prendre des décisions plus rapidement. En effet, grâce à la numérisation des données, il leur est possible de visualiser leur réseau de distribution avec des filtres. Ceux-ci peuvent mettre en avant les points d'eau nécessitant une réparation, ou les villages dans lesquels les factures sont en retard.
 
 				Nous sommes partis des documents décrits dans la section \ref{sec:gest_donnee} afin de déterminer différentes procédures importantes dans la gestion de l'eau. Nous avons ensuite conçu des diagrammes représentant comment les utilisateurs pourraient les réaliser au sein de notre application. Ces diagrammes sont disponibles dans l'annexe \ref{sec:activity_diag}.
 
-				%Je vois rien d'autre perso ?
-				%non plus
 
 		\section{Besoins non-fonctionnels}
 
 			%Pages : 1 à 2
-			Le terme de \emph{besoin non-fonctionnel} désigne un besoin caractérisant le système, une contrainte liée à l'implémentation, aux performances ou à une situation spécifique au projet en lui-même. Si ces buts ne sont pas atteints, l'application est quand même utilisable, leur réalisation est cependant nécessaire pour obtenir un système fiable et qualitatif.
+			Le terme de \emph{besoin non-fonctionnel} désigne un besoin autour du système, une contrainte liée à l'implémentation, aux performances ou à une situation spécifique au projet en lui-même. La réalisation de ces objectifs permet d'obtenir un système plus fiable et qualitatif.
 
 			\subsection*{Sécurité des données}
 				Dans le monde d'aujourd'hui, il est évident qu'une certaine attention doit être accordée à la sécurité d'une application web. En Haïti peut-être plus qu'ailleurs, une attention particulière se doit d'être portée à la possibilité qu'un utilisateur malveillant ou non se connecte au système.
 
 				Par conséquent, nous avons non seulement implémenté un principe de connexion avec privilèges (certaines données sont inaccessibles sans un niveau de privilège particulier), mais nous avons également ajouté un système de \emph{logs}.
 
-				Ce module, appelé \emph{module historique} n'était pas prévu initallement, nous l'avons ajouté pour remédier aux erreurs des utilisateurs, ou aux comportements malicieux. Ce module permet aux supérieurs hiérarchiques de consulter les modifications faites par leurs subordonnés. Si ces modifications leur semblent incorrectes, un seul clic leur permet de faire revenir les données à leur état précédent. Si une modification est acceptée, elle disparaît de la liste en laissant la modification, jugée valide, dans la base de données.
+				Ce module, appelé \emph{module historique} n'était pas prévu initalement, nous l'avons ajouté pour remédier aux erreurs des utilisateurs, ou aux comportements malicieux. Ce module permet aux supérieurs hiérarchiques de consulter les modifications faites par leurs subordonnés. Si ces modifications leur semblent incorrectes, un seul clic leur permet de faire revenir les données à leur état précédent. Si une modification est acceptée, elle disparaît de la liste en laissant la modification, jugée valide, dans la base de données.
 
 			\subsection*{Connexions lentes et peu fiables}
-				L'utilisation de notre application en Haïti amène un besoin particulier : dans ce pays, la connexion Internet est bien plus lente que nos standards européens et y est souvent peu fiable. Pour pallier à cela, nous avons d'abord utilisé les techniques courantes : nous envoyons aussi peu de données que possible, faisons usage de la cache~\ref{sec:cache_client} et envoyons les informations des différents éléments de la page séparément.
+				L'utilisation de notre application en Haïti amène un besoin particulier : dans ce pays, la connexion Internet est bien plus lente que nos standards européens et y est souvent peu fiable. Pour pallier à cela, nous avons d'abord utilisé les techniques courantes : nous envoyons aussi peu de données que possible, faisons usage de la cache (voire section~\ref{sec:cache_client}) et envoyons les informations des différents éléments de la page séparément.
 
 				Cependant, une demande de nos clients a été de pouvoir utiliser certaines fonctionnalités de l'application lorsqu'il n'y a pas de connexion. Pour cela, nous avons développé un \emph{service worker}, détaillé en section~\ref{sec:service_worker}.
 
@@ -532,31 +522,42 @@
 		\section{Cahier des charges}
 			\label{sec:cahier_des_charges}
 
-			% Important : dans cette section, il faut impérativement parler des modules.
-			% Expliquer que le besoin non-fonctionnel d'évolutivité de l'application justifie l'utilisation de "modules". Expliquer comment ils s'intègrent en un seul système, et puis donner un résumé, pour chaque module, de ce qu'il permet de faire.
-			% Et en fait c'est le seul endroit où on peut parler de tout ça, donc ça doit être fait ici.
 			%Pages : 2 à 3
-			Après discussion avec Protos et les Haïtiens, nous avons décidé d'organiser notre application en différents modules indépendants intéragissant avec notre base de données. Ce choix de conception nous a permis dans un premier temps d'appliquer la méthode Agile plus facilement, déployant notre travail module par module. Dans un second temps, il permet à notre application d'évoluer très rapidement : un nouveau module vient se greffer à la base de donnée sans changer le fonctionnement des autres, un ancien module qui aurait perdu son utilité peut être enlevé sans rien endommager. De plus, ce choix devrait aider les futurs développeurs à ajouter à la base applicative existante plus rapidement.
+			Après discussion avec Protos et les Haïtiens, nous avons décidé d'organiser notre application en différents modules intéragissant avec notre base de données. Certains sont indépendants tandis que d'autres étendent un module précédent pour lui rajouter des fonctionnalités. Ils forment au final un réseau de dépendances, montré dans la figure \ref{fig:modules}.
+
+			Ce choix de conception nous a permis dans un premier temps d'appliquer la méthode Agile plus facilement, déployant notre travail module par module. Dans un second temps, il permet à notre application d'évoluer très rapidement : un nouveau module vient se greffer à la base de donnée sans changer le fonctionnement des autres, un ancien module qui aurait perdu son utilité peut être enlevé sans rien endommager s'il n'a pas de dépendances. De plus, ce choix devrait aider les futurs développeurs à ajouter à la base applicative existante plus rapidement. Le cahier des charges complet initialement créé et approuvé par toutes les parties est disponible dans l'annexe \ref{sec:cdc}.
+
+			\begin{figure}
+				\includegraphics[width=\textwidth]{images/modules}
+				\caption{Relations entre les différents modules de l'application et entités gérées}
+				\label{fig:modules}
+			\end{figure}
 
 			Chaque module représente un type d'activité pratiqué par les gestionnaires du réseau de distribution. Après cette première année de développement, nous en avons créé huit :
 			\begin{itemize}
 				\item Le module \textbf{réseau}, permet de créer de nouveaux éléments du réseau (source, conduite, réservoir, kiosque, fontaine, prise individuelle) et de consulter des informations à leur propos (nom, emplacement, état de fonctionnement)
-				\item Le module \textbf{carte interactive}, fortement lié avec le précédent, permet de placer et visualiser les éléments du réseau de distribution sur une carte. Le module permet de placer des éléments au jugé avec la souris, ou directement avec trois systèmes de coordonnées : le degré décimal, le degré-minute-seconde et la transverse universelle de Mercator (cette dernière méthode demandée par notre contact haïtien).
+				\item Le module \textbf{carte interactive}, fortement lié avec le précédent, permet de placer et visualiser les éléments du réseau de distribution sur une carte. Le module permet de placer des éléments sur celle-ci directement avec la souris, ou plus précisemment avec trois systèmes de coordonnées : le degré décimal, le degré-minute-seconde et la transverse universelle de Mercator (cette dernière méthode demandée par notre contact haïtien).
 				\item Le module \textbf{consommateurs} contient toutes les informations à propos des usagers du réseau (nom, adresse, etc), groupés par ménages.
 				\item Le module \textbf{financier}, fortement lié avec le module précédent, permet de consulter et d'ajouter les informations concernant les paiements réalisés par les usagers du réseau.
 				\item Le module \textbf{rapports} permet aux gestionnaires de fontaine(s) d'entrer des informations sur le fonctionnement du réseau (s'il a été actif, quelle quantité d'eau a été distribuée) et de créer des tickets de problèmes en cas de panne d'un élément.
 				\item Le module \textbf{gestion de zone}, plus administratif, permet de créer de nouveaux gestionnaires et de les assigner à une zone ou des éléments du réseau en fonction de leur rôle.
 				\item Le module \textbf{historique} permet aux supérieurs hiérarchiques de visualiser tous les changements, ajouts ou suppressions effectués par leurs subordonnés. Ils peuvent valider ou annuler ces changements. Pendant trois semaines, un choix (validation ou annulation) est affiché dans une seconde table pour informer les autres supérieurs qu'une décision a été prise, afin de permettre de récupérer des informations supprimées en cas d'annulation erronée.
-				\item Le module \textbf{offline} permet d'assurer la disponibilité du site même lorsque la connexion internet n'est pas stable, donnant la possiblité de compléter le rapport mensuel.
+				\item Le module \textbf{offline} permet d'assurer la disponibilité du site même lorsque la connexion internet n'est pas stable, donnant la possiblité de compléter le rapport mensuel. Les fonctionnalités précises de ce module sont décrites plus en détail dans la section~\ref{sec:service_worker}.
 			\end{itemize}
 
-			%\subsection*{Complet en annexe ?}
+		\section{Structure des données}
 
-		%\section{Structure des données}
+			À partir des informations des différents documents analysés dans la section \ref{sec:gest_donnee}, nous avons avons commencé à établir une structure pour les données de notre application. Nous avons d'abord repéré les champs qui nous semblaient les plus importants dans les différents fichiers Excel~\cite{ref:resumes_documents}. Nous avons ensuite confronté ça aux différents modules et fonctionnalités développés dans le cahier des charges. En rassemblant tout ça, nous avons établis un schéma en figure \ref{fig:db} représentant la structure des données à laquelle nous sommes arrivé. Il montre un diagramme des relations entre les différentes entités de notre application, selon le standard UML~\cite{ref:siegfried_db}.
 
-			%Pages : 2 à 3
+			\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{images/db}
+				\caption{Schéma des données du système}
+				\label{fig:db}
+			\end{figure}
 
-			%\subsection*{Complet en annexe ?}
+			% TODO explain better figure, how we made it and what it says
+			% Est-ce que je rentre dans les détails de ce qu'il y a dans le schéma ? Kim a l'air d'en avoir envie...
 
 	\chapter{Implémentation}
 
@@ -586,14 +587,12 @@
 				\begin{itemize}
 					\item L'application ne nécessite aucune installation, aucun prérequis et la seule nécessité est de disposer d'un navigateur internet (préférentiellement majeur et relaivement récent). C'est une facilité pour l'utilisateur, puisqu'il suffit d'accéder au site internet. L'avantage est également étendu au développement qui ne doit pas se préoccuper du système d'exploitation de l'utilisateur.
 					\item Le déploiement des mises à jour et la manière dont l'application fonctionne en général est uniforme à travers les utilisateurs et les conflits de version, bien que devant toujours être gérés notamment par le biais du cache (voir section~\ref{sec:cache_client}), sont moindres que sur une application locale. D'éventuels conflits de données peuvent être réglés directement via le serveur et les outils de développement disponibles à l'équipe, ce qui est plus rapide et moins complexe que de créer des automatisations pour gérer ces mises à jour individuellement pour chaque utilisateur.
-					\item
 				\end{itemize}
 
 				Ne présentant pas que des avantages, le développement web apporte son lot de problématiques nouvelles :
 				\begin{itemize}
 					\item Utiliser une application en ligne nécessite une connexion internet, et même si cette dernière n'est pas requise en permanence (voir section~\ref{sec:service_worker}), il est impératif qu'elle soit présente ponctuellement pour charger l'application et envoyer/recevoir les données lors de son utilisation.
 					\item La diversité des navigateurs internet (Firefox, Chrome, Edge, etc) entraîne la nécessité de gérer ces environnements différents pour que l'application fonctionne sur un maximum de navigateurs et de manière similaire.
-					\item
 				\end{itemize}
 
 			\subsection*{Choix du framework - Django}
@@ -601,7 +600,7 @@
 
 				Un framework est une infrastructure logicielle dans laquelle l'application est développée. On peut argumenter, avec raison, qu'un framework ajoute une certaine quantité d'outils qui ont pour effet de complexifier l'application et d'en augmenter la taille. Dans une application aussi large que la nôtre cependant, l'apport bénéfique qu'ont ces outils supplante largement ces inconvénients. Parmi ces apports bénéfiques on citera surtout :
 				\begin{itemize}
-					\item L'environnement de travail d'un framework impose certaines contraintes qui répandent des bonnes pratiques. Par exemple une structure des fichiers du code source qui permet à long terme une meilleure maintenance, surtout dans de larges applications.
+					\item L'environnement de travail d'un framework impose certaines contraintes qui répandent des bonnes pratiques. Par exemple, une structure des fichiers et dossiers du code source qui permet à long terme une meilleure maintenance, surtout dans des applications complexes.
 					\item Les outils fournis sont testés, utilisés et éprouvés. Il n'est pas nécessaire de créer nous-même des fonctionnalités déjà présentes dans un framework, et même si recréer ces fonctionnalités est une expérience enrichissante, elle reste moins efficace. De plus, les fonctionnalités existantes sont de meilleure qualité, offrent de meilleures performances et surtout ne sont pas à maintenir par l'équipe de développement de l'application, mais par l'organisme en charge de la publication du framework. Ces avantages seront d'autant plus importants que le framework est populaire et maintenu à jour.
 					\item Un framework aura beaucoup de fonctionnalités par défaut qui rendront le développement plus aisé. Messages d'erreur, outils de mesures, etc.
 					\item La documentation et l'aide sont de meilleure qualité. Les framework ont généralement une communauté et une équipe de développement dont les capacité et l'expérience permettent une production de documentation rendant très facile la compréhension du projet et la recherche d'aide. Avantages qu'il est impossible d'égaler dans une équipe de trois personnes sur dix mois.
@@ -646,7 +645,7 @@
 							\end{figure}
 
 					\item[M] Maintenabilité - Aisance et possibilités de maintenance. \hfill \\
-							L'aisance avec laquelle un code est maintenu à jour est inversement lié à la complexité. \'A cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long terme.
+							L'aisance avec laquelle un code est maintenu à jour est inversement lié à la complexité. À cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long terme.
 
 					\item[Pe] Performance - Capacités du framework. \hfill \\
 							Bien que moins importantes que dans une application critique (e.g.: aérospatial, banque), les performances sont mesurées en termes de temps de réponse pour une requête du client au serveur.
@@ -674,7 +673,7 @@
 
 			\subsection*{Python}
 				% Obligé par Django, quand même un bon choix. Pas le plus répandu (PHP et ASP.NET bien plus utilisés) mais permet une bonne gestion des objets intégrée directement au serveur, car langage OO.
-				Le langage Python est un langage de programmation populaire principalement grâce à sa syntaxe légère permettant un code compréhensible et généralement plus court (voir figure~\ref{fig:complexity}). Il n'est pas le plus utilisé, ce sont PHP (79\% d'utilisation), ASP.NET (11.3\%) et Java (4\%) qui constituent le trio de tête~\cite{ref:popular_programming_languages}. Toutefois, nous pensons que Python s'adapte parfaitement aux besoins de l'application demandée. C'est un langage relativement simple et compréhensible dont la popularité croît ces dernières années. Les bibliothèques logicielles et la documentation, toutes deux disponibles à foison sur internet, en font un langage particulièrement ouvert aux débutants. Un dernier argument, et non des moindres, est l'expérience déjà acquise dans la programmation en Python durant nos années d'études.
+				Le langage Python est un langage de programmation populaire principalement grâce à sa syntaxe légère permettant un code compréhensible et généralement plus court (voir figure~\ref{fig:complexity}). Il n'est pas le plus utilisé, ce sont PHP (79\% d'utilisation), ASP.NET (11.3\%) et Java (4\%) qui constituent le trio de tête~\cite{ref:popular_programming_languages}. Toutefois, nous pensons que Python s'adapte parfaitement aux besoins de l'application demandée. C'est un langage relativement simple et compréhensible dont la popularité croît ces dernières années. Les bibliothèques logicielles et la documentation, toutes deux disponibles à foison sur Internet, en font un langage particulièrement ouvert aux débutants. Un dernier argument, et non des moindres, est l'expérience déjà acquise dans la programmation en Python durant nos années d'études.
 
 			\subsection*{PostreSQL et PostGIS}
 				% Autre obligation de Django, mais une décision consciente de l'utiliser pour PostGIS. Manipulation géographique facilitée, un apport positif pour la suite du module GIS.
@@ -953,7 +952,11 @@
 
 				D'abord pour les requêtes de documents, nous vérifions que ceux-ci sont correctement chargés dans plusieurs cas, comme lorsque l'utilisateur n'est pas connecté, ou avec des utilisateurs possédant différents niveaux d'autorisation.
 
+<<<<<<< HEAD
 				Pour les requêtes de données, nous vérifions sur la base de données que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupéré sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées.
+=======
+				Pour les requêtes de données, nous vérifions sur la base de donnée que son état soit cohérent après que la requête ait été effectuée, ou que les données que nous avons récupérées soient correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées.
+>>>>>>> 2ee8395189c552f9980a77916a25e478c3cc4638
 
 				% TODO coverage
 
@@ -1112,7 +1115,7 @@
 
 			Une autre amélioration permettant de réduire le temps de réponse serait d'alléger les pages de l'application. Bien que ces dernières soient largement mises en cache (voir section~\ref{sec:cache_client}), leur téléchargement initial et à chaque fois que le cache est vidé représente entre $1$ et $1.6$Mo de données. En passant l'outil \emph{coverage} de \emph{DevTools (Chrome)}, nous observons qu'en moyenne l'application utilise 40\% des fichiers téléchargés ce qui est dû à l'importation des bibliothèques comme Bootstrap. En supprimant les fonctionnalités inutilisées, l'application pourrait donc être allégée. Cela n'a pas été fait jusqu'à présent puisque l'application est en développement et que des fonctionnalités inutilisées pourraient le devenir. Nous avons tout de même créée un script~\footnote{https://github.com/AdrienHalletUCL/chromeCoverageParser} qui permet de raccourcir les fichiers en enlevant les fonctions inutilisées, script qui pourrait être réutilisé dans les travaux futurs sur HaïtiWater.
 
-			De plus, à la création de nouveaux utilisateurs, un e-mail leur est envoyé avec leurs informations de connexion. Par facilité et économie, ce processus est entièrement géré par le serveur de l'application et utilise une adresse Gmail classique, ce qui rend l'action bloquante et donc lente. Dans le futur, il serait important d'avoir un serveur mail dédié pour prendre en charge ces actions. Un Haïtien a également proposé d'utiliser des SMS, qui sont apparemment plus utilisés que les courriels en Haïti.
+			De plus, à la création de nouveaux utilisateurs, un courriel leur est envoyé avec leurs informations de connexion. Par facilité et économie, ce processus est entièrement géré par le serveur de l'application et utilise une adresse Gmail classique, ce qui rend l'action bloquante et donc lente. Dans le futur, il serait important d'avoir un serveur mail dédié pour prendre en charge ces actions. Un Haïtien a également proposé d'utiliser des SMS, qui sont apparemment plus utilisés que les courriels en Haïti.
 
 		\section{Défis rencontrés}
 
@@ -1128,7 +1131,7 @@
 
 		\section{Propositions}
 
-			Beaucoup de modules pourraient être ajoutés à HaïtiWater. Une demande récurrente est le module \emph{Citizen Science} qui vise à impliquer les consommateurs haïtiens dans la gestion réseau de distribution en leur proposant par exemple de signaler des problèmes, consulter leur consommation et factures.
+			Beaucoup de modules pourraient être ajoutés à HaïtiWater. Une demande récurrente est le module \emph{Citizen Science} qui vise à impliquer les consommateurs haïtiens dans la gestion du réseau de distribution en leur proposant par exemple de signaler des problèmes, consulter leur consommation et factures.
 
 			L'évolution du système sur d'autres axes que l'application web est également un chemin qui pourrait être poursuivi. Les acteurs haïtiens souhaitant développer l'aspect hors-ligne de l'application, il pourrait être envisagé de développer une application locale qui utiliserait un instantané de la base de données. Cela requièrerait un gros travail sur la consistance de la base de données du côté du serveur mais permettrait des utilisations hors-ligne plus avancées.
 
@@ -1183,11 +1186,9 @@
 					\label{fig:trello_stat}
 			\end{figure}
 
-
-	\addcontentsline{toc}{chapter}{Bibliographie}
-
 	\bibliography{bibliography}{}
 	\bibliographystyle{plain}
+	\addcontentsline{toc}{chapter}{Bibliographie}
 
 		%Pages : 2 à 3
 
@@ -1196,6 +1197,7 @@
 	%\chapter{Cahier des charges complet}
 
 		\includepdf[pages=1,pagecommand=\chapter{Cahier des charges complet}, offset=0 -3cm, scale=0.6]{../documents/requirements/Cahier_des_Charges.pdf}
+		\label{sec:cdc}
 		\includepdf[pages=2-,pagecommand={},width=1.1\textwidth]{../documents/requirements/Cahier_des_Charges.pdf}
 
 	%\chapter{Planning}
