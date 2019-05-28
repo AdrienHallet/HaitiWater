@@ -866,7 +866,7 @@
 				\label{fig:screen_rapport_mensuel}
 			\end{figure}
 
-			Ces formulaires ont pour objectif d'accompagner l'utilisateur dans ses tâches. En figure~\ref{fig:screen_rapport_mensuel}, vous observez que pour atteindre ce but, nous mettons en place un formulaire qui se consulte de haut en bas et de droite à gauche, où chaque information entrée est une information qui ne nécessite aucun retour en arrière. Sur ce formulaire en particulier, l'utilisateur peut entrer des données dans l'unité de volume de son choix (mètres cubes, gallons), la conversion est faite automatiquement. Le formulaire est également séparé en quatre parties distinctes. Celles-ci évitent un bloc formulaire trop grand et permettent une transition entre différentes parties logiques du rapport mensuel.
+			Ces formulaires accompagnent l'utilisateur dans ses tâches. En figure~\ref{fig:screen_rapport_mensuel}, vous observez que pour atteindre ce but, nous mettons en place un formulaire qui se consulte de haut en bas et de droite à gauche, où chaque information entrée est une information qui ne nécessite aucun retour en arrière. Sur ce formulaire en particulier, l'utilisateur peut entrer des données dans l'unité de volume de son choix (mètres cubes, gallons), la conversion est faite automatiquement. Le formulaire est également séparé en quatre parties distinctes. Celles-ci évitent un bloc formulaire trop grand et permettent une transition entre différentes parties logiques du rapport mensuel.
 
 		\section{Client}
 
@@ -936,12 +936,6 @@
 					\item Les requêtes de données, interragissant avec la base de données.
 				\end{itemize}
 
-				%Les documents ne contiennent pas les données, le client effectue des requêtes après qu'ils soient rendus pour télécharger ces dernières et ainsi compléter les tables. Ceci nous permet de cacher plus efficacement les documents et fichiers (voir section \ref{sec:cache_client}) et de les rendre plus légers pour accélérer le rendu des pages HTML même en cas de faible connexion.
-
-				%Nous avons décidé de séparer la logique des requêtes de données du reste de l'application en le rassemblant dans un module spécifique API. Cela nous a permis de mieux compartementalisation notre code et la logique de l'application.
-				% (Adrien) -> J'ai trouvé les deux paragraphes trop complexes, je propose ça comme reformulation :
-				% Céline : me semble bien
-
 				Les deux premiers types de requêtes permettent à un navigateur de télécharger l'application afin d'avoir une interface graphique pour manipuler le troisième type requête via l'API. Cette séparation permet de réduire le temps de chargement en allégeant les documents HTML qui ne contiennent que la logique de contrôle. Les données sont ensuite envoyées de manière asynchrone, donc non-bloquante, lorsque l'application envoie les requêtes à l'API.
 
 				En plus des avantages apportés au client, la présence d'une API (détaillée en section \ref{sec:api}) est une bonne pratique qui permet une meilleure compartementalisation des rôles du serveur.
@@ -954,37 +948,43 @@
 					\label{fig:sequence}
 				\end{figure}
 
-				% TODO schéma des requêtes avec timeline, en mode diagramme de séquence
-
-				% Une autre possibilité est de rajouter une autre interface pour notre application. Il suffit d'intéragir avec l'API pour pouvoir gérer toutes les données, sans s'embarrasser de la manière de la représenter. De cette manière, nous pourrions créer une autre application même sur une toute autre plateforme comme Android par exemple. Elle n'aurait qu'à gérer sa manière de représentation sur cette plateforme et pourrait intéragir de notre première application au moyen de requêtes de données.
-				% (Adrien) -> paragraphe commenté, déjà expliqué ailleurs et ça sera également mis en avant dans les "projets futus"
-
 			\subsection*{Détails des requêtes API}
 				\label{sec:api}
-				Le principal rôle de l'API est l'interaction avec la base de données. Comme on peut le voir sur le schéma en figure~\ref{fig:db}, nous manipulons les objects suivant : consommateur, paiement, élément du réseau, point géographique, rapport mensuel, ticket de problème, zone et utilisateur de l'application. Les éléments \texttt{log} et \texttt{transaction} sont traités de manière particulière, et seront abordés plus tard.
+				L'API (\emph{Application Programming Interface}) permet l'interaction avec la base de données via HaïtiWater. Présentée en figure~\ref{fig:db}, nous manipulons les objects suivant : consommateur, paiement, élément du réseau, point géographique, rapport mensuel, ticket de problème, zone et utilisateur de l'application. Les éléments \texttt{log} et \texttt{transaction} sont traités de manière particulière.
 
-				Pour ces types de données principaux, le front-end transmet au serveur les actions des utilisateurs voulant :
+				Pour ces objets enregistrés par le serveur, l'API transmet au serveur les actions :
 				\begin{itemize}
 					\item Ajouter
 					\item Supprimer
 					\item \'Editer
 				\end{itemize}
 
-				Ces trois types de requêtes sont la dernière protection contre les erreurs humaines (ou les comportements malveillant). Avant de modifier l'état des données, nous vérifions que l'utilisateur connecté a bien la permission d'effectuer son action, et que celle-ci ne mettra pas la base de données dans un état incorrect. Il est par exemple interdit de supprimer un élément du réseau auquel est toujours rattaché un consommateur (il faut au préalable l'éditer ou le supprimer). Au cas où l'action demandée est détectée comme interdite, le serveur se charge de relayer l'information au client, afin d'afficher une erreur à l'utilisateur.
+				Les requêtes HTML à l'API ont la forme : \\
+				\url{.../api/<add|edit|remove>/?table=<table_name>&id=<id>&data=<data>}
 
-				Ces trois actions sont également celles qui déclenchent la création des transactions et logs du module historique. Dès qu'une modification est apportée, une transaction contenant la date et l'utilisateur connecté est créée. Ensuite, des \texttt{log} lui sont associés, un par modification apportée (par exemple, si on change le nom et l'adresse d'un utilisateur, deux logs seront associés à la transaction). Ce processus n'est pas visible ou accessible à l'utilisateur de l'application, puisqu'il est en partie pensé pour éviter les comportements malicieux.
+				Le serveur effectue le second tour de vérifications sur les données envoyées à l'API (le premier effectué par l'interface web). Nous vérifions que :
+				\begin{enumerate}
+					\item L'utilisateur a accès à la donnée qu'il tente de manipuler
+					\item La donnée est correcte
+					\item La modification demandée ne va pas causer de problèmes dans l'application. (e.g. : impossible de supprimer un élément du réseau utilisé par des consommateurs).
+				\end{enumerate}
+				En réponse, le serveur informe du succès ou de l'échec de l'opération et pourquoi le cas échéant.
 
-				Le dernier type de requête réalisé par l'API permet au client de récupérer les données de la base de données afin d'afficher les informations à l'écran. Nous avons d'abord créé une requête générique fournissant toutes les informations d'une table pour les donner à \emph{DataTables}. Puisque cette bibliothèque propose une recherche et des filtres très avancés, nous avons également créé une fonction générique permettant de les appliquer à l'importe quelle requête.
+				%Ces trois types de requêtes sont la dernière protection contre les erreurs humaines (ou les comportements malveillant). Avant de modifier l'état des données, nous vérifions que l'utilisateur connecté a bien la permission d'effectuer son action, et que celle-ci ne mettra pas la base de données dans un état incorrect. Il est par exemple interdit de supprimer un élément du réseau auquel est toujours rattaché un consommateur (il faut au préalable l'éditer ou le supprimer). Au cas où l'action demandée est détectée comme interdite, le serveur se charge de relayer l'information au client, afin d'afficher une erreur à l'utilisateur.
 
-				C'est aussi dans ce cas que la cache du serveur est mise en place : à chaque exécution d'une requête récupérant des données, celles-ci sont mises en cache pour une minute. Ceci nous permet d'économiser des performances quand un utilisateur travaille longtemps sur les mêmes données.
+				Ces trois actions sont également celles qui déclenchent la création des transactions et logs du module historique. Chaque modification ajoute une transaction contenant la date et l'utilisateur connecté. Des objets \texttt{log} sont associés à la transaction, un objet par modification (par exemple, si on change le nom et l'adresse d'un utilisateur, deux logs sont associés à la transaction).
 
-				Finalement, nous avons quelques requêtes permettant d'accéder à des données dans un format spécifiques :
+				Le dernier type de requête réalisé par l'API permet au client de récupérer les données de la base de données afin d'afficher les informations à l'écran. Une fonction générique gère la collecte de ces données pour toutes les tables (le concept est similaire à travers les modules), une autre fonction générique gère l'application des filtres et tris sur les données.
+
+				La cache du serveur est activée par ce type de requête : à chaque demande de données, la réponse est mise en cache pour une minute. Ceci nous permet d'économiser des performances quand un utilisateur travaille longtemps sur les mêmes données.
+
+				Certaines requêtes d'accès ont un format plus spécifique, ne pouvant être génériques car utilisées dans un contexte spécifique :
 
 				\begin{itemize}
-					\item Récupérer les données permettant de tracer les graphes
-					\item Récupérer les détails des coordonnées géographiques des éléments du réseau afin de les afficher sur la carte interactive
-					\item Récupérer le détails des informations concernant les paiements d'un utilisateur en particulier (utilisé dans le module financier)
-					\item Suite à une demande directe des acteurs d'Haïti, nous avons ajouté une option pour consulter la quantité d'eau distribuée par un élément du réseau mois par mois. Une requête calculant ceci a donc été créée.
+					\item Données permettant de tracer les graphes
+					\item Détails des coordonnées géographiques des éléments du réseau afin de les afficher sur la carte interactive
+					\item Détails des informations concernant les paiements d'un utilisateur en particulier (utilisés dans le module financier)
+					\item Données périodiques (mois par mois) des volumes distribués par les éléments du réseau.
 				\end{itemize}
 
 
