@@ -590,7 +590,7 @@
 
 				\'Etablie dès le premier jour, l'exigence du support web pour ce travail a influencé la totalité du mémoire. Nous n'avons pas eu de réel choix à ce niveau, il nous est néanmoins possible de trouver des avantages à ce type de développement :
 				\begin{itemize}
-					\item L'application ne nécessite aucune installation, aucun prérequis et la seule nécessité est de disposer d'un navigateur internet (préférentiellement majeur et relaivement récent). C'est une facilité pour l'utilisateur, puisqu'il suffit d'accéder au site internet. L'avantage est également étendu au développement qui ne doit pas se préoccuper du système d'exploitation de l'utilisateur.
+					\item L'application ne nécessite aucune installation, aucun prérequis et la seule nécessité est de disposer d'un navigateur internet (préférentiellement majeur et relativement récent). C'est une facilité pour l'utilisateur, puisqu'il suffit d'accéder au site internet. L'avantage est également étendu au développement qui ne doit pas se préoccuper du système d'exploitation de l'utilisateur.
 					\item Le déploiement des mises à jour et la manière dont l'application fonctionne en général est uniforme à travers les utilisateurs et les conflits de version, bien que devant toujours être gérés notamment par le biais du cache (voir section~\ref{sec:cache_client}), sont moindres que sur une application locale. D'éventuels conflits de données peuvent être réglés directement via le serveur et les outils de développement disponibles à l'équipe, ce qui est plus rapide et moins complexe que de créer des automatisations pour gérer ces mises à jour individuellement pour chaque utilisateur.
 				\end{itemize}
 
@@ -603,7 +603,7 @@
 			\subsection*{Choix du framework - Django}
 				% Framework éprouvé (ancien, maintenu, communauté, documentation), adapté à de larges applications (scalable), permet l'utilisation facilité de PostgreSQL (modèles), gabarits pour du HTML 'importé' sans besoin d'angular/whatever (moins de techs, reste simple).
 
-				Un framework est une infrastructure logicielle dans laquelle l'application est développée. On peut argumenter, avec raison, qu'un framework ajoute une certaine quantité d'outils qui ont pour effet de complexifier l'application et d'en augmenter la taille. Dans une application aussi large que la nôtre cependant, l'apport bénéfique qu'ont ces outils supplante largement ces inconvénients. Parmi ces apports bénéfiques on citera surtout :
+				Un framework est une infrastructure logicielle dans laquelle l'application est développée. On peut argumenter, avec raison, qu'un framework ajoute une certaine quantité d'outils qui ont comme effet de bord de complexifier l'application et d'en augmenter la taille. Dans une application aussi large que la nôtre cependant, l'apport bénéfique qu'ont ces outils supplante largement ces inconvénients. Parmi ces apports bénéfiques on citera surtout :
 				\begin{itemize}
 					\item L'environnement de travail d'un framework impose certaines contraintes qui répandent des bonnes pratiques. Par exemple, une structure des fichiers et dossiers du code source qui permet à long terme une meilleure maintenance, surtout dans des applications complexes.
 					\item Les outils fournis sont testés, utilisés et éprouvés. Il n'est pas nécessaire de créer nous-même des fonctionnalités déjà présentes dans un framework, et même si recréer ces fonctionnalités est une expérience enrichissante, elle reste moins efficace. De plus, les fonctionnalités existantes sont de meilleure qualité, offrent de meilleures performances et surtout ne sont pas à maintenir par l'équipe de développement de l'application, mais par l'organisme en charge de la publication du framework. Ces avantages seront d'autant plus importants que le framework est populaire et maintenu à jour.
@@ -644,21 +644,21 @@
 
 							\begin{figure}
 								\centering
-								\includegraphics[width=.6\textwidth]{images/complexity}
+								\includegraphics[width=.4\textwidth]{images/complexity}
 								\caption{Pourcentage de code imbriqué}
 								\label{fig:complexity}
 							\end{figure}
-
+					%(Kim) Quelle est la conclusion pour ce critère (?)
 					\item[M] Maintenabilité - Aisance et possibilités de maintenance. \hfill \\
 							L'aisance avec laquelle un code est maintenu à jour est inversement lié à la complexité. À cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long terme.
-
+					%(Kim) Quelle est la conclusion pour ce critère (?)
 					\item[Pe] Performance - Capacités du framework. \hfill \\
-							Bien que moins importantes que dans une application critique (e.g.: aérospatial, banque), les performances sont mesurées en termes de temps de réponse pour une requête du client au serveur.
+							Bien que moins importantes que dans une application critique (e.g.: aérospatial, banque), les performances sont mesurées en termes de temps de réponse pour une requête du client au serveur. Il peut être important de noter que, dans le cas d'Haïti, la performance sera importante due à l'instabilité des connexions Internet.
 
 					\item[Po] Popularité - Popularité du langage à travers le monde. \hfill \\
 							La popularité est sans doute la plus importante des mesures de ce comparatif. Un langage populaire dispose de plus de tutoriels et aide en ligne que d'obscurs langages / frameworks peu ou pas utilisés.
 
-							La figure~\ref{fig:hotframework}~\footnote{https://hotframeworks.com/} montre une évolution de la popularité des frameworks les plus courants.
+							La figure~\ref{fig:hotframework}~\footnote{https://hotframeworks.com/} montre une évolution de la popularité des frameworks les plus courants. On peut constater que Django est actuellement classé cinquième, et surtout qu'il a l'une des courbes les plus stables, ce qui suggère qu'il restera populaire dans le futur.
 
 							\begin{figure}
 								\centering
@@ -666,10 +666,12 @@
 								\caption{Popularité des frameworks de novembre 2014 à août 2018}
 								\label{fig:hotframework}
 							\end{figure}
-
+					%(Kim) Moar conclusions
 					\item[T] Taille - Espace de stockage requis \hfill \\
 							Un framework léger sera plus intéressant pour ce projet. D'une part pour la complexité, car moins il est nécessaire de modifier/ajouter des fichier, plus l'utilisation est aisée. D'autre part car le serveur de destination nous est inconnu et nous ne savons donc pas quel espace de stockage sera mis à disposition.
 				\end{description}
+
+				%TODO Adrien : explication du calcul (moi-même je comprends moyen)
 
 				\subsection*{Django}
 					Le choix d'un framework repose sur de nombreux critères dont plusieurs sont subjectifs. En l'absence d'une ligne directrice, le choix se fait souvent selon l'expérience et les désirs de l'équipe. Notre comparatif terminé, il est devenu clair que nous favorisions un framework utilisant le langage de programmation Python.
@@ -678,14 +680,14 @@
 
 			\subsection*{Python}
 				% Obligé par Django, quand même un bon choix. Pas le plus répandu (PHP et ASP.NET bien plus utilisés) mais permet une bonne gestion des objets intégrée directement au serveur, car langage OO.
-				Le langage Python est un langage de programmation populaire principalement grâce à sa syntaxe légère permettant un code compréhensible et généralement plus court (voir figure~\ref{fig:complexity}). Il n'est pas le plus utilisé, ce sont PHP (79\% d'utilisation), ASP.NET (11.3\%) et Java (4\%) qui constituent le trio de tête~\cite{ref:popular_programming_languages}. Toutefois, nous pensons que Python s'adapte parfaitement aux besoins de l'application demandée. C'est un langage relativement simple et compréhensible dont la popularité croît ces dernières années. Les bibliothèques logicielles et la documentation, toutes deux disponibles à foison sur Internet, en font un langage particulièrement ouvert aux débutants. Un dernier argument, et non des moindres, est l'expérience déjà acquise dans la programmation en Python durant nos années d'études.
+				Le langage Python est un langage de programmation populaire principalement grâce à sa syntaxe légère permettant un code compréhensible et généralement plus court (voir figure~\ref{fig:complexity}). Il n'est pas le plus utilisé en développement web, ce sont PHP (79\% d'utilisation), ASP.NET (11.3\%) et Java (4\%) qui constituent le trio de tête~\cite{ref:popular_programming_languages}. Toutefois, nous pensons que Python s'adapte parfaitement aux besoins de l'application demandée. C'est un langage relativement simple et compréhensible dont la popularité croît ces dernières années. Les bibliothèques logicielles et la documentation, toutes deux disponibles à foison sur Internet, en font un langage particulièrement ouvert aux débutants. de plus, cette montée en popularité fait qu'il est de plus en plus enseigné au sein des unniversités et hautes écoles, ce qui indique que la tendance se maintiendra sans doute. Un dernier argument, et non des moindres, est l'expérience déjà acquise dans la programmation en Python durant nos années d'études.
 
 			\subsection*{PostreSQL et PostGIS}
 				% Autre obligation de Django, mais une décision consciente de l'utiliser pour PostGIS. Manipulation géographique facilitée, un apport positif pour la suite du module GIS.
 				% Petit comparatif d'utilisation des SGBD avec MySQL, etc ?
 				% Pourquoi BDD relationnelle et non-relationnelle ?
 
-				Si l'utilisation du langage Python était imposée dès lors que Django fut choisi en tant qu'environnement logiciel, le système de gestion de base de données, dont le rôle est de lier l'application web et la base de données, a pu être choisi un peu plus librement.
+				Si l'utilisation du langage Python était imposée dès lors que Django fut choisi en tant qu'environnement logiciel, le système de gestion de base de données, dont le rôle est de lier l'application web et la base de données, était moins contraignant puisque de nombreuses options sont compatible avec notre framework.
 
 				Nous avons tout de suite écarté les systèmes non-relationnels. Bien que présentant des avantages, principalement dans l'agilité avec laquelle la structure des données peut évoluer, ces derniers ne sont pas adaptés à une application comme celle développée dans le cadre de ce mémoire. En effet, les données ont de fortes dépendances, les éléments du réseau étant rattachés à des gestionnaires faisant parties de zones géographiques elle-même gérées, etc. Les outils offerts par les bases de données relationnelles pour joindre différents groupes de données (par exemple pour croiser les consommateurs avec leurs paiements afin d'obtenir un détail financier), sont tout simplement mieux adaptés au fonctionnement de l'application.
 
@@ -702,7 +704,7 @@
 
 				Bootstrap ajoute l'avantage non-négligeable d'implémenter un bon nombre de fonctionnalités nous permettant d'accélerer le développement, tout en étant une bibliothèque assez connue que pour être extensivement testée et documentée, la rendant une meilleure alternative à une création personnalisée qui aurait sans doute été moins performante.
 
-				Le désavantage majeur est son poids. Accompagnée de nombreuses fonctionnalités qui n'ont pas été utilisées dans ce projet, Bootstrap est lourde (approximativement 400 KB), d'autant plus en considérant la lenteur des connexions haïtiennes,. Il est cependant tout à fait possible de nettoyer la bibliothèque (voir section~\ref{ref:suite_projet}) pour n'en conserver que les fonctionnalités utilisées, et ainsi optimiser les téléchargements.
+				Le désavantage majeur est son poids. Accompagnée de nombreuses fonctionnalités qui n'ont pas été utilisées dans ce projet, Bootstrap est lourde (approximativement 400 KB), d'autant plus en considérant la lenteur des connexions haïtiennes. Il est cependant tout à fait possible de nettoyer la bibliothèque (voir section~\ref{ref:suite_projet}) pour n'en conserver que les fonctionnalités utilisées, et ainsi optimiser les téléchargements.
 
 			\subsection*{DataTables}
 				% Un constat ; les tables Django ne permettent pas de contrôler l'information à 100%
@@ -716,6 +718,7 @@
 				Les capacités offertes par DataTables sur le contrôle des données nous permettent également de gérer les données à l'envoi et/ou à la réception et de contrôler leur affichage, tout en bénéficiant des fonctionnalités implémentées par la bibliothèque (champ de recherche, tri dynamique, pagination).
 
 				Outre son poids conséquent auquel nous pouvons à nouveau opposer la solution évoquée dans la bibliothèque Bootstrap, DataTables requiert d'implémenter les fonctionnalités de l'API et de gérer le transfert et traitement des requêtes en envoi et réponse du client et du serveur, ce qui représente une charge de travail non-négligeable.
+				%TODO : Kim demande ce que ça veut dire
 
 			\subsection*{Chart.JS}
 			  % Présenter l'information visuellement.
@@ -756,11 +759,11 @@
 				Rappelons que l'application a trois concepts clefs :
 				\begin{description}
 					\item[Zone] \hfill \\
-						Une zone est un partitionnement des données de l'application. A la base de celle-ci se situe la zone racine dans laquelle toutes les données sont enregistrées. Une zone peut être composée d'autres zones. Une zone parente rassemble la totalité des données des zones filles. En revanche, une zone fille ne rassemble que les données qui lui sont rattachées et ne voit pas le contenu des zones soeurs. On peut ainsi se servir des zones pour diviser géographiquement le réseau de distribution d'eau selon le principe de la hiérarchie haïtienne existante (DINEPA, OREPA, CAEPA) exposée en section~\ref{sec:structure_haiti}. Chacun a donc ses propres responsabilités et ne vient pas empiéter sur le territoire de l'autre.
+						Une zone est un partitionnement des données de l'application. A la base de celle-ci se situe la zone racine dans laquelle toutes les données sont enregistrées. Une zone peut être composée d'autres zones. Une zone parente rassemble la totalité des données des zones filles. En revanche, une zone fille ne rassemble que les données qui lui sont rattachées et ne voit pas le contenu des zones soeurs ou parentes. On peut ainsi se servir des zones pour diviser géographiquement le réseau de distribution d'eau selon le principe de la hiérarchie haïtienne existante (DINEPA, OREPA, CAEPA) exposée en section~\ref{sec:structure_haiti}. Chacun a donc ses propres responsabilités et ne vient pas empiéter sur le territoire de l'autre.
 					\item[Elément du réseau] \hfill \\
 						Un élément du réseau peut être une conduite, un réservoir, une source, une fontaine, un kiosque ou une prise individuelle. Ces six éléments constituent le réseau de distribution d'eau potable haïtien et sont enregistrés dans une zone.
 					\item[Consommateur] \hfill \\
-						Un consommateur est un habitant qui utilise le réseau de distribution d'eau potable. Dès son enregistrement dans l'application, le consommateur est rattaché à un élément de sortie (fontaine, kiosque ou prise individuelle) du réseau, ce qui permet de gérer sa facturation et, de manière plus générale, de consulter la densité des consommateurs.
+						Un consommateur est un habitant qui utilise le réseau de distribution d'eau potable. Dès son enregistrement dans l'application, le consommateur est rattaché à un et un seul élément de sortie (fontaine, kiosque ou prise individuelle) du réseau, ce qui permet de gérer sa facturation et, de manière plus générale, de consulter la densité des consommateurs.
 				\end{description}
 
 				Deux types d'utilisateurs sont amenés à se connecter à l'application :
@@ -828,20 +831,22 @@
 			% La GUI n'est qu'une manière d'utiliser l'application. Pour l'instant la seule, mais on différencie vraiment le serveur et l'application car au final la webapp n'est qu'une GUI pour l'API.
 			% Les fonctionnalités
 
-			Partie visible de notre application, l'interface graphique, permet d'utiliser les fonctionnalités d'HaïtiWater. En réalité, l'interface graphique n'est qu'un moyen de faciliter l'utilisation de l'application et de rendre les données accessibles et lisibles par un humain. L'application est entièrement contrôlée par l'API qui requiert les données à afficher ou modifier. Somme toute, n'importe quelle autre interface (application locale, mobile, etc) pourrait envoyer les mêmes requêtes. Cela permet donc de décentraliser la logique de l'application dans le serveur tandis que l'interface permet de présenter l'information à un humain (tableaux, graphiques), le guider dans son utilisation et faciliter la saisie de données via les formulaires. Non content de permettre, dans le futur, la création de nouvelles interfaces, cette séparation des rôles nous a permis d'améliorer le développement et la maintenance de l'application, nous y reviendrons en section~\ref{sec:serveur}.
+			Partie visible de notre application, l'interface graphique, permet d'utiliser les fonctionnalités d'HaïtiWater. En réalité, l'interface graphique n'est qu'un moyen de faciliter l'utilisation de l'application et de rendre les données accessibles et lisibles par un humain. L'application est entièrement contrôlée par l'API qui requiert les données à afficher ou modifier. Somme toute, n'importe quelle autre interface (application locale, mobile, etc) pourrait envoyer les mêmes requêtes. Cela permet donc de décentraliser la logique de l'application dans le serveur tandis que l'interface permet de présenter l'information à un humain (tableaux, graphiques), le guider dans son utilisation et faciliter la saisie de données via les formulaires. Cette séparation des rôles permettra non seulement la création de nouvelles interfaces, mais nous a également permis d'améliorer le développement et la maintenance de l'application. Nous y reviendrons en section~\ref{sec:serveur}.
 
 			Se voulant simple, l'interface est composée de blocs de contrôle permettant de gérer les données dans une zone de travail commune à toute les pages permettant de naviguer à travers l'application.
 
 			\begin{figure}[H]
-				\includegraphics[width=\textwidth]{images/screen_gis_numbered.png}
+				\centering
+				\includegraphics[width=.5\textwidth]{images/screen_gis_numbered_1.png}
+				\includegraphics[width=.9\textwidth]{images/screen_gis_numbered_2.png}
 				\caption{Capture d'écran du module géographique d'HaïtiWater}
 				\label{fig:capture_gis}
 			\end{figure}
 
-			Une capture d'écran de l'application vous est présentée en figure~\ref{fig:capture_gis}. Les contrôles communs incluent :
+			Une capture d'écran de l'application vous est présentée en figures~\ref{fig:capture_gis}. Les contrôles communs incluent :
 			\begin{enumerate}
 				\item Le menu déroulant permettant d'accéder aux modules de l'application.
-				\item La zone utilisateur qui affiche ses notifications et le nom de compte qui lie à la déconnexion ou modification des informations personnelles dans son menu déroulant.
+				\item La zone utilisateur qui affiche ses notifications et le nom de compte qui lie à la{} déconnexion ou modification des informations personnelles dans son menu déroulant.
 				\item L'aide rapide, permettant de déclencher une visite virtuelle de la page ouverte, visite textuelle qui présente brièvement les contrôles et leur utilité.
 			\end{enumerate}
 
