@@ -648,12 +648,12 @@
 								\caption{Pourcentage de code imbriqué}
 								\label{fig:complexity}
 							\end{figure}
-					%(Kim) Quelle est la conclusion pour ce critère (?)
+
 					\item[M] Maintenabilité - Aisance et possibilités de maintenance. \hfill \\
-							L'aisance avec laquelle un code est maintenu à jour est inversement lié à la complexité. À cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long terme.
-					%(Kim) Quelle est la conclusion pour ce critère (?)
+							L'aisance avec laquelle un code est maintenu à jour est inversement lié à la complexité. À cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long terme. Nos recherches favorisent les frameworks Python, par leurs sources généralement plus courtes. La taille du framework a en revanche un impact négatif sur la maintenabilité. Les petits frameworks en python seraient donc les plus maintenables.
+
 					\item[Pe] Performance - Capacités du framework. \hfill \\
-							Bien que moins importantes que dans une application critique (e.g.: aérospatial, banque), les performances sont mesurées en termes de temps de réponse pour une requête du client au serveur. Il peut être important de noter que, dans le cas d'Haïti, la performance sera importante due à l'instabilité des connexions Internet.
+							Les performances sont mesurées en termes de temps de réponse pour une requête du client au serveur. Il peut être important de noter que, dans le cas d'Haïti, la performance sera importante due à l'instabilité des connexions Internet mais moins au niveau du serveur qui ne sera pas aussi sollicité qu'une application de banking ou militaire par exemple.
 
 					\item[Po] Popularité - Popularité du langage à travers le monde. \hfill \\
 							La popularité est sans doute la plus importante des mesures de ce comparatif. Un langage populaire dispose de plus de tutoriels et aide en ligne que d'obscurs langages / frameworks peu ou pas utilisés.
@@ -986,9 +986,17 @@
 
 				D'abord pour les requêtes de documents, nous vérifions que ceux-ci sont correctement chargés dans plusieurs cas, comme lorsque l'utilisateur n'est pas connecté, ou avec des utilisateurs possédant différents niveaux d'autorisation.
 
-				Pour les requêtes de données, nous vérifions sur la base de données que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupéré sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées.
+				Pour les requêtes de données, nous vérifions sur la base de données que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupéré sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées. Ces tests ont relevé plusieurs vulnérabilités de sécurité dans les permissions de l'API et ont permis d'augmenter la sécurité de l'accès aux données et leur modification.
 
-				Pour vérifier tout cela, nous avons créé un total de 187 tests unitaires. Tous ensembles cerux-ci couvrent 85\% des fichiers et 87\% des lignes de code de notre application, sachant que les fichiers restants concernent principalement le fonctionnement interne à Django et qu'il n'est ni évident ni pertinent de les vérifier. Grâce à tous ces tests, nous pouvons nous assurer que notre application fonctionne correctement, au moins pour tous les cas envisagés. De plus, nous pouvons les utiliser lors de modifications dans le code de l'application afin de vérifier que celles-ci n'endommagent pas les fonctionnalités existantes.
+				\begin{tabular}{l|l}
+				   Nombre de tests unitaires & 187 \\
+				   Couverture (fichiers) & 85\% \\
+				   Couverture (lignes) & 87\% \\
+				\end{tabular}
+
+				Les fichiers et lignes restantes appartiennent majoritairement à l'infrastructure Django, testée séparément par les auteurs de cet environnement.
+
+				% Pour vérifier tout cela, nous avons créé un total de 187 tests unitaires. Tous ensembles cerux-ci couvrent 85\% des fichiers et 87\% des lignes de code de notre application, sachant que les fichiers restants concernent principalement le fonctionnement interne à Django et qu'il n'est ni évident ni pertinent de les vérifier. Grâce à tous ces tests, nous pouvons nous assurer que notre application fonctionne correctement, au moins pour tous les cas envisagés. De plus, nous pouvons les utiliser lors de modifications dans le code de l'application afin de vérifier que celles-ci n'endommagent pas les fonctionnalités existantes.
 
 		\section{Vérifications utilisateurs réels}
 			% Pages : 3 à 4
