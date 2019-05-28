@@ -26,6 +26,7 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{graphicx}
+\usepackage[toc]{multitoc}
 
 \usepackage{amssymb}% http://ctan.org/pkg/amssymb
 \usepackage{pifont}% http://ctan.org/pkg/pifont
@@ -582,7 +583,7 @@
 
 			% Expliquer le trade-off constant entre les techs choisies
 
-			% TODO figure montrant un visuel sur l'architecture choisie
+			% (Abandonné) figure montrant un visuel sur l'architecture choisie -> semble trop long finalement, montré à la défense ? plus simple
 
 			\subsection*{Web}
 				% Requis du client. Avantage de la portabilité, installation, données décentralisées directement, donc communes à tous les utilisateurs
@@ -653,12 +654,12 @@
 							L'aisance avec laquelle un code est maintenu à jour est inversement lié à la complexité. À cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long terme. Nos recherches favorisent les frameworks Python, par leurs sources généralement plus courtes. La taille du framework a en revanche un impact négatif sur la maintenabilité. Les petits frameworks en python seraient donc les plus maintenables.
 
 					\item[Pe] Performance - Capacités du framework. \hfill \\
-							Les performances sont mesurées en termes de temps de réponse pour une requête du client au serveur. Il peut être important de noter que, dans le cas d'Haïti, la performance sera importante due à l'instabilité des connexions Internet mais moins au niveau du serveur qui ne sera pas aussi sollicité qu'une application de banking ou militaire par exemple.
+							Les performances sont mesurées en termes de temps de réponse pour une requête du client au serveur. Il peut être important de noter que, dans le cas d'Haïti, la performance sera importante due à l'instabilité des connexions Internet mais moins au niveau du serveur qui ne sera pas aussi sollicité qu'une application de banking ou militaire par exemple. Les performances d'un framework sont largement définies par les technologies utilisées (principalement le type de base de données). Django est un candidat recommandé sur Internet pour les larges projets manipulant beaucoup de données.
 
 					\item[Po] Popularité - Popularité du langage à travers le monde. \hfill \\
 							La popularité est sans doute la plus importante des mesures de ce comparatif. Un langage populaire dispose de plus de tutoriels et aide en ligne que d'obscurs langages / frameworks peu ou pas utilisés.
 
-							La figure~\ref{fig:hotframework}~\footnote{https://hotframeworks.com/} montre une évolution de la popularité des frameworks les plus courants. On peut constater que Django est actuellement classé cinquième, et surtout qu'il a l'une des courbes les plus stables, ce qui suggère qu'il restera populaire dans le futur.
+							La figure~\ref{fig:hotframework}~\footnote{https://hotframeworks.com/} montre une évolution de la popularité des frameworks les plus courants. On peut constater que Django est actuellement classé cinquième, et surtout qu'il a l'une des courbes les plus stables, ce qui suggère qu'il restera populaire dans le futur. Sa présence dans le top 10 est également un bon indicateur de sa perrenité.
 
 							\begin{figure}
 								\centering
@@ -666,12 +667,12 @@
 								\caption{Popularité des frameworks de novembre 2014 à août 2018}
 								\label{fig:hotframework}
 							\end{figure}
-					%(Kim) Moar conclusions
+
 					\item[T] Taille - Espace de stockage requis \hfill \\
 							Un framework léger sera plus intéressant pour ce projet. D'une part pour la complexité, car moins il est nécessaire de modifier/ajouter des fichier, plus l'utilisation est aisée. D'autre part car le serveur de destination nous est inconnu et nous ne savons donc pas quel espace de stockage sera mis à disposition.
 				\end{description}
 
-				%TODO Adrien : explication du calcul (moi-même je comprends moyen)
+				Le calcul du total pose les valeurs 0, 0.5 et 1 (resp. N, M et B) et somme les valeurs des différents critères. Nous insistons sur la subjectivité et la sensitiblité au contexte d'HaïtiWater de ces critères non-exhaustifs et n'impliquant que des choix envisagés pour ce mémoire et non tous les frameworks (plusieurs centaines existent).
 
 				\subsection*{Django}
 					Le choix d'un framework repose sur de nombreux critères dont plusieurs sont subjectifs. En l'absence d'une ligne directrice, le choix se fait souvent selon l'expérience et les désirs de l'équipe. Notre comparatif terminé, il est devenu clair que nous favorisions un framework utilisant le langage de programmation Python.
@@ -717,8 +718,10 @@
 
 				Les capacités offertes par DataTables sur le contrôle des données nous permettent également de gérer les données à l'envoi et/ou à la réception et de contrôler leur affichage, tout en bénéficiant des fonctionnalités implémentées par la bibliothèque (champ de recherche, tri dynamique, pagination).
 
-				Outre son poids conséquent auquel nous pouvons à nouveau opposer la solution évoquée dans la bibliothèque Bootstrap, DataTables requiert d'implémenter les fonctionnalités de l'API et de gérer le transfert et traitement des requêtes en envoi et réponse du client et du serveur, ce qui représente une charge de travail non-négligeable.
-				%TODO : Kim demande ce que ça veut dire
+				DataTables n'ayant aucun impact sur le serveur, il faut implémenter toutes les communications de données, gros travail supplémentaire qui nous a cependant permis d'avoir un meilleur contrôle (sécurité et performances) sur les données envoyées par l'API (voir section~\ref{sec:api}).
+
+				% Outre son poids conséquent auquel nous pouvons à nouveau opposer la solution évoquée dans la bibliothèque Bootstrap, DataTables requiert d'implémenter les fonctionnalités de l'API et de gérer le transfert et traitement des requêtes en envoi et réponse du client et du serveur, ce qui représente une charge de travail non-négligeable.
+				%(DONE) : Kim demande ce que ça veut dire > c'est pas compliqué quand même ; on doit bosser plus, je reformule puisque c'est pas passé
 
 			\subsection*{Chart.JS}
 			  % Présenter l'information visuellement.
@@ -824,9 +827,6 @@
 
 
 		\section{Interface utilisateur}
-			% TODO A fusionner avec "Client" ?
-			% ça me semble plus logique en sous-section de client en effet (seb)
-
 			% Pages : 2 à 3
 			% La GUI n'est qu'une manière d'utiliser l'application. Pour l'instant la seule, mais on différencie vraiment le serveur et l'application car au final la webapp n'est qu'une GUI pour l'API.
 			% Les fonctionnalités
@@ -867,14 +867,6 @@
 			\end{figure}
 
 			Ces formulaires ont pour objectif d'accompagner l'utilisateur dans ses tâches. En figure~\ref{fig:screen_rapport_mensuel}, vous observez que pour atteindre ce but, nous mettons en place un formulaire qui se consulte de haut en bas et de droite à gauche, où chaque information entrée est une information qui ne nécessite aucun retour en arrière. Sur ce formulaire en particulier, l'utilisateur peut entrer des données dans l'unité de volume de son choix (mètres cubes, gallons), la conversion est faite automatiquement. Le formulaire est également séparé en quatre parties distinctes. Celles-ci évitent un bloc formulaire trop grand et permettent une transition entre différentes parties logiques du rapport mensuel.
-
-			%TODO voir si on met les screens de toute l'application en annexe
-
-		%\section{Procédure d'utilisation}
-
-			%Pages : 2 à 3
-
-			%TODO que mettre en contenu ? à voir avec le CdC
 
 		\section{Client}
 
@@ -971,7 +963,7 @@
 				\label{sec:api}
 				Le principal rôle de l'API est l'interaction avec la base de données. Comme on peut le voir sur le schéma en figure~\ref{fig:db}, nous manipulons les objects suivant : consommateur, paiement, élément du réseau, point géographique, rapport mensuel, ticket de problème, zone et utilisateur de l'application. Les éléments \texttt{log} et \texttt{transaction} sont traités de manière particulière, et seront abordés plus tard.
 
-				Pour ces types de données principaux, le front-end transmet au serveur les actions des utilisateurs voulant : 
+				Pour ces types de données principaux, le front-end transmet au serveur les actions des utilisateurs voulant :
 				\begin{itemize}
 					\item Ajouter
 					\item Supprimer
@@ -982,7 +974,7 @@
 
 				Ces trois actions sont également celles qui déclenchent la création des transactions et logs du module historique. Dès qu'une modification est apportée, une transaction contenant la date et l'utilisateur connecté est créée. Ensuite, des \texttt{log} lui sont associés, un par modification apportée (par exemple, si on change le nom et l'adresse d'un utilisateur, deux logs seront associés à la transaction). Ce processus n'est pas visible ou accessible à l'utilisateur de l'application, puisqu'il est en partie pensé pour éviter les comportements malicieux.
 
-				Le dernier type de requête réalisé par l'API permet au client de récupérer les données de la base de données afin d'afficher les informations à l'écran. Nous avons d'abord créé une requête générique fournissant toutes les informations d'une table pour les donner à \emph{DataTables}. Puisque cette bibliothèque propose une recherche et des filtres très avancés, nous avons également créé une fonction générique permettant de les appliquer à l'importe quelle requête. 
+				Le dernier type de requête réalisé par l'API permet au client de récupérer les données de la base de données afin d'afficher les informations à l'écran. Nous avons d'abord créé une requête générique fournissant toutes les informations d'une table pour les donner à \emph{DataTables}. Puisque cette bibliothèque propose une recherche et des filtres très avancés, nous avons également créé une fonction générique permettant de les appliquer à l'importe quelle requête.
 
 				C'est aussi dans ce cas que la cache du serveur est mise en place : à chaque exécution d'une requête récupérant des données, celles-ci sont mises en cache pour une minute. Ceci nous permet d'économiser des performances quand un utilisateur travaille longtemps sur les mêmes données.
 
@@ -1139,24 +1131,6 @@
 				\end{itemize}
 
 				Les contraintes en temps nous empêchant un troisème groupe de validation, nous n'avons pas pu obtenir l'appréciation des utilisateurs sur ces dernières améliorations et nouveautés. Dans l'idéal, la prochaine équipe de développement devrait poursuivre cette étude de la satisfaction des utilisateurs. Des tests de validation en condition réelle à Haïti sont également nécessaires.
-
-				% La figure~\ref{fig:screen_sandbox_quick_help} présente un des multiples ajouts post-validation apportés à l'application. Nous avons vu dans la section précédente que la complexité de l'interface pouvait être sa faiblesse, ce qui nous a amenés à implémenter une fonctionnalité de \emph{visite}, concept existant déjà sur de nombreuses applications web. En appuyant sur le bouton d'aide rapide dans le coin supérieur droit de l'interface, l'utilisateur déclenche une série d'astuces qui présentent brièvement les contrôles disponibles sur la page.
-				%
-				% \begin{figure}[H]
-				% 	\includegraphics[width=\textwidth]{images/screen_sandbox_table_quick_help.png}
-				% 	\caption{Capture d'écran de l'aide rapide pour les contrôles des tables}
-				% 	\label{fig:screen_sandbox_quick_help}
-				% \end{figure}
-				%
-				% D'autres modifications ont également été apportées à l'application et nous pouvons citer les plus importantes :
-				% \begin{itemize}
-				% 	\item Une table \emph{bac à sable} dans la page d'aide qui permet d'utiliser une table qui n'a aucun impact sur l'application pour en comprendre les contrôles.
-				% 	\item Des boutons de pagination pour les tables permettant d'accéder directement à la première ou dernière page d'une table.
-				% 	\item Un bouton permettant d'afficher ou masquer le mot de passe sur la fenêtre de connexion, particulièrement utile sur smartphones et tablettes.
-				% 	\item Refonte des contrôles du module géographique qui n'étaient auparavant pas bien compris. A présent, les boutons sont plus explicites, certains ont changé de place pour être plus proches de la fenêtre sur laquelle ils ont un effet, et enfin l'ajout de textes d'aide dont le contenu est dynamiquement modifié selon l'action en cours.
-				% 	\item Une icone de chargement lors de l'envoi d'un formulaire.
-				% 	\item La totalité des contrôles dispose désormais de \emph{tooltips} affichés au survol de la souris.
-				% \end{itemize}
 
 	\chapter{Améliorations futures}
 		%Auteur : Adrien
