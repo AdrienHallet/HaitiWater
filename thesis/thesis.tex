@@ -746,17 +746,6 @@
 			\end{figure}
 
 			\subsection*{Structure}
-				% Les utilisateurs s'organisent dans un système en arbre.
-				% Noeuds : éléments du réseau, gestionnaires
-				% Edges : lien de hiérarchie.
-				% Seul le gestionnaire de zone peut avoir des enfants.
-				% Aucune limite sur le facteur de branchement ou la profondeur de l'arbre
-
-				% Système utilisé pour s'adapter partout à la configuration d'Haïti (exemple de DINEPA super-zone, OREPA zone lvl1, CAEPA zone lvl2, Comité fontaine a un gestionnaire de fontaine lvl3).
-				% Permet d'avoir plusieurs niveaux de granularité. Par exemple si une région a besoin de plus de hiérarchie (si plus développée), on peut avoir plus de niveaux qu'une région qui en nécessite moins
-				% Permet d'être réutilisée dans d'autres pays, structure simple à responsabilités définies
-
-				% Point négatif qu'on repose entièrement sur les gestionnaires de fontaine pour avoir l'information (paiements, état du réseau, volumes). Mais c'est la seule possibilité vu que l'info ne peut pas être récupérée automatiquement.
 
 				Rappelons que l'application a trois concepts clefs :
 				\begin{description}
@@ -780,7 +769,7 @@
 							\end{enumerate}
 						Le gestionnaire de fontaine est donc une entité locale similaires aux \emph{comités fontaines} vus en section~\ref{sec:procedures_actuelles}.
 					\item[Gestionnaire de Zone] \hfill \\
-						Le gestionnaire de zone est un rôle plus complexe. Il est un administrateur local ou global, dépendamment de sa position dans la hiérarchie. Un gestionnaire de zone peut superviser d'autres gestionnaires, de zone ou de fontaine, et ce en nombre illimité. Un gestionnaire de zone peut effectuer les mêmes actions qu'un gestionnaire de fontaine, mais ses charges sont plutôt orientées dans l'administration  de sa zone:
+						Le gestionnaire de zone est un rôle plus complexe. Il est un administrateur local ou global, dépendamment de sa position dans la hiérarchie. Un gestionnaire de zone peut superviser d'autres gestionnaires, de zone ou de fontaine, et ce en nombre illimité. Un gestionnaire de zone peut effectuer les mêmes actions qu'un gestionnaire de fontaine, mais ses charges sont plutôt orientées dans l'administration  de sa zone :
 							\begin{enumerate}
 								\item Ajouter, modifier ou supprimer des zones.
 								\item Ajouter, modifier ou supprimer des gestionnaires.
@@ -791,14 +780,6 @@
 				\end{description}
 
 			\subsection*{Permissions}
-				% Gestionnaire de zone; tout, dans sa zone et enfants.
-				% Gestionnaire de fontaine; tous les droits sur la gestion des consommateurs et des paiements. Ne peut pas modifier le réseau ou les utilisateurs de l'application
-				% On dispose quand même d'un garde-fou, le module d'historique
-				% Bien entendu, une hiérarchie implique un système de permissions. Dans notre application, ce dernier se calque exactement sur la structure exposée ci-avant. En toute normalité, les utilisateurs ne peuvent effectuer que les actions qui sont assignées à leur rôle. L'interface propose des contrôles réduits aux gestionnaires de fontaine, en opposition aux gestionnaires de zone qui doivent assumer leurs responsabilités supplémentaires.
-				%
-				% De plus, les données sont fortement liées à la hiérarchie et empêchent une quelconque utilisation, ajout, modification ou suppression par un utilisateur non-autorisé. Lorsqu'une donnée, peu importe son type (une zone, un consommateur, un rapport mensuel, etc), est ajoutée dans l'application, elle n'est visible que par l'utilisateur qui l'a créée et les utilisateurs qui lui sont supérieurs dans la hiérarchie (utilisateurs parents).
-				%
-				% En somme, plus un utilisateur est haut dans la hiérarchie, plus il a de pouvoir sur les données de l'application, la zone racine étant donc la somme de toutes les données, faisant des gestionnaires de cette zone les utilisateurs ayant le plus d'impact sur le système.
 
 				Les utilisateurs peuvent agir sur les données qui sont à leur niveau, et en dessous en accord avec le principe hiérarchique, selon le système de permission exposé en table~\ref{tab:permissions}.
 				\begin{table}[H]
@@ -823,26 +804,21 @@
 					\label{tab:permissions}
 				\end{table}
 
-
-
 		\section{Interface utilisateur}
 			% Pages : 2 à 3
-			% La GUI n'est qu'une manière d'utiliser l'application. Pour l'instant la seule, mais on différencie vraiment le serveur et l'application car au final la webapp n'est qu'une GUI pour l'API.
-			% Les fonctionnalités
 
 			Partie visible de notre application, l'interface graphique, permet d'utiliser les fonctionnalités d'HaïtiWater. En réalité, l'interface graphique n'est qu'un moyen de faciliter l'utilisation de l'application et de rendre les données accessibles et lisibles par un humain. L'application est entièrement contrôlée par l'API qui requiert les données à afficher ou modifier. Somme toute, n'importe quelle autre interface (application locale, mobile, etc) pourrait envoyer les mêmes requêtes. Cela permet donc de décentraliser la logique de l'application dans le serveur tandis que l'interface permet de présenter l'information à un humain (tableaux, graphiques), le guider dans son utilisation et faciliter la saisie de données via les formulaires. Cette séparation des rôles permettra non seulement la création de nouvelles interfaces, mais nous a également permis d'améliorer le développement et la maintenance de l'application. Nous y reviendrons en section~\ref{sec:serveur}.
 
-			Se voulant simple, l'interface est composée de blocs de contrôle permettant de gérer les données dans une zone de travail commune à toute les pages permettant de naviguer à travers l'application.
-
-			\begin{figure}[H]
+			\begin{figure}[p]
 				\centering
-				\includegraphics[width=.5\textwidth]{images/screen_gis_numbered_1.png}
-				\includegraphics[width=.9\textwidth]{images/screen_gis_numbered_2.png}
+				\includegraphics[width=.6\textwidth]{images/screen_gis_numbered_1.png}
+				\vfill
+				\includegraphics[width=\textwidth]{images/screen_gis_numbered_2.png}
 				\caption{Capture d'écran du module géographique d'HaïtiWater}
 				\label{fig:capture_gis}
 			\end{figure}
 
-			Une capture d'écran de l'application vous est présentée en figures~\ref{fig:capture_gis}. Les contrôles communs incluent :
+			Se voulant simple, l'interface est composée de blocs de contrôle permettant de gérer les données dans une zone de travail commune à toute les pages permettant de naviguer à travers l'application. Une capture d'écran de l'application vous est présentée en figures~\ref{fig:capture_gis}. Les contrôles communs incluent :
 			\begin{enumerate}
 				\item Le menu déroulant permettant d'accéder aux modules de l'application.
 				\item La zone utilisateur qui affiche ses notifications et le nom de compte qui lie à la{} déconnexion ou modification des informations personnelles dans son menu déroulant.
@@ -857,7 +833,7 @@
 
 			Tant pour accélérer le développement que pour permettre à l'utilisateur de s'habituer à l'utilisation de l'interface en se familiarisant avec les contrôles, les blocs de l'interface graphique sont réutilisés à travers les différentes pages de l'application.
 
-			La saisie des données occupe également une grande importance dans l'application. Pour ajouter et modifier les données, nous utilisons des fenêtres modales contenant des formulaires
+			La saisie des données occupe également une grande importance dans l'application. Pour ajouter et modifier les données, nous utilisons des fenêtres modales contenant des formulaires.
 
 			\begin{figure}[H]
 				\includegraphics[width=\textwidth]{images/screen_rapport_mensuel.png}
