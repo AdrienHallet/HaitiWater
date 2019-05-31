@@ -33,6 +33,9 @@
 \newcommand{\cmark}{\ding{51}}% pour les checkmark
 \newcommand{\xmark}{\ding{55}}%
 
+\frenchbsetup{StandardLists=true} % Resolves conflict between babel and enumitem
+\usepackage{enumitem} % better formating of lists
+
 \begin{document}
 
 	\maketitle
@@ -47,7 +50,7 @@
 
 		Ce travail de fin d'études a été réalisé au terme de notre Master en Sciences Informatiques à l'École Polytechnique de Louvain durant l'année académique 2018-2019.
 
-		La gestion du réseau de distribution d'eau potable en Haïti ne dispose pas d'un système informatisé suffisant dans certaines parties du pays. Dans ce mémoire, nous allons présenter nos productions visant à proposer une application web palliant à ce problème. Le contexte haïtien et les défis à relever sont d'abord exposés afin de comprendre ce qui fait d'Haïti un environnement particulier pour le développement d'un tel système. Sont ensuite présentées nos idées, propositions et réalisations en justifiant les différents choix d'implémentation et de technologies. Nous abordons par après la validation de l'application et les retours d'utilisateurs nous ayant permis d'améliorer l'outil. Nous concluons ce texte par le futur de ce travail, les possibilités et nos espoirs pour l'application web \emph{HaïtiWater}.
+		La gestion du réseau de distribution d'eau potable en Haïti ne dispose pas d'un système informatisé suffisant dans certaines parties du pays. Dans ce mémoire, nous allons présenter nos productions visant à proposer une application web palliant ce problème. Le contexte haïtien et les défis à relever sont d'abord exposés afin de comprendre ce qui fait d'Haïti un environnement particulier pour le développement d'un tel système. Sont ensuite présentées nos idées, propositions et réalisations en justifiant les différents choix d'implémentation et de technologies. Nous abordons par après la validation de l'application et les retours d'utilisateurs nous ayant permis d'améliorer l'outil. Nous concluons ce texte par le futur de ce travail, les possibilités et nos espoirs pour l'application web \emph{HaïtiWater}.
 
 		La totalité des productions est disponible en ligne sur GitHub:\\ \url{https://github.com/AdrienHalletUCL/HaitiWater}
 
@@ -168,7 +171,7 @@
 
 			Haïti (voir figure \ref{fig:carte_haiti}) est un des pays les plus pauvres de la planète, qui peine à se remettre du séisme de 2010 qui a ravagé le pays et en particulier sa capitable, Port-au-Prince. \'Education, économie, habitat, etc, sont autant de défis que le pays doit relever. L'eau potable, son assainissement, sa gestion et sa distribution font partie de ces défis, en particulier dans les zones rurales. Les zones d'action de l'ONG Protos sont particulièrement touchées. La majorité des familles s'approvisionne en eau à des fontaines publiques (96\% des foyers) et effectue une marche de plus de 30 minutes (58\% des foyers). Il est de plus extrêmement difficile de maintenir et développer le réseau de distribution d'eau potable dans certaines régions en raison de la pauvreté extrême d'une grande partie de l'île. La zone étudiée de \emph{Passe Catabois} (au nord du pays), par exemple, a un taux de recouvrement des factures de 11\% seulement. Si la situation est complexe, il est toutefois possible d'identifier des facteurs expliquant l'état, entre autres, des infrastructures d'eau potable.
 
-			\begin{figure}[H]
+			\begin{figure}[ht]
 					\includegraphics[width=\textwidth]{images/carte_haiti}
 					\caption{Carte d'Haiti}
 					\label{fig:carte_haiti}
@@ -197,7 +200,7 @@
 			\subsection*{Problèmes organisationnels}
 
 				Le modèle politique et organisationnel d'Haïti se calque sur la théorie occidentale. Cependant les profondes différences résultent en une mise en pratique des concepts qui ne sont pas toujours efficaces.
-				On constate notamment un manque de collaboration entre les entités haïtiennes ou même entre villages. Particulièrement dans les zones rurales, les croyances locales (religions, magie) sont parfois consultées pour des décisions importantes au détriment de la rationalité. La communication entre les différentes parties du pays n'est pas optimale. Les entités gouvernementales sont parfois nommées sans moyens financiers ni même bureaux et se retrouvent désoeuvrées. Les fréquentes crises détournent l'attention des problèmes de fond tels que l'éducation, les infrastructures, ...
+				On constate notamment un manque de collaboration entre les entités haïtiennes ou même entre villages. Particulièrement dans les zones rurales, les croyances locales (religions, magie) sont parfois consultées pour des décisions importantes au détriment de la rationalité. La communication entre les différentes parties du pays n'est pas optimale. Les entités gouvernementales sont parfois nommées sans moyens financiers ni même bureaux et se retrouvent désoeuvrées. Les fréquentes crises détournent l'attention des problèmes de fond tels que l'éducation, les infrastructures, \dots
 
 		\section{Gestion actuelle de la distribution d'eau en milieu rural}
 			% Auteure: Céline
@@ -223,7 +226,7 @@
 
 				Actuellement, Protos agit dans deux zones du pays, indiquées sur la figure \ref{fig:carte_haiti_color} : Nord-Ouest (région dite \emph{Moustiques}) en bleu et Centre-Est (région dite \emph{Onde Verte}) en vert. Celles-ci font partie des plus rurales, et ont été choisies car ce sont celles qui ont le plus besoin d'aide.
 
-				\begin{figure}[H]
+				\begin{figure}[ht]
 					\includegraphics[width=\textwidth]{images/carte_regions_haiti_color}
 					\caption{Régions d'Haiti où l'ONG Protos est active}
 					\label{fig:carte_haiti_color}
@@ -232,7 +235,6 @@
 			\subsection*{Structure organisationnelle}
 				\label{sec:structure_haiti}
 
-				%DINEPA, OREPA, CAEPAS,...
 				En plus de l'aide fournie par l'ONG Protos, il existe en Haïti plusieurs structures dédiées à la gestion de l'eau. Premièrement, la DINEPA (DIrection Nationale de l'Eau Potable et de l'Assainissement), qui a pour mission d’exécuter la politique de l’\'Etat dans le secteur de l’eau potable et de l’assainissement autour de trois grands axes : le développement du secteur au niveau national, la régulation du secteur et le contrôle des acteurs~\cite{ref:dinepa}. La DINEPA est sous contrôle direct du Ministère de Travaux Publics, Transports et Communication.
 
 				La DINEPA supervise des branches régionales appelées OREPA (Offices Régionaux d'Eau Potable et d'Assainissement), gérant chacune une zone du pays. Elles sont chargées de la prestation du service de distribution de l'eau potable en milieu urbain et rural.
@@ -241,7 +243,7 @@
 
 				Le schéma en figure \ref{fig:organisation} résume visuellement cette structure.
 
-				\begin{figure}[H]
+				\begin{figure}
 					\begin{center}
 						\includegraphics[width=\textwidth/2]{images/organisation}
 						\caption{Structure organisationnelle de la gestion de l'eau en Haïti}
@@ -250,7 +252,6 @@
 				\end{figure}
 
 				%Pls send help, j'ai pas d'inspi -> Thx a lot ;)
-
 
 			\subsection*{Procédures actuelles}
 				\label{sec:procedures_actuelles}
@@ -267,7 +268,7 @@
 
 				Concrètement, la quantité de points d'eau et le nombre d'usagers desservis par les réseaux de distribution d'eau varie : comme ceux-ci sont en développement, les nombres sont en constante augmentation. En ce moment, on compte par exemple 13 fontaines publiques dans la zone Passe Catabois, et 25 dans la zone Poste Métier. Ces fontaines alimentent entre 100 et 1000 usagers (voir figure \ref{fig:conso_fontaine}), avec une moyenne autour de 300.
 
-				\begin{figure}[H]
+				\begin{figure}
 					\includegraphics[width=\textwidth]{images/conso_fontaine}
 					\caption{Répartition des consommateurs par fontaine}
 					\label{fig:conso_fontaine}
@@ -277,7 +278,6 @@
 				% (Adrien) Foreshadowing l'utilité d'HaïtiWater avec ces deux nouvelles dernières phrases -> good ;)
 
 				L'accès aux fontaines publiques est accordé après le règlement d'un paiement annuel. Les consommateurs se voient attribuer une carte spécifiant la somme, le lieu et la date. Cette carte est utilisée comme preuve de paiement pour accéder aux fontaines. Cependant, il n'est pas possible pour le responsable fontaine de se souvenir exactement qui a payé ou non et les informations se perdent. De plus, certains abus (distribution non-équitable, prise d'eau sans paiement) ont été constatés.
-
 
 		\section{Comparaison avec d'autres pays}
 			% Auteur: Sébastien
@@ -350,7 +350,7 @@
 					\item[Quotidien] Après une période d'expérimentation avec plusieurs outils de suivi, la gestion au quotidien des tâches à accomplir s'est ancrée sur Trello~\footnote{\url{https://trello.com}}, un tableau en ligne composé de cartes amovibles réparties dans des colonnes. Dans notre organisation (exemple simplifié en figure~\ref{fig:screen_trello_simplifie}), une carte représente une tâche plus ou moins atomique semblable à un \emph{récit utilisateur}~\footnote{Un récit utilisateur est une phrase ou texte court décrivant une fonctionnalité à développer}. Nous utilisons les colonnes pour classer les cartes selon l'état de la tâche associée. Nous avons ainsi défini les colonnes : \emph{à faire, a faire urgemment, en cours, problématique} et \emph{fini}. Nous avons également utilisé des messageries instantanées (e.g. Slack~\footnote{\url{https://slack.com/intl/fr-be/}}) et canaux vocaux pour organiser les tâches de manière plus informelle.
 				\end{description}
 
-				\begin{figure}[H]
+				\begin{figure}
 					\includegraphics[width=\textwidth]{images/screen_trello_simplifie}
 					\caption{Exemple simplifié d'interface Trello}
 					\label{fig:screen_trello_simplifie}
@@ -364,7 +364,7 @@
 					\item Certaines fonctionnalités se sont révélées plus complexes à implémenter que prévu.
 				\end{itemize}
 
-				La figure~\ref{fig:simplified_gantt} présente une vue simplifiée du diagramme de Gantt~\footnote{Un diagramme de Gantt présente l'avancement et les prévisions des tâches d'un projet en fonction du temps.} final sur lequel les modules implémentés (voir section~\ref{sec:cahier_des_charges}) sont placés sur une ligne temporelle en dessous de laquelle les grandes phases du mémoire ont été placées, ainsi que les deux versions majeures, \emph{alpha} et \emph{beta}, présentées à tous les acteurs du projet.
+				La figure~\ref{fig:simplified_gantt} présente une vue simplifiée du diagramme de Gantt~\footnote{Un diagramme de Gantt présente l'avancement et les prévisions des tâches d'un projet en fonction du temps.} final sur lequel les modules implémentés (voir section~\ref{sec:modules}) sont placés sur une ligne temporelle en dessous de laquelle les grandes phases du mémoire ont été placées, ainsi que les deux versions majeures, \emph{alpha} et \emph{beta}, présentées à tous les acteurs du projet.
 
 				Les phases d'\emph{analyse} et d'\emph{architecture} se sont également clôturées par des réunions de taille plus importante afin qu'un maximum de personnes puissent donner leur avis sur les artefacts (cahier des charges, ébauches d'interface graphique, etc). C'est notamment après ces réunions que les changements de planification étaient décidés pour répondre aux nouveaux besoins du client.
 
@@ -373,12 +373,11 @@
 
 				Ces imprévus n'ont heureusement pas eu d'impact sur la production. Le démarrage anticipé de l'analyse en août, l'ajout d'une semaine de travail imprévue durant la session d'examen de janvier ainsi qu'une zone tampon de deux semaines prévue dans l'horaire initial ont permis d'accomplir la totalité des tâches initialement prévues, ainsi qu'une part appréciable des suggestions apportées au cours de l'année.
 
-				\begin{figure}[H]
+				\begin{figure}
 					\includegraphics[width=\textwidth]{images/planning_timeline.png}
 					\caption{Représentation simplifiée du diagramme de Gantt final}
 					\label{fig:simplified_gantt}
 				\end{figure}
-
 
 			%\subsection*{Réunions}
 			%(Adrien) Finalement je vois pas l'utilité de cette section "réunions"
@@ -461,17 +460,17 @@
 				La colonne de travail prioritaire s'est avérée une très bonne idée. Puisque nos fonctionnalités sont dépendantes à la fois du client et du serveur, cela permettait d'identifier clairement les besoins. Nous pouvions ainsi débuter une séance de développement à n'importe quel moment en sachant ce dont les autres avaient besoin.
 
 	\chapter{Analyse des besoins}
-
 		\label{sec:analyse_besoins}
+
 		%Total des pages : 6 à 10
 
 		La phase d'analyse des besoins est, dans tout projet, l'une des plus importantes. Elle permet de s'accorder entre toutes les parties impliquées, clients comme développeurs, sur la portée du projet, quelles fonctionnalités implémenter, et comment y arriver. Cette phase se doit d'être méticuleuse, afin que toutes les parties impliquées soient d'accord sur ce qu'elles souhaitent.
 
 		Cependant, nous devions rester conscients que le temps accordé à un mémoire est assez court par rapport à ce qui se fait dans l'industrie pour un projet de cette ampleur. Nous ne pouvions donc pas passer trop de temps sur cette phase, sous peine de ne plus en avoir assez pour implémenter les fonctionnalités établies.
 
-		Nous pensons avoir trouvé un bon entre-deux, prenant avantage des conseils glanés au cours de nos études~\cite{ref:kim_coo} : nous avons présenté au plus vite des visuels de la future application, et avons organisé une réunion Skype pour pouvoir échanger en direct avec nos clients malgré le décalage horaire.
+		Nous pensons avoir trouvé un bon compromis, prenant avantage des conseils glanés au cours de nos études~\cite{ref:kim_coo} : nous avons présenté au plus vite des visuels de la future application, et avons organisé une réunion Skype pour pouvoir échanger en direct avec nos clients malgré le décalage horaire.
 
-		Le cahier des charges résultant de ces interactions (voir section \ref{sec:cdc}) nous semble complet, et a été assez peu modifié au cours du projet. Deux éléments s'y sont cependant ajoutés, l'un pour répondre aux besoins non-fonctionnels et l'autre suggéré par Louis Fritzno, un acteur haïtien venu pour apporter un point de vue concret.
+		Le cahier des charges résultant de ces interactions (voir section \ref{sec:cdc}) a été accepté par les parties prenantes, nous le considérons donc comme représentatif de l'expression des divers souhaits exprimés. Il nous semble complet, et a été assez peu modifié au cours du projet. Deux éléments s'y sont cependant ajoutés, l'un pour répondre aux besoins non-fonctionnels et l'autre suggéré par Louis Fritzno, un acteur haïtien venu pour apporter un point de vue concret.
 
 		\section{Besoins fonctionnels}
 
@@ -487,7 +486,7 @@
 
 				Ces documents nous ont été d'une très grande utilité, puisqu'ils nous ont permis de lister toutes les données nécessaires à notre application, nous donnant un solide point de départ pour notre base de données. Ils nous ont également permis de mieux comprendre quelles étaient les responsabilités des différents acteurs, ce qui nous a donné la structure de l'application elle-même.
 
-				En nous inspirant directement des \emph{Komité Dlo} décrit dans le chapitre \ref{sec:structure_haiti}, nous avons décidé de créer deux types de gestionnaires : ceux dits \emph{de zone}, qui effectuent une gestion générale de toute une partie du réseau de distribution avec peu d'interaction avec ses usagers. Ils collaborent avec des gestionnaires dits \emph{de fontaine(s)}, qui s'occupent directement un ou plusieurs points d'eau, et sont en contact direct avec les consommateurs.
+				En nous inspirant directement des \emph{Komité Dlo} décrit dans le chapitre \ref{sec:structure_haiti}, nous avons décidé de créer deux types de gestionnaires : de zone et de fontaine. Les gestionnaires \emph{de zone} effectuent une gestion générale de toute une partie du réseau de distribution avec peu d'interaction avec ses usagers. Ils collaborent avec des gestionnaires \emph{de fontaine(s)}, qui s'occupent directement un ou plusieurs points d'eau, et sont en contact direct avec les consommateurs.
 
 				Cette division permet à chacun d'avoir un rôle clair et précis, les gestionnaires de fontaines apportant les données au jour le jour (paiements, nouveaux usagers, etc.), tandis que les gestionnaires de zone s'occupent du réseau en lui-même.
 
@@ -501,13 +500,14 @@
 
 				Nous sommes partis des documents décrits dans la section \ref{sec:gest_donnee} afin de déterminer différentes procédures importantes dans la gestion de l'eau. Nous avons ensuite conçu des diagrammes représentant comment les utilisateurs pourraient les réaliser au sein de notre application. Ces diagrammes sont disponibles dans l'annexe \ref{sec:activity_diag}.
 
-
 		\section{Besoins non-fonctionnels}
 
 			%Pages : 1 à 2
+
 			Le terme de \emph{besoin non-fonctionnel} désigne un besoin autour du système, une contrainte liée à l'implémentation, aux performances ou à une situation spécifique au projet en lui-même. La réalisation de ces objectifs permet d'obtenir un système plus fiable et qualitatif.
 
 			\subsection*{Sécurité des données}
+
 				Dans le monde d'aujourd'hui, il est évident qu'une certaine attention doit être accordée à la sécurité d'une application web. En Haïti peut-être plus qu'ailleurs, une attention particulière se doit d'être portée à la possibilité qu'un utilisateur malveillant ou non se connecte au système.
 
 				Par conséquent, nous avons non seulement implémenté un principe de connexion avec privilèges (certaines données sont inaccessibles sans un niveau de privilège particulier), mais nous avons également ajouté un système de \emph{logs}.
@@ -515,23 +515,25 @@
 				Ce module, appelé \emph{module historique} n'était pas prévu initalement, nous l'avons ajouté pour remédier aux erreurs des utilisateurs, ou aux comportements malicieux. Ce module permet aux supérieurs hiérarchiques de consulter les modifications faites par leurs subordonnés. Si ces modifications leur semblent incorrectes, un seul clic leur permet de faire revenir les données à leur état précédent. Si une modification est acceptée, elle disparaît de la liste en laissant la modification, jugée valide, dans la base de données.
 
 			\subsection*{Connexions lentes et peu fiables}
-				L'utilisation de notre application en Haïti amène un besoin particulier : dans ce pays, la connexion Internet est bien plus lente que nos standards européens et y est souvent peu fiable. Pour pallier à cela, nous avons d'abord utilisé les techniques courantes : nous envoyons aussi peu de données que possible, faisons usage de la cache (voire section~\ref{sec:cache_client}) et envoyons les informations des différents éléments de la page séparément.
+				L'utilisation de notre application en Haïti amène un besoin particulier : dans ce pays, la connexion Internet est bien plus lente que nos standards européens et y est souvent peu fiable. Pour pallier cet inconvénient, nous avons d'abord utilisé les techniques courantes : nous envoyons aussi peu de données que possible, faisons usage de la cache (voire section~\ref{sec:cache_client}) et envoyons les informations des différents éléments de la page séparément.
 
 				Cependant, une demande de nos clients a été de pouvoir utiliser certaines fonctionnalités de l'application lorsqu'il n'y a pas de connexion. Pour cela, nous avons développé un \emph{service worker}, détaillé en section~\ref{sec:service_worker}.
 
 			\subsection*{Technologies simples et populaires}
 				% Est-ce que c'est pas un besoin non-fonctionnel aussi ? -> Si why ?
+
 				Par rapport à un projet classique, une contrainte de ce travail est qu'il se déroule dans le cadre d'un mémoire universitaire. À la fin de nos études, ce projet sera repris par d'autres étudiants pour un deuxième mémoire et sera à terme déployé en Haïti pour être maintenu par les acteurs locaux. Comme ces futurs développeurs ne sont pas connus, une attention particulière doit être apportée à la facilité de la maintenance de notre application.
 
 				Pour cela, nous avons décidé d'utiliser des technologies relativement simples et populaires, de sorte que même si nos successeurs ne les connaissent pas, ils puissent assez facilement les apprendre par eux-mêmes, en utilisant des tutoriels disponibles gratuitement sur Internet par exemple. Une description plus détaillée des choix technologiques que nous avons faits se trouve à la section~\ref{sec:choix_tech}.
 
 		\section{Cahier des charges}
-			\label{sec:cahier_des_charges}
+			\label{sec:modules}
 
 			%Pages : 2 à 3
+
 			Après discussion avec Protos et les Haïtiens, nous avons décidé d'organiser notre application en différents modules intéragissant avec notre base de données. Certains sont indépendants tandis que d'autres étendent un module précédent pour lui rajouter des fonctionnalités. Ils forment au final un réseau de dépendances, montré dans la figure \ref{fig:modules}.
 
-			Ce choix de conception nous a permis dans un premier temps d'appliquer la méthode Agile plus facilement, déployant notre travail module par module. Dans un second temps, il permet à notre application d'évoluer très rapidement : un nouveau module vient se greffer à la base de donnée sans changer le fonctionnement des autres, un ancien module qui aurait perdu son utilité peut être enlevé sans rien endommager s'il n'a pas de dépendances. De plus, ce choix devrait aider les futurs développeurs à ajouter à la base applicative existante plus rapidement. Le cahier des charges complet initialement créé et approuvé par toutes les parties est disponible dans l'annexe \ref{sec:cdc}.
+			Ce choix de conception nous a permis dans un premier temps d'appliquer la méthode Agile plus facilement, déployant notre travail module par module. Dans un second temps, il permet à notre application d'évoluer très rapidement : un nouveau module vient se greffer à la base de donnée sans changer le fonctionnement des autres, un ancien module qui aurait perdu son utilité peut être enlevé sans rien endommager s'il n'a pas de dépendances. De plus, ce choix devrait aider les futurs développeurs à ajouter de nouvelles fonctionnalités à la base applicative existante plus rapidement, en créant simplement de nouveaux modules.
 
 			\begin{figure}
 				\includegraphics[width=\textwidth]{images/modules}
@@ -551,7 +553,10 @@
 				\item Le module \textbf{offline} permet d'assurer la disponibilité du site même lorsque la connexion internet n'est pas stable, donnant la possiblité de compléter le rapport mensuel. Les fonctionnalités précises de ce module sont décrites plus en détail dans la section~\ref{sec:service_worker}.
 			\end{itemize}
 
+			Le cahier des charges complet initialement créé et approuvé par toutes les parties est disponible dans l'annexe \ref{sec:cdc}. % TODO remove this and rename chapter as Modules ?
+
 		\section{Structure des données}
+			\label{sec:data}
 
 			À partir des informations des différents documents analysés dans la section \ref{sec:gest_donnee}, nous avons avons commencé à établir une structure pour les données de notre application. Nous avons d'abord repéré les champs qui nous semblaient les plus importants dans les différents fichiers Excel~\cite{ref:resumes_documents}.
 
@@ -570,23 +575,14 @@
 		% Auteur : Adrien (+Seb)
 		% Relu :  Céline deux fois :P
 
-		% L'implémentation suit les principes du cahier des charges. Intègrer les fonctionnalités demandées et respecter les besoins du client.
-
 		\section{Choix technologiques}
 			\label{sec:choix_tech}
 
 			% Pages : 3 à 4
-			% Outils informatiques, plusieurs choix, le notre n'est pas le meilleur mais celui qui nous a semblé le plus adapté.
-			% Ici on détaille les choix majeurs. Les bibliothèques plus petites sont détaillées dans la documentation.
-			% Ici, donc, uniquement ce qui est soit réellement gros, soit souvent utilisé
-
-			% Expliquer le trade-off constant entre les techs choisies
 
 			% (Abandonné) figure montrant un visuel sur l'architecture choisie -> semble trop long finalement, montré à la défense ? plus simple
 
 			\subsection*{Web}
-				% Requis du client. Avantage de la portabilité, installation, données décentralisées directement, donc communes à tous les utilisateurs
-				% Désavantage support des navigateurs multiples, perte en performances d'opérations complexes, nécessite plus de bande passante, rend plus difficile l'accès hors-ligne aux fonctionnalités
 
 				\'Etablie dès le premier jour, l'exigence du support web pour ce travail a influencé la totalité du mémoire. Nous n'avons pas eu de réel choix à ce niveau, il nous est néanmoins possible de trouver des avantages à ce type de développement :
 				\begin{itemize}
@@ -601,7 +597,6 @@
 				\end{itemize}
 
 			\subsection*{Choix du framework - Django}
-				% Framework éprouvé (ancien, maintenu, communauté, documentation), adapté à de larges applications (scalable), permet l'utilisation facilité de PostgreSQL (modèles), gabarits pour du HTML 'importé' sans besoin d'angular/whatever (moins de techs, reste simple).
 
 				Un framework est une infrastructure logicielle dans laquelle l'application est développée. On peut argumenter, avec raison, qu'un framework ajoute une certaine quantité d'outils qui ont comme effet de bord de complexifier l'application et d'en augmenter la taille. Dans une application aussi large que la nôtre cependant, l'apport bénéfique qu'ont ces outils supplante largement ces inconvénients. Parmi ces apports bénéfiques on citera surtout :
 				\begin{itemize}
@@ -613,7 +608,7 @@
 
 				La table~\ref{table:comparatif_framework} reprend une liste non-exhaustive de frameworks qui ont été envisagés pour ce projet. Afin de pouvoir développer une application compatible, nous avons évalué les possibilités et arrêté un choix durant la phase d'analyse du développement. Ci-après sont exposées les motivations de ce choix.
 
-				\begin{table}[H]
+				\begin{table}
 					\centering
 					\begin{tabular}{|c|c||c|c|c|c|c||c|}
 						\hline
@@ -674,18 +669,16 @@
 				Le calcul du total pose les valeurs 0, 0.5 et 1 (resp. N, M et B) et somme les valeurs des différents critères. Nous insistons sur la subjectivité et la sensitiblité au contexte d'HaïtiWater de ces critères non-exhaustifs et n'impliquant que des choix envisagés pour ce mémoire et non tous les frameworks (plusieurs centaines existent).
 
 				\subsection*{Django}
+
 					Le choix d'un framework repose sur de nombreux critères dont plusieurs sont subjectifs. En l'absence d'une ligne directrice, le choix se fait souvent selon l'expérience et les désirs de l'équipe. Notre comparatif terminé, il est devenu clair que nous favorisions un framework utilisant le langage de programmation Python.
 
 					Flask a été envisagé, cependant les facilités offertes par Django dans la gestion de la base de données, particulièrement pour les données géographiques, ont été le facteur décisif. Parmi les sites populaires utilisant Django, on citera Instagram, DropBox, Disqus~\footnote{https://djangostars.com/blog/10-popular-sites-made-on-django/}.
 
 			\subsection*{Python}
-				% Obligé par Django, quand même un bon choix. Pas le plus répandu (PHP et ASP.NET bien plus utilisés) mais permet une bonne gestion des objets intégrée directement au serveur, car langage OO.
+
 				Le langage Python est un langage de programmation populaire principalement grâce à sa syntaxe légère permettant un code compréhensible et généralement plus court (voir figure~\ref{fig:complexity}). Il n'est pas le plus utilisé en développement web, ce sont PHP (79\% d'utilisation), ASP.NET (11.3\%) et Java (4\%) qui constituent le trio de tête~\cite{ref:popular_programming_languages}. Toutefois, nous pensons que Python s'adapte parfaitement aux besoins de l'application demandée. C'est un langage relativement simple et compréhensible dont la popularité croît ces dernières années. Les bibliothèques logicielles et la documentation, toutes deux disponibles à foison sur Internet, en font un langage particulièrement ouvert aux débutants. de plus, cette montée en popularité fait qu'il est de plus en plus enseigné au sein des unniversités et hautes écoles, ce qui indique que la tendance se maintiendra sans doute. Un dernier argument, et non des moindres, est l'expérience déjà acquise dans la programmation en Python durant nos années d'études.
 
-			\subsection*{PostreSQL et PostGIS}
-				% Autre obligation de Django, mais une décision consciente de l'utiliser pour PostGIS. Manipulation géographique facilitée, un apport positif pour la suite du module GIS.
-				% Petit comparatif d'utilisation des SGBD avec MySQL, etc ?
-				% Pourquoi BDD relationnelle et non-relationnelle ?
+			\subsection*{PostgreSQL et PostGIS}
 
 				Si l'utilisation du langage Python était imposée dès lors que Django fut choisi en tant qu'environnement logiciel, le système de gestion de base de données, dont le rôle est de lier l'application web et la base de données, était moins contraignant puisque de nombreuses options sont compatible avec notre framework.
 
@@ -694,9 +687,6 @@
 				Restent donc les systèmes de gestion de base de données (SGBD) relationnels, dans lequels nous avons opté pour PostgreSQL, classé quatrième système de gestion de bases de données le plus utilisé au monde~\footnote{\url{https://db-engines.com/en/ranking}, 1 mai 2019}. La première motivation de ce choix est la recommandation du framework Django, lequel s'adapte mieux à ce SGBD via son système de \emph{mapping objet-relationnel} (voire section~\ref{sec:serveur}). La seconde motivation est l'existence de l'extension PostGIS~\cite{ref:postgis}, une extension du SGBD permettant de traiter aisément les données géographiques.
 
 			\subsection*{Bootstrap}
-				% Conventions connues (largement utilisées) pour le Front, beaucoup de choses pré-faites pour accélérer le développement.
-				% Responsivité facilité grâce aux systèmes de base
-				% Désavantage; un peu lourd en raison des fonctions non-utilisées, mais solution (lier la section améliorations futures où on va parler du cleanup des vendeurs)
 
 				Bien que l'utilisation de frameworks \emph{front-end} soit de plus en plus répandue, nous n'en avons pas intégré dans le client de l'application. Les choix sont pourtant nombreux et tant Angular, React que Vue ont été envisagés. Nous avons décidé de n'en utiliser aucun pour ne pas ajouter de technologie supplémentaire et pour limiter le nombre de dépendances du projet afin d'en garantir la perrenité sur le long terme.
 
@@ -707,9 +697,6 @@
 				Le désavantage majeur est son poids. Accompagnée de nombreuses fonctionnalités qui n'ont pas été utilisées dans ce projet, Bootstrap est lourde (approximativement 400 KB), d'autant plus en considérant la lenteur des connexions haïtiennes. Il est cependant tout à fait possible de nettoyer la bibliothèque (voir section~\ref{ref:suite_projet}) pour n'en conserver que les fonctionnalités utilisées, et ainsi optimiser les téléchargements.
 
 			\subsection*{DataTables}
-				% Un constat ; les tables Django ne permettent pas de contrôler l'information à 100%
-				% Second constat ; on veut une API (référence serveur)
-				% DataTable, bibliothèque connue, avec un gros support, grosse documentation, beaucoup de modules pour gérer les tables, AJAX pour 100% séparer les données de leur présentation
 
 				DataTables~\cite{ref:datatables} est la seconde plus grosse bibliothèque du projet, gérant l'affichage des données sous forme de tables. A nouveau sélectionnée de par son ancienneté permettant une documentation et des tutoriels efficaces, DataTables était très loin d'être la seule option. Nous avons envisagé, et débuté la première version avec, la bibliothèque \emph{Django-Tables2} qui causait un ralentissement du chargement des pages contenant les données, et une perte de contrôle de l'information au niveau du serveur car les tables étaient directement rattachées aux modèles de la base de données.
 
@@ -723,22 +710,17 @@
 				%(DONE) : Kim demande ce que ça veut dire > c'est pas compliqué quand même ; on doit bosser plus, je reformule puisque c'est pas passé
 
 			\subsection*{Chart.JS}
-			  % Présenter l'information visuellement.
-				% Même avantage que DataTables, on envoie uniquement des données, tout se fait en front. Une des plus utilisées, mais pas la numéro 1 car D3.JS est un monstre, plus difficile à comprendre et utilise un système d'objets qui alourdissent considérablement la page, difficile de savoir si les périphériques haïtiens vont supporter. ChartJS utilise des canevas, plus légers. Moins dynamiques mais quand même certaines possibilités
+				% Présenter l'information visuellement.
 
 				La bibliothèque Chart.JS est utilisée pour générer les représentations visuelles de l'application. Les bibliothèques permettant de créer des graphiques sont nombreuses et Chart.JS a de nombreux concurrents qui offrent parfois plus de fonctionnalités. Chart.JS a une bonne réputation dans ce domaine et est réputée pour ne pas être trop complexe à utiliser, toujours dans le but de respecter les exigences technologiques.
 				De plus, Chart.JS génère des canvas là où un de ses concurrents majeurs, la bibliothèque D3.JS, génère des images vectorielles ou des éléments du domaine, plus gourmands en performances en particulier avec de larges ensembles de données.
 
 		\section{La hiérarchie dans l'application}
 			% Pages : 1 à 2
-			% La base du foncitonnement d'HaïtiWater.
-			% Deux types d'utilisateurs :
-				% Gestionnaire de fontaine, le plus proche des consommateurs.
-				% Gestionnaire de zone, supervision
 
 			Le bon fonctionnement de l'application repose sur le principe hiérarchique de la récolte des informations venant de la saisie de données par les utilisateurs de l'application puisque le manque de financement et l'état actuel du réseau ne permet pas une récolte en temps réel des données via des capteurs. Une représentation de la structure hiérarchique vous est présentée en figure~\ref{fig:principe_hierarchique}.
 
-			\begin{figure}[H]
+			\begin{figure}
 				\centering
 				\includegraphics[scale=0.45]{images/principe_hierarchique}
 				\caption{Représentation du principe hiérarchique des utilisateurs, éléments et consommateurs}
@@ -835,17 +817,16 @@
 
 			La saisie des données occupe également une grande importance dans l'application. Pour ajouter et modifier les données, nous utilisons des fenêtres modales contenant des formulaires.
 
-			\begin{figure}[H]
+			\begin{figure}
 				\includegraphics[width=\textwidth]{images/screen_rapport_mensuel.png}
 				\caption{Capture d'écran du formulaire de rapport mensuel d'HaïtiWater}
 				\label{fig:screen_rapport_mensuel}
 			\end{figure}
 
-			Ces formulaires accompagnent l'utilisateur dans ses tâches. En figure~\ref{fig:screen_rapport_mensuel}, vous observez que pour atteindre ce but, nous mettons en place un formulaire qui se consulte de haut en bas et de droite à gauche, où chaque information entrée est une information qui ne nécessite aucun retour en arrière. Sur ce formulaire en particulier, l'utilisateur peut entrer des données dans l'unité de volume de son choix (mètres cubes, gallons), la conversion est faite automatiquement. Le formulaire est également séparé en quatre parties distinctes. Celles-ci évitent un bloc formulaire trop grand et permettent une transition entre différentes parties logiques du rapport mensuel.
+			Ces formulaires accompagnent l'utilisateur dans ses tâches. En figure~\ref{fig:screen_rapport_mensuel}, vous observez que pour atteindre ce but, nous mettons en place un formulaire qui se consulte de haut en bas et de gauche à droite, où chaque information entrée est une information qui ne nécessite aucun retour en arrière. Sur ce formulaire en particulier, l'utilisateur peut entrer des données dans l'unité de volume de son choix (mètres cubes, gallons), la conversion est faite automatiquement. Le formulaire est également séparé en quatre parties distinctes. Celles-ci évitent un bloc formulaire trop grand et permettent une transition entre différentes parties logiques du rapport mensuel.
 
 		\section{Client}
 
-			% Le client est la partie visible de l'iceberg. Quand même un gros morceau mais totalement inutile sans le back. Il y a des calculs et conversions effectuées pour alléger la connexion, mais aucun calcul n'est enregistré en back (don't trust the user).
 			L'interface et sa facilité d'utilisation n'a pas été le seul axe du développement du client. C'est au niveau technologique que nous trouvons deux contraintes importantes : l'allégement de l'utilisation de la connexion et la simplification du code source derrière l'application.
 
 			\subsection*{Mise en cache}
@@ -882,13 +863,8 @@
 
 				Nous avons implémenté cette troisième option. Il est maintenant possible pour un utilisateur de compléter le rapport mensuel hors connexion : une version simplifiée du site (qui restreint l'utilisateur aux pages accessibles) lui est présentée, et les informations entrées sont sauvegardées localement. Une notification l'informe que ces données sont en attente jusqu'à leur envoi sur le serveur.
 
-			%\subsection*{...}
-
 		\section{Serveur}
 			\label{sec:serveur}
-
-			% Parler de l'API, pourquoi c'est bien à la place d'utiliser du django classique et comment on l'a faite
-			% Parler de l'ORM de Django
 
 			% Pages : 4 à 5
 
@@ -912,7 +888,7 @@
 
 				Les deux premiers types de requêtes permettent à un navigateur de télécharger l'application afin d'avoir une interface graphique pour manipuler le troisième type requête via l'API. Cette séparation permet de réduire le temps de chargement en allégeant les documents HTML qui ne contiennent que la logique de contrôle. Les données sont ensuite envoyées de manière asynchrone, donc non-bloquante, lorsque l'application envoie les requêtes à l'API.
 
-				En plus des avantages apportés au client, la présence d'une API (détaillée en section \ref{sec:api}) est une bonne pratique qui permet une meilleure compartementalisation des rôles du serveur.
+				En plus des avantages apportés au client, la présence d'une API (détaillée en section \ref{sec:api}) est une bonne pratique qui permet une meilleure séparation des rôles du serveur.
 
 				En mettant tout cela ensemble, nous obtenons un grand nombre d'acteurs dans le traitement d'une requête. Le diagramme en figure \ref{fig:sequence} montre un exemple des communications entre tous ces acteurs, ici dans le cas du traitement de la requête de chargement de la page des rapports par l'utilisateur.
 
@@ -924,7 +900,8 @@
 
 			\subsection*{Détails des requêtes API}
 				\label{sec:api}
-				L'API (\emph{Application Programming Interface}) permet l'interaction avec la base de données via HaïtiWater. Présentée en figure~\ref{fig:db}, nous manipulons les objects suivant : consommateur, paiement, élément du réseau, point géographique, rapport mensuel, ticket de problème, zone et utilisateur de l'application. Les éléments \texttt{log} et \texttt{transaction} sont traités de manière particulière.
+
+				L'API (\emph{Application Programming Interface}) permet l'interaction avec la base de données via HaïtiWater. Comme présenté dans la section~\ref{sec:data}, nous manipulons les objects suivant : consommateur, paiement, élément du réseau, point géographique, rapport mensuel, ticket de problème, zone et utilisateur de l'application. Les éléments \texttt{log} et \texttt{transaction} sont traités de manière particulière.
 
 				Pour ces objets enregistrés par le serveur, l'API transmet au serveur les actions :
 				\begin{itemize}
@@ -961,14 +938,14 @@
 					\item Données périodiques (mois par mois) des volumes distribués par les éléments du réseau.
 				\end{itemize}
 
-
 	\chapter{Validation}
 
 		%Total des pages : 8 à 11
+
 		La validation rassemble les étapes du projet qui ont pour but de vérifier le fonctionnement et la qualité des productions (documents d'analyse, de conception, l'application HaïtiWater). Les premières validations se sont essentiellement basées sur des productions écrites (cahier des charges, schémas) présentées aux acteurs d'Haïti, à Protos et à nos promoteurs pour exposer notre avancement et orienter le travail. Nous ne présenterons pas ici ces réunions d'avancement exposées en section~\ref{sec:planification}. Nous avons mis en place des tests automatiques permettant de confirmer le fonctionnement de l'implémentation existante durant le développement. Enfin, une période de validation avec utilisateurs a permis d'éprouver l'application, son interface et principe de fonctionnement.
 
-
 		\section{Vérifications automatiques}
+
 			% Pages : 2 à 3
 
 			\subsection*{Tests unitaires}
@@ -977,7 +954,7 @@
 
 				D'abord pour les requêtes de documents, nous vérifions que ceux-ci sont correctement chargés dans plusieurs cas, comme lorsque l'utilisateur n'est pas connecté, ou avec des utilisateurs possédant différents niveaux d'autorisation.
 
-				Pour les requêtes de données, nous vérifions sur la base de données que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupéré sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées. Ces tests ont relevé plusieurs vulnérabilités de sécurité dans les permissions de l'API et ont permis d'augmenter la sécurité de l'accès aux données et leur modification.
+				Pour les requêtes de données, nous vérifions sur la base de données que son état est cohérent après que la requête se soit effectuée, ou que les données que nous avons récupérées sont correctes. Ici aussi, nous vérifions plusieurs cas, comme lorsque l'utilisateur n'a pas les droits d'utilisation ou lorsque les requêtes sont mal formées. Ces tests ont relevé plusieurs vulnérabilités de sécurité dans les permissions de l'API et ont permis d'augmenter la sécurité de l'accès aux données et leur modification.
 
 				\begin{tabular}{l|l}
 				   Nombre de tests unitaires & 187 \\
@@ -990,7 +967,9 @@
 				% Pour vérifier tout cela, nous avons créé un total de 187 tests unitaires. Tous ensembles cerux-ci couvrent 85\% des fichiers et 87\% des lignes de code de notre application, sachant que les fichiers restants concernent principalement le fonctionnement interne à Django et qu'il n'est ni évident ni pertinent de les vérifier. Grâce à tous ces tests, nous pouvons nous assurer que notre application fonctionne correctement, au moins pour tous les cas envisagés. De plus, nous pouvons les utiliser lors de modifications dans le code de l'application afin de vérifier que celles-ci n'endommagent pas les fonctionnalités existantes.
 
 		\section{Vérifications utilisateurs réels}
+
 			% Pages : 3 à 4
+
 			Cette étape, qui s'est déroulée de mars à avril, a mis des utilisateurs étrangers à l'équipe de développement face à l'application. Derrière cette vérification, deux points de l'application étaient mis à l'épreuve : l'interface graphique et la procédure d'utilisation. Après plusieurs mois de développement, le point de vue d'utilisateurs externes avec des connaissances en informatique et en gestion de l'eau fortement variables était nécessaire.
 
 			Les séances de validation ont eu lieu selon les disponibilités des utilisateurs d'essai, répartis en deux groupes. Un premier groupe de 9 utilisateurs a testé l'application dans la version \emph{Alpha 3}, un second groupe de 11 utilisateurs a testé l'application dans la version \emph{Beta 1}, dans laquelle  ont été rajoutés les modules financier et historique, ainsi que plusieurs changements suggérés par les utilisateurs d'essai du premier groupe de validation.
@@ -1019,7 +998,7 @@
 
 				Les résultats des 14 questions évaluant la satisfaction des utilisateurs sur le concept, les fonctionnalités et l'esthétique de l'application sont représentés en figure~\ref{fig:validation_likert}.
 
-				\begin{figure}[H]
+				\begin{figure}
 					\includegraphics[width=\textwidth]{images/likert_questions}
 					\caption{Répartition des réponses aux questions du formulaire de validation}
 					\label{fig:validation_likert}
@@ -1061,9 +1040,8 @@
 				\end{table}
 
 			\subsection*{Modifications apportées}
-				Sur base des commentaires apportés durant les séances de validation, plusieurs modifications ont été apportées à l'application. Certaines prévues mais retravaillées sur les conseils des utilisateurs, d'autres imprévues.
 
-				Une partie de ces ajouts a été implémentée entre les deux groupes de validation, dont :
+				Sur base des commentaires apportés durant les séances de validation, plusieurs modifications ont été apportées à l'application. Certaines prévues mais retravaillées sur les conseils des utilisateurs, d'autres imprévues. Une partie de ces ajouts a été implémentée entre les deux groupes de validation, dont :
 				\begin{itemize}
 					\item De nouveaux boutons de pagination (voir figure~\ref{fig:screen_pagination}) pour les tables permettant d'accéder directement à la première ou dernière page d'une table.
 						\begin{figure}[H]
@@ -1114,7 +1092,6 @@
 
 		\section{Suite du projet}
 			\label{ref:suite_projet}
-			% Lors du déploiement, même si le site est pas hyper lourd, on peut encore l'alléger en faisant du coverage par les navigateurs (quelques stats), pas une bonne idée de le faire maintenant vu que développement pas fini.
 
 			Poursuivre le développement d'HaïtiWater est donc la priorité des futures équipes. L'application dans son état actuel fournit une base logicielle assez large implémentant de nombreux principes (gestion de données, visuels, accès hors-connexion, etc), lesquels devraient être poursuivis pour augmenter leur qualité et quantité.
 
@@ -1184,15 +1161,15 @@
 			\end{table}
 
 			\begin{figure}[H]
-					\includegraphics[width=\textwidth]{images/graph_git}
-					\caption{Répartition des commits au fil du temps (source : GitHub)}
-					\label{fig:graph_git}
+				\includegraphics[width=\textwidth]{images/graph_git}
+				\caption{Répartition des commits au fil du temps (source : GitHub)}
+				\label{fig:graph_git}
 			\end{figure}
 
 			\begin{figure}[H]
-					\includegraphics[width=\textwidth]{images/trello_stat}
-					\caption{Nombre de cartes/tâches Trello en fonction du temps. En gris les tâches complétées, en bleu les tâches en cours}
-					\label{fig:trello_stat}
+				\includegraphics[width=\textwidth]{images/trello_stat}
+				\caption{Nombre de cartes/tâches Trello en fonction du temps. En gris les tâches complétées, en bleu les tâches en cours}
+				\label{fig:trello_stat}
 			\end{figure}
 
 	\bibliography{bibliography}{}
