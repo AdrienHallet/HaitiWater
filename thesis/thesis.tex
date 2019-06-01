@@ -470,7 +470,7 @@
 
 		Nous pensons avoir trouvé un bon compromis, prenant avantage des conseils glanés au cours de nos études~\cite{ref:kim_coo} : nous avons présenté au plus vite des visuels de la future application, et avons organisé une réunion Skype pour pouvoir échanger en direct avec nos clients malgré le décalage horaire.
 
-		Le cahier des charges résultant de ces interactions (voir section \ref{sec:cdc}) a été accepté par les parties prenantes, nous le considérons donc comme représentatif de l'expression des divers souhaits exprimés. Il nous semble complet, et a été assez peu modifié au cours du projet. Deux éléments s'y sont cependant ajoutés, l'un pour répondre aux besoins non-fonctionnels et l'autre suggéré par Louis Fritzno, un acteur haïtien venu pour apporter un point de vue concret.
+		Le cahier des charges résultant de ces interactions (voir section \ref{sec:cdc}) a été accepté par les parties prenantes; nous le considérons donc comme représentatif de l'expression des divers souhaits exprimés. Il nous semble complet et a été assez peu modifié au cours du projet. Deux éléments s'y sont cependant ajoutés, l'un pour répondre aux besoins non-fonctionnels et l'autre suggéré par Louis Fritzno, un acteur haïtien venu pour apporter un point de vue concret.
 
 		\section{Besoins fonctionnels}
 
@@ -486,7 +486,7 @@
 
 				Ces documents nous ont été d'une très grande utilité, puisqu'ils nous ont permis de lister toutes les données nécessaires à notre application, nous donnant un solide point de départ pour notre base de données. Ils nous ont également permis de mieux comprendre quelles étaient les responsabilités des différents acteurs, ce qui nous a donné la structure de l'application elle-même.
 
-				En nous inspirant directement des \emph{Komité Dlo} décrit dans le chapitre \ref{sec:structure_haiti}, nous avons décidé de créer deux types de gestionnaires : de zone et de fontaine. Les gestionnaires \emph{de zone} effectuent une gestion générale de toute une partie du réseau de distribution avec peu d'interaction avec ses usagers. Ils collaborent avec des gestionnaires \emph{de fontaine(s)}, qui s'occupent directement un ou plusieurs points d'eau, et sont en contact direct avec les consommateurs.
+				En nous inspirant directement des \emph{Komité Dlo} décrit dans le chapitre \ref{sec:structure_haiti}, nous avons décidé de créer deux types de gestionnaires : de zone et de fontaine. Les gestionnaires \emph{de zone} effectuent une gestion générale de toute une partie du réseau de distribution avec peu d'interaction avec ses usagers. Ils collaborent avec des gestionnaires \emph{de fontaine(s)}, qui s'occupent directement d'un ou plusieurs points d'eau et sont en contact direct avec les consommateurs.
 
 				Cette division permet à chacun d'avoir un rôle clair et précis, les gestionnaires de fontaines apportant les données au jour le jour (paiements, nouveaux usagers, etc.), tandis que les gestionnaires de zone s'occupent du réseau en lui-même.
 
@@ -494,9 +494,9 @@
 
 				La seconde observation que nous avons pu mettre en avant en lisant les documents fournis par Protos et en parlant aux Haïtiens est que les procédures en place sont à la fois trop compliquées et peu standardisées. Il est souvent nécessaire de se déplacer physiquement jusqu'à un point d'eau ou chez la personne qui en est responsable pour avoir l'information nécessaire, ce qui est à la fois une cause directe et un résultat de l'absence de centralisation.
 
-				La division en différents rôles que nous avons établie permet aux utilisateurs de l'application d'avoir toujours une vue sur les éléments du réseau de distribution dont ils sont responsables, et de faire circuler les informations beaucoup plus vite.
+				La division en différents rôles que nous avons établie permet aux utilisateurs de l'application d'avoir toujours une vue sur les éléments du réseau de distribution dont ils sont responsables et de faire circuler les informations beaucoup plus vite.
 
-				Nous souhaitons également aider les gestionnaires de zone à prendre des décisions plus rapidement. En effet, grâce à la numérisation des données, il leur est possible de visualiser leur réseau de distribution avec des filtres. Ceux-ci peuvent mettre en avant les points d'eau nécessitant une réparation, ou les villages dans lesquels les factures sont en retard.
+				Nous souhaitons également aider les gestionnaires de zone à prendre des décisions plus rapidement. En effet, grâce à la numérisation des données, il leur est possible de visualiser leur réseau de distribution avec des filtres. Ceux-ci peuvent mettre en avant les points d'eau nécessitant une réparation ou les villages dans lesquels les factures sont en retard.
 
 				Nous sommes partis des documents décrits dans la section \ref{sec:gest_donnee} afin de déterminer différentes procédures importantes dans la gestion de l'eau. Nous avons ensuite conçu des diagrammes représentant comment les utilisateurs pourraient les réaliser au sein de notre application. Ces diagrammes sont disponibles dans l'annexe \ref{sec:activity_diag}.
 
@@ -512,7 +512,7 @@
 
 				Par conséquent, nous avons non seulement implémenté un principe de connexion avec privilèges (certaines données sont inaccessibles sans un niveau de privilège particulier), mais nous avons également ajouté un système de \emph{logs}.
 
-				Ce module, appelé \emph{module historique} n'était pas prévu initalement, nous l'avons ajouté pour remédier aux erreurs des utilisateurs, ou aux comportements malicieux. Ce module permet aux supérieurs hiérarchiques de consulter les modifications faites par leurs subordonnés. Si ces modifications leur semblent incorrectes, un seul clic leur permet de faire revenir les données à leur état précédent. Si une modification est acceptée, elle disparaît de la liste en laissant la modification, jugée valide, dans la base de données.
+				Ce module, appelé \emph{module historique} n'était pas prévu initalement, nous l'avons ajouté pour remédier aux erreurs des utilisateurs ou aux comportements malicieux. Ce module permet aux supérieurs hiérarchiques de consulter les modifications faites par leurs subordonnés. Si ces modifications leur semblent incorrectes, un seul clic leur permet de faire revenir les données à leur état précédent. Si une modification est acceptée, elle disparaît de la liste en laissant la modification, jugée valide, dans la base de données.
 
 			\subsection*{Connexions lentes et peu fiables}
 				L'utilisation de notre application en Haïti amène un besoin particulier : dans ce pays, la connexion Internet est bien plus lente que nos standards européens et y est souvent peu fiable. Pour pallier cet inconvénient, nous avons d'abord utilisé les techniques courantes : nous envoyons aussi peu de données que possible, faisons usage de la cache (voire section~\ref{sec:cache_client}) et envoyons les informations des différents éléments de la page séparément.
@@ -541,14 +541,14 @@
 				\label{fig:modules}
 			\end{figure}
 
-			Chaque module représente un type d'activité pratiqué par les gestionnaires du réseau de distribution. Après cette première année de développement, nous en avons créé huit :
+			Chaque module représente une activité des gestionnaires du réseau de distribution. Après cette première année de développement, nous en avons créé huit :
 			\begin{itemize}
 				\item Le module \textbf{réseau}, permet de créer de nouveaux éléments du réseau (source, conduite, réservoir, kiosque, fontaine, prise individuelle) et de consulter des informations à leur propos (nom, emplacement, état de fonctionnement)
 				\item Le module \textbf{carte interactive}, fortement lié avec le précédent, permet de placer et visualiser les éléments du réseau de distribution sur une carte. Le module permet de placer des éléments sur celle-ci directement avec la souris, ou plus précisemment avec trois systèmes de coordonnées : le degré décimal, le degré-minute-seconde et la transverse universelle de Mercator (cette dernière méthode demandée par notre contact haïtien).
 				\item Le module \textbf{consommateurs} contient toutes les informations à propos des usagers du réseau (nom, adresse, etc.), groupés par ménages.
 				\item Le module \textbf{financier}, fortement lié avec le module précédent, permet de consulter et d'ajouter les informations concernant les paiements réalisés par les usagers du réseau.
 				\item Le module \textbf{rapports} permet aux gestionnaires de fontaine(s) d'entrer des informations sur le fonctionnement du réseau (s'il a été actif, quelle quantité d'eau a été distribuée) et de créer des tickets de problèmes en cas de panne d'un élément.
-				\item Le module \textbf{gestion de zone}, plus administratif, permet de créer de nouveaux gestionnaires et de les assigner à une zone ou des éléments du réseau en fonction de leur rôle.
+				\item Le module \textbf{gestion de zone}, plus administratif, permet de créer de nouveaux gestionnaires et de les assigner à une zone ou à des éléments du réseau en fonction de leur rôle.
 				\item Le module \textbf{historique} permet aux supérieurs hiérarchiques de visualiser tous les changements, ajouts ou suppressions effectués par leurs subordonnés. Ils peuvent valider ou annuler ces changements. Pendant trois semaines, un choix (validation ou annulation) est affiché dans une seconde table pour informer les autres supérieurs qu'une décision a été prise, afin de permettre de récupérer des informations supprimées en cas d'annulation erronée.
 				\item Le module \textbf{offline} permet d'assurer la disponibilité du site même lorsque la connexion internet n'est pas stable, donnant la possiblité de compléter le rapport mensuel. Les fonctionnalités précises de ce module sont décrites plus en détail dans la section~\ref{sec:service_worker}.
 			\end{itemize}
@@ -558,7 +558,7 @@
 
 			À partir des informations des différents documents analysés dans la section \ref{sec:gest_donnee}, nous avons avons commencé à établir une structure pour les données de notre application. Nous avons d'abord repéré les champs qui nous semblaient les plus importants dans les différents fichiers Excel~\cite{ref:resumes_documents}.
 
-			Nous avons ensuite confronté ça aux différents modules et fonctionnalités développés dans le cahier des charges. En rassemblant tout ça, nous avons établis un schéma en figure \ref{fig:db} représentant la structure des données à laquelle nous sommes arrivé. Il montre un diagramme des relations entre les différentes entités de notre application, selon le standard UML~\cite{ref:siegfried_db}.
+			Nous avons ensuite confronté la structure aux différents modules et fonctionnalités développés dans le cahier des charges. Nous avons établis un schéma en figure \ref{fig:db} représentant la structure des données à laquelle nous sommes arrivés. Il montre un diagramme des relations entre les différentes entités de notre application, selon le standard UML~\cite{ref:siegfried_db}.
 
 			\begin{figure}
 				\centering
