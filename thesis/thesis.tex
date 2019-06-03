@@ -263,7 +263,7 @@
 
 				En pratique, un comité de l'eau (\emph{Komité Dlo} en Créole haïtien) est composé d'un président, un vice-président, un secrétaire, un trésorier et un conseiller, élus par les consommateurs locaux pour cinq ans. Ils se réunissent tous les mois pour parler des affaires courantes, et organisent une fois par an une assemblée générale où sont conviés les usagers du réseau. Ils sont en charge du bon fonctionnement du réseau, de la gestion du budget et des fonds amenés par les utilisateurs, de superviser les \emph{comités fontaines} et de rendre des comptes à la population.
 
-				Les comités fontaines, eux, sont composés d'un responsable fontaine, un secrétaire et un trésorier. Il sont en charge du bon fonctionnement et de la qualité du point d'eau, d'apporter les fonds au comité d'eau et de gérer les éventuels conflits entre usagers ou les réparations nécéssaires.
+				Les comités fontaines, eux, sont composés d'un responsable fontaine, un secrétaire et un trésorier. Il sont en charge du bon fonctionnement et de la qualité du point d'eau, d'apporter les fonds au comité d'eau et de gérer les éventuels conflits entre usagers ou les réparations nécessaires.
 
 				Concrètement, la quantité de points d'eau et le nombre d'usagers desservis par les réseaux de distribution d'eau varie : comme ceux-ci sont en développement, les nombres sont en constante augmentation. En ce moment, on compte par exemple 13 fontaines publiques dans la zone Passe Catabois, et 25 dans la zone Poste Métier. Ces fontaines alimentent entre 100 et 1000 usagers (voir figure \ref{fig:conso_fontaine}), avec une moyenne autour de 300.
 
@@ -588,27 +588,27 @@
 				% Requis du client. Avantage de la portabilité, installation, données décentralisées directement, donc communes à tous les utilisateurs
 				% Désavantage support des navigateurs multiples, perte en performances d'opérations complexes, nécessite plus de bande passante, rend plus difficile l'accès hors-ligne aux fonctionnalités
 
-				\'Etablie dès le premier jour, l'exigence du support web pour ce travail a influencé la totalité du mémoire. Nous n'avons pas eu de réel choix à ce niveau, il nous est néanmoins possible de trouver des avantages à ce type de développement :
+				\'Etablie dès le premier jour, l'exigence du support web pour ce travail a influencé la totalité du mémoire. Nous n'avons pas eu de choix à ce niveau. Il nous est néanmoins possible de trouver des avantages à ce type de développement :
 				\begin{itemize}
 					\item L'application ne nécessite aucune installation, aucun prérequis et la seule nécessité est de disposer d'un navigateur internet (préférentiellement majeur et relativement récent). C'est une facilité pour l'utilisateur, puisqu'il suffit d'accéder au site internet. L'avantage est également étendu au développement qui ne doit pas se préoccuper du système d'exploitation de l'utilisateur.
-					\item Le déploiement des mises à jour et la manière dont l'application fonctionne en général est uniforme à travers les utilisateurs et les conflits de version, bien que devant toujours être gérés notamment par le biais du cache (voir section~\ref{sec:cache_client}), sont moindres que sur une application locale. D'éventuels conflits de données peuvent être réglés directement via le serveur et les outils de développement disponibles à l'équipe, ce qui est plus rapide et moins complexe que de créer des automatisations pour gérer ces mises à jour individuellement pour chaque utilisateur.
+					\item Le déploiement des mises à jour et la manière dont l'application fonctionne en général sont uniformes à travers les utilisateurs et les conflits de version, bien que devant toujours être gérés notamment par le biais du cache (voir section~\ref{sec:cache_client}), sont moindres que sur une application locale. D'éventuels conflits de données peuvent être réglés directement via le serveur et les outils de développement disponibles à l'équipe, ce qui est plus rapide et moins complexe que de créer des automatisations pour gérer ces mises à jour individuellement pour chaque utilisateur.
 				\end{itemize}
 
 				Ne présentant pas que des avantages, le développement web apporte son lot de problématiques nouvelles :
 				\begin{itemize}
 					\item Utiliser une application en ligne nécessite une connexion internet, et même si cette dernière n'est pas requise en permanence (voir section~\ref{sec:service_worker}), il est impératif qu'elle soit présente ponctuellement pour charger l'application et envoyer/recevoir les données lors de son utilisation.
-					\item La diversité des navigateurs internet (Firefox, Chrome, Edge, etc) entraîne la nécessité de gérer ces environnements différents pour que l'application fonctionne sur un maximum de navigateurs et de manière similaire.
+					\item La diversité des navigateurs internet (Firefox, Chrome, Edge, etc) entraîne la nécessité de gérer ces environnements différents pour que l'application fonctionne de manière similaire sur un maximum de navigateurs.
 				\end{itemize}
 
 			\subsection*{Choix du framework - Django}
 				% Framework éprouvé (ancien, maintenu, communauté, documentation), adapté à de larges applications (scalable), permet l'utilisation facilité de PostgreSQL (modèles), gabarits pour du HTML 'importé' sans besoin d'angular/whatever (moins de techs, reste simple).
 
-				Un framework est une infrastructure logicielle dans laquelle l'application est développée. On peut argumenter, avec raison, qu'un framework ajoute une certaine quantité d'outils qui ont comme effet de bord de complexifier l'application et d'en augmenter la taille. Dans une application aussi large que la nôtre cependant, l'apport bénéfique qu'ont ces outils supplante largement ces inconvénients. Parmi ces apports bénéfiques on citera surtout :
+				Un framework est une infrastructure logicielle dans laquelle l'application est développée. On peut argumenter, avec raison, qu'un framework ajoute une certaine quantité d'outils qui ont comme effet de bord de complexifier l'application et d'en augmenter la taille. Dans une application aussi large que la nôtre cependant, l'apport bénéfique qu'ont ces outils supplante largement ces inconvénients. Parmi ces apports bénéfiques, on citera surtout :
 				\begin{itemize}
 					\item L'environnement de travail d'un framework impose certaines contraintes qui répandent des bonnes pratiques. Par exemple, une structure des fichiers et dossiers du code source qui permet à long terme une meilleure maintenance, surtout dans des applications complexes.
 					\item Les outils fournis sont testés, utilisés et éprouvés. Il n'est pas nécessaire de créer nous-même des fonctionnalités déjà présentes dans un framework, et même si recréer ces fonctionnalités est une expérience enrichissante, elle reste moins efficace. De plus, les fonctionnalités existantes sont de meilleure qualité, offrent de meilleures performances et surtout ne sont pas à maintenir par l'équipe de développement de l'application, mais par l'organisme en charge de la publication du framework. Ces avantages seront d'autant plus importants que le framework est populaire et maintenu à jour.
-					\item Un framework aura beaucoup de fonctionnalités par défaut qui rendront le développement plus aisé. Messages d'erreur, outils de mesures, etc.
-					\item La documentation et l'aide sont de meilleure qualité. Les framework ont généralement une communauté et une équipe de développement dont les capacité et l'expérience permettent une production de documentation rendant très facile la compréhension du projet et la recherche d'aide. Avantages qu'il est impossible d'égaler dans une équipe de trois personnes sur dix mois.
+					\item Un framework aura beaucoup de fonctionnalités par défaut qui rendront le développement plus aisé. Messages d'erreur, outils de mesure, etc.
+					\item La documentation et l'aide sont de meilleure qualité. Les framework ont une communauté et une équipe de développement qui facilitent la compréhension du projet et la recherche d'aide via la documentation et les forums. Avantages qu'il est impossible d'égaler dans une équipe de trois personnes sur dix mois.
 				\end{itemize}
 
 				La table~\ref{table:comparatif_framework} reprend une liste non-exhaustive de frameworks qui ont été envisagés pour ce projet. Afin de pouvoir développer une application compatible, nous avons évalué les possibilités et arrêté un choix durant la phase d'analyse du développement. Ci-après sont exposées les motivations de ce choix.
@@ -650,7 +650,7 @@
 							\end{figure}
 
 					\item[M] Maintenabilité - Aisance et possibilités de maintenance. \hfill \\
-							L'aisance avec laquelle un code est maintenu à jour est inversement lié à la complexité. À cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long terme. Nos recherches favorisent les frameworks Python, par leurs sources généralement plus courtes. La taille du framework a en revanche un impact négatif sur la maintenabilité. Les petits frameworks en python seraient donc les plus maintenables.
+							L'aisance avec laquelle un code est maintenu à jour est inversement liée à la complexité. À cela, nous pouvons ajouter les fréquences de mise à jour des frameworks. La structure du framework impacte également la maintenabilité ; moins on modifie de fichiers pour implémenter une fonctionnalité, plus facile sera la maintenance à moyen et long termes. Nos recherches favorisent les frameworks Python, par leurs sources généralement plus courtes. La taille du framework a en revanche un impact négatif sur la maintenabilité. Les petits frameworks en python seraient donc les plus maintenables.
 
 					\item[Pe] Performance - Capacités du framework. \hfill \\
 							Les performances sont mesurées en termes de temps de réponse pour une requête du client au serveur. Il peut être important de noter que, dans le cas d'Haïti, la performance sera importante due à l'instabilité des connexions Internet mais moins au niveau du serveur qui ne sera pas aussi sollicité qu'une application de banking ou militaire par exemple. Les performances d'un framework sont largement définies par les technologies utilisées (principalement le type de base de données). Django est un candidat recommandé sur Internet pour les larges projets manipulant beaucoup de données.
@@ -658,7 +658,7 @@
 					\item[Po] Popularité - Popularité du langage à travers le monde. \hfill \\
 							La popularité est sans doute la plus importante des mesures de ce comparatif. Un langage populaire dispose de plus de tutoriels et aide en ligne que d'obscurs langages / frameworks peu ou pas utilisés.
 
-							La figure~\ref{fig:hotframework}~\footnote{https://hotframeworks.com/} montre une évolution de la popularité des frameworks les plus courants. On peut constater que Django est actuellement classé cinquième, et surtout qu'il a l'une des courbes les plus stables, ce qui suggère qu'il restera populaire dans le futur. Sa présence dans le top 10 est également un bon indicateur de sa perrenité.
+							La figure~\ref{fig:hotframework}~\footnote{https://hotframeworks.com/} montre une évolution de la popularité des frameworks les plus courants. On peut constater que Django est actuellement classé cinquième, et surtout qu'il a l'une des courbes les plus stables, ce qui suggère qu'il restera populaire dans le futur. Sa présence dans le top 10 est également un bon indicateur de sa pérrenité.
 
 							\begin{figure}
 								\centering
@@ -680,18 +680,18 @@
 
 			\subsection*{Python}
 				% Obligé par Django, quand même un bon choix. Pas le plus répandu (PHP et ASP.NET bien plus utilisés) mais permet une bonne gestion des objets intégrée directement au serveur, car langage OO.
-				Le langage Python est un langage de programmation populaire principalement grâce à sa syntaxe légère permettant un code compréhensible et généralement plus court (voir figure~\ref{fig:complexity}). Il n'est pas le plus utilisé en développement web, ce sont PHP (79\% d'utilisation), ASP.NET (11.3\%) et Java (4\%) qui constituent le trio de tête~\cite{ref:popular_programming_languages}. Toutefois, nous pensons que Python s'adapte parfaitement aux besoins de l'application demandée. C'est un langage relativement simple et compréhensible dont la popularité croît ces dernières années. Les bibliothèques logicielles et la documentation, toutes deux disponibles à foison sur Internet, en font un langage particulièrement ouvert aux débutants. de plus, cette montée en popularité fait qu'il est de plus en plus enseigné au sein des unniversités et hautes écoles, ce qui indique que la tendance se maintiendra sans doute. Un dernier argument, et non des moindres, est l'expérience déjà acquise dans la programmation en Python durant nos années d'études.
+				Le langage Python est un langage de programmation populaire principalement grâce à sa syntaxe légère permettant un code compréhensible et généralement plus court (voir figure~\ref{fig:complexity}). Il n'est pas le plus utilisé en développement web, ce sont PHP (79\% d'utilisation), ASP.NET (11.3\%) et Java (4\%) qui constituent le trio de tête~\cite{ref:popular_programming_languages}. Toutefois, nous pensons que Python s'adapte parfaitement aux besoins de l'application demandée. C'est un langage relativement simple et compréhensible dont la popularité croît ces dernières années. Les bibliothèques logicielles et la documentation, toutes deux disponibles à foison sur Internet, en font un langage particulièrement ouvert aux débutants. Il est de plus en plus enseigné au sein des universités et hautes écoles, ce qui indique que la tendance se maintiendra sans doute. Un dernier argument, et non des moindres, est l'expérience déjà acquise dans la programmation en Python durant nos années d'études.
 
 			\subsection*{PostreSQL et PostGIS}
 				% Autre obligation de Django, mais une décision consciente de l'utiliser pour PostGIS. Manipulation géographique facilitée, un apport positif pour la suite du module GIS.
 				% Petit comparatif d'utilisation des SGBD avec MySQL, etc ?
 				% Pourquoi BDD relationnelle et non-relationnelle ?
 
-				Si l'utilisation du langage Python était imposée dès lors que Django fut choisi en tant qu'environnement logiciel, le système de gestion de base de données, dont le rôle est de lier l'application web et la base de données, était moins contraignant puisque de nombreuses options sont compatible avec notre framework.
+				Si l'utilisation du langage Python était imposée dès lors que Django fut choisi en tant qu'environnement logiciel, le système de gestion de base de données, dont le rôle est de lier l'application web et la base de données, était moins contraignant puisque de nombreuses options sont compatibles avec notre framework.
 
-				Nous avons tout de suite écarté les systèmes non-relationnels. Bien que présentant des avantages, principalement dans l'agilité avec laquelle la structure des données peut évoluer, ces derniers ne sont pas adaptés à une application comme celle développée dans le cadre de ce mémoire. En effet, les données ont de fortes dépendances, les éléments du réseau étant rattachés à des gestionnaires faisant parties de zones géographiques elle-même gérées, etc. Les outils offerts par les bases de données relationnelles pour joindre différents groupes de données (par exemple pour croiser les consommateurs avec leurs paiements afin d'obtenir un détail financier), sont tout simplement mieux adaptés au fonctionnement de l'application.
+				Nous avons écarté les systèmes non-relationnels. Bien que présentant des avantages, principalement dans l'agilité avec laquelle la structure des données peut évoluer, ces derniers ne sont pas adaptés à une application comme celle développée dans le cadre de ce mémoire. En effet, les données ont de fortes dépendances, les éléments du réseau étant rattachés à des gestionnaires faisant parties de zones géographiques elle-mêmes gérées, etc. Les outils offerts par les bases de données relationnelles pour joindre différents groupes de données (par exemple pour croiser les consommateurs avec leurs paiements afin d'obtenir un détail financier), sont tout simplement mieux adaptés au fonctionnement de l'application.
 
-				Restent donc les systèmes de gestion de base de données (SGBD) relationnels, dans lequels nous avons opté pour PostgreSQL, classé quatrième système de gestion de bases de données le plus utilisé au monde~\footnote{\url{https://db-engines.com/en/ranking}, 1 mai 2019}. La première motivation de ce choix est la recommandation du framework Django, lequel s'adapte mieux à ce SGBD via son système de \emph{mapping objet-relationnel} (voire section~\ref{sec:serveur}). La seconde motivation est l'existence de l'extension PostGIS~\cite{ref:postgis}, une extension du SGBD permettant de traiter aisément les données géographiques.
+				Restent donc les systèmes de gestion de base de données (SGBD) relationnels, dans lesquels nous avons opté pour PostgreSQL, classé quatrième système de gestion de bases de données le plus utilisé au monde~\footnote{\url{https://db-engines.com/en/ranking}, 1 mai 2019}. La première motivation de ce choix est la recommandation du framework Django, lequel s'adapte mieux à ce SGBD via son système de \emph{mapping objet-relationnel} (voire section~\ref{sec:serveur}). La seconde motivation est l'existence de l'extension PostGIS~\cite{ref:postgis}, une extension du SGBD permettant de traiter aisément les données géographiques.
 
 			\subsection*{Bootstrap}
 				% Conventions connues (largement utilisées) pour le Front, beaucoup de choses pré-faites pour accélérer le développement.
@@ -771,7 +771,7 @@
 				Deux types d'utilisateurs sont amenés à se connecter à l'application :
 				\begin{description}
 					\item[Gestionnaire de Fontaine] \hfill \\
-						Ce gestionnaire est un noeud terminal dans un chemin de la hiérarchie des utilisateurs. Son rôle est simple; au plus proche du consommateur, il est chargé de gérer (et donc assigné à) un ou plusieurs éléments de sortie du réseau, c'est-à-dire qu'il s'occupe du bon fonctionnement de la distribution aux consommateurs. Il a quatre charges relatives aux éléments du réseau de distribution d'eau qui lui sont assignés :
+						Ce gestionnaire est un noeud terminal dans un chemin de la hiérarchie des utilisateurs. Son rôle est simple; au plus proche du consommateur, il est chargé de gérer (et donc assigné à) un ou plusieurs éléments de sortie du réseau, c'est-à-dire qu'il s'occupe du bon fonctionnement de la distribution aux consommateurs. Il a quatre charges, pour chaque élément du réseau qui lui est assigné :
 							\begin{enumerate}
 								\item Rapporter l'utilisation, sous forme des volumes distribués.
 								\item Signaler les problèmes avec la pompe ou avec la qualité de l'eau.
@@ -780,7 +780,7 @@
 							\end{enumerate}
 						Le gestionnaire de fontaine est donc une entité locale similaires aux \emph{comités fontaines} vus en section~\ref{sec:procedures_actuelles}.
 					\item[Gestionnaire de Zone] \hfill \\
-						Le gestionnaire de zone est un rôle plus complexe. Il est un administrateur local ou global, dépendamment de sa position dans la hiérarchie. Un gestionnaire de zone peut superviser d'autres gestionnaires, de zone ou de fontaine, et ce en nombre illimité. Un gestionnaire de zone peut effectuer les mêmes actions qu'un gestionnaire de fontaine, mais ses charges sont plutôt orientées dans l'administration  de sa zone:
+						Le gestionnaire de zone a un rôle plus complexe. Il est un administrateur local ou global, dépendamment de sa position dans la hiérarchie. Un gestionnaire de zone peut superviser d'autres gestionnaires, de zone ou de fontaine, et ce en nombre illimité. Un gestionnaire de zone peut effectuer les mêmes actions qu'un gestionnaire de fontaine, mais ses charges sont plutôt orientées dans l'administration  de sa zone:
 							\begin{enumerate}
 								\item Ajouter, modifier ou supprimer des zones.
 								\item Ajouter, modifier ou supprimer des gestionnaires.
@@ -880,7 +880,7 @@
 			%Pages : 4 à 5
 			\subsection*{Gabarits, modularité et responsiveness}
 				% Interface construite en blocs (screen?)
-				Nous avons vu plus tôt que l'application est constituée d'une zone de travail dans laquelle des blocs de contrôles sont placés pour former les différents modules de l'application. Ces blocs de contrôle reflètent l'architecture logicielle de l'interface.
+				Nous avons vu plus tôt que l'application est constituée d'une zone de travail dans laquelle des blocs de contrôle sont placés pour former les différents modules de l'application. Ces blocs de contrôle reflètent l'architecture logicielle de l'interface.
 
 				Pour implémenter ces contrôles, nous utilisons les gabarits Django qui sont des blocs de code HTML établissant la structure de la page web. Ces différents blocs de structure sont ensuite utilisés dans l'application pour créer les différentes pages :
 				\begin{itemize}
@@ -918,11 +918,11 @@
 
 			\subsection{Mapping Objet-Relationnel}
 
-				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment a été créé la base de données et sa structure. Il nous reste à faire interagir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de donnée, et se charge d'y envoyer toutes les requêtes.
+				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment a été créé la base de données et sa structure. Il nous reste à faire interagir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de données, et se charge d'y envoyer toutes les requêtes.
 
 				Il nous suffit de décrire la structure des données en utilisant des classes Python et le framework sera capable de créer les tables de la base de données et de les modifier au fur et à mesure des changements que nous introduisons. Ensuite, nous pouvons facilement interagir avec ces classes pour créer, modifier, supprimer et récupérer des données sans toucher au SQL.
 
-				Cela nous permet de simplifier l'interaction avec la base de données ainsi que de nous détacher de quel serveur voire quel système de gestion de base de données nous utilisons. Il serait possible de passer de PostreSQL, que nous utilisons, pour un autre système (MySQL, par exemple) sans modifier la logique interne de l'application et de l'accès aux données.
+				Cela nous permet de simplifier l'interaction avec la base de données ainsi que de nous détacher du serveur voire quel système de gestion de base de données que nous utilisons. Il serait possible de passer de PostreSQL, que nous utilisons, vers un autre système (MySQL, par exemple) sans modifier la logique interne de l'application et de l'accès aux données.
 
 			\subsection{Requêtes}
 
@@ -934,7 +934,7 @@
 					\item Les requêtes de données, interragissant avec la base de données.
 				\end{itemize}
 
-				Les deux premiers types de requêtes permettent à un navigateur de télécharger l'application afin d'avoir une interface graphique pour manipuler le troisième type requête via l'API. Cette séparation permet de réduire le temps de chargement en allégeant les documents HTML qui ne contiennent que la logique de contrôle. Les données sont ensuite envoyées de manière asynchrone, donc non-bloquante, lorsque l'application envoie les requêtes à l'API.
+				Les deux premiers types de requête permettent à un navigateur de télécharger l'application afin d'avoir une interface graphique pour manipuler le troisième type de requête via l'API. Cette séparation permet de réduire le temps de chargement en allégeant les documents HTML qui ne contiennent que la logique de contrôle. Les données sont ensuite envoyées de manière asynchrone, donc non-bloquante, lorsque l'application envoie les requêtes à l'API.
 
 				En plus des avantages apportés au client, la présence d'une API (détaillée en section \ref{sec:api}) est une bonne pratique qui permet une meilleure compartementalisation des rôles du serveur.
 
@@ -948,7 +948,7 @@
 
 			\subsection*{Détails des requêtes API}
 				\label{sec:api}
-				L'API (\emph{Application Programming Interface}) permet l'interaction avec la base de données via HaïtiWater. Présentée en figure~\ref{fig:db}, nous manipulons les objects suivant : consommateur, paiement, élément du réseau, point géographique, rapport mensuel, ticket de problème, zone et utilisateur de l'application. Les éléments \texttt{log} et \texttt{transaction} sont traités de manière particulière.
+				L'API (\emph{Application Programming Interface}) permet l'interaction avec la base de données via HaïtiWater. Présentée en figure~\ref{fig:db}, nous manipulons les objets suivant : consommateur, paiement, élément du réseau, point géographique, rapport mensuel, ticket de problème, zone et utilisateur de l'application. Les éléments \texttt{log} et \texttt{transaction} sont traités de manière particulière.
 
 				Pour ces objets enregistrés par le serveur, l'API transmet au serveur les actions :
 				\begin{itemize}
@@ -960,10 +960,10 @@
 				Les requêtes HTML à l'API ont la forme : \\
 				\url{.../api/<add|edit|remove>/?table=<table_name>&id=<id>&data=<data>}
 
-				Le serveur effectue le second tour de vérifications sur les données envoyées à l'API (le premier effectué par l'interface web). Nous vérifions que :
+				Le serveur effectue le second tour de vérification sur les données envoyées à l'API (le premier effectué par l'interface web). Nous vérifions que :
 				\begin{enumerate}
-					\item L'utilisateur a accès à la donnée qu'il tente de manipuler
-					\item La donnée est correcte
+					\item L'utilisateur a accès à la donnée qu'il tente de manipuler.
+					\item La donnée est correcte.
 					\item La modification demandée ne va pas causer de problèmes dans l'application. (e.g. : impossible de supprimer un élément du réseau utilisé par des consommateurs).
 				\end{enumerate}
 				En réponse, le serveur informe du succès ou de l'échec de l'opération et pourquoi le cas échéant.
@@ -974,14 +974,14 @@
 
 				Le dernier type de requête réalisé par l'API permet au client de récupérer les données de la base de données afin d'afficher les informations à l'écran. Une fonction générique gère la collecte de ces données pour toutes les tables (le concept est similaire à travers les modules), une autre fonction générique gère l'application des filtres et tris sur les données.
 
-				La cache du serveur est activée par ce type de requête : à chaque demande de données, la réponse est mise en cache pour une minute. Ceci nous permet d'économiser des performances quand un utilisateur travaille longtemps sur les mêmes données.
+				La mémoire cache du serveur est activée par ce type de requête : à chaque demande de données, la réponse est mise en cache pour une minute. Ceci nous permet d'économiser des performances quand un utilisateur travaille longtemps sur les mêmes données.
 
 				Certaines requêtes d'accès ont un format plus spécifique, ne pouvant être génériques car utilisées dans un contexte spécifique :
 
 				\begin{itemize}
-					\item Données permettant de tracer les graphes
-					\item Détails des coordonnées géographiques des éléments du réseau afin de les afficher sur la carte interactive
-					\item Détails des informations concernant les paiements d'un utilisateur en particulier (utilisés dans le module financier)
+					\item Données permettant de tracer les graphes.
+					\item Détails des coordonnées géographiques des éléments du réseau afin de les afficher sur la carte interactive.
+					\item Détails des informations concernant les paiements d'un utilisateur en particulier (utilisés dans le module financier).
 					\item Données périodiques (mois par mois) des volumes distribués par les éléments du réseau.
 				\end{itemize}
 
@@ -1009,7 +1009,7 @@
 				   Couverture (lignes) & 87\% \\
 				\end{tabular}
 
-				Les fichiers et lignes restantes appartiennent majoritairement à l'infrastructure Django, testée séparément par les auteurs de cet environnement.
+				Les fichiers et lignes restants appartiennent majoritairement à l'infrastructure Django, testée séparément par les auteurs de cet environnement.
 
 				% Pour vérifier tout cela, nous avons créé un total de 187 tests unitaires. Tous ensembles cerux-ci couvrent 85\% des fichiers et 87\% des lignes de code de notre application, sachant que les fichiers restants concernent principalement le fonctionnement interne à Django et qu'il n'est ni évident ni pertinent de les vérifier. Grâce à tous ces tests, nous pouvons nous assurer que notre application fonctionne correctement, au moins pour tous les cas envisagés. De plus, nous pouvons les utiliser lors de modifications dans le code de l'application afin de vérifier que celles-ci n'endommagent pas les fonctionnalités existantes.
 
@@ -1031,7 +1031,7 @@
 				\begin{description}
 					\item[Général] est une première section cherchant à identifier si l'utilisateur a compris les tâches qu'il vient d'accomplir avec l'application.
 					\item[Fonctionnalités] cherche à identifier la compréhension des contrôles de l'application par l'utilisateur.
-					\item[Usabilité] est une section particulière. Composée de dix questions alternant des assertions positives et négatives en alternance, cette section est une transcription en français de la \emph{System Usability Scale (SUS)}~\cite{ref:sus}. Se décrivant comme une mesure \emph{rapide et sale}, la SUS présente l'avantage de pouvoir être complétée rapidement par nos utilisateurs d'essai durant ces séances de maximum deux heures non-rémunérées.
+					\item[Usabilité] est une section particulière. Composée de dix questions alternant des assertions positives et négatives, cette section est une transcription en français de la \emph{System Usability Scale (SUS)}~\cite{ref:sus}. Se décrivant comme une mesure \emph{rapide et sale}, la SUS présente l'avantage de pouvoir être complétée rapidement par nos utilisateurs d'essai durant ces séances de maximum deux heures non-rémunérées.
 					\item[Esthétique] est une dernière section, sans doute la plus subjective, composée de questions sur l'apparence de l'interface graphique.
 				\end{description}
 
@@ -1142,7 +1142,7 @@
 
 			Poursuivre le développement d'HaïtiWater est donc la priorité des futures équipes. L'application dans son état actuel fournit une base logicielle assez large implémentant de nombreux principes (gestion de données, visuels, accès hors-connexion, etc), lesquels devraient être poursuivis pour augmenter leur qualité et quantité.
 
-			Alors que l'application va être essayée en Haïti, les futures équipes de développement devront se montrer à l'écoute des acteurs du projet et modifier l'application selon leurs demandes pour, par exemple, prendre en charge plus de données. Une autre tâche importante sera la visualisation et aggrégation des données pour fournir plus de rapports automatiques. Les graphiques déjà présents en sont un bon exemple, permettant de présenter l'information rapidement et de manière compréhensible pour ainsi identifier directement les problèmes potentiels et améliorations possibles du réseau de distribution d'eau potable.
+			Alors que l'application va être essayée en Haïti, les futures équipes de développement devront se montrer à l'écoute des acteurs du projet et modifier l'application selon leurs demandes pour, par exemple, prendre en charge plus de données. Une autre tâche importante sera la visualisation et agrégation des données pour fournir plus de rapports automatiques. Les graphiques déjà présents en sont un bon exemple, permettant de présenter l'information rapidement et de manière compréhensible pour ainsi identifier directement les problèmes potentiels et améliorations possibles du réseau de distribution d'eau potable.
 
 			Le déploiement de l'application sur un serveur haïtien est un autre objectif à court terme du projet. La transition ne devrait pas être un problème puisque le serveur prêté par l'UCLouvain est un serveur de deux coeurs à 2GHz avec 1Go de mémoire vive, donc n'étant pas particulièrement performant. Cette migration du serveur de l'application devrait améliorer le temps de réponse de l'application en Haïti puisqu'en ce moment, il faut systématiquement communiquer avec le serveur en Belgique.
 
@@ -1164,7 +1164,7 @@
 
 		\section{Propositions}
 
-			Beaucoup de modules pourraient être ajoutés à HaïtiWater. Une demande récurrente est le module \emph{Citizen Science} qui vise à impliquer les consommateurs haïtiens dans la gestion du réseau de distribution en leur proposant par exemple de signaler des problèmes, consulter leur consommation et factures.
+			Beaucoup de modules pourraient être ajoutés à HaïtiWater. Une demande récurrente est le module \emph{Citizen Science} qui vise à impliquer les consommateurs haïtiens dans la gestion du réseau de distribution en leur proposant par exemple de signaler des problèmes, consulter leurs consommation et factures.
 
 			L'évolution du système sur d'autres axes que l'application web est également un chemin qui pourrait être poursuivi. Les acteurs haïtiens souhaitant développer l'aspect hors-ligne de l'application, il pourrait être envisagé de développer une application locale qui utiliserait un instantané de la base de données. Cela requièrerait un gros travail sur la consistance de la base de données du côté du serveur mais permettrait des utilisations hors-ligne plus avancées.
 
@@ -1185,7 +1185,7 @@
 		Nous espérons également qu'au même titre que nous avons appris de nos contacts avec les acteurs de Protos et Haïti, ces derniers ont eu une bonne (pour la plupart première) expérience de leur implication dans le développement d'un outil pouvant les aider dans leur travail, et que cette expérience leur permettra dans le futur d'identifier ce qui leur plaît ou non dans HaïtiWater pour créer la prochaine version, ou le prochain logiciel utilisé en Haïti.
 		%(Adrien) -> Je suis pas convaincu par mon dernier paragraphe, j'aimerais qu'on termine sur quelque chose de plus "grand" -> How about that :
 
-		Enfin, l'ONG Protos a signifié son intérêt de déployer HaïtiWater (qu'il faudrait dès lors nommer autrement) dans d'autres pays en voie de développement. Grâce à la modularité de notre projet, peu de changements seraient nécéssaire (principalement les unités de mesure et la devise monétaire) et notre outil de transition destiné au fonctionnement Haïtien pourrait devenir un exemple de bonnes pratiques plus génériques pour développer un réseau de distribution d'eau potable.
+		Enfin, l'ONG Protos a signifié son intérêt de déployer HaïtiWater (qu'il faudrait dès lors nommer autrement) dans d'autres pays en voie de développement. Grâce à la modularité de notre projet, peu de changements seraient nécessaire (principalement les unités de mesure et la devise monétaire) et notre outil de transition destiné au fonctionnement haïtien pourrait devenir un exemple de bonnes pratiques plus génériques pour développer un réseau de distribution d'eau potable.
 
 		\section{Métriques}
 			Voici des métriques et représentations graphiques du travail accompli pour ce projet, datant toutes du 23 mai 2019.
