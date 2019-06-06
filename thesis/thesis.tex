@@ -412,7 +412,7 @@
 
 		\section{Répartition des tâches}
 
-			Dès le début, nous avons cherché à tirer avantage de nos centres d'intérêts et capacités différents. Nous avons eu la chance d'être une équipe complémentaire et d'avoir un mémoire intéressant au point que toutes les tâches étaient attribuées sans problème et rapidement. Dans cette section, nous discutons de cette attribution systématique et de ce qu'elle implique pour ce travail.
+			Dès le début, nous avons cherché à tirer avantage de nos centres d'intérêts et capacités différents. Nous avons eu la chance d'être une équipe de personnes complémentaires et d'avoir un mémoire intéressant au point que toutes les tâches étaient attribuées sans problème et rapidement. Dans cette section, nous discutons de cette attribution systématique et de ce qu'elle implique pour ce travail.
 
 			\subsection*{Analyse}
 
@@ -508,7 +508,7 @@
 
 			\subsection*{Sécurité des données}
 
-				Dans le monde d'aujourd'hui, il est évident qu'une certaine attention doit être accordée à la sécurité d'une application web. En Haïti peut-être plus qu'ailleurs, une attention particulière se doit d'être portée à la possibilité qu'un utilisateur malveillant ou non se connecte au système.
+				Dans le monde d'aujourd'hui, il est évident qu'une certaine attention doit être accordée à la sécurité d'une application web. En Haïti peut-être plus qu'ailleurs au vu du contexte décrit en section~\ref{sec:situation}, une attention particulière se doit d'être portée à la possibilité qu'un utilisateur malveillant ou non se connecte au système.
 
 				Par conséquent, nous avons non seulement implémenté un principe de connexion avec privilèges (certaines données sont inaccessibles sans un niveau de privilège particulier), mais nous avons également ajouté un système de \emph{logs}.
 
@@ -601,7 +601,7 @@
 					\item L'environnement de travail d'un framework impose certaines contraintes qui répandent des bonnes pratiques. Par exemple, une structure des fichiers et dossiers du code source qui permet à long terme une meilleure maintenance, surtout dans des applications complexes.
 					\item Les outils fournis sont testés, utilisés et éprouvés. Il n'est pas nécessaire de créer nous-même des fonctionnalités déjà présentes dans un framework, et même si recréer ces fonctionnalités est une expérience enrichissante, elle reste moins efficace. De plus, les fonctionnalités existantes sont de meilleure qualité, offrent de meilleures performances et surtout ne sont pas à maintenir par l'équipe de développement de l'application, mais par l'organisme en charge de la publication du framework. Ces avantages seront d'autant plus importants que le framework est populaire et maintenu à jour.
 					\item Un framework aura beaucoup de fonctionnalités par défaut qui rendront le développement plus aisé. Messages d'erreur, outils de mesure, etc.
-					\item La documentation et l'aide sont de meilleure qualité. Les framework ont une communauté et une équipe de développement qui facilitent la compréhension du projet et la recherche d'aide via la documentation et les forums. Avantages qu'il est impossible d'égaler dans une équipe de trois personnes sur dix mois.
+					\item La documentation et l'aide sont de meilleure qualité. Les frameworks ont une communauté et une équipe de développement qui facilitent la compréhension du projet et la recherche d'aide via la documentation et les forums. Avantages qu'il est impossible d'égaler dans une équipe de trois personnes sur dix mois.
 				\end{itemize}
 
 				La table~\ref{table:comparatif_framework} reprend une liste non-exhaustive de frameworks qui ont été envisagés pour ce projet. Afin de pouvoir développer une application compatible, nous avons évalué les possibilités et arrêté un choix durant la phase d'analyse du développement. Ci-après sont exposées les motivations de ce choix.
@@ -696,7 +696,7 @@
 
 			\subsection*{DataTables}
 
-				DataTables~\cite{ref:datatables} est la seconde plus grosse bibliothèque du projet, gérant l'affichage des données sous forme de tables. A nouveau sélectionnée de par son ancienneté permettant une documentation et des tutoriels efficaces, DataTables était très loin d'être la seule option. Nous avons envisagé, et débuté la première version avec, la bibliothèque \emph{Django-Tables2} qui causait un ralentissement du chargement des pages contenant les données, et une perte de contrôle de l'information au niveau du serveur car les tables étaient directement rattachées aux modèles de la base de données.
+				DataTables~\cite{ref:datatables} est la seconde plus grosse bibliothèque du projet, gérant l'affichage des données sous forme de tables. A nouveau sélectionnée de par son ancienneté permettant une documentation et des tutoriels efficaces, DataTables était très loin d'être la seule option. Nous avons envisagé, et débuté la première version, avec la bibliothèque \emph{Django-Tables2} qui causait un ralentissement du chargement des pages contenant les données, et une perte de contrôle de l'information au niveau du serveur car les tables étaient directement rattachées aux modèles de la base de données.
 
 				Dans notre volonté d'offrir une API pour communiquer avec le serveur (voir section~\ref{sec:serveur}), nous avons migré vers DataTables. En utilisant la technologie AJAX (Asynchronous Javascript And XML) de DataTables, nous pouvons exploiter pleinement l'asynchronicité du navigateur et charger une page de l'application en totale indépendance des données, ce qui augmente la vitesse de chargement des contrôles, permettant d'utiliser directement une fonctionnalité de l'application sans attendre le téléchargement des données (par exemple pour ajouter un élément).
 
@@ -716,7 +716,7 @@
 		\section{La hiérarchie dans l'application}
 			% Pages : 1 à 2
 
-			Le bon fonctionnement de l'application repose sur le principe hiérarchique de la récolte des informations venant de la saisie de données par les utilisateurs de l'application puisque le manque de financement et l'état actuel du réseau ne permet pas une récolte en temps réel des données via des capteurs. Une représentation de la structure hiérarchique vous est présentée en figure~\ref{fig:principe_hierarchique}.
+			Le bon fonctionnement de l'application repose sur le principe hiérarchique de la récolte des informations venant de la saisie de données par les utilisateurs de l'application puisque le manque de financement et l'état actuel du réseau ne permet pas une récolte en temps réel des données via des capteurs. Une représentation d'une structure hiérarchique potentielle vous est présentée en figure~\ref{fig:principe_hierarchique}.
 
 			\begin{figure}
 				\centering
@@ -801,14 +801,14 @@
 			Se voulant simple, l'interface est composée de blocs de contrôle permettant de gérer les données dans une zone de travail commune à toute les pages permettant de naviguer à travers l'application. Une capture d'écran de l'application vous est présentée en figures~\ref{fig:capture_gis}. Les contrôles communs incluent :
 			\begin{enumerate}
 				\item Le menu déroulant permettant d'accéder aux modules de l'application.
-				\item La zone utilisateur qui affiche ses notifications et le nom de compte qui lie à la{} déconnexion ou modification des informations personnelles dans son menu déroulant.
-				\item L'aide rapide, permettant de déclencher une visite virtuelle de la page ouverte, visite textuelle qui présente brièvement les contrôles et leur utilité.
+				\item La zone utilisateur qui affiche les notifications et le nom de compte. En cliquant sur celui-ci, il est possible de se déconneter ou de modifier ses informations personnelles dans le menu déroulant.
+				\item L'aide rapide, permettant de déclencher une visite de la page ouverte, qui présente brièvement les contrôles et leur utilité.
 			\end{enumerate}
 
 			Les contrôles spécifiques à cette page sont :
 			\begin{enumerate}\setcounter{enumi}{3} % Reprendre à 3 pour suivre les labels du screen "fig:capture_gis"
 				\item La table est un bloc de contrôle récurrent dans notre application. Ici listant les différents éléments du réseau de distribution, chaque table possède un champ de recherche, un système de tri et des contrôles permettant d'ajouter, supprimer et modifier les éléments contenus. Remarquez que pour augmenter la lisibilité, les tables disposent d'une pagination permettant de limiter l'affichage à 10 (valeur par défaut), 25, 50 éléments ou de tout afficher.
-				\item Un bloc de contrôle plus complexe, ici la carte interactive. Sur celle-ci, il est possible de placer des marqueurs (fontaines, kiosques, prises individuelles, sources et réservoirs) ou des lignes polygonales (conduites). Supportant les habituels contrôles de zoom (molette ou boutons) et déplacement (en cliquer/glisser), il est également possible de basculer entre une vue cartographique d'OpenStreetMap~\footnote{\url{https://www.openstreetmap.org/}} et une vue sattelite de Google~\footnote{\url{https://www.google.com/maps}}
+				\item Un bloc de contrôle plus complexe, ici la carte interactive. Sur celle-ci, il est possible de placer des marqueurs (fontaines, kiosques, prises individuelles, sources et réservoirs) ou des lignes polygonales (conduites). Supportant les habituels contrôles de zoom (molette ou boutons) et déplacement (en cliquer/glisser), il est également possible de basculer entre une vue cartographique d'OpenStreetMap~\footnote{\url{https://www.openstreetmap.org/}} et une vue satellite de Google~\footnote{\url{https://www.google.com/maps}}
 			\end{enumerate}
 
 			Tant pour accélérer le développement que pour permettre à l'utilisateur de s'habituer à l'utilisation de l'interface en se familiarisant avec les contrôles, les blocs de l'interface graphique sont réutilisés à travers les différentes pages de l'application.
@@ -833,7 +833,7 @@
 				La mise en cache est un système natif commun à la vaste majorité des navigateurs modernes. Le concept est simple; conserver l'ancienne version d'un fichier pour la réutiliser la prochaine fois si elle n'a pas changé. HaïtiWater utilise pleinement ce concept pour alléger le poids des téléchargements. Nous avons poursuivi un objectif de généricité dans le code source afin d'éliminer la redondance et de permettre une forte réutilisation des composants. Grâce à cette mise en cache, les pages de l'application qui font en moyenne $1,2$MB lors de la première visite ne requierent qu'approximativement $10$KB de téléchargement pour les suivantes. Une exception peut être notée; le module d'information géographique est plus gourmand en ressources réseau en raison du téléchargement des images composant la carte.
 
 			%Pages : 4 à 5
-			\subsection*{Gabarits, modularité et responsiveness}
+			\subsection*{Gabarits, modularité et réactivité}
 				% Interface construite en blocs (screen?)
 				Nous avons vu plus tôt que l'application est constituée d'une zone de travail dans laquelle des blocs de contrôle sont placés pour former les différents modules de l'application. Ces blocs de contrôle reflètent l'architecture logicielle de l'interface.
 
@@ -868,7 +868,7 @@
 
 			\subsection*{Mapping Objet-Relationnel}
 
-				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment a été créé la base de données et sa structure. Il nous reste à faire interagir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de données, et se charge d'y envoyer toutes les requêtes.
+				Dans la section \ref{sec:gest_donnee}, nous avons décrit comment a été créée la base de données et sa structure. Il nous reste à faire interagir notre serveur avec cette dernière. Pour cela, nous avons utilisé le Mapping Objet-Relationnel proposé par Django. Il effectue la connexion avec le serveur de base de données, et se charge d'y envoyer toutes les requêtes.
 
 				Il nous suffit de décrire la structure des données en utilisant des classes Python et le framework sera capable de créer les tables de la base de données et de les modifier au fur et à mesure des changements que nous introduisons. Ensuite, nous pouvons facilement interagir avec ces classes pour créer, modifier, supprimer et récupérer des données sans toucher au SQL.
 
@@ -876,7 +876,7 @@
 
 			\subsection*{Requêtes}
 
-				La fonction principale du serveur est de répondre aux requêtes que lui envoie le client. On en compte trois types différent : les deux premiers gèrent la représentation de l'information à l'utilisateur tandis que le dernier est en charge de l'information en elle-même.
+				La fonction principale du serveur est de répondre aux requêtes que lui envoie le client. On en compte trois types différents : les deux premières gèrent la représentation de l'information à l'utilisateur tandis que la dernière est en charge de l'information en elle-même.
 
 				\begin{itemize}
 					\item Les requêtes de fichiers statiques, comme un script JavaScript ou une feuille de style CSS.
@@ -984,7 +984,7 @@
 				\begin{description}
 					\item[Général] est une première section cherchant à identifier si l'utilisateur a compris les tâches qu'il vient d'accomplir avec l'application.
 					\item[Fonctionnalités] cherche à identifier la compréhension des contrôles de l'application par l'utilisateur.
-					\item[Usabilité] est une section particulière. Composée de dix questions alternant des assertions positives et négatives, cette section est une transcription en français de la \emph{System Usability Scale (SUS)}~\cite{ref:sus}. Se décrivant comme une mesure \emph{rapide et sale}, la SUS présente l'avantage de pouvoir être complétée rapidement par nos utilisateurs d'essai durant ces séances de maximum deux heures non-rémunérées.
+					\item[Usabilité] est une section particulière. Composée de dix questions alternant des assertions positives et négatives, cette section est une transcription en français de la \emph{System Usability Scale (SUS)}~\cite{ref:sus}. Se décrivant comme une mesure \emph{rapide et grossière}, la SUS présente l'avantage de pouvoir être complétée rapidement par nos utilisateurs d'essai durant ces séances de maximum deux heures non-rémunérées.
 					\item[Esthétique] est une dernière section, sans doute la plus subjective, composée de questions sur l'apparence de l'interface graphique.
 				\end{description}
 
@@ -1080,7 +1080,7 @@
 					\item La totalité des contrôles dispose désormais de \emph{tooltips} affichés au survol de la souris.
 				\end{itemize}
 
-				Les contraintes en temps nous empêchant un troisème groupe de validation, nous n'avons pas pu obtenir l'appréciation des utilisateurs sur ces dernières améliorations et nouveautés. Dans l'idéal, la prochaine équipe de développement devrait poursuivre cette étude de la satisfaction des utilisateurs. Des tests de validation en condition réelle à Haïti sont également nécessaires.
+				Les contraintes en temps nous empêchant un troisième groupe de validation, nous n'avons pas pu obtenir l'appréciation des utilisateurs sur ces dernières améliorations et nouveautés. Dans l'idéal, la prochaine équipe de développement devrait poursuivre cette étude de la satisfaction des utilisateurs. Des tests de validation en condition réelle à Haïti sont également nécessaires.
 
 	\chapter{Améliorations futures}
 		%Auteur : Adrien
@@ -1136,7 +1136,7 @@
 		Nous espérons également qu'au même titre que nous avons appris de nos contacts avec les acteurs de Protos et Haïti, ces derniers ont eu une bonne (pour la plupart première) expérience de leur implication dans le développement d'un outil pouvant les aider dans leur travail, et que cette expérience leur permettra dans le futur d'identifier ce qui leur plaît ou non dans HaïtiWater pour créer la prochaine version, ou le prochain logiciel utilisé en Haïti.
 		%(Adrien) -> Je suis pas convaincu par mon dernier paragraphe, j'aimerais qu'on termine sur quelque chose de plus "grand" -> How about that :
 
-		Enfin, l'ONG Protos a signifié son intérêt de déployer HaïtiWater (qu'il faudrait dès lors nommer autrement) dans d'autres pays en voie de développement. Grâce à la modularité de notre projet, peu de changements seraient nécessaire (principalement les unités de mesure et la devise monétaire) et notre outil de transition destiné au fonctionnement haïtien pourrait devenir un exemple de bonnes pratiques plus génériques pour développer un réseau de distribution d'eau potable.
+		Enfin, l'ONG Protos a signifié son intérêt de déployer HaïtiWater (qu'il faudrait dès lors nommer autrement) dans d'autres pays en voie de développement. Grâce à la modularité de notre projet, peu de changements seraient nécessaires (principalement les unités de mesure et la devise monétaire) et notre outil de transition destiné au fonctionnement haïtien pourrait devenir un exemple de bonnes pratiques plus génériques pour développer un réseau de distribution d'eau potable.
 
 		\section{Métriques}
 			Voici des métriques et représentations graphiques du travail accompli pour ce projet, datant toutes du 23 mai 2019.
@@ -1186,7 +1186,7 @@
 
 	%\chapter{Planning}
 
-		\includepdf[pages=1,pagecommand=\chapter{Planning}, offset=0 -3cm, scale=0.6]{images/gantt_simplified}
+		\includepdf[pages=1,pagecommand=\chapter{Planning (Google Sheet)}, offset=0 -3cm, scale=0.6]{images/gantt_simplified}
 		\includepdf[pages=2-,pagecommand={},width=1.1\textwidth]{images/gantt_simplified}
 
 	%\chapter{Base de données}
@@ -1197,7 +1197,7 @@
 
 	%\chapter{Wireframes}
 
-		\includepdf[pages=1,pagecommand=\chapter{Wireframes},offset=0 -3cm,width=\textwidth]{../documents/design/wireframes/hi-fi/wireframes_hifi_pencil.pdf}
+		\includepdf[pages=1,pagecommand=\chapter{Wireframes (Pencil)},offset=0 -3cm,width=\textwidth]{../documents/design/wireframes/hi-fi/wireframes_hifi_pencil.pdf}
 
 		\label{sec:wireframes}
 
