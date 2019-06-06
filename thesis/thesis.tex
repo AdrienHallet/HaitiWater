@@ -36,6 +36,10 @@
 \frenchbsetup{StandardLists=true} % Resolves conflict between babel and enumitem
 \usepackage{enumitem} % better formating of lists
 
+\usepackage[style=long,nonumberlist,toc,xindy,acronym,nomain]{glossaries}
+\makenoidxglossaries
+\input{../documents/requirements/glossary.gloss}
+
 \begin{document}
 
 	\maketitle
@@ -78,6 +82,9 @@
 		Merci à nos vingt utilisateurs de test qui ont donné de leur temps et conseils pour améliorer l'interface d'HaïtiWater.
 
 		Merci à nos parents et proches pour nous avoir supporté, dans tous les sens du terme, durant ce travail.
+
+	\printnoidxglossary[title=Glossaire, toctitle=Glossaire]
+	\glsaddall
 
 	\chapter{Introduction}
 
@@ -125,7 +132,7 @@
 
 		\subsection*{Objectifs}
 
-			Le but final de ce mémoire est de délivrer une application à l'ONG Protos et aux acteurs de la distribution de l'eau à Haïti. Nous visons un déploiement de cette base applicative sur le terrain, et espérons que des futures équipes de développement pourront travailler à sa maintenance et son évolution.
+			Le but final de ce mémoire est de délivrer un prototype d'application à l'ONG Protos et aux acteurs de la distribution de l'eau à Haïti. Nous visons un déploiement de cette base applicative sur le terrain, et espérons que des futures équipes de développement pourront travailler à sa maintenance et son évolution.
 
 			Nous espérons également que cette application permettra à Protos comme aux Haïtiens d'avoir un bon exemple de solution logicielle. Cela pourrait les aider à voir comment un logiciel peut être un appui dans leur gestion, et leur permettre de bien repenser leurs besoins lors de projets futurs.
 			% On pourrait expliquer un peu mieux, mais vous voulez peut-être le garder court ?
@@ -151,19 +158,19 @@
 
 			Grâce à notre travail de fin d'études, nous avons permis à l'ONG Protos ainsi qu'aux acteurs de terrain en Haïti d'avoir un premier contact avec le monde du développement logiciel. Nous espérons que celui-ci les aidera à comprendre les problématiques liées à la création de logiciels informatiques pour leurs projets futurs.
 
-			Nous avons également proposé une application pour la gestion de l'eau potable à Haïti. Nous espérons qu'elle pourra servir de base de travail, permettant aux acteurs de terrain d'avoir un jour un outil les aidant dans leur travail quotidien et apportant une aide au développement national.
+			Nous avons également proposé un prototype d'application pour la gestion de l'eau potable à Haïti. Nous espérons qu'elle pourra servir de base de travail, permettant aux acteurs de terrain d'avoir un jour un outil les aidant dans leur travail quotidien et apportant une aide au développement national.
 
 			Nous espérons avoir contribué à l'amélioration de la gestion de l'eau en Haïti, mais ce travail a assurément contribué au développement de nos compétences; en tant que développeurs, de par l'utilisation de bibliothèques et frameworks peu ou pas connus, en tant qu'analystes grâce au problème réel posé et à la nécessité de comprendre les besoins. La coordination du groupe, la planification du travail et la communication avec les clients ont également beaucoup apporté à notre développement professionnel.
 
 		\subsection*{Plan}
 
-			Dans ce document, nous allons exposer le déroulement de notre travail de fin d'études. Tout d'abord, nous allons revenir sur le contexte de ce travail. Nous allons ensuite détailler notre approche pour sa réalisation. Après cela, nous étayerons notre analyse des besoins de l'ONG Protos et des acteurs haïtiens. Ensuite, nous expliquerons toutes les étapes et décisions de notre implémentation. Nous reviendrons sur les techniques que nous avons utilisées afin de valider notre implémentation. Nous clôturerons ce mémoire par une rétrospective sur le travail et une ouverture aux possibilités futures.
+			Dans ce document, nous allons exposer le déroulement de notre travail de fin d'études. Tout d'abord, nous allons revenir sur le contexte de ce travail. Nous allons ensuite détailler notre approche pour sa réalisation. Après cela, nous étayerons notre analyse des besoins de l'ONG Protos et des acteurs haïtiens. Ensuite, nous expliquerons toutes les étapes et décisions de notre implémentation. Nous reviendrons sur les techniques que nous avons utilisées afin de valider notre implémentation. Nous clôturerons ce mémoire par une rétrospective sur le travail et une présentation de son futur.
 
 	\chapter{Contexte}
 
 		% Pages : 6 à 10
 
-		\section{Situation de l'eau en Haïti}
+		\section{Situation de l'eau potable en Haïti}
 			\label{sec:situation}
 
 			% Auteur: Adrien
@@ -179,9 +186,9 @@
 
 			\subsection*{Problèmes environnementaux}
 
-				Située dans les Caraïbes au sud-est de la République de Cuba et des \'Etats-Unis d'Amérique, la République d'Haïti occupe un territoire de $27.750km^{2}$ sur la partie occidentale de l'île d'Hispaniola. Le pays entier souffre de sa position géographique~\cite{ref:regards_situation_eau_haiti} qui le place dans un risque permanent de catastrophes naturelles. De multiples tempêtes et séismes frappent l'île fréquemment, en raison de la proximité de courants aériens et marins favorisant ces phénomènes. Le tristement célèbre tremblement de terre du 12 janvier 2010, dont le nombre de victimes est approximé à $250.000$ morts et autant de blessés, a, à lui seul, causé des dégâts estimés de 8 à 14 milliards USD~\cite{ref:estimating_economic_damage_earthquake_haiti}. Ces catastrophes périodiques détruisent les infrastructures et mettent à mal l'économie du pays, empêchant notamment un développement du réseau d'eau potable suffisant pour répondre aux besoins.
+				Située dans les Caraïbes au sud-est de la République de Cuba et des \'Etats-Unis d'Amérique, la République d'Haïti occupe un territoire de $27.750km^{2}$ sur la partie occidentale de l'île d'Hispaniola. Le pays entier souffre de sa position géographique~\cite{ref:regards_situation_eau_haiti} qui le place dans un risque permanent de catastrophes naturelles. De multiples tempêtes et séismes frappent l'île fréquemment, en raison de la proximité de courants aériens et marins ainsi que de failles tectoniques favorisant ces phénomènes. Le tristement célèbre tremblement de terre du 12 janvier 2010, dont le nombre de victimes est approximé à $250.000$ morts et autant de blessés, a, à lui seul, causé des dégâts estimés de 8 à 14 milliards USD~\cite{ref:estimating_economic_damage_earthquake_haiti}. Ces catastrophes périodiques détruisent les infrastructures et mettent à mal l'économie du pays, empêchant notamment un développement du réseau d'eau potable suffisant pour répondre aux besoins.
 
-				Le climat haïtien n'aide pas la situation. Météorologiquement parlant, Haïti affronte une alternance entre saison très chaude et saison moins chaude, les deux provoquant fréquemment des sécheresses. Les différentes régions du pays ont des climats variés, obligeant l'adoption de plusieurs mesures pour sauvegarder la population et rendant difficile une politique commune de gestion des ressources. Il convient de noter que l'aridité qui résulte de ce climat est accentuée par les activités humaines. La déforestation massive et rapide du pays, à des fins principalement énergétiques, empêche une rétention correcte des eaux dans les sols. Seuls 2\% à 3\% du territoire sont occupés par des forêts (venant de plus de 60\% il y a un siècle). La sécheresse se trouve ainsi aggravée, et le ruissellement des eaux accélère l'érosion des sols~\cite{ref:desertification_of_haiti}. Les terres sont ainsi progressivement emportées vers la mer. En 2008, un rapport des Nations Unies estimait cette perte à 37 millions de tonnes par an~\cite{ref:impact_degradation_terre}. Les cours d'eaux ont donc un débit accéléré, parfois torrentiel, rendant difficile l'exploitation de l'écoulement naturel et nécessitant plus d'infrastructures pour obtenir de l'eau potable.
+				Le climat haïtien n'aide pas la situation. Météorologiquement parlant, Haïti affronte une alternance entre saison très chaude et saison moins chaude, les deux provoquant fréquemment des sécheresses. Les différentes régions du pays ont des climats variés, obligeant l'adoption de plusieurs mesures pour sauvegarder la population et rendant difficile une politique commune de gestion des ressources. Il convient de noter que l'aridité qui résulte de ce climat est accentuée par les activités humaines. La déforestation massive et rapide du pays, à des fins principalement énergétiques, empêche une rétention correcte des eaux dans les sols. Seuls 2\% à 3\% du territoire sont occupés par des forêts (venant de plus de 60\% de couverture il y a un siècle). La sécheresse se trouve ainsi aggravée, et le ruissellement des eaux accélère l'érosion des sols~\cite{ref:desertification_of_haiti}. Les terres sont ainsi progressivement emportées vers la mer. En 2008, un rapport des Nations Unies estimait cette perte à 37 millions de tonnes par an~\cite{ref:impact_degradation_terre}. Les cours d'eaux ont donc un débit accéléré, parfois torrentiel, rendant difficile l'exploitation de l'écoulement naturel et nécessitant plus d'infrastructures pour obtenir de l'eau potable.
 
 			\subsection*{Problèmes politiques}
 
@@ -208,7 +215,7 @@
 
 			\subsection*{Organisation générale}
 
-				Comme exposé dans la section précédente, la situation environnementale, politique et sociale, cause une instabilité dans l'organisation des services publics d'Haïti. Les présidents changent souvent, et avec eux, les mesures mises en place. Les responsabilités des ministères et de leurs sous-entités sont assez peu claires, ou impossibles à mettre en pratique.
+				Comme exposé dans la section précédente, la situation environnementale, politique et sociale cause une instabilité dans l'organisation des services publics d'Haïti. Les présidents changent souvent, et avec eux, les mesures mises en place. Les responsabilités des ministères et de leurs sous-entités sont assez peu claires, ou impossibles à mettre en pratique.
 
 				Par conséquent, nos lectures des différents documents fournis par l'ONG Protos nous ont démontré qu'elle est sans doute l'une des entités les plus stables au niveau de l'organisation de la gestion de l'eau dans la région visée par ce travail. Elle supervise plusieurs organisations locales, en apportant son soutien (expérience, logistique, finances), tandis que ce sont les localités elles-mêmes qui tentent de solutionner les problèmes.
 
@@ -264,7 +271,7 @@
 
 				En pratique, un comité de l'eau (\emph{Komité Dlo} en Créole haïtien) est composé d'un président, un vice-président, un secrétaire, un trésorier et un conseiller, élus par les consommateurs locaux pour cinq ans. Ils se réunissent tous les mois pour parler des affaires courantes, et organisent une fois par an une assemblée générale où sont conviés les usagers du réseau. Ils sont en charge du bon fonctionnement du réseau, de la gestion du budget et des fonds amenés par les utilisateurs, de superviser les \emph{comités fontaines} et de rendre des comptes à la population.
 
-				Les comités fontaines, eux, sont composés d'un responsable fontaine, un secrétaire et un trésorier. Il sont en charge du bon fonctionnement et de la qualité du point d'eau, d'apporter les fonds au comité d'eau et de gérer les éventuels conflits entre usagers ou les réparations nécessaires.
+				Les comités fontaines, eux, sont composés d'un responsable fontaine, un secrétaire et un trésorier. Il sont en charge du bon fonctionnement et de la qualité du point d'eau, d'apporter les fonds au comité de l'eau et de gérer les éventuels conflits entre usagers ou les réparations nécessaires.
 
 				Concrètement, la quantité de points d'eau et le nombre d'usagers desservis par les réseaux de distribution d'eau varie : comme ceux-ci sont en développement, les nombres sont en constante augmentation. En ce moment, on compte par exemple 13 fontaines publiques dans la zone Passe Catabois, et 25 dans la zone Poste Métier. Ces fontaines alimentent entre 100 et 1000 usagers (voir figure \ref{fig:conso_fontaine}), avec une moyenne autour de 300.
 
@@ -313,7 +320,7 @@
 		\section{Comparaison avec des outils existants}
 			\label{sec:outils_existants}
 
-			Afin d'avoir une meilleure idée de ce à quoi devrait ressembler un logiciel de gestion de distribution d'eau, nous avons recherché des logiciels existants afin d'identifier leurs similarités, forces et faiblesses.
+			Afin d'avoir une meilleure idée de ce à quoi devrait ressembler un logiciel de gestion de distribution d'eau, nous avons recherché des logiciels existants parmi les plus répandus afin d'identifier leurs similarités, forces et faiblesses.
 
 			\textbf{EPANET}~\cite{ref:epanet} est un logiciel libre de droits, développé par l'\emph{Environment Protection Agency} aux États-Unis. Ce logiciel est une véritable référence dans le milieu, et se retrouve souvent utilisé comme base d'autres logiciels. \textbf{WaterCAD}~\cite{ref:watercad} s'inspire de suites logicielles connues afin d'apporter une interface moderne et des visuels avancés. \textbf{KY Pipe}~\cite{ref:kypipe} se base sur EPANET pour proposer une analyse hydraulique avancée et pour permettre de modéliser de nombreux contenus. Beaucoup d'autres logiciels existent, généralement basés sur EPANET ou AutoCAD (un logiciel plus générique).
 
