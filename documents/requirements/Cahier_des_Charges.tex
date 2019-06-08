@@ -213,7 +213,7 @@ Cette section du document contient une description détaillée de tous les types
   \begin{mdframed}[style=HighlightQuestion]
     \subsection{Questions et remarques}
     \begin{enumerate}
-      \item Pour les graphes et statistiques présentés aux gestionnaires de \glspl{fontaine} ou de \gls{zone}, nous en avons certains en tête, mais si quoi que ce soit vous semble peu utile ou qu'au contraire il manque quelque chose d'essentiel, il serait bon de le préciser :
+      \item Pour les graphes et statistiques présentés aux gestionnaires de \glspl{fontaines} ou de \gls{zones}, nous en avons certains en tête, mais si quoi que ce soit vous semble peu utile ou qu'au contraire il manque quelque chose d'essentiel, il serait bon de le préciser :
       \begin{itemize}
         \item Nombre total de \glspl{fontaine} dans la \gls{zone}
         \item Nombre total d'\glspl{utilisateur} de ces \glspl{fontaine}
@@ -223,7 +223,7 @@ Cette section du document contient une description détaillée de tous les types
       \end{itemize}
       \item La fonctionnalité des dépenses et revenus est pour le moment très flexible et permet d'ajouter des dépenses et entrées d'argent pour consulter le solde et l'évolution des dépenses au fil des mois/années. Nous avons peu d'informations sur le fonctionnement des budgets et les informations dont nous disposons actuellement ne nous permettent pas de créer un \gls{systeme} plus évolué.
       \item Lors du développement de l'\gls{application}, la priorité sera de créer le coeur de l'\gls{application} permettant de stocker et modifier les \glspl{donnee}. C'est sur cette base nécessaire que nous vous proposerons ensuite des outils plus avancés comme le \gls{systeme} d'information géographique qui permettra de visualiser le \gls{reseau} sur une carte interactive (type Google Maps).
-      \item Vous constatez que le gestionnaire de \gls{zone} a un rôle important dans l'\gls{application} car il peut créer et modifier des éléments du \gls{reseau} ainsi que des \glspl{utilisateur} dans sa \gls{zone}. Dans l'\gls{application}, par défaut cela signifie que tout gestionnaire de \gls{zone} peut créer, supprimer et modifier les éléments du \gls{reseau} ou les \glspl{utilisateur}. Si vous trouvez que c'est une trop grosse responsabilité, on vous propose d'ajouter un paramètre spécial qui autorise ou refuse au gestionnaire de \gls{zone} la \textbf{création et suppression} des éléments du \gls{reseau} ou \glspl{utilisateur}. Grâce à ce paramètre, vous pourriez avoir des gestionnaires de haut niveau (national, régional, ... vous choisissez) qui peuvent tout faire, et des gestionnaires de bas niveau (par exemple un groupe de quelques villages) qui peuvent consulter et modifier les informations pour les mettre à jour sans pour autant avoir le droit de créer des éléments du \gls{reseau} ou \glspl{utilisateur}. On vous conseille d'opter pour cette option si vous pensez qu'il pourrait y avoir des gestionnaires qui causeraient des problèmes avec les droits de création et suppression. On vous conseille de ne pas prendre cette option si les gestionnaires de \gls{reseau} sont indépendants et capables d'utiliser correctement la création et suppression.
+      \item Vous constatez que le gestionnaire de \gls{zone} a un rôle important dans l'\gls{application} car il peut créer et modifier des éléments du \gls{reseau} ainsi que des \glspl{utilisateur} dans sa \gls{zone}. Dans l'\gls{application}, par défaut cela signifie que tout gestionnaire de \gls{zone} peut créer, supprimer et modifier les éléments du \gls{reseau} ou les \glspl{utilisateur}. Si vous trouvez que c'est une trop grosse responsabilité, on vous propose d'ajouter un paramètre spécial qui autorise ou refuse au gestionnaire de \gls{zone} la \textbf{création et suppression} des éléments du \gls{reseau} ou \glspl{utilisateur}. Grâce à ce paramètre, vous pourriez avoir des gestionnaires de haut niveau (national, régional, ... vous choisissez) qui peuvent tout faire, et des gestionnaires de bas niveau (par exemple un groupe de quelques villages) qui peuvent consulter et modifier les informations pour les mettre à jour sans pour autant avoir le droit de créer des éléments du \gls{reseau} ou \glspl{utilisateur}. On vous conseille de choisir cette option si vous pensez qu'il pourrait y avoir des gestionnaires qui causeraient des problèmes avec les droits de création et suppression. On vous conseille de ne pas prendre cette option si les gestionnaires de \gls{reseau} sont indépendants et capables d'utiliser correctement la création et suppression.
     \end{enumerate}
   \end{mdframed}
 
@@ -253,7 +253,7 @@ Cette section du document contient une description détaillée de tous les types
       \item \glspl{consommateur}, nombre de foyers
       \item Recettes, pourcentage de recouvrement des paiements, recettes totales
     \end{itemize}
-    L'\gls{utilisateur} peut cliquer sur chacune des informations pour aller sur la page comprenant leur détail (respectivement les pages \emph{\gls{reseau}, \glspl{consommateur}, Comptabilité}).
+    L'\gls{utilisateur} peut cliquer sur chacune des informations pour aller sur la page comprenant leur détail (respectivement les pages \emph{\gls{reseau}, \glspl{consommateur}, comptabilité}).
 
     Ensuite, des graphiques sont proposés à l'\gls{utilisateur} (ici, la répartition des types de \glspl{point_eau} et l'évolution du taux de recouvrement en fonction du temps). L'\gls{utilisateur} peut utiliser la flèche à droite du titre du graphique pour en choisir un autre (quantité d'eau distribuée en fonction du mois, évolution du nombre de \glspl{consommateur}, ...).
 
@@ -281,7 +281,7 @@ Cette section du document contient une description détaillée de tous les types
 
     Ici, nous voyons le formulaire d'un gestionnaire de \glspl{fontaine}. Il se présente en cinq parties :
     \begin{itemize}
-      \item Le gestionnaire de \glspl{fontaine} sélectionne la ou les sorties d'eau (\gls{fontaine}, \glspl{prise_individuelle}, kiosques, \glspl{reservoir}) parmis celles qui lui sont attribuées, pour lesquelles il souhaite faire son rapport.
+      \item Le gestionnaire de \glspl{fontaine} sélectionne la ou les sorties d'eau (\gls{fontaine}, \glspl{prise_individuelle}, kiosques, \glspl{reservoir}) parmi celles qui lui sont attribuées, pour lesquelles il souhaite faire son rapport.
       \item Le gestionnaire de \glspl{fontaine} indique s'il a pu être en service durant ce mois, si oui il indique le nombre de jours et d'heures durant lesquels le service était disponible.
       \item Le gestionnaire de \glspl{fontaine} indique les recettes pour les \glspl{fontaine}, kiosques et \glspl{prise_individuelle}, le total est affiché automatiquement.
       \item Pour chaque sortie d'eau sélectionnée au début du rapport, le gestionnaire de \glspl{fontaine} indique la quantité d'eau distribuée ainsi que les prix de distribution.
