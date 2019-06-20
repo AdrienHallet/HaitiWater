@@ -59,7 +59,28 @@ Leaflet
 
 Magnific Popup
 --------------
-`Magnific Popup <http://dimsemenov.com/plugins/magnific-popup/>`_ TODO
+`Magnific Popup <http://dimsemenov.com/plugins/magnific-popup/>`_ permet d'afficher des lightbox et boîtes de dialogue aisément.
+
+Modernizr
+---------
+`Modernizr <https://modernizr.com/>`_ est une collection de features permettant d'augmenter la responsiveness de l'application et d'adapter l'interface de l'application au support.
+
+Morris
+---------
+`Morris <https://morrisjs.github.io/morris.js/>`_ est une bibliothèque graphique permettant la réalisation de graphes simples.
+
+NanoScroller
+---------
+`NanoScroller <https://jamesflorentino.github.io/nanoScrollerJS/>`_ implémente une barre de navigation (type ascenseur) uniforme à travers les différents navigateurs.
+
+PNotify
+---------
+`PNotify <https://sciactive.com/pnotify/>`_ est utilisé pour les toasts (coin supérieur droit) notifiant des différentes actions effectuées par le serveur (ajout, erreur).
+
+Select2
+---------
+`Select2 <https://select2.org/>`_ est une alternative à bootstrap-multiselect plus avancée et performante.
+
 
 
 ========
