@@ -20,7 +20,7 @@ jdcal==1.4
 odfpy==1.3.6
 openpyxl==2.5.9
 psycopg2==2.7.5
-python-dateutil==1.5
+python-dateutil==2.8
 pytz==2018.6
 PyYAML>=4.2b1
 rcssmin==1.0.6
