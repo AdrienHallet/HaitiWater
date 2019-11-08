@@ -129,7 +129,7 @@ En vous positionnant au chemin (dernier laissé précédemment) ``../HaitiWater/
   * Créer les tables virtuelles dans la base de données (utiliser les informations de connexion à la base de données dans le fichier ``settings/py``) ::
   
     $ psql -p <PORT> -U <SUPERUSER> -d haitiwater -f views.sql
-    Password for user <SUPERUSER>: <PASSWORD>
+      Password for user <SUPERUSER>: <PASSWORD>
     
   * Lancer le serveur ::
   
